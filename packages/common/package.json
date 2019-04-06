@@ -1,0 +1,23 @@
+{
+  "name": "@sbx/common",
+  "version": "0.0.1",
+  "description": "Core basics for the PascalCoin BlockChain project.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": ["PascalCoin", "BlockChain", "Cryptography"],
+  "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --env dev && webpack --env build && npm run test",
+    "dev": "webpack --progress --colors --watch --env dev",
+    "test": "mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\"",
+    "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
+  },
+  "dependencies": {
+    "bignumber.js": "^8.0.1",
+    "bs58": "^4.0.1",
+    "mipher": "^1.1.5"
+  }
+}

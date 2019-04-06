@@ -1,0 +1,60 @@
+{
+  "ready": true,
+  "ready_s": "",
+  "status_s": "Running",
+  "port": 4004,
+  "locked": true,
+  "timestamp": 1553888410,
+  "version": "4.0.2e",
+  "netprotocol": {
+    "ver": 9,
+    "ver_a": 9
+  },
+  "blocks": 300973,
+  "sbh": "5643400BF1E543547B87003D2B939982BEEE043250B4280C4BE19416823DB707",
+  "pow": "0000000077815B0AD3EE4C499713B1D321E794C9EC5AF1A65CD5B8439064E623",
+  "netstats": {
+    "active": 5,
+    "clients": 0,
+    "servers": 5,
+    "servers_t": 5,
+    "total": 7,
+    "tclients": 0,
+    "tservers": 7,
+    "breceived": 220933,
+    "bsend": 42114
+  },
+  "openssl": "1010002F",
+  "nodeservers": [
+    {
+      "ip": "159.65.116.108",
+      "port": 4004,
+      "lastcon": 1553888311,
+      "attempts": 0
+    },
+    {
+      "ip": "207.154.196.101",
+      "port": 4004,
+      "lastcon": 1553888355,
+      "attempts": 0
+    },
+    {
+      "ip": "45.32.154.205",
+      "port": 4004,
+      "lastcon": 1553888396,
+      "attempts": 0
+    },
+    {
+      "ip": "46.101.96.95",
+      "port": 4004,
+      "lastcon": 1553888327,
+      "attempts": 0
+    },
+    {
+      "ip": "85.25.153.17",
+      "port": 4004,
+      "lastcon": 1553888303,
+      "attempts": 0
+    }
+  ]
+}

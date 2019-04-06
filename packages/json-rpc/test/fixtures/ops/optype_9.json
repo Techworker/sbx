@@ -1,0 +1,90 @@
+[
+  {
+    "block": 282569,
+    "time": 1548620073,
+    "opblock": 0,
+    "maturation": 19209,
+    "optype": 9,
+    "subtype": 91,
+    "senders": [
+      {
+        "account": 55033,
+        "n_operation": 19,
+        "amount": -0.0014,
+        "payload": ""
+      },
+      {
+        "account": 55099,
+        "n_operation": 37,
+        "amount": -0.0002,
+        "payload": ""
+      }
+    ],
+    "receivers": [
+      {
+        "account": 66033,
+        "amount": 0.0007,
+        "payload": ""
+      },
+      {
+        "account": 70666,
+        "amount": 0.0003,
+        "payload": ""
+      },
+      {
+        "account": 67050,
+        "amount": 0.0006,
+        "payload": ""
+      }
+    ],
+    "changers": [],
+    "optxt": "Multioperation senders:2 receivers:3 changes:0 Amount:0.0016 Fees:0.0000",
+    "fee": 0,
+    "amount": 0.0016,
+    "ophash": "C94F0400F9D600001300000005365B68B8365A569D9437B85123A040EBF49F22"
+  },
+  {
+    "block": 282573,
+    "time": 1548620671,
+    "opblock": 64,
+    "maturation": 19205,
+    "optype": 9,
+    "subtype": 91,
+    "senders": [
+      {
+        "account": 67050,
+        "n_operation": 1890,
+        "amount": -0.0014,
+        "payload": ""
+      },
+      {
+        "account": 66033,
+        "n_operation": 69,
+        "amount": -0.0002,
+        "payload": ""
+      }
+    ],
+    "receivers": [
+      {
+        "account": 55033,
+        "amount": 0.0006,
+        "payload": ""
+      },
+      {
+        "account": 6780,
+        "amount": 0.0007,
+        "payload": ""
+      },
+      {
+        "account": 75700,
+        "amount": 0.0003,
+        "payload": ""
+      }
+    ],
+    "changers": [],
+    "optxt": "Multioperation senders:2 receivers:3 changes:0 Amount:0.0016 Fees:0.0000",
+    "fee": 0,
+    "amount": 0.0016,
+    "ophash": "CD4F0400EA050100620700006EDDB2B9F76EBF724A35424847F8BE389E07B615"
+  }
+]

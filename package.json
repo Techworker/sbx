@@ -1,0 +1,59 @@
+{
+  "name": "sbx",
+  "private": true,
+  "version": "0.0.1",
+  "description": "A library to work with pascalcoin in nodejs and the browser.",
+  "scripts": {
+    "build": "webpack --env dev && webpack --env build && npm run test",
+    "dev": "webpack --progress --colors --watch --env dev",
+    "test": "mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/**/*.spec.js\"",
+    "test:watch": "mocha --require babel-register --colors -w ./test/*.spec.js",
+    "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/**/*.spec.js\"",
+    "test:cover:core": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/Core/**/*.spec.js\"",
+    "test:cover:layer2": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/Layer2/**/*.spec.js\"",
+    "test:cover:crypto": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/Crypto/**/*.spec.js\"",
+    "test:cover:rpc": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/RPC/**/*.spec.js\"",
+    "test:cover:file": "cross-env NODE_ENV=test nyc --reporter=html mocha --require babel-register --colors $FILE",
+    "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/techworker/sbx.git"
+  },
+  "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/polyfill": "^7.4.3",
+    "@babel/register": "^7.4.0",
+    "babel-eslint": "^8.0.3",
+    "babel-loader": "^8.0.0-beta.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-istanbul": "^5.1.0",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.0.1",
+    "eslint-loader": "^2.0.0",
+    "jsdom": "11.11.0",
+    "jsdom-global": "3.0.2",
+    "lerna": "^3.13.1",
+    "mocha": "^4.0.1",
+    "nyc": "^13.1.0",
+    "regenerator": "^0.13.3",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.12.2",
+    "webpack-cli": "^3.0.8",
+    "webpack-node-externals": "^1.7.2",
+    "yargs": "^10.0.3"
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
