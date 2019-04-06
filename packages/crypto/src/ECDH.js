@@ -31,7 +31,7 @@ class ECDH {
     let sharedSecret = tempKey.derive(pubkey.getPublic());
     let secrectkey = Sha.sha512(new BC(sharedSecret.toArray()));
 
-    let encryptedData = AES.encrypt(
+    let encryptedData = AES.encryptZero(
       secrectkey.slice(0, 32),
       data,
       new Uint8Array(16)
@@ -39,7 +39,7 @@ class ECDH {
 
     return {
       data: encryptedData,
-      key: secrectkey.slice(0, 32),
+      key: secrectkey.slice(32, 32),
       publicKey: new BC(tempKey.getPublic(true, 'buffer'))
     };
   }
@@ -52,7 +52,7 @@ class ECDH {
    * @param {BC|Buffer|Uint8Array|String} data
    * @returns {BC}
    */
-  static decrypt(privateKey, publicKey, data) {
+  static decrypt(privateKey, publicKey, data, origMsgLength) {
     publicKey = BC.from(publicKey);
     data = BC.from(data);
     let ecCurve = elliptic(privateKey.curve.name);
@@ -61,7 +61,18 @@ class ECDH {
     let sharedSecret = ecPrivateKey.derive(ecPublicKey.getPublic());
     let secrectKey = Sha.sha512(new BC(Buffer.from(sharedSecret.toArray())));
 
-    return AES.decrypt(secrectKey.slice(0, 32), data, new BC(Buffer.alloc(16)));
+    let decryptedData = AES.decryptZero(
+      secrectKey.slice(0, 32),
+      data,
+      new Uint8Array(16)
+    );
+
+    let decryptedDataWithPaddingRemoved = decryptedData.slice(0, origMsgLength);
+
+    return {
+      data: decryptedDataWithPaddingRemoved,
+      key: secrectKey.slice(32, 32),
+    };
   }
 }
 

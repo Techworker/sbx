@@ -85,7 +85,7 @@ class Payload {
     // extract data
     const publicKeyLength = payload.slice(0, 1).toInt();
     const macLength = payload.slice(1, 2).toInt();
-    // const orgMsgLength = payload.slice(2, 4).switchEndian().toInt();
+    const origMsgLength = payload.slice(2, 4).switchEndian().toInt();
     const messageLength = payload.slice(4, 6).switchEndian().toInt();
 
     let start = 6;
@@ -99,11 +99,29 @@ class Payload {
     // 6 + publicKeyLength + macLength + messageLength + 1).buffer;
     const ecdhMessage = payload.slice(start, end);
 
-    return ECDH.decrypt(
+    const encryptedMessage = payload.slice(payload.length - messageLength, payload.length);
+    const macMessage = payload.slice(6 + publicKeyLength, 6 + publicKeyLength + macLength);
+
+
+    const dec = ECDH.decrypt(
       keyPair.privateKey,
       ecdhPubKey,
-      ecdhMessage,
+      ecdhMessage, origMsgLength
     );
+
+    const hmac = require('crypto').createHmac('md5', dec.key.buffer);
+    const m2 = BC.fromHex(hmac.update(encryptedMessage.buffer).digest('hex'));
+
+    if (new BC(macMessage).equals(new BC(m2)))
+    {
+      return dec.data;
+    }
+    else
+    {
+      return false;
+    }
+
+
   }
 
   /**
@@ -121,13 +139,18 @@ class Payload {
     );
 
     const hmac = require('crypto').createHmac('md5', enc.key.buffer);
-    const m2 = BC.fromHex(hmac.digest('hex'));
+    const m2 = BC.fromHex(hmac.update(enc.data.buffer).digest('hex'));
+    const messageToEncryptSize = payload.length;
+    const messageToEncryptPadSize = (messageToEncryptSize % 16) === 0
+      ? 0
+      : 16 -
+      (messageToEncryptSize % 16);
 
     return BC.concat(
       BC.fromInt(enc.publicKey.length), // key
       BC.fromInt(m2.length), // mac
-      BC.fromInt(8, 2).switchEndian(), // org
-      BC.fromInt(enc.data.length, 2).switchEndian(), // dtaa
+      BC.fromInt(messageToEncryptSize, 2).switchEndian(), // orig
+      BC.fromInt(messageToEncryptSize + messageToEncryptPadSize, 2).switchEndian(), // body
       enc.publicKey, // key itself
       m2,
       enc.data
