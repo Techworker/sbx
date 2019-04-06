@@ -8,6 +8,7 @@
 'use strict';
 
 const mipherAES = require('mipher/dist/aes');
+const AES_CBC_ZeroPadding = require('./mipher/AES_CBC_ZeroPadding');
 const BC = require('@sbx/common').BC;
 
 /**
@@ -36,6 +37,32 @@ class AES {
    */
   static decrypt(key, data, iv) {
     let aes = new mipherAES.AES_CBC_PKCS7();
+
+    return new BC(aes.decrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
+  }
+
+  /**
+   *
+   * @param {BC|Buffer|Uint8Array|String} key
+   * @param {BC|Buffer|Uint8Array|String} iv
+   * @param {BC|Buffer|Uint8Array|String} data
+   * @returns {BC}
+   */
+  static encryptZero(key, data, iv) {
+    let aes = new AES_CBC_ZeroPadding();
+
+    return new BC(aes.encrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
+  }
+
+  /**
+   *
+   * @param {BC|Buffer|Uint8Array|String} key
+   * @param {BC|Buffer|Uint8Array|String} iv
+   * @param {BC|Buffer|Uint8Array|String} data
+   * @returns {BC}
+   */
+  static decryptZero(key, data, iv) {
+    let aes = new AES_CBC_ZeroPadding();
 
     return new BC(aes.decrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
   }
