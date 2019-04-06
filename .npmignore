@@ -1,0 +1,6 @@
+.DS_Store
+*.log
+test
+coverage
+.idea
+mix-manifest.json

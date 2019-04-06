@@ -1,0 +1,6 @@
+mix-manifest.json
+test*.js
+node_modules
+.idea
+.nyc_output
+coverage
