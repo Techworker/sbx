@@ -39,6 +39,7 @@ class ECDH {
 
     return {
       data: encryptedData,
+      key: secrectkey.slice(0, 32),
       publicKey: new BC(tempKey.getPublic(true, 'buffer'))
     };
   }
@@ -60,7 +61,7 @@ class ECDH {
     let sharedSecret = ecPrivateKey.derive(ecPublicKey.getPublic());
     let secrectKey = Sha.sha512(new BC(Buffer.from(sharedSecret.toArray())));
 
-    return AES.decrypt(secrectKey.slice(0, 32), data, new BC(new Buffer(16)));
+    return AES.decrypt(secrectKey.slice(0, 32), data, new BC(Buffer.alloc(16)));
   }
 }
 

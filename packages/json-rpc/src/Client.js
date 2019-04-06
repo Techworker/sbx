@@ -473,6 +473,15 @@ class Client {
     }, this[P_EXECUTOR]);
   }
 
+  payloadEncrypt(payload, payloadMethod, publicKey = null, password = null) {
+    return new BaseAction('payloadencrypt', {
+      payload: payload,
+      payload_method: payloadMethod,
+      pubkey: publicKey,
+      pwd: password
+    }, this[P_EXECUTOR]);
+  }
+
   /*
   importpubkey
 decodeophash

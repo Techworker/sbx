@@ -68,6 +68,10 @@ function transformRpcParams(params) {
       }
     } else if (typeof item === 'boolean') {
       newParams[field] = item;
+    } else if (item.constructor.name === 'Array') {
+      if (item.length > 0) {
+        newParams[field] = item;
+      }
     } else if (item instanceof BC) {
       newParams[field] = item.toHex();
     } else if (item instanceof OperationHash) {

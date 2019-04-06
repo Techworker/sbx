@@ -120,8 +120,7 @@ class Payload {
       payload
     );
 
-    const crypto = require('crypto');
-    const hmac = crypto.createHmac('md5', enc.data.buffer);
+    const hmac = require('crypto').createHmac('md5', enc.key.buffer);
     const m2 = BC.fromHex(hmac.digest('hex'));
 
     return BC.concat(

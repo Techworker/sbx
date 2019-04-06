@@ -32,3 +32,11 @@ This monorepo contains the following packages:
    - `@sbx/json-rpc`
    - `@sbx/signing`
    
+## Development
+
+ - Install nodejs: https://nodejs.org
+ - Install yarn: https://yarnpkg.com/
+ - Install lerna: `npm install lerna -g`
+ - Checkout the repository
+ - run `lerna bootstrap` to install all dependencies.
+
