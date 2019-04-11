@@ -47,7 +47,7 @@ module.exports = function (libraryRoot, outputSuffix) {
     },
     resolve: {
       modules: [path.resolve(libraryRoot + '/node_modules'), path.resolve(__dirname + '/node_modules'), path.resolve(libraryRoot + '/src')],
-      extensions: ['.json', '.js']
+      extensions: ['.mjs', '.json', '.js']
     }
   };
 };

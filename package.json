@@ -54,6 +54,7 @@
     "instrument": false
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "applications/*"
   ]
 }

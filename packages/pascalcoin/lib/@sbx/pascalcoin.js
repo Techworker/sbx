@@ -33811,7 +33811,10 @@ module.exports = {
   ECDH: __webpack_require__(/*! ./src/ECDH */ "../crypto/src/ECDH.js"),
   KDF: __webpack_require__(/*! ./src/KDF */ "../crypto/src/KDF.js"),
   Keys: __webpack_require__(/*! ./src/Keys */ "../crypto/src/Keys.js"),
-  Payload: __webpack_require__(/*! ./src/Payload */ "../crypto/src/Payload.js")
+  Payload: __webpack_require__(/*! ./src/Payload */ "../crypto/src/Payload.js"),
+  mipher: {
+    AES_CBC_ZeroPadding: __webpack_require__(/*! ./src/mipher/AES_CBC_ZeroPadding */ "../crypto/src/mipher/AES_CBC_ZeroPadding.js")
+  }
 };
 
 /***/ }),
@@ -33832,7 +33835,9 @@ module.exports = {
  */
 
 
-const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
+const mAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
+
+const AES_CBC_ZeroPadding = __webpack_require__(/*! ./mipher/AES_CBC_ZeroPadding */ "../crypto/src/mipher/AES_CBC_ZeroPadding.js");
 
 const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
 /**
@@ -33848,8 +33853,8 @@ class AES {
    * @param {BC|Buffer|Uint8Array|String} data
    * @returns {BC}
    */
-  static encrypt(key, data, iv) {
-    let aes = new mipherAES.AES_CBC_PKCS7();
+  static encryptPKCS7(key, data, iv) {
+    let aes = new mAES.AES_CBC_PKCS7();
     return new BC(aes.encrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
   }
   /**
@@ -33862,7 +33867,33 @@ class AES {
 
 
   static decrypt(key, data, iv) {
-    let aes = new mipherAES.AES_CBC_PKCS7();
+    let aes = new mAES.AES_CBC_PKCS7();
+    return new BC(aes.decrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
+  }
+  /**
+   *
+   * @param {BC|Buffer|Uint8Array|String} key
+   * @param {BC|Buffer|Uint8Array|String} iv
+   * @param {BC|Buffer|Uint8Array|String} data
+   * @returns {BC}
+   */
+
+
+  static encryptZeroPadding(key, data, iv) {
+    let aes = new AES_CBC_ZeroPadding();
+    return new BC(aes.encrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
+  }
+  /**
+   *
+   * @param {BC|Buffer|Uint8Array|String} key
+   * @param {BC|Buffer|Uint8Array|String} iv
+   * @param {BC|Buffer|Uint8Array|String} data
+   * @returns {BC}
+   */
+
+
+  static decryptZeroPadding(key, data, iv) {
+    let aes = new AES_CBC_ZeroPadding();
     return new BC(aes.decrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
   }
 
@@ -33915,9 +33946,10 @@ class ECDH {
     let pubkey = ecCurve.keyFromPublic(publicKey.ecdh.buffer);
     let sharedSecret = tempKey.derive(pubkey.getPublic());
     let secrectkey = Sha.sha512(new BC(sharedSecret.toArray()));
-    let encryptedData = AES.encrypt(secrectkey.slice(0, 32), data, new Uint8Array(16));
+    let encryptedData = AES.encryptZeroPadding(secrectkey.slice(0, 32), data, new Uint8Array(16));
     return {
       data: encryptedData,
+      key: secrectkey.slice(32, 32),
       publicKey: new BC(tempKey.getPublic(true, 'buffer'))
     };
   }
@@ -33931,7 +33963,7 @@ class ECDH {
    */
 
 
-  static decrypt(privateKey, publicKey, data) {
+  static decrypt(privateKey, publicKey, data, origMsgLength) {
     publicKey = BC.from(publicKey);
     data = BC.from(data);
     let ecCurve = elliptic(privateKey.curve.name);
@@ -33939,7 +33971,12 @@ class ECDH {
     let ecPublicKey = ecCurve.keyFromPublic(publicKey.buffer);
     let sharedSecret = ecPrivateKey.derive(ecPublicKey.getPublic());
     let secrectKey = Sha.sha512(new BC(Buffer.from(sharedSecret.toArray())));
-    return AES.decrypt(secrectKey.slice(0, 32), data, new BC(new Buffer(16)));
+    let decryptedData = AES.decryptZero(secrectKey.slice(0, 32), data, new Uint8Array(16));
+    let decryptedDataWithPaddingRemoved = decryptedData.slice(0, origMsgLength);
+    return {
+      data: decryptedDataWithPaddingRemoved,
+      key: secrectKey.slice(32, 32)
+    };
   }
 
 }
@@ -34127,7 +34164,7 @@ class Keys {
 
     randomGenerator.stop();
     const keyInfo = KDF.PascalCoin(password, salt);
-    const privateKeyEncrypted = AES.encrypt(keyInfo.key, privateKeyEncoded, keyInfo.iv);
+    const privateKeyEncrypted = AES.encryptPKCS7(keyInfo.key, privateKeyEncoded, keyInfo.iv);
     return BC.concat(BC.fromString('Salted__'), salt, privateKeyEncrypted);
   }
   /**
@@ -34245,8 +34282,8 @@ class Payload {
     payload = BC.from(payload); // extract data
 
     const publicKeyLength = payload.slice(0, 1).toInt();
-    const macLength = payload.slice(1, 2).toInt(); // const orgMsgLength = payload.slice(2, 4).switchEndian().toInt();
-
+    const macLength = payload.slice(1, 2).toInt();
+    const origMsgLength = payload.slice(2, 4).switchEndian().toInt();
     const messageLength = payload.slice(4, 6).switchEndian().toInt();
     let start = 6;
     let end = start + publicKeyLength;
@@ -34256,7 +34293,19 @@ class Payload {
     // 6 + publicKeyLength + macLength + messageLength + 1).buffer;
 
     const ecdhMessage = payload.slice(start, end);
-    return ECDH.decrypt(keyPair.privateKey, ecdhPubKey, ecdhMessage);
+    const encryptedMessage = payload.slice(payload.length - messageLength, payload.length);
+    const macMessage = payload.slice(6 + publicKeyLength, 6 + publicKeyLength + macLength);
+    const dec = ECDH.decrypt(keyPair.privateKey, ecdhPubKey, ecdhMessage, origMsgLength);
+
+    const hmac = __webpack_require__(/*! crypto */ "../../node_modules/crypto-browserify/index.js").createHmac('md5', dec.key.buffer);
+
+    const m2 = BC.fromHex(hmac.update(encryptedMessage.buffer).digest('hex'));
+
+    if (new BC(macMessage).equals(new BC(m2))) {
+      return dec.data;
+    }
+
+    return false;
   }
   /**
    * encrypts the goven payload using the given public key.
@@ -34270,14 +34319,15 @@ class Payload {
     payload = BC.from(payload, 'string');
     const enc = ECDH.encrypt(publicKey, payload);
 
-    const crypto = __webpack_require__(/*! crypto */ "../../node_modules/crypto-browserify/index.js");
+    const hmac = __webpack_require__(/*! crypto */ "../../node_modules/crypto-browserify/index.js").createHmac('md5', enc.key.buffer);
 
-    const hmac = crypto.createHmac('md5', enc.data.buffer);
-    const m2 = BC.fromHex(hmac.digest('hex'));
+    const m2 = BC.fromHex(hmac.update(enc.data.buffer).digest('hex'));
+    const messageToEncryptSize = payload.length;
+    const messageToEncryptPadSize = messageToEncryptSize % 16 === 0 ? 0 : 16 - messageToEncryptSize % 16;
     return BC.concat(BC.fromInt(enc.publicKey.length), // key
     BC.fromInt(m2.length), // mac
-    BC.fromInt(8, 2).switchEndian(), // org
-    BC.fromInt(enc.data.length, 2).switchEndian(), // dtaa
+    BC.fromInt(messageToEncryptSize, 2).switchEndian(), // orig
+    BC.fromInt(messageToEncryptSize + messageToEncryptPadSize, 2).switchEndian(), // body
     enc.publicKey, // key itself
     m2, enc.data);
   }
@@ -34286,6 +34336,62 @@ class Payload {
 
 module.exports = Payload;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/buffer/index.js */ "../../node_modules/buffer/index.js").Buffer))
+
+/***/ }),
+
+/***/ "../crypto/src/mipher/AES_CBC_ZeroPadding.js":
+/*!***************************************************!*\
+  !*** ../crypto/src/mipher/AES_CBC_ZeroPadding.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
+
+const mipherPadding = __webpack_require__(/*! mipher/dist/padding */ "../../node_modules/mipher/dist/padding.js");
+/**
+ * AES-CBC + ZeroPadding integration using the mipher library
+ */
+
+
+class AES_CBC_ZeroPadding {
+  /**
+   * Constructor
+   */
+  constructor() {
+    this.cipher = new mipherAES.AES_CBC();
+    this.padding = new mipherPadding.ZeroPadding();
+  }
+  /**
+   * Encrypts using the given values.
+   *
+   * @param key
+   * @param pt
+   * @param iv
+   * @returns {Uint8Array}
+   */
+
+
+  encrypt(key, pt, iv) {
+    return this.cipher.encrypt(key, this.padding.pad(pt, this.cipher.cipher.blockSize), iv);
+  }
+  /**
+   * Decrypts using the given values.
+   *
+   * @param key
+   * @param ct
+   * @param iv
+   * @returns {Uint8Array}
+   */
+
+
+  decrypt(key, ct, iv) {
+    return this.padding.strip(this.cipher.decrypt(key, ct, iv));
+  }
+
+}
+
+module.exports = AES_CBC_ZeroPadding;
 
 /***/ }),
 
@@ -35345,22 +35451,48 @@ module.exports = {
 const P_PARAMS = Symbol('params');
 const P_METHOD = Symbol('method');
 const P_EXECUTOR = Symbol('executor');
+const P_DESTINATION_TYPE = Symbol('destination_type');
+const P_RETURNS_ARRAY = Symbol('returns_array');
 /**
  * A basic action that holds the rpc method and its parameters.
  */
 
 class BaseAction {
   /**
-     * Constructor.
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {Executor} executor
-     */
-  constructor(method, params, executor) {
+   * Constructor.
+   *
+   * @param {String} method
+   * @param {Object} params
+   * @param {Executor} executor
+   * @param {*} DestinationType
+   * @param {Boolean} returnsArray
+   */
+  constructor(method, params, executor, DestinationType, returnsArray) {
     this[P_METHOD] = method;
     this[P_PARAMS] = params;
     this[P_EXECUTOR] = executor;
+    this[P_DESTINATION_TYPE] = DestinationType;
+    this[P_RETURNS_ARRAY] = returnsArray;
+  }
+  /**
+   * Gets the destination type.
+   *
+   * @returns {*}
+   */
+
+
+  get destinationType() {
+    return this[P_DESTINATION_TYPE];
+  }
+  /**
+   * Gets a value indicating whether the action returns an array.
+   *
+   * @returns {Boolean}
+   */
+
+
+  get returnsArray() {
+    return this[P_RETURNS_ARRAY];
   }
   /**
      * Gets the params for the rpc call.
@@ -35395,6 +35527,14 @@ class BaseAction {
   get method() {
     return this[P_METHOD];
   }
+
+  get destinationType() {
+    return this[P_DESTINATION_TYPE];
+  }
+
+  get returnsArray() {
+    return this[P_RETURNS_ARRAY];
+  }
   /**
      * Executes the current action and returns the raw result.
      *
@@ -35403,31 +35543,7 @@ class BaseAction {
 
 
   async execute() {
-    return this[P_EXECUTOR].execute(this[P_METHOD], this[P_PARAMS]);
-  }
-  /**
-   * Executes the current action and transforms the result to an array
-   *  of the defined type.
-   *
-   *  @param {Object} destinationType
-   * @returns {Promise}
-   */
-
-
-  async executeTransformArray(destinationType) {
-    return this[P_EXECUTOR].executeTransformArray(this[P_METHOD], this[P_PARAMS], destinationType);
-  }
-  /**
-     * Executes the current action and transforms the result to an object
-     *  of the defined type.
-     *
-     *  @param {Object} destinationType
-     * @returns {Promise}
-     */
-
-
-  async executeTransformItem(destinationType) {
-    return this[P_EXECUTOR].executeTransformItem(this[P_METHOD], this[P_PARAMS], destinationType);
+    return this[P_EXECUTOR].execute(this);
   }
   /**
      * Gets a flag indicating whether the current action is valid.
@@ -35470,14 +35586,16 @@ const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Ty
 
 class OperationAction extends BaseAction {
   /**
-     * Constructor
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {Executor} executor
-     */
-  constructor(method, params, executor) {
-    super(method, params, executor);
+   * Constructor
+   *
+   * @param {String} method
+   * @param {Object} params
+   * @param {Executor} executor
+   * @param {*} DestinationType
+   * @param {Boolean} returnsArray
+   */
+  constructor(method, params, executor, DestinationType, returnsArray) {
+    super(method, params, executor, DestinationType, returnsArray);
     this.params.fee = new Currency(0);
     this.params.payload = '';
     this.params.payload_method = 'none';
@@ -35553,14 +35671,16 @@ const BaseAction = __webpack_require__(/*! ./BaseAction */ "../json-rpc/src/Acti
 
 class PagedAction extends BaseAction {
   /**
-     * Constructor.
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {Executor} executor
-     */
-  constructor(method, params, executor) {
-    super(method, params, executor);
+   * Constructor.
+   *
+   * @param {String} method
+   * @param {Object} params
+   * @param {Executor} executor
+   * @param {*} DestinationType
+   * @param {Boolean} returnsArray
+   */
+  constructor(method, params, executor, DestinationType, returnsArray) {
+    super(method, params, executor, DestinationType, returnsArray);
     this.changeParam('start', 0);
     this.changeParam('max', 100);
   }
@@ -35575,7 +35695,7 @@ class PagedAction extends BaseAction {
     return this;
   }
   /**
-   * Executes the current action and returns the raw result.
+   * Executes the current action and returns all results.
    *
    * @returns {Promise}
    */
@@ -35583,11 +35703,19 @@ class PagedAction extends BaseAction {
 
   async executeAll() {
     let all = [];
-    await this.executeAllReport(data => data.forEach(item => all.push(item)));
-    return all;
+    let transformCallback = null;
+    await this.executeAllReport(([data, transform]) => {
+      if (transformCallback === null) {
+        transformCallback = transform;
+      }
+
+      data.forEach(item => all.push(item));
+    });
+    return [all, transformCallback];
   }
   /**
-   * Executes the current action and returns the raw result.
+   * Executes the current action and reports the results of each step to the
+   * given reporter.
    *
    * @returns {Promise}
    */
@@ -35598,42 +35726,14 @@ class PagedAction extends BaseAction {
 
     do {
       result = await this.execute();
-      reporter(result);
+      let c = reporter(result); // being able to stop execution
+
+      if (c === false) {
+        return;
+      }
+
       this.changeParam('start', this.params.start + this.params.max);
-    } while (result.length > 0 && result.length === this.params.max);
-  }
-  /**
-   * Executes the current action and transforms the result to an array
-   *  of the defined type.
-   *
-   *  @param {Object} destinationType
-   * @returns {Promise}
-   */
-
-
-  async executeAllTransformArray(destinationType) {
-    let all = [];
-    await this.executeAllTransformArrayReport(destinationType, data => data.forEach(item => all.push(item)));
-    return all;
-  }
-  /**
-   * Executes the current action and transforms the result to an array
-   *  of the defined type.
-   *
-   * @param {Object} destinationType
-   * @param {Function} reporter
-   * @returns {Promise}
-   */
-
-
-  async executeAllTransformArrayReport(destinationType, reporter) {
-    let result = [];
-
-    do {
-      result = await this.executeTransformArray(destinationType);
-      reporter(result);
-      this.changeParam('start', this.params.start + this.params.max);
-    } while (result.length > 0 && result.length === this.params.max);
+    } while (result[0].length > 0 && result[0].length === this.params.max);
   }
   /**
      * Gets a flag indicating whether the current action is valid.
@@ -35676,14 +35776,16 @@ const OperationAction = __webpack_require__(/*! ./OperationAction */ "../json-rp
 
 class SignOperationAction extends OperationAction {
   /**
-     * Constructor.
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {Executor} executor
-     */
-  constructor(method, params, executor) {
-    super(method, params, executor);
+   * Constructor.
+   *
+   * @param {String} method
+   * @param {Object} params
+   * @param {Executor} executor
+   * @param {*} DestinationType
+   * @param {Boolean} returnsArray
+   */
+  constructor(method, params, executor, DestinationType, returnsArray) {
+    super(method, params, executor, DestinationType, returnsArray);
     this.params.last_n_operation = null;
     this.params.rawoperations = null;
   }
@@ -35841,9 +35943,37 @@ const OperationAction = __webpack_require__(/*! ./Actions/OperationAction */ "..
 
 const SignOperationAction = __webpack_require__(/*! ./Actions/SignOperationAction */ "../json-rpc/src/Actions/SignOperationAction.js");
 
+const Account = __webpack_require__(/*! ./Types/Account */ "../json-rpc/src/Types/Account.js");
+
+const Block = __webpack_require__(/*! ./Types/Block */ "../json-rpc/src/Types/Block.js");
+
+const SignedMessage = __webpack_require__(/*! ./Types/SignedMessage */ "../json-rpc/src/Types/SignedMessage.js");
+
+const RawOperations = __webpack_require__(/*! ./Types/RawOperations */ "../json-rpc/src/Types/RawOperations.js");
+
+const NodeStatus = __webpack_require__(/*! ./Types/NodeStatus */ "../json-rpc/src/Types/NodeStatus.js");
+
+const Operation = __webpack_require__(/*! ./Types/Operation */ "../json-rpc/src/Types/Operation.js");
+
+const Sender = __webpack_require__(/*! ./Types/Sender */ "../json-rpc/src/Types/Sender.js");
+
+const Receiver = __webpack_require__(/*! ./Types/Receiver */ "../json-rpc/src/Types/Receiver.js");
+
+const Changer = __webpack_require__(/*! ./Types/Changer */ "../json-rpc/src/Types/Changer.js");
+
+const Connection = __webpack_require__(/*! ./Types/Connection */ "../json-rpc/src/Types/Connection.js");
+
+const WalletPublicKey = __webpack_require__(/*! ./Types/WalletPublicKey */ "../json-rpc/src/Types/WalletPublicKey.js");
+
 const AccountName = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountName;
 
 const AccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+
+const OperationHash = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.OperationHash;
+
+const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+
+const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
 
 const P_EXECUTOR = Symbol('executor');
 /**
@@ -35853,234 +35983,70 @@ const P_EXECUTOR = Symbol('executor');
 
 class Client {
   /**
-     * Returns a standard instance pointing to the given rpc host node.
-     *
-     * @param {String} rpcHostAddress
-     * @returns {Client}
-     */
+   * Returns a standard instance pointing to the given rpc host node.
+   *
+   * @param {String} rpcHostAddress
+   * @returns {Client}
+   */
   static factory(rpcHostAddress) {
     return new Client(new Executor(new RPCCaller(rpcHostAddress)));
   }
   /**
-     * Constructor
-     *
-     * @param {Executor} executor
-     */
+   * Constructor
+   *
+   * @param {Executor} executor
+   */
 
 
   constructor(executor) {
     this[P_EXECUTOR] = executor;
   }
   /**
-     * Adds one or more nodes to connect to.
-     *
-     * @param {String[]} nodes
-     * @returns {BaseAction}
-     */
+   * Adds nodes the remote node should connect to.
+   *
+   * @param {String[]} nodes - The list of nodes (will be transformed to a semicolon separated list)
+   *
+   * @returns {BaseAction}
+   */
 
 
-  addNode(...nodes) {
+  addNode({
+    nodes
+  }) {
     return new BaseAction('addnode', {
-      nodes: nodes.join(');')
-    }, this[P_EXECUTOR]);
+      nodes: nodes.join(';')
+    }, this[P_EXECUTOR], Number, false);
   }
   /**
-     * Gets an account.
-     *
-     * @param {Account|AccountNumber|Number|String} account
-     * @returns {BaseAction}
-     */
+   * Gets an account with the given account number.
+   *
+   * @param {AccountNumber|Number|String} account
+   *
+   * @returns {BaseAction}
+   */
 
 
-  getAccount(account) {
+  getAccount({
+    account
+  }) {
     return new BaseAction('getaccount', {
       account: new AccountNumber(account)
-    }, this[P_EXECUTOR]);
+    }, this[P_EXECUTOR], Account, false);
   }
   /**
-     * Gets a list of all accounts known by the remote node and
-     * filtered by the given params.
-     *
-     * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} publicKey
-     * @returns {BaseAction}
-     */
+   * Searches for accounts.
+   *
+   * @param {AccountName|String|null} name
+   * @param {Number|null} type
+   * @param {Boolean|null} onlyAccountsForSale
+   * @param {Boolean|null} exact
+   * @param {Currency|null} minBalance
+   * @param {Currency|null} maxBalance
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} pubkey
+   *
+   * @returns {PagedAction}
+   */
 
-
-  getWalletAccounts(publicKey = null) {
-    return new PagedAction('getwalletaccounts', {
-      pubkey: publicKey
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the number of all accounts known by the remote node and
-     * filtered by the given params.
-     *
-     * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} publicKey
-     * @returns {BaseAction}
-     */
-
-
-  getWalletAccountsCount(publicKey = null) {
-    return new BaseAction('getwalletaccountscount', {
-      pubkey: publicKey
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets a list of all wallet public keys.
-     *
-     * @returns {BaseAction}
-     */
-
-
-  getWalletPublicKeys() {
-    return new PagedAction('getwalletpubkeys', {}, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the information about a single wallets public key.
-     *
-     * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} publicKey
-     * @returns {BaseAction}
-     */
-
-
-  getWalletPublicKey(publicKey) {
-    return new BaseAction('getwalletpubkey', {
-      pubkey: publicKey
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the balance of the wallet with the given keys or all keys.
-     *
-     * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} publicKey
-     * @returns {BaseAction}
-     */
-
-
-  getWalletCoins(publicKey = null) {
-    return new BaseAction('getwalletcoins', {
-      pubkey: publicKey
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets a block by the given block number.
-     *
-     * @param {Block|Number} block
-     * @returns {BaseAction}
-     */
-
-
-  getBlock(block) {
-    return new BaseAction('getblock', {
-      block
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets a list of blocks.
-     *
-     * @param {Number} last
-     * @param {Number} start
-     * @param {Number} end
-     * @returns {BaseAction}
-     */
-
-
-  getBlocks({
-    last = null,
-    start = null,
-    end = null
-  }) {
-    return new BaseAction('getblocks', {
-      last,
-      start,
-      end
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the number of known blocks.
-     *
-     * @returns {BaseAction}
-     */
-
-
-  getBlockCount() {
-    return new BaseAction('getblockcount', {}, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the operation in the given block at the given position.
-     *
-     * @param {Block||Number} block
-     * @param {Number} opBlock
-     * @returns {BaseAction}
-     */
-
-
-  getBlockOperation(block, opBlock) {
-    return new BaseAction('getblockoperation', {
-      block,
-      opblock: opBlock
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets all operations of the given block.
-     *
-     * @param {Block|Number} block
-     * @returns {PagedAction}
-     */
-
-
-  getBlockOperations(block) {
-    return new PagedAction('getblockoperations', {
-      block
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the operations of an account.
-     *
-     * @param {Account|AccountNumber|Number|String} account
-     * @param {Number} depth
-     * @returns {PagedAction}
-     */
-
-
-  getAccountOperations(account, depth = 100) {
-    return new PagedAction('getaccountoperations', {
-      account: new AccountNumber(account),
-      depth
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the pending operations.
-     *
-     * @returns {PagedAction}
-     */
-
-
-  getPendings() {
-    return new PagedAction('getpendings', {}, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the number of pending operations.
-     *
-     * @returns {BaseAction}
-     */
-
-
-  getPendingsCount() {
-    return new BaseAction('getpendingscount', {}, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the operation identified by the given ophash.
-     *
-     * @param {String|BC|OperationHash} opHash
-     * @returns {BaseAction}
-     */
-
-
-  findOperation(opHash) {
-    return new BaseAction('findoperation', {
-      ophash: opHash
-    }, this[P_EXECUTOR]);
-  }
 
   findAccounts({
     name = null,
@@ -36089,299 +36055,1007 @@ class Client {
     exact = null,
     minBalance = null,
     maxBalance = null,
-    publicKey = null
+    pubkey = null
   }) {
     return new PagedAction('findaccounts', {
       name: name !== null ? new AccountName(name) : name,
-      type,
-      listed: onlyAccountsForSale,
+      type: type !== null ? parseInt(type, 10) : type,
+      only_accounts_for_sale: onlyAccountsForSale,
       exact,
-      min_balance: minBalance,
-      max_balance: maxBalance,
-      pubkey: publicKey
-    }, this[P_EXECUTOR]);
+      min_balance: minBalance !== null ? new Currency(minBalance) : minBalance,
+      max_balance: maxBalance !== null ? new Currency(maxBalance) : maxBalance,
+      pubkey
+    }, this[P_EXECUTOR], Account, true);
   }
   /**
-     * Creates a new transaction.
-     *
-     * @param {Account|AccountNumber|Number|String} sender
-     * @param {Account|AccountNumber|Number|String} target
-     * @param {Currency} amount
-     * @returns {OperationAction}
-     */
+   * Returns all accounts of a wallet with the given public key
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} pubkey
+   *
+   * @returns {PagedAction}
+   */
 
 
-  sendTo(sender, target, amount) {
+  getWalletAccounts({
+    pubkey = null
+  }) {
+    return new PagedAction('getwalletaccounts', {
+      pubkey
+    }, this[P_EXECUTOR], Account, true);
+  }
+  /**
+   * Returns the number of accounts in a wallet
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} pubkey
+   *
+   * @returns {BaseAction}
+   */
+
+
+  getWalletAccountsCount({
+    pubkey = null
+  }) {
+    return new BaseAction('getwalletaccountscount', {
+      pubkey
+    }, this[P_EXECUTOR], Number, false);
+  }
+  /**
+   * Gets the accumulated balance of accounts in a wallet
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} pubkey
+   *
+   * @returns {BaseAction}
+   */
+
+
+  getWalletCoins({
+    pubkey = null
+  }) {
+    return new BaseAction('getwalletcoins', {
+      pubkey
+    }, this[P_EXECUTOR], Number, false);
+  }
+  /**
+   * Gets the list of public keys managed in a wallet
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} pubkey
+   *
+   * @returns {PagedAction}
+   */
+
+
+  getWalletPubKeys({
+    pubkey = null
+  }) {
+    return new PagedAction('getwalletpubkeys', {
+      pubkey
+    }, this[P_EXECUTOR], WalletPublicKey, true);
+  }
+  /**
+   * Gets the info of a public key in the wallet.
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} pubkey
+   *
+   * @returns {BaseAction}
+   */
+
+
+  getWalletPubKey({
+    pubkey
+  }) {
+    return new BaseAction('getwalletpubkey', {
+      pubkey
+    }, this[P_EXECUTOR], WalletPublicKey, true);
+  }
+  /**
+   * Imports a public key in the wallet.
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} pubkey
+   * @param {String|null} name
+   *
+   * @returns {BaseAction}
+   */
+
+
+  inportPubKey({
+    pubkey,
+    name = null
+  }) {
+    return new BaseAction('importpubkey', {
+      pubkey,
+      name
+    }, this[P_EXECUTOR], WalletPublicKey, false);
+  }
+  /**
+   * Gets the information of a block
+   *
+   * @param {Number} block
+   *
+   * @returns {BaseAction}
+   */
+
+
+  getBlock({
+    block
+  }) {
+    return new BaseAction('getblock', {
+      block: block !== null ? parseInt(block, 10) : block
+    }, this[P_EXECUTOR], Block, false);
+  }
+  /**
+   * Gets a list of blocks
+   *
+   * @param {Number|null} last
+   * @param {Number|null} start
+   * @param {Number|null} end
+   *
+   * @returns {BaseAction}
+   */
+
+
+  getBlocks({
+    last = null,
+    start = null,
+    end = null
+  }) {
+    return new BaseAction('getblocks', {
+      last: last !== null ? parseInt(last, 10) : last,
+      start: start !== null ? parseInt(start, 10) : start,
+      end: end !== null ? parseInt(end, 10) : end
+    }, this[P_EXECUTOR], Block, true);
+  }
+  /**
+   * Gets the list of all blocks.
+   *
+   * @returns {BaseAction}
+   */
+
+
+  getBlockCount() {
+    return new BaseAction('getblockcount', {}, this[P_EXECUTOR], Number, false);
+  }
+  /**
+   * Gets an operation in a block
+   *
+   * @param {Number} block
+   * @param {Number} opblock
+   *
+   * @returns {BaseAction}
+   */
+
+
+  getBlockOperation({
+    block,
+    opblock
+  }) {
+    return new BaseAction('getblockoperation', {
+      block: block !== null ? parseInt(block, 10) : block,
+      opblock: opblock !== null ? parseInt(opblock, 10) : opblock
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Get all operations in a block
+   *
+   * @param {Number} block
+   *
+   * @returns {PagedAction}
+   */
+
+
+  getBlockOperations({
+    block
+  }) {
+    return new PagedAction('getblockoperations', {
+      block: block !== null ? parseInt(block, 10) : block
+    }, this[P_EXECUTOR], Operation, true);
+  }
+  /**
+   * Get all operations of an account
+   *
+   * @param {AccountNumber|Number|String} account
+   * @param {Number|null} depth
+   * @param {Number|null} startblock
+   *
+   * @returns {PagedAction}
+   */
+
+
+  getAccountOperations({
+    account,
+    depth = null,
+    startblock = null
+  }) {
+    return new PagedAction('getaccountoperations', {
+      account: new AccountNumber(account),
+      depth: depth !== null ? parseInt(depth, 10) : depth,
+      startblock: startblock !== null ? parseInt(startblock, 10) : startblock
+    }, this[P_EXECUTOR], Operation, true);
+  }
+  /**
+   * Gets all pending operations
+   *
+   * @returns {PagedAction}
+   */
+
+
+  getPendings() {
+    return new PagedAction('getpendings', {}, this[P_EXECUTOR], Operation, true);
+  }
+  /**
+   * Gets the number of pending operations
+   *
+   * @returns {BaseAction}
+   */
+
+
+  getPendingsCount() {
+    return new BaseAction('getpendingscount', {}, this[P_EXECUTOR], Number, false);
+  }
+  /**
+   * Decodes the given operation hash
+   *
+   * @param {OperationHash} ophash
+   *
+   * @returns {BaseAction}
+   */
+
+
+  decodeOpHash({
+    ophash
+  }) {
+    return new BaseAction('decodeophash', {
+      ophash
+    }, this[P_EXECUTOR], OperationHash, false);
+  }
+  /**
+   * Searches for an operation
+   *
+   * @param {OperationHash|null} ophash
+   *
+   * @returns {BaseAction}
+   */
+
+
+  findOperation({
+    ophash = null
+  }) {
+    return new BaseAction('findoperation', {
+      ophash
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Search for an operation signed by account and with n_operation, start searching block (0=all)
+   *
+   * @param {AccountNumber|Number|String} account
+   * @param {Number} nOperation
+   * @param {Number|null} block
+   *
+   * @returns {BaseAction}
+   */
+
+
+  findNOperation({
+    account,
+    nOperation,
+    block = null
+  }) {
+    return new BaseAction('findnoperation', {
+      account: new AccountNumber(account),
+      n_operation: nOperation !== null ? parseInt(nOperation, 10) : nOperation,
+      block: block !== null ? parseInt(block, 10) : block
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Search for operations signed by account within an n_operation range, start searching block (0=all)
+   *
+   * @param {AccountNumber|Number|String} account
+   * @param {Number} nOperationMin
+   * @param {Number} nOperationMax
+   *
+   * @returns {PagedAction}
+   */
+
+
+  findNOperations({
+    account,
+    nOperationMin,
+    nOperationMax
+  }) {
+    return new PagedAction('findnoperations', {
+      account: new AccountNumber(account),
+      n_operation_min: nOperationMin !== null ? parseInt(nOperationMin, 10) : nOperationMin,
+      n_operation_max: nOperationMax !== null ? parseInt(nOperationMax, 10) : nOperationMax
+    }, this[P_EXECUTOR], Operation, true);
+  }
+  /**
+   * Executes a transaction operation
+   *
+   * @param {AccountNumber|Number|String} sender
+   * @param {AccountNumber|Number|String} target
+   * @param {Currency} amount
+   *
+   * @returns {OperationAction}
+   */
+
+
+  sendTo({
+    sender,
+    target,
+    amount
+  }) {
     return new OperationAction('sendto', {
       sender: new AccountNumber(sender),
       target: new AccountNumber(target),
-      amount
-    }, this[P_EXECUTOR]);
+      amount: new Currency(amount)
+    }, this[P_EXECUTOR], Operation, false);
   }
   /**
-     * Changes the key of an account.
-     *
-     * @param {Account|AccountNumber|Number|String} account
-     * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} newPublicKey
-     * @returns {OperationAction}
-     */
-
-
-  changeKey(account, newPublicKey) {
-    return new OperationAction('changekey', {
-      account: new AccountNumber(account),
-      new_pubkey: newPublicKey
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Lists an account for sale.
-     *
-     * @param {Account|AccountNumber|Number|String} accountTarget
-     * @param {Account|AccountNumber|Number|String} accountSigner
-     * @param {Currency} price
-     * @param {Account|AccountNumber|Number|String} sellerAccount
-     * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} newPublicKey
-     * @returns {OperationAction}
-     */
-
-
-  listAccountForSale(accountTarget, accountSigner, price, sellerAccount, newPublicKey = null) {
-    return new OperationAction('listaccountforsale', {
-      account_target: new AccountNumber(accountTarget),
-      account_signer: new AccountNumber(accountSigner),
-      price,
-      seller_account: new AccountNumber(sellerAccount),
-      new_pubkey: newPublicKey
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Lists an account for sale.
-     *
-     * @param {Account|AccountNumber|Number|String} accountTarget
-     * @param {Account|AccountNumber|Number|String} accountSigner
-     * @returns {OperationAction}
-     */
-
-
-  delistAccountForSale(accountTarget, accountSigner) {
-    return new OperationAction('delistaccountforsale', {
-      account_target: new AccountNumber(accountTarget),
-      account_signer: new AccountNumber(accountSigner)
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Buys an account
-     *
-     * @param {Account|AccountNumber|Number|String} buyerAccount
-     * @param {Account|AccountNumber|Number|String} accountToPurchase
-     * @param {Currency|Number} price
-     * @param {Account|AccountNumber|Number|String} sellerAccount
-   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} newPublicKey
-     * @param {Currency|Number} amount
-     * @returns {OperationAction}
-     */
-
-
-  buyAccount(buyerAccount, accountToPurchase, price = null, sellerAccount = null, newPublicKey = null, amount) {
-    return new OperationAction('buyaccount', {
-      buyer_account: new AccountNumber(buyerAccount),
-      account_to_purchase: new AccountNumber(accountToPurchase),
-      price,
-      seller_account: sellerAccount !== null ? new AccountNumber(sellerAccount) : sellerAccount,
-      new_pubkey: newPublicKey,
-      amount
-    }, this[P_EXECUTOR]);
-  }
-  /**
-   * Changes the info of an account.
+   * Executes a transaction operation
    *
-     * @param {Account|AccountNumber|Number|String} accountTarget
-     * @param {Account|AccountNumber|Number|String} accountSigner
-   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} newPublicKey
-     * @param {String} newName
-     * @param {Number} newType
-     * @returns {OperationAction}
-     */
-
-
-  changeAccountInfo(accountTarget, accountSigner, newPublicKey = null, newName = null, newType = null) {
-    return new OperationAction('changeaccountinfo', {
-      account_target: new AccountNumber(accountTarget),
-      account_signer: new AccountNumber(accountSigner),
-      new_pubkey: newPublicKey,
-      new_name: newName !== null ? new AccountName(newName) : newName,
-      new_type: newType
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Gets the operation infos of the given raw operations string.
+   * @param {AccountNumber|Number|String} sender
+   * @param {AccountNumber|Number|String} target
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} senderPubkey
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} targetPubkey
+   * @param {Currency} amount
    *
-     * @param {String|BC} rawOperations
-     * @returns {BaseAction}
-     */
+   * @returns {SignOperationAction}
+   */
 
 
-  operationsInfo(rawOperations) {
-    return new BaseAction('operationsinfo', {
-      rawoperations: rawOperations
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Executes the given raw operations
-   * @param {String|BC} rawOperations
-     * @returns {BaseAction}
-     */
-
-
-  executeOperations(rawOperations) {
-    return new BaseAction('executeoperations', {
-      rawoperations: rawOperations
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     * Signs a changeaccount info
-     *
-     * @param {Account|AccountNumber|Number|String} account_target
-     * @param {Account|AccountNumber|Number|String} account_signer
-     * @param {PublicKey|WalletPublicKey|BC|String} new_enc_pubkey
-     * @param {String} new_b58_pubkey
-     * @param {String} new_name
-     * @param {Number} new_type
-     * @param {Currency} fee
-     * @param {BC|String} payload
-     * @param {String} payload_method
-     * @param {String} pwd
-     * @returns {Promise<any>}
-     */
-
-
-  signChangeAccountInfo(accountTarget, accountSigner, signerPublicKey, newPublicKey, newName = null, newType = null) {
-    return new SignOperationAction('signchangeaccountinfo', {
-      account_target: new AccountNumber(accountTarget),
-      account_signer: new AccountNumber(accountSigner),
-      new_pubkey: newPublicKey,
-      new_name: newName !== null ? new AccountName(newName) : newName,
-      new_type: newType,
-      signer_pubkey: signerPublicKey
-    }, this[P_EXECUTOR]);
-  }
-  /**
-     *
-     * @param sender
-     * @param target
-     * @param senderPublicKey
-     * @param targetPublicKey
-     * @param amount
-     * @returns {SignOperationAction}
-     */
-
-
-  signSendTo(sender, target, senderPublicKey, targetPublicKey, amount) {
+  signSendTo({
+    sender,
+    target,
+    senderPubkey,
+    targetPubkey,
+    amount
+  }) {
     return new SignOperationAction('signsendto', {
       sender: new AccountNumber(sender),
       target: new AccountNumber(target),
-      sender_pubkey: senderPublicKey,
-      target_pubkey: targetPublicKey,
-      amount
-    }, this[P_EXECUTOR]);
+      sender_pubkey: senderPubkey,
+      target_pubkey: targetPubkey,
+      amount: new Currency(amount)
+    }, this[P_EXECUTOR], Operation, false);
   }
   /**
-     *
-     * @param account
-     * @param oldPublicKey
-     * @param newPublicKey
-     * @returns {SignOperationAction}
-     */
+   * Changes the key of an account
+   *
+   * @param {AccountNumber|Number|String} account
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} newPubkey
+   * @param {AccountNumber|Number|String|null} accountSigner
+   *
+   * @returns {OperationAction}
+   */
 
 
-  signChangeKey(account, oldPublicKey, newPublicKey) {
+  changeKey({
+    account,
+    newPubkey,
+    accountSigner = null
+  }) {
+    return new OperationAction('changekey', {
+      account: new AccountNumber(account),
+      new_pubkey: newPubkey,
+      account_signer: accountSigner !== null ? new AccountNumber(accountSigner) : accountSigner
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Changes the key of multiple accounts
+   *
+   * @param {AccountNumber[]|Number[]|String[]} accounts
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} newPubkey
+   *
+   * @returns {OperationAction}
+   */
+
+
+  changeKeys({
+    accounts,
+    newPubkey
+  }) {
+    return new OperationAction('changekeys', {
+      accounts: accounts.map(acc => new AccountNumber(acc)),
+      new_pubkey: newPubkey
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Signs a change key operation
+   *
+   * @param {AccountNumber|Number|String} account
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} oldPubkey
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} newPubkey
+   * @param {AccountNumber|Number|String|null} accountSigner
+   *
+   * @returns {SignOperationAction}
+   */
+
+
+  signChangeKey({
+    account,
+    oldPubkey,
+    newPubkey,
+    accountSigner = null
+  }) {
     return new SignOperationAction('signchangekey', {
       account: new AccountNumber(account),
-      old_pubkey: oldPublicKey,
-      new_pubkey: newPublicKey
-    }, this[P_EXECUTOR]);
+      old_pubkey: oldPubkey,
+      new_pubkey: newPubkey,
+      account_signer: accountSigner !== null ? new AccountNumber(accountSigner) : accountSigner
+    }, this[P_EXECUTOR], Operation, false);
   }
   /**
-     *
-     * @param accountTarget
-     * @param accountSigner
-     * @param price
-     * @param sellerAccount
-     * @param newPublicKey
-     * @param lockedUntilBlock
-     * @param signerPublicKey
-     * @returns {SignOperationAction}
-     */
+   * Lists an account for sale
+   *
+   * @param {AccountNumber|Number|String} accountSigner
+   * @param {AccountNumber|Number|String} accountTarget
+   * @param {AccountNumber|Number|String} sellerAccount
+   * @param {Number} lockedUntilBlock
+   * @param {Currency} price
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} newPubkey
+   *
+   * @returns {OperationAction}
+   */
 
 
-  signListAccountForSale(accountTarget, accountSigner, price, sellerAccount, newPublicKey, lockedUntilBlock, signerPublicKey) {
-    return new SignOperationAction('signlistaccountforsale', {
-      account_target: new AccountNumber(accountTarget),
+  listAccountForSale({
+    accountSigner,
+    accountTarget,
+    sellerAccount,
+    lockedUntilBlock,
+    price,
+    newPubkey = null
+  }) {
+    return new OperationAction('listaccountforsale', {
       account_signer: new AccountNumber(accountSigner),
-      price,
+      account_target: new AccountNumber(accountTarget),
       seller_account: new AccountNumber(sellerAccount),
-      new_pubkey: newPublicKey,
-      locked_until_block: lockedUntilBlock,
-      signer_pubkey: signerPublicKey
-    }, this[P_EXECUTOR]);
+      locked_until_block: lockedUntilBlock !== null ? parseInt(lockedUntilBlock, 10) : lockedUntilBlock,
+      price: new Currency(price),
+      new_pubkey: newPubkey
+    }, this[P_EXECUTOR], Operation, false);
   }
   /**
-   * Gets the status of the remote node.
+   * Signs a list operation
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} signerPubkey
+   * @param {AccountNumber|Number|String} accountSigner
+   * @param {AccountNumber|Number|String} accountTarget
+   * @param {AccountNumber|Number|String} sellerAccount
+   * @param {Number} lockedUntilBlock
+   * @param {Currency} price
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} newPubkey
+   *
+   * @returns {SignOperationAction}
+   */
+
+
+  signListAccountForSale({
+    signerPubkey,
+    accountSigner,
+    accountTarget,
+    sellerAccount,
+    lockedUntilBlock,
+    price,
+    newPubkey = null
+  }) {
+    return new SignOperationAction('signlistaccountforsale', {
+      signer_pubkey: signerPubkey,
+      account_signer: new AccountNumber(accountSigner),
+      account_target: new AccountNumber(accountTarget),
+      seller_account: new AccountNumber(sellerAccount),
+      locked_until_block: lockedUntilBlock !== null ? parseInt(lockedUntilBlock, 10) : lockedUntilBlock,
+      price: new Currency(price),
+      new_pubkey: newPubkey
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Delists an account
+   *
+   * @param {AccountNumber|Number|String} accountSigner
+   * @param {AccountNumber|Number|String} accountTarget
+   *
+   * @returns {OperationAction}
+   */
+
+
+  DelistAccountForSale({
+    accountSigner,
+    accountTarget
+  }) {
+    return new OperationAction('delistaccountforsale', {
+      account_signer: new AccountNumber(accountSigner),
+      account_target: new AccountNumber(accountTarget)
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Signs a delist operation
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} signerPubkey
+   * @param {AccountNumber|Number|String} accountSigner
+   * @param {AccountNumber|Number|String} accountTarget
+   *
+   * @returns {SignOperationAction}
+   */
+
+
+  signDelistAccountForSale({
+    signerPubkey,
+    accountSigner,
+    accountTarget
+  }) {
+    return new SignOperationAction('signdelistaccountforsale', {
+      signer_pubkey: signerPubkey,
+      account_signer: new AccountNumber(accountSigner),
+      account_target: new AccountNumber(accountTarget)
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Buys an account
+   *
+   * @param {AccountNumber|Number|String} buyerAccount
+   * @param {AccountNumber|Number|String} accountToPurchase
+   * @param {Currency|null} price
+   * @param {AccountNumber|Number|String|null} sellerAccount
+   *
+   * @returns {OperationAction}
+   */
+
+
+  buyAccount({
+    buyerAccount,
+    accountToPurchase,
+    price = null,
+    sellerAccount = null
+  }) {
+    return new OperationAction('buyaccount', {
+      buyer_account: new AccountNumber(buyerAccount),
+      account_to_purchase: new AccountNumber(accountToPurchase),
+      price: price !== null ? new Currency(price) : price,
+      seller_account: sellerAccount !== null ? new AccountNumber(sellerAccount) : sellerAccount
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Signs a buy account operation
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} signerPubkey
+   * @param {AccountNumber|Number|String} buyerAccount
+   * @param {AccountNumber|Number|String} accountToPurchase
+   * @param {Currency} price
+   * @param {AccountNumber|Number|String} sellerAccount
+   *
+   * @returns {SignOperationAction}
+   */
+
+
+  signBuyAccount({
+    signerPubkey,
+    buyerAccount,
+    accountToPurchase,
+    price,
+    sellerAccount
+  }) {
+    return new SignOperationAction('signbuyaccount', {
+      signer_pubkey: signerPubkey,
+      buyer_account: new AccountNumber(buyerAccount),
+      account_to_purchase: new AccountNumber(accountToPurchase),
+      price: new Currency(price),
+      seller_account: new AccountNumber(sellerAccount)
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Changes account infos
+   *
+   * @param {AccountNumber|Number|String} accountSigner
+   * @param {AccountNumber|Number|String} accountTarget
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} newPubkey
+   * @param {AccountName|String|null} newName
+   * @param {Number|null} newType
+   *
+   * @returns {OperationAction}
+   */
+
+
+  changeAccountInfo({
+    accountSigner,
+    accountTarget,
+    newPubkey = null,
+    newName = null,
+    newType = null
+  }) {
+    return new OperationAction('changeaccountinfo', {
+      account_signer: new AccountNumber(accountSigner),
+      account_target: new AccountNumber(accountTarget),
+      new_pubkey: newPubkey,
+      new_name: newName !== null ? new AccountName(newName) : newName,
+      new_type: newType !== null ? parseInt(newType, 10) : newType
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Signs a change account info operation
+   *
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} signerPubkey
+   * @param {AccountNumber|Number|String} accountSigner
+   * @param {AccountNumber|Number|String} accountTarget
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} newPubkey
+   * @param {AccountName|String|null} newName
+   * @param {Number|null} newType
+   *
+   * @returns {SignOperationAction}
+   */
+
+
+  signChangeAccountInfo({
+    signerPubkey,
+    accountSigner,
+    accountTarget,
+    newPubkey = null,
+    newName = null,
+    newType = null
+  }) {
+    return new SignOperationAction('signchangeaccountinfo', {
+      signer_pubkey: signerPubkey,
+      account_signer: new AccountNumber(accountSigner),
+      account_target: new AccountNumber(accountTarget),
+      new_pubkey: newPubkey,
+      new_name: newName !== null ? new AccountName(newName) : newName,
+      new_type: newType !== null ? parseInt(newType, 10) : newType
+    }, this[P_EXECUTOR], Operation, false);
+  }
+  /**
+   * Signs a message using the given public key
+   *
+   * @param {BC} digest
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} pubkey
+   *
+   * @returns {BaseAction}
+   */
+
+
+  signMessage({
+    digest,
+    pubkey
+  }) {
+    return new BaseAction('signmessage', {
+      digest,
+      pubkey
+    }, this[P_EXECUTOR], SignedMessage, false);
+  }
+  /**
+   * Verifies a signature
+   *
+   * @param {BC} signature
+   * @param {BC} digest
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} pubkey
+   *
+   * @returns {BaseAction}
+   */
+
+
+  verifySign({
+    signature,
+    digest,
+    pubkey
+  }) {
+    return new BaseAction('verifysign', {
+      signature,
+      digest,
+      pubkey
+    }, this[P_EXECUTOR], SignedMessage, false);
+  }
+  /**
+   * Removes an operation from the given rawoperations.
+   *
+   * @param {RawOperations} rawoperations
+   * @param {Number} index
+   *
+   * @returns {BaseAction}
+   */
+
+
+  operationsDelete({
+    rawoperations,
+    index
+  }) {
+    return new BaseAction('operationsdelete', {
+      rawoperations,
+      index: index !== null ? parseInt(index, 10) : index
+    }, this[P_EXECUTOR], RawOperations, false);
+  }
+  /**
+   * Gets the information about the given operation
+   *
+   * @param {RawOperations} rawoperations
+   *
+   * @returns {BaseAction}
+   */
+
+
+  operationsInfo({
+    rawoperations
+  }) {
+    return new BaseAction('operationsinfo', {
+      rawoperations
+    }, this[P_EXECUTOR], Operation, true);
+  }
+  /**
+   * Executes the given operations
+   *
+   * @param {RawOperations} rawoperations
+   *
+   * @returns {BaseAction}
+   */
+
+
+  executeOperations({
+    rawoperations
+  }) {
+    return new BaseAction('executeoperations', {
+      rawoperations
+    }, this[P_EXECUTOR], Operation, true);
+  }
+  /**
+   * Returns the current node status
    *
    * @returns {BaseAction}
    */
 
 
   nodeStatus() {
-    return new BaseAction('nodestatus', {}, this[P_EXECUTOR]);
+    return new BaseAction('nodestatus', {}, this[P_EXECUTOR], NodeStatus, false);
   }
   /**
-   * Remotely decodes the given public key.
+   * Encodes a public key to a pascalcoin public key
    *
-   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair} publicKey
+   * @param {BC} x
+   * @param {BC} y
+   * @param {Number} ecNid
+   *
    * @returns {BaseAction}
    */
 
 
-  decodePubKey(publicKey) {
-    return new BaseAction('decodepubkey', {
-      pubkey: publicKey
-    }, this[P_EXECUTOR]);
+  encodePubKey({
+    x,
+    y,
+    ecNid
+  }) {
+    return new BaseAction('encodepubkey', {
+      x,
+      y,
+      ec_nid: ecNid !== null ? parseInt(ecNid, 10) : ecNid
+    }, this[P_EXECUTOR], BC, false);
   }
-
-  payloadDecrypt(payload, passwords = []) {
-    return new BaseAction('payloaddecrypt', {
-      payload: payload,
-      pwds: passwords
-    }, this[P_EXECUTOR]);
-  }
-  /*
-  importpubkey
-  decodeophash
-  findnoperation
-  findnoperations
-  changekeys
-  signdelistaccountforsale
-  signbuyaccount
-  signmessage
-  verifysign
-  operationsdelete
-  multioperationaddoperation
-  multioperationsignoffline
-  multioperationsignonline
-  encodepubkey
-  payloadencrypt
-  getconnections
-  addnewkey
-  lock
-  unlock
-  setwalletpassword
-  stopnode
-  startnode
-  cleanblacklist
-  node_ip_stats
+  /**
+   * Decodes an encoded public key.
+   *
+   * @param {BC} pubkey
+   *
+   * @returns {BaseAction}
    */
 
+
+  decodePubKey({
+    pubkey
+  }) {
+    return new BaseAction('decodepubkey', {
+      pubkey
+    }, this[P_EXECUTOR], Object, false);
+  }
+  /**
+   * Encrypts a payload
+   *
+   * @param {BC} payload
+   * @param {String} payloadMethod
+   * @param {String|null} pwd
+   *
+   * @returns {BaseAction}
+   */
+
+
+  payloadEncrypt({
+    payload,
+    payloadMethod,
+    pwd = null
+  }) {
+    return new BaseAction('payloadencrypt', {
+      payload,
+      payload_method: payloadMethod,
+      pwd
+    }, this[P_EXECUTOR], BC, false);
+  }
+  /**
+   * Decrypts a payload
+   *
+   * @param {BC} payload
+   * @param {String[]} pwds
+   *
+   * @returns {BaseAction}
+   */
+
+
+  payloadDecrypt({
+    payload,
+    pwds
+  }) {
+    return new BaseAction('payloaddecrypt', {
+      payload,
+      pwds
+    }, this[P_EXECUTOR], BC, false);
+  }
+  /**
+   * Gets the connections of a node.
+   *
+   * @returns {BaseAction}
+   */
+
+
+  getConnections() {
+    return new BaseAction('getconnections', {}, this[P_EXECUTOR], Connection, true);
+  }
+  /**
+   * Generates a new key and adds it to the nodes wallet.
+   *
+   * @param {Number} ecNid
+   * @param {String} name
+   *
+   * @returns {BaseAction}
+   */
+
+
+  addNewKey({
+    ecNid,
+    name
+  }) {
+    return new BaseAction('addnewkey', {
+      ec_nid: ecNid !== null ? parseInt(ecNid, 10) : ecNid,
+      name
+    }, this[P_EXECUTOR], WalletPublicKey, false);
+  }
+  /**
+   * Locks the wallet.
+   *
+   * @returns {BaseAction}
+   */
+
+
+  lock() {
+    return new BaseAction('lock', {}, this[P_EXECUTOR], Boolean, false);
+  }
+  /**
+   * Unlocks the wallet.
+   *
+   * @param {String} pwd
+   *
+   * @returns {BaseAction}
+   */
+
+
+  unlock({
+    pwd
+  }) {
+    return new BaseAction('unlock', {
+      pwd
+    }, this[P_EXECUTOR], Boolean, false);
+  }
+  /**
+   * Sets the wallet password.
+   *
+   * @param {String} pwd
+   *
+   * @returns {BaseAction}
+   */
+
+
+  setWalletPassword({
+    pwd
+  }) {
+    return new BaseAction('setwalletpassword', {
+      pwd
+    }, this[P_EXECUTOR], Boolean, false);
+  }
+  /**
+   * Stops the node.
+   *
+   * @returns {BaseAction}
+   */
+
+
+  stopNode() {
+    return new BaseAction('stopnode', {}, this[P_EXECUTOR], Boolean, false);
+  }
+  /**
+   * Starts the node.
+   *
+   * @returns {BaseAction}
+   */
+
+
+  startNode() {
+    return new BaseAction('startnode', {}, this[P_EXECUTOR], Boolean, false);
+  }
+  /**
+   * Cleans the BlackList.
+   *
+   * @returns {BaseAction}
+   */
+
+
+  cleanBlackList() {
+    return new BaseAction('cleanblacklist', {}, this[P_EXECUTOR], Number, false);
+  }
+  /**
+   * Gets IP stats
+   *
+   * @returns {BaseAction}
+   */
+
+
+  nodeIPStats() {
+    return new BaseAction('node_ip_stats', {}, this[P_EXECUTOR], Object, true);
+  }
+  /**
+   * Adds an operation to a multioperation
+   *
+   * @param {RawOperations} rawoperations
+   * @param {Boolean} autoNOperation
+   * @param {Object[]|Sender[]} senders
+   * @param {Object[]|Receiver[]} receivers
+   * @param {Object[]|Changer[]} changesinfo
+   *
+   * @returns {BaseAction}
+   */
+
+
+  multiOperationAddOperation({
+    rawoperations,
+    autoNOperation,
+    senders,
+    receivers,
+    changesinfo
+  }) {
+    return new BaseAction('multioperationaddoperation', {
+      rawoperations,
+      auto_n_operation: autoNOperation,
+      senders: senders.map(sen => new Sender(sen)),
+      receivers: receivers.map(rec => new Receiver(rec)),
+      changesinfo: changesinfo.map(chng => new Changer(chng))
+    }, this[P_EXECUTOR], RawOperations, true);
+  }
+  /**
+   * Signs the given rawoperations
+   *
+   * @param {RawOperations} rawoperations
+   * @param {Object} accountsAndKeys
+   *
+   * @returns {BaseAction}
+   */
+
+
+  multiOperationSignOffline({
+    rawoperations,
+    accountsAndKeys
+  }) {
+    return new BaseAction('multioperationsignoffline', {
+      rawoperations,
+      accounts_and_keys: accountsAndKeys
+    }, this[P_EXECUTOR], Operation, true);
+  }
+  /**
+   * Signs the given rawoperations online
+   *
+   * @param {RawOperations} rawoperations
+   *
+   * @returns {BaseAction}
+   */
+
+
+  multiOperationSignOnline({
+    rawoperations
+  }) {
+    return new BaseAction('multioperationsignonline', {
+      rawoperations
+    }, this[P_EXECUTOR], Operation, true);
+  }
 
 }
 
@@ -36541,6 +37215,10 @@ function transformRpcParams(params) {
       }
     } else if (typeof item === 'boolean') {
       newParams[field] = item;
+    } else if (item.constructor.name === 'Array') {
+      if (item.length > 0) {
+        newParams[field] = item;
+      }
     } else if (item instanceof BC) {
       newParams[field] = item.toHex();
     } else if (item instanceof OperationHash) {
@@ -36567,10 +37245,30 @@ function transformRpcParams(params) {
   });
   return newParams;
 }
+
+function transformRpcResult(value, DestinationType) {
+  switch (DestinationType.name) {
+    case 'Boolean':
+      return !!value;
+
+    case 'String':
+      return value.toString();
+
+    case 'Object':
+      return value;
+
+    case 'BC':
+      return BC.from(value);
+
+    default:
+      return new DestinationType(value);
+  }
+}
+
+;
 /**
  * This class will execute an rpc call and returns a promise.
  */
-
 
 class Executor {
   /**
@@ -36585,69 +37283,41 @@ class Executor {
    * Calls the given method with the given params and returns a promise that
    * itself will transform the returned value and resolve the promise.
    *
-   * @param {String} method
-   * @param {Object} params
-   * @param {Function} transformCallback
+   * @param {BaseAction} action
+   * @param {Function|null} transformCallback
    * @returns {Promise<any>}
    */
 
 
-  async execute(method, params, transformCallback = r => r) {
+  async execute(action, transformCallback = null) {
+    transformCallback = transformCallback || this.transform(action.destinationType, action.returnsArray);
     return new Promise((resolve, reject) => {
-      this[P_CALLER].call(method, transformRpcParams(params)).then(response => resolve(transformCallback(response))).catch(error => reject(error));
+      this[P_CALLER].call(action.method, transformRpcParams(action.params)).then(response => {
+        resolve([response, transformCallback]);
+      }).catch(error => {
+        reject(error);
+      });
     });
   }
   /**
-   * Calls the given method with the given params and returns a promise that
-   * itself will transform the returned value and resolve the promise.
+   * Transforms a raw response value to a special type.
    *
-   * @param {Object} action
-   * @param {Function} transformCallback
-   * @returns {Promise<any>}
+   * @param {*} DestinationType
+   * @param {Boolean} returnsArray
+   * @returns {*}
    */
 
 
-  async executeAll(action, transformCallback = r => r) {
-    const all = [];
-    let result = [];
+  transform(DestinationType, returnsArray) {
+    if (returnsArray) {
+      return function (value) {
+        return value.map(v => transformRpcResult(v, DestinationType));
+      };
+    }
 
-    do {
-      result = await this.execute(action.method, action.params, transformCallback);
-      result.forEach(item => all.push(item));
-      action.changeParam('start', action.params.start + action.params.max);
-    } while (result.length > 0 && result.length === action.params.max);
-
-    return all;
-  }
-  /**
-     * Calls the rpc method with the given parameters and returns a promise that
-     * resolves with an array of objects of the given Destination type.
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {*} DestinationType
-     * @returns {Promise<any>}
-     */
-
-
-  async executeTransformArray(method, params, DestinationType) {
-    return this.execute(method, params, r => r.map(ri => new DestinationType(ri)));
-  }
-  /**
-     * Calls the rpc method with the given parameters and returns a promise that
-     * resolves with an object of the given Destination type.
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {*} DestinationType
-     * @returns {Promise<any>}
-     */
-
-
-  async executeTransformItem(method, params, DestinationType) {
-    return this.execute(method, params, r => {
-      return new DestinationType(r);
-    });
+    return function (value) {
+      return transformRpcResult(value, DestinationType);
+    };
   }
 
 }
@@ -37400,6 +38070,160 @@ class Changer extends Abstract {
 }
 
 module.exports = Changer;
+
+/***/ }),
+
+/***/ "../json-rpc/src/Types/Connection.js":
+/*!*******************************************!*\
+  !*** ../json-rpc/src/Types/Connection.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Abstract = __webpack_require__(/*! ./Abstract */ "../json-rpc/src/Types/Abstract.js");
+
+const P_RECV = Symbol('recv');
+const P_TIMEDIFF = Symbol('timediff');
+const P_NETVER_A = Symbol('nerver_a');
+const P_SECS = Symbol('secs');
+const P_SERVER = Symbol('server');
+const P_IP = Symbol('ip');
+const P_NETVER = Symbol('netver');
+const P_SENT = Symbol('sent');
+const P_APPVER = Symbol('appver');
+const P_PORT = Symbol('port');
+/**
+ * Holds information about a node connection.
+ */
+
+class Connection extends Abstract {
+  /**
+   * Constructor
+   *
+   * @param {Object} data
+   */
+  constructor(data) {
+    super(data);
+    this[P_RECV] = parseInt(data.recv, 10);
+    this[P_TIMEDIFF] = parseInt(data.timediff, 10);
+    this[P_NETVER_A] = parseInt(data.netver_a, 10);
+    this[P_SECS] = parseInt(data.secs, 10);
+    this[P_SERVER] = !!data.server;
+    this[P_IP] = data.ip;
+    this[P_NETVER] = parseInt(data.netver, 10);
+    this[P_SENT] = parseInt(data.sent, 10);
+    this[P_APPVER] = data.appver;
+    this[P_PORT] = parseInt(data.port, 10);
+  }
+  /**
+   * Gets the number of received bytes from the connection.
+   *
+   * @returns {Number}
+   */
+
+
+  get recv() {
+    return this[P_RECV];
+  }
+  /**
+   * Gets the time difference of the current and the remote node in seconds.
+   *
+   * @returns {Number}
+   */
+
+
+  get timeDiff() {
+    return this[P_TIMEDIFF];
+  }
+  /**
+   * Net protocol available of other node
+   *
+   * @returns {Number}
+   */
+
+
+  get netVerA() {
+    return this[P_NETVER_A];
+  }
+  /**
+   * The duration of the connection.
+   *
+   * @returns {Number}
+   */
+
+
+  get secs() {
+    return this[P_SECS];
+  }
+  /**
+   * A flag indicating whether the other node is a server node (daemon).
+   * @returns {*}
+   */
+
+
+  get server() {
+    return this[P_SERVER];
+  }
+  /**
+   * The IP of the remote node.
+   *
+   * @returns {*}
+   */
+
+
+  get ip() {
+    return this[P_IP];
+  }
+  /**
+   * The netprotocol version of the other node.
+   *
+   * @returns {*}
+   */
+
+
+  get netVer() {
+    return this[P_NETVER];
+  }
+  /**
+   * The bytes sent to the other node.
+   *
+   * @returns {*}
+   */
+
+
+  get sent() {
+    return this[P_SENT];
+  }
+  /**
+   * The node version.
+   *
+   * @returns {*}
+   */
+
+
+  get appVer() {
+    return this[P_APPVER];
+  }
+  /**
+   * The port of the other node.
+   *
+   * @returns {*}
+   */
+
+
+  get port() {
+    return this[P_PORT];
+  }
+
+}
+
+module.exports = Connection;
 
 /***/ }),
 
@@ -38654,6 +39478,87 @@ class Sender extends Abstract {
 }
 
 module.exports = Sender;
+
+/***/ }),
+
+/***/ "../json-rpc/src/Types/SignedMessage.js":
+/*!**********************************************!*\
+  !*** ../json-rpc/src/Types/SignedMessage.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Abstract = __webpack_require__(/*! ./Abstract */ "../json-rpc/src/Types/Abstract.js");
+
+const PublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+
+const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+
+const P_DIGEST = Symbol('digest');
+const P_PUBKEY = Symbol('public_key');
+const P_SIGNATURE = Symbol('signature');
+/**
+ * Represents a sender in an operation.
+ */
+
+class SignedMessage extends Abstract {
+  /**
+     * Creates a new instance of the Sender class.
+     *
+     * @param {Object} data
+     */
+  constructor(data) {
+    super(data);
+    this[P_DIGEST] = BC.fromHex(data.digest);
+
+    if (data.enc_pubkey !== undefined) {
+      this[P_PUBKEY] = PublicKey.decode(BC.fromHex(data.enc_pubkey));
+    } else {
+      this[P_PUBKEY] = PublicKey.fromBase58(data.b58_pubkey);
+    }
+
+    this[P_SIGNATURE] = BC.fromHex(data.signature);
+  }
+  /**
+     * Gets the digest.
+     *
+     * @returns {BC}
+     */
+
+
+  get digest() {
+    return this[P_DIGEST];
+  }
+  /**
+     * Gets the public key.
+     *
+     * @returns {PublicKey}
+     */
+
+
+  get publicKey() {
+    return this[P_PUBKEY];
+  }
+  /**
+     * Gets the signature.
+     *
+     * @returns {BC}
+     */
+
+
+  get amount() {
+    return this[P_SIGNATURE];
+  }
+
+}
+
+module.exports = SignedMessage;
 
 /***/ }),
 

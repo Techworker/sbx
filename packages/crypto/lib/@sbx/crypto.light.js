@@ -25512,7 +25512,10 @@ module.exports = {
   ECDH: __webpack_require__(/*! ./src/ECDH */ "./src/ECDH.js"),
   KDF: __webpack_require__(/*! ./src/KDF */ "./src/KDF.js"),
   Keys: __webpack_require__(/*! ./src/Keys */ "./src/Keys.js"),
-  Payload: __webpack_require__(/*! ./src/Payload */ "./src/Payload.js")
+  Payload: __webpack_require__(/*! ./src/Payload */ "./src/Payload.js"),
+  mipher: {
+    AES_CBC_ZeroPadding: __webpack_require__(/*! ./src/mipher/AES_CBC_ZeroPadding */ "./src/mipher/AES_CBC_ZeroPadding.js")
+  }
 };
 
 /***/ }),
@@ -25533,7 +25536,9 @@ module.exports = {
  */
 
 
-const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
+const mAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
+
+const AES_CBC_ZeroPadding = __webpack_require__(/*! ./mipher/AES_CBC_ZeroPadding */ "./src/mipher/AES_CBC_ZeroPadding.js");
 
 const BC = __webpack_require__(/*! @sbx/common */ "@sbx/common").BC;
 /**
@@ -25549,8 +25554,8 @@ class AES {
    * @param {BC|Buffer|Uint8Array|String} data
    * @returns {BC}
    */
-  static encrypt(key, data, iv) {
-    let aes = new mipherAES.AES_CBC_PKCS7();
+  static encryptPKCS7(key, data, iv) {
+    let aes = new mAES.AES_CBC_PKCS7();
     return new BC(aes.encrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
   }
   /**
@@ -25563,7 +25568,33 @@ class AES {
 
 
   static decrypt(key, data, iv) {
-    let aes = new mipherAES.AES_CBC_PKCS7();
+    let aes = new mAES.AES_CBC_PKCS7();
+    return new BC(aes.decrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
+  }
+  /**
+   *
+   * @param {BC|Buffer|Uint8Array|String} key
+   * @param {BC|Buffer|Uint8Array|String} iv
+   * @param {BC|Buffer|Uint8Array|String} data
+   * @returns {BC}
+   */
+
+
+  static encryptZeroPadding(key, data, iv) {
+    let aes = new AES_CBC_ZeroPadding();
+    return new BC(aes.encrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
+  }
+  /**
+   *
+   * @param {BC|Buffer|Uint8Array|String} key
+   * @param {BC|Buffer|Uint8Array|String} iv
+   * @param {BC|Buffer|Uint8Array|String} data
+   * @returns {BC}
+   */
+
+
+  static decryptZeroPadding(key, data, iv) {
+    let aes = new AES_CBC_ZeroPadding();
     return new BC(aes.decrypt(BC.from(key).buffer, BC.from(data).buffer, BC.from(iv).buffer));
   }
 
@@ -25616,9 +25647,10 @@ class ECDH {
     let pubkey = ecCurve.keyFromPublic(publicKey.ecdh.buffer);
     let sharedSecret = tempKey.derive(pubkey.getPublic());
     let secrectkey = Sha.sha512(new BC(sharedSecret.toArray()));
-    let encryptedData = AES.encrypt(secrectkey.slice(0, 32), data, new Uint8Array(16));
+    let encryptedData = AES.encryptZeroPadding(secrectkey.slice(0, 32), data, new Uint8Array(16));
     return {
       data: encryptedData,
+      key: secrectkey.slice(32, 32),
       publicKey: new BC(tempKey.getPublic(true, 'buffer'))
     };
   }
@@ -25632,7 +25664,7 @@ class ECDH {
    */
 
 
-  static decrypt(privateKey, publicKey, data) {
+  static decrypt(privateKey, publicKey, data, origMsgLength) {
     publicKey = BC.from(publicKey);
     data = BC.from(data);
     let ecCurve = elliptic(privateKey.curve.name);
@@ -25640,7 +25672,12 @@ class ECDH {
     let ecPublicKey = ecCurve.keyFromPublic(publicKey.buffer);
     let sharedSecret = ecPrivateKey.derive(ecPublicKey.getPublic());
     let secrectKey = Sha.sha512(new BC(Buffer.from(sharedSecret.toArray())));
-    return AES.decrypt(secrectKey.slice(0, 32), data, new BC(new Buffer(16)));
+    let decryptedData = AES.decryptZero(secrectKey.slice(0, 32), data, new Uint8Array(16));
+    let decryptedDataWithPaddingRemoved = decryptedData.slice(0, origMsgLength);
+    return {
+      data: decryptedDataWithPaddingRemoved,
+      key: secrectKey.slice(32, 32)
+    };
   }
 
 }
@@ -25828,7 +25865,7 @@ class Keys {
 
     randomGenerator.stop();
     const keyInfo = KDF.PascalCoin(password, salt);
-    const privateKeyEncrypted = AES.encrypt(keyInfo.key, privateKeyEncoded, keyInfo.iv);
+    const privateKeyEncrypted = AES.encryptPKCS7(keyInfo.key, privateKeyEncoded, keyInfo.iv);
     return BC.concat(BC.fromString('Salted__'), salt, privateKeyEncrypted);
   }
   /**
@@ -25946,8 +25983,8 @@ class Payload {
     payload = BC.from(payload); // extract data
 
     const publicKeyLength = payload.slice(0, 1).toInt();
-    const macLength = payload.slice(1, 2).toInt(); // const orgMsgLength = payload.slice(2, 4).switchEndian().toInt();
-
+    const macLength = payload.slice(1, 2).toInt();
+    const origMsgLength = payload.slice(2, 4).switchEndian().toInt();
     const messageLength = payload.slice(4, 6).switchEndian().toInt();
     let start = 6;
     let end = start + publicKeyLength;
@@ -25957,7 +25994,19 @@ class Payload {
     // 6 + publicKeyLength + macLength + messageLength + 1).buffer;
 
     const ecdhMessage = payload.slice(start, end);
-    return ECDH.decrypt(keyPair.privateKey, ecdhPubKey, ecdhMessage);
+    const encryptedMessage = payload.slice(payload.length - messageLength, payload.length);
+    const macMessage = payload.slice(6 + publicKeyLength, 6 + publicKeyLength + macLength);
+    const dec = ECDH.decrypt(keyPair.privateKey, ecdhPubKey, ecdhMessage, origMsgLength);
+
+    const hmac = __webpack_require__(/*! crypto */ "../../node_modules/crypto-browserify/index.js").createHmac('md5', dec.key.buffer);
+
+    const m2 = BC.fromHex(hmac.update(encryptedMessage.buffer).digest('hex'));
+
+    if (new BC(macMessage).equals(new BC(m2))) {
+      return dec.data;
+    }
+
+    return false;
   }
   /**
    * encrypts the goven payload using the given public key.
@@ -25971,14 +26020,15 @@ class Payload {
     payload = BC.from(payload, 'string');
     const enc = ECDH.encrypt(publicKey, payload);
 
-    const crypto = __webpack_require__(/*! crypto */ "../../node_modules/crypto-browserify/index.js");
+    const hmac = __webpack_require__(/*! crypto */ "../../node_modules/crypto-browserify/index.js").createHmac('md5', enc.key.buffer);
 
-    const hmac = crypto.createHmac('md5', enc.data.buffer);
-    const m2 = BC.fromHex(hmac.digest('hex'));
+    const m2 = BC.fromHex(hmac.update(enc.data.buffer).digest('hex'));
+    const messageToEncryptSize = payload.length;
+    const messageToEncryptPadSize = messageToEncryptSize % 16 === 0 ? 0 : 16 - messageToEncryptSize % 16;
     return BC.concat(BC.fromInt(enc.publicKey.length), // key
     BC.fromInt(m2.length), // mac
-    BC.fromInt(8, 2).switchEndian(), // org
-    BC.fromInt(enc.data.length, 2).switchEndian(), // dtaa
+    BC.fromInt(messageToEncryptSize, 2).switchEndian(), // orig
+    BC.fromInt(messageToEncryptSize + messageToEncryptPadSize, 2).switchEndian(), // body
     enc.publicKey, // key itself
     m2, enc.data);
   }
@@ -25987,6 +26037,62 @@ class Payload {
 
 module.exports = Payload;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/buffer/index.js */ "../../node_modules/buffer/index.js").Buffer))
+
+/***/ }),
+
+/***/ "./src/mipher/AES_CBC_ZeroPadding.js":
+/*!*******************************************!*\
+  !*** ./src/mipher/AES_CBC_ZeroPadding.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
+
+const mipherPadding = __webpack_require__(/*! mipher/dist/padding */ "../../node_modules/mipher/dist/padding.js");
+/**
+ * AES-CBC + ZeroPadding integration using the mipher library
+ */
+
+
+class AES_CBC_ZeroPadding {
+  /**
+   * Constructor
+   */
+  constructor() {
+    this.cipher = new mipherAES.AES_CBC();
+    this.padding = new mipherPadding.ZeroPadding();
+  }
+  /**
+   * Encrypts using the given values.
+   *
+   * @param key
+   * @param pt
+   * @param iv
+   * @returns {Uint8Array}
+   */
+
+
+  encrypt(key, pt, iv) {
+    return this.cipher.encrypt(key, this.padding.pad(pt, this.cipher.cipher.blockSize), iv);
+  }
+  /**
+   * Decrypts using the given values.
+   *
+   * @param key
+   * @param ct
+   * @param iv
+   * @returns {Uint8Array}
+   */
+
+
+  decrypt(key, ct, iv) {
+    return this.padding.strip(this.cipher.decrypt(key, ct, iv));
+  }
+
+}
+
+module.exports = AES_CBC_ZeroPadding;
 
 /***/ }),
 

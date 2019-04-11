@@ -1,0 +1,23 @@
+{
+  "name": "@sbx/application-graphql-server",
+  "version": "0.0.1",
+  "description": "Graphql server.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "PascalCoin",
+    "BlockChain",
+    "Cryptography"
+  ],
+  "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+  },
+  "dependencies": {
+    "@sbx/graphql": "0.0.1",
+    "apollo-server": "^2.4.8",
+    "graphql": "^14.2.1"
+  }
+}

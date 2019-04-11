@@ -123,6 +123,7 @@ describe('Core.BC', () => {
     const h = BC.fromHex('AABB');
     const h2 = BC.fromHex('AABB');
     const h3 = BC.fromHex('AABBCC');
+
     expect(h.equals(h2)).to.be.equal(true);
     expect(h.equals(h3)).to.be.equal(false);
   });

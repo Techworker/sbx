@@ -71,7 +71,7 @@ class ECDH {
 
     return {
       data: decryptedDataWithPaddingRemoved,
-      key: secrectKey.slice(32, 32),
+      key: secrectKey.slice(32, 32)
     };
   }
 }

@@ -66,7 +66,12 @@ class PagedAction extends BaseAction {
 
     do {
       result = await this.execute();
-      reporter(result);
+      let c = reporter(result);
+
+      // being able to stop execution
+      if (c === false) {
+        return;
+      }
       this.changeParam('start', this.params.start + this.params.max);
     } while (result[0].length > 0 && result[0].length === this.params.max);
   }
