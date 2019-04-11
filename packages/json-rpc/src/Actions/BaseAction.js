@@ -8,22 +8,46 @@
 const P_PARAMS = Symbol('params');
 const P_METHOD = Symbol('method');
 const P_EXECUTOR = Symbol('executor');
+const P_DESTINATION_TYPE = Symbol('destination_type');
+const P_RETURNS_ARRAY = Symbol('returns_array');
 
 /**
  * A basic action that holds the rpc method and its parameters.
  */
 class BaseAction {
   /**
-     * Constructor.
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {Executor} executor
-     */
-  constructor(method, params, executor) {
+   * Constructor.
+   *
+   * @param {String} method
+   * @param {Object} params
+   * @param {Executor} executor
+   * @param {*} DestinationType
+   * @param {Boolean} returnsArray
+   */
+  constructor(method, params, executor, DestinationType, returnsArray) {
     this[P_METHOD] = method;
     this[P_PARAMS] = params;
     this[P_EXECUTOR] = executor;
+    this[P_DESTINATION_TYPE] = DestinationType;
+    this[P_RETURNS_ARRAY] = returnsArray;
+  }
+
+  /**
+   * Gets the destination type.
+   *
+   * @returns {*}
+   */
+  get destinationType() {
+    return this[P_DESTINATION_TYPE];
+  }
+
+  /**
+   * Gets a value indicating whether the action returns an array.
+   *
+   * @returns {Boolean}
+   */
+  get returnsArray() {
+    return this[P_RETURNS_ARRAY];
   }
 
   /**
@@ -56,39 +80,21 @@ class BaseAction {
     return this[P_METHOD];
   }
 
+  get destinationType() {
+    return this[P_DESTINATION_TYPE];
+  }
+
+  get returnsArray() {
+    return this[P_RETURNS_ARRAY];
+  }
+
   /**
      * Executes the current action and returns the raw result.
      *
      * @returns {Promise}
      */
   async execute() {
-    return this[P_EXECUTOR].execute(this[P_METHOD], this[P_PARAMS]);
-  }
-
-  /**
-   * Executes the current action and transforms the result to an array
-   *  of the defined type.
-   *
-   *  @param {Object} destinationType
-   * @returns {Promise}
-   */
-  async executeTransformArray(destinationType) {
-    return this[P_EXECUTOR].executeTransformArray(
-      this[P_METHOD], this[P_PARAMS], destinationType,
-    );
-  }
-
-  /**
-     * Executes the current action and transforms the result to an object
-     *  of the defined type.
-     *
-     *  @param {Object} destinationType
-     * @returns {Promise}
-     */
-  async executeTransformItem(destinationType) {
-    return this[P_EXECUTOR].executeTransformItem(
-      this[P_METHOD], this[P_PARAMS], destinationType,
-    );
+    return this[P_EXECUTOR].execute(this);
   }
 
   /**

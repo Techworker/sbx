@@ -18,7 +18,7 @@ describe('Crypto.AES', () => {
       const output = BC.fromHex(v.output);
       const iv = BC.fromHex(v.iv);
       const key = BC.fromHex(v.key);
-      const enc = AES.encrypt(key, iv, input);
+      const enc = AES.encryptPKCS7(key, iv, input);
 
       // TODO: why slicing?
       expect(output.toHex()).to.be.equal(enc.slice(0, 16).toHex());

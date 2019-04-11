@@ -31,7 +31,7 @@ class ECDH {
     let sharedSecret = tempKey.derive(pubkey.getPublic());
     let secrectkey = Sha.sha512(new BC(sharedSecret.toArray()));
 
-    let encryptedData = AES.encryptZero(
+    let encryptedData = AES.encryptZeroPadding(
       secrectkey.slice(0, 32),
       data,
       new Uint8Array(16)

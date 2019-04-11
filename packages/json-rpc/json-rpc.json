@@ -1,0 +1,1106 @@
+{
+  "examples": {
+    "nodes": "['123.123.123.123:4004', '7.7.7.7:4005']",
+    "start": 0,
+    "end": 0,
+    "max": 100,
+    "depth": 100,
+    "rawoperations": "BC.from('ABCD')",
+    "n_operation": 12,
+    "n_operation_min": 7,
+    "n_operation_max": 10,
+    "OperationHash": "BC.from('B822000081AB0000010000003032333646444430344246334637414434413042')",
+    "AccountNumber": 34500,
+    "AccountName": "techworker",
+    "Number": 123,
+    "Boolean": true,
+    "Currency": "new Currency('1.2345')",
+    "PublicKey": "PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')",
+    "String": "various",
+    "Block": 123
+  },
+  "methods": {
+    "addnode": {
+      "description": "Adds nodes the remote node should connect to.",
+      "camel": "addNode",
+      "action": "BaseAction",
+      "return_type": "Number",
+      "return_array": false,
+      "params": [
+        {
+          "name": "nodes",
+          "type": "StringArray",
+          "implode": ";",
+          "required": true,
+          "description": "The list of nodes (will be transformed to a semicolon separated list)"
+        }
+      ]
+    },
+    "getaccount": {
+      "description": "Gets an account with the given account number.",
+      "camel": "getAccount",
+      "action": "BaseAction",
+      "return_type": "Account",
+      "return_array": false,
+      "params": [
+        {
+          "name": "account",
+          "type": "AccountNumber",
+          "required": true
+        }
+      ]
+    },
+    "findaccounts": {
+      "description": "Searches for accounts.",
+      "camel": "findAccounts",
+      "action": "PagedAction",
+      "return_type": "Account",
+      "return_array": true,
+      "params": [
+        {
+          "name": "name",
+          "type": "AccountName"
+        },
+        {
+          "name": "type",
+          "type": "Number"
+        },
+        {
+          "name": "only_accounts_for_sale",
+          "type": "Boolean"
+        },
+        {
+          "name": "exact",
+          "type": "Boolean"
+        },
+        {
+          "name": "min_balance",
+          "type": "Currency"
+        },
+        {
+          "name": "max_balance",
+          "type": "Currency"
+        },
+        {
+          "name": "pubkey",
+          "type": "PublicKey"
+        }
+      ]
+    },
+    "getwalletaccounts": {
+      "description": "Returns all accounts of a wallet with the given public key",
+      "camel": "getWalletAccounts",
+      "action": "PagedAction",
+      "return_type": "Account",
+      "return_array": true,
+      "params": [
+        {
+          "name": "pubkey",
+          "type": "PublicKey"
+        }
+      ]
+    },
+    "getwalletaccountscount": {
+      "description": "Returns the number of accounts in a wallet",
+      "camel": "getWalletAccountsCount",
+      "action": "BaseAction",
+      "return_type": "Number",
+      "return_array": false,
+      "params": [
+        {
+          "name": "pubkey",
+          "type": "PublicKey"
+        }
+      ]
+    },
+    "getwalletcoins": {
+      "description": "Gets the accumulated balance of accounts in a wallet",
+      "camel": "getWalletCoins",
+      "action": "BaseAction",
+      "return_type": "Number",
+      "return_array": false,
+      "params": [
+        {
+          "name": "pubkey",
+          "type": "PublicKey"
+        }
+      ]
+    },
+    "getwalletpubkeys": {
+      "description": "Gets the list of public keys managed in a wallet",
+      "camel": "getWalletPubKeys",
+      "action": "PagedAction",
+      "return_type": "WalletPublicKey",
+      "return_array": true,
+      "params": [
+        {
+          "name": "pubkey",
+          "type": "PublicKey"
+        }
+      ]
+    },
+    "getwalletpubkey": {
+      "description": "Gets the info of a public key in the wallet.",
+      "camel": "getWalletPubKey",
+      "action": "BaseAction",
+      "return_type": "WalletPublicKey",
+      "return_array": true,
+      "params": [
+        {
+          "name": "pubkey",
+          "type": "PublicKey",
+          "required": true
+        }
+      ]
+    },
+    "importpubkey": {
+      "description": "Imports a public key in the wallet.",
+      "camel": "inportPubKey",
+      "action": "BaseAction",
+      "return_type": "WalletPublicKey",
+      "return_array": false,
+      "params": [
+        {
+          "name": "pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "String"
+        }
+      ]
+    },
+    "getblock": {
+      "description": "Gets the information of a block",
+      "camel": "getBlock",
+      "action": "BaseAction",
+      "return_type": "Block",
+      "return_array": false,
+      "params": [
+        {
+          "name": "block",
+          "type": "Block",
+          "required": true
+        }
+      ]
+    },
+    "getblocks": {
+      "description": "Gets a list of blocks",
+      "camel": "getBlocks",
+      "action": "BaseAction",
+      "return_type": "Block",
+      "return_array": true,
+      "params": [
+        {
+          "name": "last",
+          "type": "Number"
+        },
+        {
+          "name": "start",
+          "type": "Number"
+        },
+        {
+          "name": "end",
+          "type": "Number"
+        }
+      ]
+    },
+    "getblockcount": {
+      "description": "Gets the list of all blocks.",
+      "camel": "getBlockCount",
+      "action": "BaseAction",
+      "return_type": "Number",
+      "return_array": false,
+      "params": [
+      ]
+    },
+    "getblockoperation": {
+      "description": "Gets an operation in a block",
+      "camel": "getBlockOperation",
+      "action": "BaseAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "block",
+          "type": "Block",
+          "required": true
+        },
+        {
+          "name": "opblock",
+          "type": "Number",
+          "required": true
+        }
+      ]
+    },
+    "getblockoperations": {
+      "description": "Get all operations in a block",
+      "camel": "getBlockOperations",
+      "action": "PagedAction",
+      "return_type": "Operation",
+      "return_array": true,
+      "params": [
+        {
+          "name": "block",
+          "type": "Block",
+          "required": true
+        }
+      ]
+    },
+    "getaccountoperations": {
+      "description": "Get all operations of an account",
+      "camel": "getAccountOperations",
+      "action": "PagedAction",
+      "return_type": "Operation",
+      "return_array": true,
+      "params": [
+        {
+          "name": "account",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "depth",
+          "type": "Number"
+        },
+        {
+          "name": "startblock",
+          "type": "Number"
+        }
+      ]
+    },
+    "getpendings": {
+      "description": "Gets all pending operations",
+      "camel": "getPendings",
+      "action": "PagedAction",
+      "return_type": "Operation",
+      "return_array": true,
+      "params": [
+      ]
+    },
+    "getpendingscount": {
+      "description": "Gets the number of pending operations",
+      "camel": "getPendingsCount",
+      "action": "BaseAction",
+      "return_type": "Number",
+      "return_array": false,
+      "params": [
+      ]
+    },
+    "decodeophash": {
+      "description": "Decodes the given operation hash",
+      "camel": "decodeOpHash",
+      "action": "BaseAction",
+      "return_type": "OperationHash",
+      "return_array": false,
+      "params": [
+        {
+          "name": "ophash",
+          "type": "OperationHash",
+          "required": true
+        }
+      ]
+    },
+    "findoperation": {
+      "description": "Searches for an operation",
+      "camel": "findOperation",
+      "action": "BaseAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "ophash",
+          "type": "OperationHash"
+        }
+      ]
+    },
+    "findnoperation": {
+      "description": "Search for an operation signed by account and with n_operation, start searching block (0=all)",
+      "camel": "findNOperation",
+      "action": "BaseAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "account",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "n_operation",
+          "type": "Number",
+          "required": true
+        },
+        {
+          "name": "block",
+          "type": "Block"
+        }
+      ]
+    },
+    "findnoperations": {
+      "description": "Search for operations signed by account within an n_operation range, start searching block (0=all)",
+      "camel": "findNOperations",
+      "action": "PagedAction",
+      "return_type": "Operation",
+      "return_array": true,
+      "params": [
+        {
+          "name": "account",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "n_operation_min",
+          "type": "Number",
+          "required": true
+        },
+        {
+          "name": "n_operation_max",
+          "type": "Number",
+          "required": true
+        }
+      ]
+    },
+    "sendto": {
+      "description": "Executes a transaction operation",
+      "camel": "sendTo",
+      "action": "OperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "sender",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "target",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "Currency",
+          "required": true
+        }
+      ]
+    },
+    "signsendto": {
+      "description": "Executes a transaction operation",
+      "camel": "signSendTo",
+      "action": "SignOperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "sender",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "target",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "sender_pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "target_pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "Currency",
+          "required": true
+        }
+      ]
+    },
+    "changekey": {
+      "description": "Changes the key of an account",
+      "camel": "changeKey",
+      "action": "OperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "account",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "new_pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "account_signer",
+          "type": "AccountNumber",
+          "required": false
+        }
+      ]
+    },
+    "changekeys": {
+      "description": "Changes the key of multiple accounts",
+      "camel": "changeKeys",
+      "action": "OperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "accounts",
+          "type": "AccountNumberArray",
+          "required": true
+        },
+        {
+          "name": "new_pubkey",
+          "type": "PublicKey",
+          "required": true
+        }
+      ]
+    },
+    "signchangekey": {
+      "description": "Signs a change key operation",
+      "camel": "signChangeKey",
+      "action": "SignOperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "account",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "old_pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "new_pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "account_signer",
+          "type": "AccountNumber",
+          "required": false
+        }
+      ]
+    },
+    "listaccountforsale": {
+      "description": "Lists an account for sale",
+      "camel": "listAccountForSale",
+      "action": "OperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "account_signer",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "account_target",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "seller_account",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "locked_until_block",
+          "type": "Number",
+          "required": true
+        },
+        {
+          "name": "price",
+          "type": "Currency",
+          "required": true
+        },
+        {
+          "name": "new_pubkey",
+          "type": "PublicKey",
+          "required": false
+        }
+      ]
+    },
+    "signlistaccountforsale": {
+      "description": "Signs a list operation",
+      "camel": "signListAccountForSale",
+      "action": "SignOperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "signer_pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "account_signer",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "account_target",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "seller_account",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "locked_until_block",
+          "type": "Number",
+          "required": true
+        },
+        {
+          "name": "price",
+          "type": "Currency",
+          "required": true
+        },
+        {
+          "name": "new_pubkey",
+          "type": "PublicKey",
+          "required": false
+        }
+      ]
+    },
+    "delistaccountforsale": {
+      "description": "Delists an account",
+      "camel": "DelistAccountForSale",
+      "action": "OperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "account_signer",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "account_target",
+          "type": "AccountNumber",
+          "required": true
+        }
+      ]
+    },
+    "signdelistaccountforsale": {
+      "description": "Signs a delist operation",
+      "camel": "signDelistAccountForSale",
+      "action": "SignOperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "signer_pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "account_signer",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "account_target",
+          "type": "AccountNumber",
+          "required": true
+        }
+      ]
+    },
+    "buyaccount": {
+      "description": "Buys an account",
+      "camel": "buyAccount",
+      "action": "OperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "buyer_account",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "account_to_purchase",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "price",
+          "type": "Currency",
+          "required": false
+        },
+        {
+          "name": "seller_account",
+          "type": "AccountNumber",
+          "required": false
+        }
+      ]
+    },
+    "signbuyaccount": {
+      "description": "Signs a buy account operation",
+      "camel": "signBuyAccount",
+      "action": "SignOperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "signer_pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "buyer_account",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "account_to_purchase",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "price",
+          "type": "Currency",
+          "required": true
+        },
+        {
+          "name": "seller_account",
+          "type": "AccountNumber",
+          "required": true
+        }
+      ]
+    },
+    "changeaccountinfo": {
+      "description": "Changes account infos",
+      "camel": "changeAccountInfo",
+      "action": "OperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "account_signer",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "account_target",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "new_pubkey",
+          "type": "PublicKey",
+          "required": false
+        },
+        {
+          "name": "new_name",
+          "type": "AccountName",
+          "required": false
+        },
+        {
+          "name": "new_type",
+          "type": "Number",
+          "required": false
+        }
+      ]
+    },
+    "signchangeaccountinfo": {
+      "description": "Signs a change account info operation",
+      "camel": "signChangeAccountInfo",
+      "action": "SignOperationAction",
+      "return_type": "Operation",
+      "return_array": false,
+      "params": [
+        {
+          "name": "signer_pubkey",
+          "type": "PublicKey",
+          "required": true
+        },
+        {
+          "name": "account_signer",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "account_target",
+          "type": "AccountNumber",
+          "required": true
+        },
+        {
+          "name": "new_pubkey",
+          "type": "PublicKey",
+          "required": false
+        },
+        {
+          "name": "new_name",
+          "type": "AccountName",
+          "required": false
+        },
+        {
+          "name": "new_type",
+          "type": "Number",
+          "required": false
+        }
+      ]
+    },
+    "signmessage": {
+      "description": "Signs a message using the given public key",
+      "camel": "signMessage",
+      "action": "BaseAction",
+      "return_type": "SignedMessage",
+      "return_array": false,
+      "params": [
+        {
+          "name": "digest",
+          "type": "BC",
+          "required": true
+        },
+        {
+          "name": "pubkey",
+          "type": "PublicKey",
+          "required": true
+        }
+      ]
+    },
+    "verifysign": {
+      "description": "Verifies a signature",
+      "camel": "verifySign",
+      "action": "BaseAction",
+      "return_type": "SignedMessage",
+      "return_array": false,
+      "params": [
+        {
+          "name": "signature",
+          "type": "BC",
+          "required": true
+        },
+        {
+          "name": "digest",
+          "type": "BC",
+          "required": true
+        },
+        {
+          "name": "pubkey",
+          "type": "PublicKey",
+          "required": true
+        }
+      ]
+    },
+    "operationsdelete": {
+      "description": "Removes an operation from the given rawoperations.",
+      "camel": "operationsDelete",
+      "action": "BaseAction",
+      "return_type": "RawOperations",
+      "return_array": false,
+      "params": [
+        {
+          "name": "rawoperations",
+          "type": "RawOperations",
+          "required": true
+        },
+        {
+          "name": "index",
+          "type": "Number",
+          "required": true
+        }
+      ]
+    },
+    "operationsinfo": {
+      "description": "Gets the information about the given operation",
+      "camel": "operationsInfo",
+      "action": "BaseAction",
+      "return_type": "Operation",
+      "return_array": true,
+      "params": [
+        {
+          "name": "rawoperations",
+          "type": "RawOperations",
+          "required": true
+        }
+      ]
+    },
+    "executeoperations": {
+      "description": "Executes the given operations",
+      "camel": "executeOperations",
+      "action": "BaseAction",
+      "return_type": "Operation",
+      "return_array": true,
+      "params": [
+        {
+          "name": "rawoperations",
+          "type": "RawOperations",
+          "required": true
+        }
+      ]
+    },
+    "nodestatus": {
+      "description": "Returns the current node status",
+      "camel": "nodeStatus",
+      "action": "BaseAction",
+      "return_type": "NodeStatus",
+      "return_array": false,
+      "params": [
+      ]
+    },
+    "encodepubkey": {
+      "description": "Encodes a public key to a pascalcoin public key",
+      "camel": "encodePubKey",
+      "action": "BaseAction",
+      "return_type": "BC",
+      "return_array": false,
+      "params": [
+        {
+          "name": "x",
+          "type": "BC",
+          "required": true
+        },
+        {
+          "name": "y",
+          "type": "BC",
+          "required": true
+        },
+        {
+          "name": "ec_nid",
+          "type": "Number",
+          "required": true
+        }
+      ]
+    },
+    "decodepubkey": {
+      "description": "Decodes an encoded public key.",
+      "camel": "decodePubKey",
+      "action": "BaseAction",
+      "return_type": "Object",
+      "return_array": false,
+      "params": [
+        {
+          "name": "pubkey",
+          "type": "BC",
+          "required": true
+        }
+      ]
+    },
+    "payloadencrypt": {
+      "description": "Encrypts a payload",
+      "camel": "payloadEncrypt",
+      "action": "BaseAction",
+      "return_type": "BC",
+      "return_array": false,
+      "params": [
+        {
+          "name": "payload",
+          "type": "BC",
+          "required": true
+        },
+        {
+          "name": "payload_method",
+          "type": "String",
+          "required": true
+        },
+        {
+          "name": "pwd",
+          "type": "String",
+          "required": false
+        }
+      ]
+    },
+    "payloaddecrypt": {
+      "description": "Decrypts a payload",
+      "camel": "payloadDecrypt",
+      "action": "BaseAction",
+      "return_type": "BC",
+      "return_array": false,
+      "params": [
+        {
+          "name": "payload",
+          "type": "BC",
+          "required": true
+        },
+        {
+          "name": "pwds",
+          "type": "StringArray",
+          "required": true
+        }
+      ]
+    },
+    "getconnections": {
+      "description": "Gets the connections of a node.",
+      "camel": "getConnections",
+      "action": "BaseAction",
+      "return_type": "Connection",
+      "return_array": true,
+      "params": [
+      ]
+    },
+    "addnewkey": {
+      "description": "Generates a new key and adds it to the nodes wallet.",
+      "camel": "addNewKey",
+      "action": "BaseAction",
+      "return_type": "WalletPublicKey",
+      "return_array": false,
+      "params": [
+        {
+          "name": "ec_nid",
+          "type": "Number",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "required": true
+        }
+      ]
+    },
+    "lock": {
+      "description": "Locks the wallet.",
+      "camel": "lock",
+      "action": "BaseAction",
+      "return_type": "Boolean",
+      "return_array": false,
+      "params": [
+      ]
+    },
+    "unlock": {
+      "description": "Unlocks the wallet.",
+      "camel": "unlock",
+      "action": "BaseAction",
+      "return_type": "Boolean",
+      "return_array": false,
+      "params": [
+        {
+          "name": "pwd",
+          "type": "String",
+          "required": true
+        }
+      ]
+    },
+    "setwalletpassword": {
+      "description": "Sets the wallet password.",
+      "camel": "setWalletPassword",
+      "action": "BaseAction",
+      "return_type": "Boolean",
+      "return_array": false,
+      "params": [
+        {
+          "name": "pwd",
+          "type": "String",
+          "required": true
+        }
+      ]
+    },
+    "stopnode": {
+      "description": "Stops the node.",
+      "camel": "stopNode",
+      "action": "BaseAction",
+      "return_type": "Boolean",
+      "return_array": false,
+      "params": [
+      ]
+    },
+    "startnode": {
+      "description": "Starts the node.",
+      "camel": "startNode",
+      "action": "BaseAction",
+      "return_type": "Boolean",
+      "return_array": false,
+      "params": [
+      ]
+    },
+    "cleanblacklist": {
+      "description": "Cleans the BlackList.",
+      "camel": "cleanBlackList",
+      "action": "BaseAction",
+      "return_type": "Number",
+      "return_array": false,
+      "params": [
+      ]
+    },
+    "node_ip_stats": {
+      "description": "Gets IP stats",
+      "camel": "nodeIPStats",
+      "action": "BaseAction",
+      "return_type": "Object",
+      "return_array": true,
+      "params": [
+      ]
+    },
+    "multioperationaddoperation": {
+      "description": "Adds an operation to a multioperation",
+      "camel": "multiOperationAddOperation",
+      "action": "BaseAction",
+      "return_type": "RawOperations",
+      "return_array": true,
+      "params": [
+        {
+          "name": "rawoperations",
+          "type": "RawOperations",
+          "required": true
+        },
+        {
+          "name": "auto_n_operation",
+          "type": "Boolean",
+          "required": true
+        },
+        {
+          "name": "senders",
+          "type": "SenderArray",
+          "required": true
+        },
+        {
+          "name": "receivers",
+          "type": "ReceiverArray",
+          "required": true
+        },
+        {
+          "name": "changesinfo",
+          "type": "ChangerArray",
+          "required": true
+        }
+      ]
+    },
+    "multioperationsignoffline": {
+      "description": "Signs the given rawoperations",
+      "camel": "multiOperationSignOffline",
+      "action": "BaseAction",
+      "return_type": "Operation",
+      "return_array": true,
+      "params": [
+        {
+          "name": "rawoperations",
+          "type": "RawOperations",
+          "required": true
+        },
+        {
+          "name": "accounts_and_keys",
+          "type": "Object",
+          "required": true
+        }
+      ]
+    },
+    "multioperationsignonline": {
+      "description": "Signs the given rawoperations online",
+      "camel": "multiOperationSignOnline",
+      "action": "BaseAction",
+      "return_type": "Operation",
+      "return_array": true,
+      "params": [
+        {
+          "name": "rawoperations",
+          "type": "RawOperations",
+          "required": true
+        }
+      ]
+    }
+  }
+}

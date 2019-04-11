@@ -70,8 +70,8 @@ if (curve.supported) {
 
 #### Importing an encrypted private key
 
-The library can decrypt an wallet exported and encrypted private key from the 
-wallet and returns a KeyPair.
+The library can decrypt an encrypted private key from the wallet and returns 
+a KeyPair.
 
 ```js
 const sbxCrypto = require('@sbx/crypto');
@@ -84,10 +84,26 @@ let kp = sbxCrypto.Keys.decrypt(
 console.log(kp.privateKey.encode().toHex());
 console.log(kp.publicKey.encode().toHex());
 ```
+#### Exporting a private key
 
+The library can encrypt a private key that can be imported into the wallet.
+
+```js
+const sbxCrypto = require('@sbx/crypto');
+
+/** @var kp sbxCommon.Types.Keys.KeyPair */
+let kp = sbxCrypto.Keys.decrypt(
+  '53616C7465645F5FED4A37ECAD2BF13FF24A66DDA299A57632520447B28B9E642C4B2A301CACC217FBD7713F6282C20CCCFDC5FFD2AB93A8E48D8C2C81704D36', 
+  'test1234'
+);
+
+console.log(sbxCrypto.Keys.encrypt(kp.privateKey, 'my_password').toHex());
+```
+`
 #### Create a KeyPair from a private key 
 
-The library can create a new keypair from a private key instance.
+The library can create a new keypair (derives the public key) from a private 
+key instance.
 
 ```js
 const sbxCommon = require('@sbx/common');

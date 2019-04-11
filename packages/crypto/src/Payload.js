@@ -102,7 +102,6 @@ class Payload {
     const encryptedMessage = payload.slice(payload.length - messageLength, payload.length);
     const macMessage = payload.slice(6 + publicKeyLength, 6 + publicKeyLength + macLength);
 
-
     const dec = ECDH.decrypt(
       keyPair.privateKey,
       ecdhPubKey,
@@ -112,15 +111,11 @@ class Payload {
     const hmac = require('crypto').createHmac('md5', dec.key.buffer);
     const m2 = BC.fromHex(hmac.update(encryptedMessage.buffer).digest('hex'));
 
-    if (new BC(macMessage).equals(new BC(m2)))
-    {
+    if (new BC(macMessage).equals(new BC(m2))) {
       return dec.data;
     }
-    else
-    {
-      return false;
-    }
 
+    return false;
 
   }
 
@@ -141,10 +136,8 @@ class Payload {
     const hmac = require('crypto').createHmac('md5', enc.key.buffer);
     const m2 = BC.fromHex(hmac.update(enc.data.buffer).digest('hex'));
     const messageToEncryptSize = payload.length;
-    const messageToEncryptPadSize = (messageToEncryptSize % 16) === 0
-      ? 0
-      : 16 -
-      (messageToEncryptSize % 16);
+    const messageToEncryptPadSize = (messageToEncryptSize % 16) === 0 ?
+      0 : 16 - (messageToEncryptSize % 16);
 
     return BC.concat(
       BC.fromInt(enc.publicKey.length), // key

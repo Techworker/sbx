@@ -100,6 +100,21 @@ function transformRpcParams(params) {
   return newParams;
 }
 
+function transformRpcResult(value, DestinationType) {
+  switch (DestinationType.name) {
+    case 'Boolean':
+      return !!value;
+    case 'String':
+      return value.toString();
+    case 'Object':
+      return value;
+    case 'BC':
+      return BC.from(value);
+    default:
+      return new DestinationType(value);
+  }
+};
+
 /**
  * This class will execute an rpc call and returns a promise.
  */
@@ -117,67 +132,42 @@ class Executor {
    * Calls the given method with the given params and returns a promise that
    * itself will transform the returned value and resolve the promise.
    *
-   * @param {String} method
-   * @param {Object} params
-   * @param {Function} transformCallback
+   * @param {BaseAction} action
+   * @param {Function|null} transformCallback
    * @returns {Promise<any>}
    */
-  async execute(method, params, transformCallback = r => r) {
+  async execute(action, transformCallback = null) {
+    transformCallback = transformCallback || this.transform(action.destinationType, action.returnsArray);
     return new Promise((resolve, reject) => {
-      this[P_CALLER].call(method, transformRpcParams(params))
-        .then(response => resolve(transformCallback(response)))
-        .catch(error => reject(error));
+      this[P_CALLER].call(action.method, transformRpcParams(action.params))
+        .then((response) => {
+          resolve([response, transformCallback]);
+        })
+        .catch((error) => {
+          reject(error);
+        });
     });
   }
 
   /**
-   * Calls the given method with the given params and returns a promise that
-   * itself will transform the returned value and resolve the promise.
+   * Transforms a raw response value to a special type.
    *
-   * @param {Object} action
-   * @param {Function} transformCallback
-   * @returns {Promise<any>}
+   * @param {*} DestinationType
+   * @param {Boolean} returnsArray
+   * @returns {*}
    */
-  async executeAll(action, transformCallback = r => r) {
-    const all = [];
-    let result = [];
+  transform(DestinationType, returnsArray) {
+    if (returnsArray) {
+      return function (value) {
+        return value.map(v => transformRpcResult(v, DestinationType));
+      };
+    }
 
-    do {
-      result = await this.execute(action.method, action.params, transformCallback);
-      result.forEach(item => all.push(item));
-      action.changeParam('start', action.params.start + action.params.max);
-    } while (result.length > 0 && result.length === action.params.max);
-
-    return all;
-  }
-
-  /**
-     * Calls the rpc method with the given parameters and returns a promise that
-     * resolves with an array of objects of the given Destination type.
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {*} DestinationType
-     * @returns {Promise<any>}
-     */
-  async executeTransformArray(method, params, DestinationType) {
-    return this.execute(method, params, r => r.map(ri => new DestinationType(ri)));
-  }
-
-  /**
-     * Calls the rpc method with the given parameters and returns a promise that
-     * resolves with an object of the given Destination type.
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {*} DestinationType
-     * @returns {Promise<any>}
-     */
-  async executeTransformItem(method, params, DestinationType) {
-    return this.execute(method, params, (r) => {
-      return new DestinationType(r);
-    });
+    return function (value) {
+      return transformRpcResult(value, DestinationType);
+    };
   }
 }
+
 
 module.exports = Executor;

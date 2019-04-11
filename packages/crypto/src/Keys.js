@@ -127,7 +127,7 @@ class Keys {
 
     const keyInfo = KDF.PascalCoin(password, salt);
 
-    const privateKeyEncrypted = AES.encrypt(keyInfo.key, privateKeyEncoded, keyInfo.iv);
+    const privateKeyEncrypted = AES.encryptPKCS7(keyInfo.key, privateKeyEncoded, keyInfo.iv);
 
     return BC.concat(BC.fromString('Salted__'), salt, privateKeyEncrypted);
   }

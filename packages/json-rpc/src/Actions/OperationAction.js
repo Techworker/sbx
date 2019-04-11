@@ -14,14 +14,16 @@ const Currency = require('@sbx/common').Types.Currency;
  */
 class OperationAction extends BaseAction {
   /**
-     * Constructor
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {Executor} executor
-     */
-  constructor(method, params, executor) {
-    super(method, params, executor);
+   * Constructor
+   *
+   * @param {String} method
+   * @param {Object} params
+   * @param {Executor} executor
+   * @param {*} DestinationType
+   * @param {Boolean} returnsArray
+   */
+  constructor(method, params, executor, DestinationType, returnsArray) {
+    super(method, params, executor, DestinationType, returnsArray);
     this.params.fee = new Currency(0);
     this.params.payload = '';
     this.params.payload_method = 'none';

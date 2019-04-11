@@ -14,14 +14,16 @@ const OperationAction = require('./OperationAction');
  */
 class SignOperationAction extends OperationAction {
   /**
-     * Constructor.
-     *
-     * @param {String} method
-     * @param {Object} params
-     * @param {Executor} executor
-     */
-  constructor(method, params, executor) {
-    super(method, params, executor);
+   * Constructor.
+   *
+   * @param {String} method
+   * @param {Object} params
+   * @param {Executor} executor
+   * @param {*} DestinationType
+   * @param {Boolean} returnsArray
+   */
+  constructor(method, params, executor, DestinationType, returnsArray) {
+    super(method, params, executor, DestinationType, returnsArray);
     this.params.last_n_operation = null;
     this.params.rawoperations = null;
   }
