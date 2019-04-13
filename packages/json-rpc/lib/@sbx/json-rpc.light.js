@@ -7734,7 +7734,7 @@ class Block extends Abstract {
     this[P_TIMESTAMP] = parseInt(data.timestamp, 10);
     this[P_TARGET] = new BigNumber(data.target.toString());
     this[P_NONCE] = new BigNumber(data.nonce.toString());
-    this[P_PAYLOAD] = BC.fromString(data.payload);
+    this[P_PAYLOAD] = data.payload;
     this[P_SBH] = BC.fromHex(data.sbh);
     this[P_OPH] = BC.fromHex(data.oph);
     this[P_POW] = BC.fromHex(data.pow);
@@ -7839,7 +7839,7 @@ class Block extends Abstract {
   /**
    * Gets the payload of the miner.
    *
-   * @returns {BC}
+   * @returns {String}
    */
 
 
@@ -8855,6 +8855,98 @@ class Operation extends Abstract {
   static get DATA() {
     return 10;
   }
+
+  static get SUBTYPE_MINER() {
+    return 1;
+  }
+
+  static get SUBTYPE_DEVELOPER() {
+    return 2;
+  }
+
+  static get SUBTYPE_TX_SENDER() {
+    return 11;
+  }
+
+  static get SUBTYPE_TX_RECEIVER() {
+    return 12;
+  }
+
+  static get SUBTYPE_TX_BUY_BUYER() {
+    return 13;
+  }
+
+  static get SUBTYPE_TX_BUY_TARGET() {
+    return 14;
+  }
+
+  static get SUBTYPE_TX_BUY_SELLER() {
+    return 15;
+  }
+
+  static get SUBTYPE_CHANGE_KEY() {
+    return 21;
+  }
+
+  static get SUBTYPE_RECOVER() {
+    return 31;
+  }
+
+  static get SUBTYPE_LIST_PUBLIC() {
+    return 41;
+  }
+
+  static get SUBTYPE_LIST_PRIVATE() {
+    return 42;
+  }
+
+  static get SUBTYPE_DELIST() {
+    return 51;
+  }
+
+  static get SUBTYPE_BUY_BUYER() {
+    return 61;
+  }
+
+  static get SUBTYPE_BUY_TARGET() {
+    return 62;
+  }
+
+  static get SUBTYPE_BUY_SELLER() {
+    return 63;
+  }
+
+  static get SUBTYPE_CHANGE_KEY_SIGNED() {
+    return 71;
+  }
+
+  static get SUBTYPE_CHANGE_ACCOUNT_INFO() {
+    return 81;
+  }
+
+  static get SUBTYPE_MULTI_GLOBAL() {
+    return 91;
+  }
+
+  static get SUBTYPE_MULTI_ACCOUNT_INFO() {
+    return 92;
+  }
+
+  static get SUBTYPE_DATA_GLOBAL() {
+    return 101;
+  }
+
+  static get SUBTYPE_DATA_SENDER() {
+    return 102;
+  }
+
+  static get SUBTYPE_DATA_SIGNER() {
+    return 103;
+  }
+
+  static get SUBTYPE_DATA_RECEIVER() {
+    return 104;
+  }
   /**
    * Creates a new Operation instance from an rpc response.
    *
@@ -8987,7 +9079,7 @@ class Operation extends Abstract {
    */
 
 
-  get opblock() {
+  get opBlock() {
     return this[P_OPBLOCK];
   }
   /**
@@ -9087,7 +9179,7 @@ class Operation extends Abstract {
    */
 
 
-  get subtype() {
+  get subType() {
     return this[P_SUBTYPE];
   }
   /**

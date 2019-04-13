@@ -43,8 +43,7 @@ describe('Core.Types.Block', () => {
       expect(block.target.toString()).to.be.equal(b.target.toString());
       expect(block.nonce).to.be.instanceof(BigNumber);
       expect(block.nonce.toString()).to.be.equal(b.nonce.toString());
-      expect(block.payload).to.be.instanceof(BC);
-      expect(block.payload.toString()).to.be.equal(b.payload);
+      expect(block.payload).to.be.equal(b.payload);
       expect(block.sbh).to.be.instanceof(BC);
       expect(block.sbh.toHex()).to.be.equal(b.sbh);
       expect(block.oph).to.be.instanceof(BC);

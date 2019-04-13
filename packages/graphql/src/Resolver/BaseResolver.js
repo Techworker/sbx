@@ -27,8 +27,8 @@ class BaseResolver {
    */
   execute(rpcMethod, params) {
     return new Promise((resolve, reject) => {
-      rpcMethod.call(this.rpc, params).execute().then(([data]) => {
-        resolve(data);
+      rpcMethod.call(this.rpc, params).execute().then(([data, transform]) => {
+        resolve(transform(data));
       }).catch(err => reject(err));
     });
   }
@@ -63,8 +63,8 @@ class BaseResolver {
 
     return new Promise((resolve, reject) => {
       /* eslint consistent-return: "off" */
-      const innerPromise = this.executeAllReport(this.rpc.getAccountOperations, params, ([data]) => {
-        data.forEach((item) => {
+      const innerPromise = this.executeAllReport(rpcMethod, params, ([data, transform]) => {
+        transform(data).forEach((item) => {
 
           if (collected.length === limit) {
             return;

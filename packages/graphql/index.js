@@ -1,10 +1,15 @@
 module.exports = {
   Schema: `scalar AccountNumber
 scalar AccountName
+scalar HexaString
+scalar Currency
+scalar OperationHash
+scalar PublicKey
 
 type Query {
-    getAccount(account: AccountNumber!): Account
-    getOperation(ophash: String!): Operation
+    fetchAccount(account: AccountNumber!): Account
+    fetchOperation(opHash: OperationHash!): Operation
+    fetchBlock(block: Int!): Block
 }
 
 enum OpType {
@@ -22,64 +27,131 @@ enum OpType {
     DATA
 }
 
+enum SubType {
+    ALL
+    MINER
+    DEVELOPER
+    TX_SENDER
+    TX_RECEIVER
+    TX_BUY_BUYER
+    TX_BUY_TARGET
+    TX_BUY_SELLER
+    CHANGE_KEY
+    RECOVER
+    LIST_PUBLIC
+    LIST_PRIVATE
+    DELIST
+    BUY_BUYER
+    BUY_TARGET
+    BUY_SELLER
+    CHANGE_KEY_SIGNED
+    CHANGE_ACCOUNT_INFO
+    MULTI_GLOBAL
+    MULTI_ACCOUNT_INFO
+    DATA_GLOBAL
+    DATA_SENDER
+    DATA_SIGNER
+    DATA_RECEIVER
+}
+
+enum AccountState {
+    normal
+    listed
+}
+
 type Account {
-    account: AccountNumber!
-    name: String
-    type: Int!
-    balance: Float!
-    n_operation: Int!
-    updated_b: Int!
-    state: String!
-    locked_until_block: Int!
-    price: Float
-    seller_account: Account
-    private_sale: Boolean
-    new_enc_pubkey: String
-    lastOperations(amount: Int, opType: OpType = IGNORE) : [Operation]
+    account: AccountNumber
+    name: AccountName
+    type: Int
+    balance: Currency
+    nOperation: Int
+    updatedB: Int
+    state: AccountState
+    lockedUntilBlock: Int
+    fetchLockedUntilBlock: Block
+    price: Currency
+    sellerAccount: Account
+    privateSale: Boolean
+    publicKey: PublicKey
+    fetchOperations(page: Int = 1, amount: Int = 100, opType: OpType = ALL, subType: SubType = ALL) : [Operation]
+}
+
+type Block {
+    block: Int
+    publicKey: PublicKey
+    reward: Currency
+    fee: Currency
+    ver: Int
+    verA: Int
+    timestamp: Int
+    target: Int
+    nonce: Int
+    payload: String
+    sbh: HexaString
+    oph: HexaString
+    pow: HexaString
+    hashratekhs: Int
+    maturation: Int
+    operations: Int
+    fetchOperations(page: Int = 1, amount: Int = 100, opType: OpType = IGNORE, subType: SubType = ALL) : [Operation]
 }
 
 type Operation {
-    valid: Boolean!
+    valid: Boolean
     errors: String
+    payload: HexaString
+    payloadAsString: String
     block: Int
+    fetchBlock: Block
     time: Int
-    opblock: Int
-    payload: String
+    opBlock: Int
     maturation: Int
-    optype: Int!
-    account: Account
-    optxt: String
-    ophash: String
-    subtype: Int
-    signer_account: Account
+    opType: Int
+    account: AccountNumber
+    fetchAccount: Account
+    opTxt: String
+    amount: Currency
+    fee: Currency
+    balance: Currency
+    opHash: OperationHash
+    subType: Int
+    signerAccount: AccountNumber
+    fetchSignerAccount: Account
     changers: [Changer],
     receivers: [Receiver],
     senders: [Sender]
 }
 
 type Changer {
-    account: Account
-    n_operation: Int
-    new_enc_pubkey: String
-    new_name: String
-    new_type: Int
-    seller_account: Account
-    account_price: Float
-    locked_until_block: Int
-    fee: Float
+    account: AccountNumber
+    fetchAccount: Account
+    nOperation: Int
+    newPublicKey: PublicKey
+    newName: AccountName
+    newType: Int
+    sellerAccount: AccountNumber
+    fetchSellerAccount: Account
+    accountPrice: Currency
+    lockedUntilBlock: Int
+    fetchLockedUntilBlock: Block
+    fee: Currency
 }
 
 type Receiver {
-    account: Account
-    amount: Float
-    payload: String
+    account: AccountNumber
+    fetchAccount: Account
+    amount: Currency
+    payload: HexaString
+    payloadAsString: String
 }
 
 type Sender {
-    account: Account
-    n_operation: Int
-    amount: Float
-    payload: String
+    account: AccountNumber
+    fetchAccount: Account
+    nOperation: Int
+    amount: Currency
+    payload: HexaString
+    payloadAsString: String
 }`,
   Resolver: require('./src/Resolver'),
   Types: require('./src/Types')

@@ -81,7 +81,7 @@ describe('Core.Types.Operation', () => {
 
         expect(operation.block).to.be.equal(op.block);
         expect(operation.time).to.be.equal(op.time);
-        expect(operation.opblock).to.be.equal(op.opblock);
+        expect(operation.opBlock).to.be.equal(op.opblock);
 
         if (operation.maturation === null) {
           expect(operation.maturation).to.be.equal(0);
@@ -128,7 +128,7 @@ describe('Core.Types.Operation', () => {
           expect(operation.oldOpHash).to.be.equal(null);
         }
 
-        expect(operation.subtype).to.be.equal(op.subtype);
+        expect(operation.subType).to.be.equal(op.subtype);
 
         if (op.signer_account === undefined) {
           expect(operation.signerAccount).to.be.equal(null);

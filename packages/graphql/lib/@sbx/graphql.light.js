@@ -28317,10 +28317,15 @@ module.exports = Util;
 module.exports = {
   Schema: `scalar AccountNumber
 scalar AccountName
+scalar HexaString
+scalar Currency
+scalar OperationHash
+scalar PublicKey
 
 type Query {
-    getAccount(account: AccountNumber!): Account
-    getOperation(ophash: String!): Operation
+    fetchAccount(account: AccountNumber!): Account
+    fetchOperation(opHash: OperationHash!): Operation
+    fetchBlock(block: Int!): Block
 }
 
 enum OpType {
@@ -28338,64 +28343,131 @@ enum OpType {
     DATA
 }
 
+enum SubType {
+    ALL
+    MINER
+    DEVELOPER
+    TX_SENDER
+    TX_RECEIVER
+    TX_BUY_BUYER
+    TX_BUY_TARGET
+    TX_BUY_SELLER
+    CHANGE_KEY
+    RECOVER
+    LIST_PUBLIC
+    LIST_PRIVATE
+    DELIST
+    BUY_BUYER
+    BUY_TARGET
+    BUY_SELLER
+    CHANGE_KEY_SIGNED
+    CHANGE_ACCOUNT_INFO
+    MULTI_GLOBAL
+    MULTI_ACCOUNT_INFO
+    DATA_GLOBAL
+    DATA_SENDER
+    DATA_SIGNER
+    DATA_RECEIVER
+}
+
+enum AccountState {
+    normal
+    listed
+}
+
 type Account {
-    account: AccountNumber!
-    name: String
-    type: Int!
-    balance: Float!
-    n_operation: Int!
-    updated_b: Int!
-    state: String!
-    locked_until_block: Int!
-    price: Float
-    seller_account: Account
-    private_sale: Boolean
-    new_enc_pubkey: String
-    lastOperations(amount: Int, opType: OpType = IGNORE) : [Operation]
+    account: AccountNumber
+    name: AccountName
+    type: Int
+    balance: Currency
+    nOperation: Int
+    updatedB: Int
+    state: AccountState
+    lockedUntilBlock: Int
+    fetchLockedUntilBlock: Block
+    price: Currency
+    sellerAccount: Account
+    privateSale: Boolean
+    publicKey: PublicKey
+    fetchOperations(page: Int = 1, amount: Int = 100, opType: OpType = ALL, subType: SubType = ALL) : [Operation]
+}
+
+type Block {
+    block: Int
+    publicKey: PublicKey
+    reward: Currency
+    fee: Currency
+    ver: Int
+    verA: Int
+    timestamp: Int
+    target: Int
+    nonce: Int
+    payload: String
+    sbh: HexaString
+    oph: HexaString
+    pow: HexaString
+    hashratekhs: Int
+    maturation: Int
+    operations: Int
+    fetchOperations(page: Int = 1, amount: Int = 100, opType: OpType = IGNORE, subType: SubType = ALL) : [Operation]
 }
 
 type Operation {
-    valid: Boolean!
+    valid: Boolean
     errors: String
+    payload: HexaString
+    payloadAsString: String
     block: Int
+    fetchBlock: Block
     time: Int
-    opblock: Int
-    payload: String
+    opBlock: Int
     maturation: Int
-    optype: Int!
-    account: Account
-    optxt: String
-    ophash: String
-    subtype: Int
-    signer_account: Account
+    opType: Int
+    account: AccountNumber
+    fetchAccount: Account
+    opTxt: String
+    amount: Currency
+    fee: Currency
+    balance: Currency
+    opHash: OperationHash
+    subType: Int
+    signerAccount: AccountNumber
+    fetchSignerAccount: Account
     changers: [Changer],
     receivers: [Receiver],
     senders: [Sender]
 }
 
 type Changer {
-    account: Account
-    n_operation: Int
-    new_enc_pubkey: String
-    new_name: String
-    new_type: Int
-    seller_account: Account
-    account_price: Float
-    locked_until_block: Int
-    fee: Float
+    account: AccountNumber
+    fetchAccount: Account
+    nOperation: Int
+    newPublicKey: PublicKey
+    newName: AccountName
+    newType: Int
+    sellerAccount: AccountNumber
+    fetchSellerAccount: Account
+    accountPrice: Currency
+    lockedUntilBlock: Int
+    fetchLockedUntilBlock: Block
+    fee: Currency
 }
 
 type Receiver {
-    account: Account
-    amount: Float
-    payload: String
+    account: AccountNumber
+    fetchAccount: Account
+    amount: Currency
+    payload: HexaString
+    payloadAsString: String
 }
 
 type Sender {
-    account: Account
-    n_operation: Int
-    amount: Float
-    payload: String
+    account: AccountNumber
+    fetchAccount: Account
+    nOperation: Int
+    amount: Currency
+    payload: HexaString
+    payloadAsString: String
 }`,
   Resolver: __webpack_require__(/*! ./src/Resolver */ "./src/Resolver/index.js"),
   Types: __webpack_require__(/*! ./src/Types */ "./src/Types/index.js")
@@ -28437,29 +28509,51 @@ class AccountResolver extends BaseResolver {
 
   getAccount(account) {
     return this.execute(this.rpc.getAccount, {
-      account: account
+      account
     });
   }
   /**
-   * Gets the last operations of the given account.
+   * Gets the operations of the given account.
    *
    * @param {Number} account
-   * @param {Number} opType
+   * @param {Number} page
    * @param {Number} amount
+   * @param {Number} opType
    * @returns {Promise<any>}
    */
 
 
-  lastOperations(account, opType, amount) {
+  getOperations(account, page, amount, opType, subType) {
     const resolvedOpType = EnumResolver.OPTYPE(opType);
+    const resolvedSubType = EnumResolver.SUBTYPE(subType);
 
     const filter = operation => {
-      return operation.optype === resolvedOpType;
+      if (resolvedOpType === -1 || operation.opType === resolvedOpType) {
+        if (resolvedSubType === -1 || operation.subType === resolvedSubType) {
+          return true;
+        }
+      }
+
+      return false;
     };
 
-    return this.executeLimited(this.rpc.getAccountOperations, {
-      account
-    }, amount, filter);
+    return new Promise((resolve, reject) => {
+      let params = {
+        account
+      };
+
+      if (page > 1) {
+        params.start = (page - 1) * amount;
+      }
+
+      const actionPromise = this.executeLimited(this.rpc.getAccountOperations, params, page * amount, filter);
+      actionPromise.then(operations => {
+        resolve(operations.slice((page - 1) * amount, page * amount));
+      });
+      actionPromise.catch(err => {
+        reject(err);
+      });
+    });
   }
 
 }
@@ -28506,8 +28600,8 @@ class BaseResolver {
 
   execute(rpcMethod, params) {
     return new Promise((resolve, reject) => {
-      rpcMethod.call(this.rpc, params).execute().then(([data]) => {
-        resolve(data);
+      rpcMethod.call(this.rpc, params).execute().then(([data, transform]) => {
+        resolve(transform(data));
       }).catch(err => reject(err));
     });
   }
@@ -28543,8 +28637,8 @@ class BaseResolver {
     const collected = [];
     return new Promise((resolve, reject) => {
       /* eslint consistent-return: "off" */
-      const innerPromise = this.executeAllReport(this.rpc.getAccountOperations, params, ([data]) => {
-        data.forEach(item => {
+      const innerPromise = this.executeAllReport(rpcMethod, params, ([data, transform]) => {
+        transform(data).forEach(item => {
           if (collected.length === limit) {
             return;
           }
@@ -28569,6 +28663,93 @@ module.exports = BaseResolver;
 
 /***/ }),
 
+/***/ "./src/Resolver/BlockResolver.js":
+/*!***************************************!*\
+  !*** ./src/Resolver/BlockResolver.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const BaseResolver = __webpack_require__(/*! ./BaseResolver */ "./src/Resolver/BaseResolver.js");
+
+const EnumResolver = __webpack_require__(/*! ./EnumResolver */ "./src/Resolver/EnumResolver.js");
+/**
+ * A resolver with an Account as root.
+ */
+
+
+class BlockResolver extends BaseResolver {
+  /**
+   * Constructor
+   *
+   * @param {Client} rpc
+   */
+  constructor(rpc) {
+    super(rpc);
+  }
+  /**
+   * Gets the account with the given account number.
+   *
+   * @param {Number} Block
+   * @returns {Promise<any>}
+   */
+
+
+  getBlock(block) {
+    return this.execute(this.rpc.getBlock, {
+      block
+    });
+  }
+  /**
+   * Gets the operations of the given account.
+   *
+   * @param {Number} block
+   * @param {Number} page
+   * @param {Number} amount
+   * @param {Number} opType
+   * @returns {Promise<any>}
+   */
+
+
+  getOperations(block, page, amount, opType, subType) {
+    const resolvedOpType = EnumResolver.OPTYPE(opType);
+    const resolvedSubType = EnumResolver.SUBTYPE(subType);
+
+    const filter = operation => {
+      if (resolvedOpType === -1 || operation.opType === resolvedOpType) {
+        if (resolvedSubType === -1 || operation.subType === resolvedSubType) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    return new Promise((resolve, reject) => {
+      let params = {
+        block
+      };
+
+      if (page > 1) {
+        params.start = (page - 1) * amount;
+      }
+
+      const actionPromise = this.executeLimited(this.rpc.getBlockOperations, params, page * amount, filter);
+      actionPromise.then(operations => {
+        resolve(operations.slice((page - 1) * amount, page * amount));
+      });
+      actionPromise.catch(err => {
+        reject(err);
+      });
+    });
+  }
+
+}
+
+module.exports = BlockResolver;
+
+/***/ }),
+
 /***/ "./src/Resolver/EnumResolver.js":
 /*!**************************************!*\
   !*** ./src/Resolver/EnumResolver.js ***!
@@ -28585,8 +28766,57 @@ module.exports = {
     }
 
     return Operation[value];
+  },
+  SUBTYPE: function (value) {
+    if (value === 'ALL') {
+      return -1;
+    }
+
+    return Operation['SUBTYPE_' + value];
   }
 };
+
+/***/ }),
+
+/***/ "./src/Resolver/OperationResolver.js":
+/*!*******************************************!*\
+  !*** ./src/Resolver/OperationResolver.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const BaseResolver = __webpack_require__(/*! ./BaseResolver */ "./src/Resolver/BaseResolver.js");
+/**
+ * A resolver with an Operation as root.
+ */
+
+
+class AccountResolver extends BaseResolver {
+  /**
+   * Constructor
+   *
+   * @param {Client} rpc
+   */
+  constructor(rpc) {
+    super(rpc);
+  }
+  /**
+   * Gets the account with the given account number.
+   *
+   * @param {OperationHash} opHash
+   * @returns {Promise<any>}
+   */
+
+
+  getOperation(opHash) {
+    return this.execute(this.rpc.findOperation, {
+      ophash: opHash
+    });
+  }
+
+}
+
+module.exports = AccountResolver;
 
 /***/ }),
 
@@ -28600,7 +28830,9 @@ module.exports = {
 module.exports = {
   EnumResolver: __webpack_require__(/*! ./EnumResolver */ "./src/Resolver/EnumResolver.js"),
   BaseResolver: __webpack_require__(/*! ./BaseResolver */ "./src/Resolver/BaseResolver.js"),
-  AccountResolver: __webpack_require__(/*! ./AccountResolver */ "./src/Resolver/AccountResolver.js")
+  AccountResolver: __webpack_require__(/*! ./AccountResolver */ "./src/Resolver/AccountResolver.js"),
+  OperationResolver: __webpack_require__(/*! ./OperationResolver */ "./src/Resolver/OperationResolver.js"),
+  BlockResolver: __webpack_require__(/*! ./BlockResolver */ "./src/Resolver/BlockResolver.js")
 };
 
 /***/ }),
@@ -28615,25 +28847,67 @@ module.exports = {
 const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
 
 const PascalAccountName = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountName;
+/**
+ * The scalar type for an account name.
+ */
+
 
 class AccountName {
+  /**
+   * Gets the name of the scalar type.
+   *
+   * @returns {string}
+   */
   get name() {
     return 'AccountName';
   }
+  /**
+   * Gets a description of the type.
+   *
+   * @returns {string}
+   */
+
 
   get description() {
-    return 'PascalCoin Account name';
+    return 'PascalCoin Account name, 3-64 characters. First character ' + 'cannot start with a number. Set: ' + 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-+{}[]_:`|<>,.?/~';
   }
+  /**
+   * Gets the account name value as a string.
+   *
+   * @param {AccountName} value
+   * @returns {String}
+   */
+
 
   serialize(value) {
-    return new PascalAccountName(value).toString();
+    return value.toString();
   }
+  /**
+   * Parses an account name and returns a new AccountName instance.
+   *
+   * @param {String} value
+   * @returns {PascalAccountName}
+   */
+
 
   parseValue(value) {
-    return new PascalAccountName(value).toString();
+    return new PascalAccountName(value);
   }
+  /**
+   * Parses an account name.
+   *
+   * @param {Object} ast
+   * @returns {null|PascalAccountName}
+   */
 
-  parseLiteral(ast) {}
+
+  parseLiteral(ast) {
+    if (ast.kind === graphql.Kind.STRING) {
+      return this.parseValue(ast.value);
+    }
+
+    return null;
+  }
 
 }
 
@@ -28651,29 +28925,386 @@ module.exports = new graphql.GraphQLScalarType(new AccountName());
 const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
 
 const PascalAccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+/**
+ * A AccountNumber Scalar.
+ */
+
 
 class AccountNumber {
+  /**
+   * Gets the name.
+   *
+   * @returns {string}
+   */
   get name() {
     return 'AccountNumber';
   }
+  /**
+   * Gets a description of the AccountNumber Scalar.
+   *
+   * @returns {string}
+   */
+
 
   get description() {
-    return 'PascalCoin Account Number';
+    return 'PascalCoin Account Number. Can be parsed from int or string + checksum.';
   }
+  /**
+   * Gets the account number.
+   *
+   * @param {PascalAccountNumber} value
+   * @returns {Number}
+   */
+
 
   serialize(value) {
-    return new PascalAccountNumber(value).account;
+    return value.account;
   }
+  /**
+   * Parses the given account number value.
+   *
+   * @param {Number} value
+   * @returns {PascalAccountNumber}
+   */
+
 
   parseValue(value) {
-    return new PascalAccountNumber(value).account;
+    return new PascalAccountNumber(value);
   }
+  /**
+   * Tries to parse an account number value.
+   *
+   * @param {Object} ast
+   * @returns {null|PascalAccountNumber}
+   */
 
-  parseLiteral(ast) {}
+
+  parseLiteral(ast) {
+    if (ast.kind === graphql.Kind.INT || ast.kind === graphql.Kind.STRING) {
+      return this.parseValue(ast.value);
+    }
+
+    return null;
+  }
 
 }
 
 module.exports = new graphql.GraphQLScalarType(new AccountNumber());
+
+/***/ }),
+
+/***/ "./src/Types/Scalar/Currency.js":
+/*!**************************************!*\
+  !*** ./src/Types/Scalar/Currency.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
+
+const PascalCurrency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+/**
+ * Currency scalar.
+ */
+
+
+class Currency {
+  /**
+   * Gets the name of the scalar type.
+   *
+   * @returns {string}
+   */
+  get name() {
+    return 'Currency';
+  }
+  /**
+   * Gets the description of the type.
+   *
+   * @returns {string}
+   */
+
+
+  get description() {
+    return 'PascalCoin Currency - denomination is 4.';
+  }
+  /**
+   * Gets the optimized string representation of the value.
+   *
+   * @param {PascalCurrency} value
+   * @returns {string}
+   */
+
+
+  serialize(value) {
+    return value.toStringOpt();
+  }
+  /**
+   * Parses a currency value.
+   *
+   * @param {String|Number} value
+   * @returns {PascalCurrency}
+   */
+
+
+  parseValue(value) {
+    return new PascalCurrency(value);
+  }
+  /**
+   * Tries to parse a currency from the given value.
+   *
+   * @param {Object} ast
+   * @returns {PascalCurrency}
+   */
+
+
+  parseLiteral(ast) {
+    if (ast.kind === graphql.Kind.INT || ast.kind === graphql.Kind.STRING || ast.kind === graphql.Kind.FLOAT) {
+      return this.parseValue(ast.value);
+    }
+
+    return null;
+  }
+
+}
+
+module.exports = new graphql.GraphQLScalarType(new Currency());
+
+/***/ }),
+
+/***/ "./src/Types/Scalar/HexaString.js":
+/*!****************************************!*\
+  !*** ./src/Types/Scalar/HexaString.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
+
+const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+/**
+ * Describes a HexaString type.
+ */
+
+
+class HexaString {
+  /**
+   * Gets the name of the type.
+   *
+   * @returns {string}
+   */
+  get name() {
+    return 'HexaString';
+  }
+  /**
+   * Gets the description of the type.
+   *
+   * @returns {string}
+   */
+
+
+  get description() {
+    return 'PascalCoin HexaString - Hex values as strings without leading 0x';
+  }
+  /**
+   * Gets the hex value.
+   *
+   * @param {BC} value
+   * @returns {*}
+   */
+
+
+  serialize(value) {
+    return value.toHex();
+  }
+  /**
+   * Tries to parse the given hex value.
+   *
+   * @param {String} value
+   * @returns {BC}
+   */
+
+
+  parseValue(value) {
+    return BC.fromHex(value);
+  }
+  /**
+   * Tries to parse a literal.
+   *
+   * @param {Object} ast
+   * @returns {BC|null}
+   */
+
+
+  parseLiteral(ast) {
+    if (ast.kind === graphql.STRING) {
+      return this.parseValue(ast.value);
+    }
+
+    return null;
+  }
+
+}
+
+module.exports = new graphql.GraphQLScalarType(new HexaString());
+
+/***/ }),
+
+/***/ "./src/Types/Scalar/OperationHash.js":
+/*!*******************************************!*\
+  !*** ./src/Types/Scalar/OperationHash.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
+
+const PascalOperationHash = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.OperationHash;
+/**
+ * Operation Hash scalar type.
+ */
+
+
+class OperationHash {
+  /**
+   * Gets the name of the type.
+   *
+   * @returns {string}
+   */
+  get name() {
+    return 'OperationHash';
+  }
+  /**
+   * Gets the description of the type.
+   *
+   * @returns {string}
+   */
+
+
+  get description() {
+    return 'PascalCoin Operation Hash HexaString.';
+  }
+  /**
+   * Gets the hex representation.
+   *
+   * @param {OperationHash} value
+   * @returns {String}
+   */
+
+
+  serialize(value) {
+    return value.encode().toHex();
+  }
+  /**
+   * Parses an operation hash value.
+   *
+   * @param value
+   * @returns {PascalOperationHash}
+   */
+
+
+  parseValue(value) {
+    return PascalOperationHash.decode(value);
+  }
+  /**
+   * Tries to parse an ophash value.
+   *
+   * @param {Object} ast
+   * @returns {PascalOperationHash|null}
+   */
+
+
+  parseLiteral(ast) {
+    if (ast.kind === graphql.Kind.STRING) {
+      return this.parseValue(ast.value);
+    }
+
+    return null;
+  }
+
+}
+
+module.exports = new graphql.GraphQLScalarType(new OperationHash());
+
+/***/ }),
+
+/***/ "./src/Types/Scalar/PublicKey.js":
+/*!***************************************!*\
+  !*** ./src/Types/Scalar/PublicKey.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
+
+const PascalPublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+/**
+ * A public key scalar type.
+ */
+
+
+class PublicKey {
+  /**
+   * Gets the name of the type.
+   * @returns {string}
+   */
+  get name() {
+    return 'PublicKey';
+  }
+  /**
+   * Gets the description of the type.
+   *
+   * @returns {string}
+   */
+
+
+  get description() {
+    return 'PascalCoin Public Key - output in base58. Input can be hexastring or base58';
+  }
+  /**
+   * Gets the base58 representation.
+   *
+   * @param {PascalPublicKey} value
+   * @returns {String}
+   */
+
+
+  serialize(value) {
+    return value.encode().toBase58();
+  }
+  /**
+   * Tries to parse the value.
+   *
+   * @param {String} value
+   * @returns {PascalPublicKey}
+   */
+
+
+  parseValue(value) {
+    try {
+      return PascalPublicKey.fromBase58(value);
+    } catch (e) {
+      return PascalPublicKey.decode(value);
+    }
+  }
+  /**
+   * Tries to parse the value.
+   *
+   * @param {Object} ast
+   * @returns {null|PascalPublicKey}
+   */
+
+
+  parseLiteral(ast) {
+    if (ast.kind === graphql.Kind.STRING) {
+      return this.parseValue(ast.value);
+    }
+
+    return null;
+  }
+
+}
+
+module.exports = new graphql.GraphQLScalarType(new PublicKey());
 
 /***/ }),
 
@@ -28687,7 +29318,11 @@ module.exports = new graphql.GraphQLScalarType(new AccountNumber());
 module.exports = {
   Scalar: {
     AccountNumber: __webpack_require__(/*! ./Scalar/AccountNumber */ "./src/Types/Scalar/AccountNumber.js"),
-    AccountName: __webpack_require__(/*! ./Scalar/AccountName */ "./src/Types/Scalar/AccountName.js")
+    AccountName: __webpack_require__(/*! ./Scalar/AccountName */ "./src/Types/Scalar/AccountName.js"),
+    HexaString: __webpack_require__(/*! ./Scalar/HexaString */ "./src/Types/Scalar/HexaString.js"),
+    Currency: __webpack_require__(/*! ./Scalar/Currency */ "./src/Types/Scalar/Currency.js"),
+    OperationHash: __webpack_require__(/*! ./Scalar/OperationHash */ "./src/Types/Scalar/OperationHash.js"),
+    PublicKey: __webpack_require__(/*! ./Scalar/PublicKey */ "./src/Types/Scalar/PublicKey.js")
   }
 };
 

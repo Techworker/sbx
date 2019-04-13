@@ -7,5 +7,12 @@ module.exports = {
     }
 
     return Operation[value];
+  },
+  SUBTYPE: function (value) {
+    if (value === 'ALL') {
+      return -1;
+    }
+
+    return Operation['SUBTYPE_' + value];
   }
 };

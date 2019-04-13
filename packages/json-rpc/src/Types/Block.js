@@ -50,7 +50,7 @@ class Block extends Abstract {
     this[P_TIMESTAMP] = parseInt(data.timestamp, 10);
     this[P_TARGET] = new BigNumber(data.target.toString());
     this[P_NONCE] = new BigNumber(data.nonce.toString());
-    this[P_PAYLOAD] = BC.fromString(data.payload);
+    this[P_PAYLOAD] = data.payload;
     this[P_SBH] = BC.fromHex(data.sbh);
     this[P_OPH] = BC.fromHex(data.oph);
     this[P_POW] = BC.fromHex(data.pow);
@@ -146,7 +146,7 @@ class Block extends Abstract {
   /**
    * Gets the payload of the miner.
    *
-   * @returns {BC}
+   * @returns {String}
    */
   get payload() {
     return this[P_PAYLOAD];
