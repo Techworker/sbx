@@ -11,6 +11,7 @@ This monorepo contains the following packages:
  - `@sbx/epasa` - EPasa implementation
  - `@sbx/json-rpc` - Javascript to PascalCoin node communication
  - `@sbx/signing` - Sign operations in javascript without a node.
+ - `@sbx/graphql` - GraphQL helpers
  - `@sbx/pascalcoin` - All in one package
 
 **Dependency Tree**

@@ -1,17 +1,22 @@
+const fs = require('fs');
 const sbxGraphql = require('@sbx/graphql');
 const sbxRpc = require('@sbx/json-rpc');
 const apollo = require('apollo-server');
 
-const rpc = sbxRpc.Client.factory('http://127.0.0.1:4003');
+const AccountResolver = require('./src/Resolver/AccountResolver');
+const OperationResolver = require('./src/Resolver/OperationResolver');
+const BlockResolver = require('./src/Resolver/BlockResolver');
+
+const rpc = sbxRpc.Client.factory('http://127.0.0.1:4103');
 
 const sbxResolvers = {
-  account: new sbxGraphql.Resolver.AccountResolver(rpc),
-  operation: new sbxGraphql.Resolver.OperationResolver(rpc),
-  block: new sbxGraphql.Resolver.BlockResolver(rpc)
+  account: new AccountResolver(rpc),
+  operation: new OperationResolver(rpc),
+  block: new BlockResolver(rpc)
 };
 
 // GraphQL schema
-var typeDefs = apollo.gql(sbxGraphql.Schema);
+var typeDefs = apollo.gql(fs.readFileSync('./schema.graphql').toString());
 
 const apolloResolvers = {
   // SCALAR TYPES

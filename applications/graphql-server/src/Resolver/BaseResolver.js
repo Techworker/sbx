@@ -75,13 +75,17 @@ class BaseResolver {
           }
         });
 
-        if (collected.length === limit) {
+        if (collected.length >= limit) {
           return false;
         }
       });
 
-      innerPromise.then(() => resolve(collected));
-      innerPromise.catch((err) => reject(err));
+      innerPromise.then(() => {
+        resolve(collected);
+      });
+      innerPromise.catch((err) => {
+        reject(err);
+      });
     });
   }
 }

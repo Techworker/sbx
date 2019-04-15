@@ -6,9 +6,9 @@ scalar OperationHash
 scalar PublicKey
 
 type Query {
-    getAccount(account: AccountNumber!): Account
-    getOperation(opHash: OperationHash!): Operation
-    getBlock(block: Int!): Block
+    fetchAccount(account: AccountNumber!): Account
+    fetchOperation(opHash: OperationHash!): Operation
+    fetchBlock(block: Int!): Block
 }
 
 enum OpType {
@@ -26,29 +26,57 @@ enum OpType {
     DATA
 }
 
+enum SubType {
+    ALL
+    MINER
+    DEVELOPER
+    TX_SENDER
+    TX_RECEIVER
+    TX_BUY_BUYER
+    TX_BUY_TARGET
+    TX_BUY_SELLER
+    CHANGE_KEY
+    RECOVER
+    LIST_PUBLIC
+    LIST_PRIVATE
+    DELIST
+    BUY_BUYER
+    BUY_TARGET
+    BUY_SELLER
+    CHANGE_KEY_SIGNED
+    CHANGE_ACCOUNT_INFO
+    MULTI_GLOBAL
+    MULTI_ACCOUNT_INFO
+    DATA_GLOBAL
+    DATA_SENDER
+    DATA_SIGNER
+    DATA_RECEIVER
+}
+
 enum AccountState {
     normal
     listed
 }
 
 type Account {
-    account: AccountNumber!
+    account: AccountNumber
     name: AccountName
-    type: Int!
-    balance: Currency!
-    nOperation: Int!
-    updatedB: Int!
-    state: AccountState!
-    lockedUntilBlock: Int!
+    type: Int
+    balance: Currency
+    nOperation: Int
+    updatedB: Int
+    state: AccountState
+    lockedUntilBlock: Int
+    fetchLockedUntilBlock: Block
     price: Currency
     sellerAccount: Account
     privateSale: Boolean
     publicKey: PublicKey
-    getOperations(page: Int = 1, amount: Int = 100, opType: OpType = IGNORE) : [Operation]
+    fetchOperations(page: Int = 1, amount: Int = 100, opType: OpType = ALL, subType: SubType = ALL) : [Operation]
 }
 
 type Block {
-    block: AccountNumber
+    block: Int
     publicKey: PublicKey
     reward: Currency
     fee: Currency
@@ -64,58 +92,63 @@ type Block {
     hashratekhs: Int
     maturation: Int
     operations: Int
-    getOperations(page: Int = 1, amount: Int = 100, opType: OpType = IGNORE) : [Operation]
+    fetchOperations(page: Int = 1, amount: Int = 100, opType: OpType = IGNORE, subType: SubType = ALL) : [Operation]
 }
 
 type Operation {
     valid: Boolean
     errors: String
     payload: HexaString
+    payloadAsString: String
     block: Int
+    fetchBlock: Block
     time: Int
     opBlock: Int
     maturation: Int
     opType: Int
-    account: Account
-    accountNumber: AccountNumber
+    account: AccountNumber
+    fetchAccount: Account
     opTxt: String
     amount: Currency
     fee: Currency
     balance: Currency
     opHash: OperationHash
     subType: Int
-    signerAccount: Account
-    signerAccountNumber: AccountNumber
+    signerAccount: AccountNumber
+    fetchSignerAccount: Account
     changers: [Changer],
     receivers: [Receiver],
     senders: [Sender]
 }
 
 type Changer {
-    account: Account
-    accountNumber: AccountNumber
+    account: AccountNumber
+    fetchAccount: Account
     nOperation: Int
     newPublicKey: PublicKey
     newName: AccountName
     newType: Int
-    sellerAccount: Account
-    sellerAccountNumber: AccountNumber
+    sellerAccount: AccountNumber
+    fetchSellerAccount: Account
     accountPrice: Currency
     lockedUntilBlock: Int
+    fetchLockedUntilBlock: Block
     fee: Currency
 }
 
 type Receiver {
-    account: Account
-    accountNumber: AccountNumber
+    account: AccountNumber
+    fetchAccount: Account
     amount: Currency
     payload: HexaString
+    payloadAsString: String
 }
 
 type Sender {
-    account: Account
-    accountNumber: AccountNumber
+    account: AccountNumber
+    fetchAccount: Account
     nOperation: Int
     amount: Currency
     payload: HexaString
+    payloadAsString: String
 }
