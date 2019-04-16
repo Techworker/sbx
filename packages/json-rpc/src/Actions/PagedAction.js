@@ -61,10 +61,24 @@ class PagedAction extends BaseAction {
    *
    * @returns {Promise}
    */
-  async executeAllReport(reporter) {
+  async executeAllReport(reporter, restEach = -1, restSeconds = -1, restCallback = null) {
     let result = [];
+    var reports = 0;
 
     do {
+      if (restEach > -1 && reports > 0 && reports % restEach === 0) {
+        if (restCallback !== null) {
+          restCallback();
+        }
+        await (async () => {
+          return new Promise(function (resolve) {
+            setTimeout(function () {
+              resolve();
+            }, restSeconds * 1000);
+          });
+        })();
+      }
+
       result = await this.execute();
       let c = reporter(result);
 
@@ -72,6 +86,7 @@ class PagedAction extends BaseAction {
       if (c === false) {
         return;
       }
+      reports++;
       this.changeParam('start', this.params.start + this.params.max);
     } while (result[0].length > 0 && result[0].length === this.params.max);
   }
