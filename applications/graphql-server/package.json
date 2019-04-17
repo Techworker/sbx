@@ -1,6 +1,6 @@
 {
   "name": "@pascalcoin-sbx/application-graphql-server",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Graphql server.",
   "main": "index.js",
   "directories": {
@@ -18,7 +18,7 @@
   "license": "MIT",
   "scripts": {},
   "dependencies": {
-    "@pascalcoin-sbx/graphql": "^0.0.9",
+    "@pascalcoin-sbx/graphql": "^0.0.10",
     "apollo-server": "^2.4.8",
     "graphql": "^14.2.1"
   },

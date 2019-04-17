@@ -1,6 +1,6 @@
 {
   "name": "@pascalcoin-sbx/application-export-csv",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Exports transactions.",
   "main": "index.js",
   "keywords": [
@@ -15,7 +15,7 @@
   "license": "MIT",
   "scripts": {},
   "dependencies": {
-    "@pascalcoin-sbx/json-rpc": "^0.0.9",
+    "@pascalcoin-sbx/json-rpc": "^0.0.10",
     "prompt": "^1.0.0"
   },
   "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad"
