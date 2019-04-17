@@ -22,5 +22,6 @@
     "@sbx/epasa": "^0.0.4",
     "@sbx/json-rpc": "^0.0.4",
     "@sbx/signing": "^0.0.4"
-  }
+  },
+  "gitHead": "7f73410c512a5671f77439c984bf443ee449299f"
 }
