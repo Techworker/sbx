@@ -1,6 +1,6 @@
 {
   "name": "@sbx/application-export-csv",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Exports transactions.",
   "main": "index.js",
   "keywords": [
@@ -10,10 +10,9 @@
   ],
   "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
   "license": "MIT",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
-    "@sbx/json-rpc": "0.0.1",
+    "@sbx/json-rpc": "^0.0.2",
     "prompt": "^1.0.0"
   }
 }

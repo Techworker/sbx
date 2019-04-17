@@ -1,12 +1,16 @@
 {
   "name": "@sbx/common",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Core basics for the PascalCoin BlockChain project.",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
-  "keywords": ["PascalCoin", "BlockChain", "Cryptography"],
+  "keywords": [
+    "PascalCoin",
+    "BlockChain",
+    "Cryptography"
+  ],
   "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
   "license": "MIT",
   "scripts": {

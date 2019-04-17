@@ -1,12 +1,16 @@
 {
   "name": "@sbx/signing",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Offline signing functionality for the PascalCoin BlockChain project.",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
-  "keywords": ["PascalCoin", "BlockChain", "Cryptography"],
+  "keywords": [
+    "PascalCoin",
+    "BlockChain",
+    "Cryptography"
+  ],
   "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -16,7 +20,7 @@
     "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
   },
   "dependencies": {
-    "@sbx/common": "0.0.1",
-    "@sbx/crypto": "0.0.1"
+    "@sbx/common": "^0.0.2",
+    "@sbx/crypto": "^0.0.2"
   }
 }

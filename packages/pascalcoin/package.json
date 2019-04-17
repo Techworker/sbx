@@ -1,22 +1,26 @@
 {
   "name": "@sbx/pascalcoin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "All in one package.",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
-  "keywords": ["PascalCoin", "BlockChain", "Cryptography"],
+  "keywords": [
+    "PascalCoin",
+    "BlockChain",
+    "Cryptography"
+  ],
   "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
   "license": "MIT",
   "scripts": {
     "build": "webpack --env dev && webpack --env build"
   },
   "dependencies": {
-    "@sbx/common": "0.0.1",
-    "@sbx/epasa": "0.0.1",
-    "@sbx/crypto": "0.0.1",
-    "@sbx/json-rpc": "0.0.1",
-    "@sbx/signing": "0.0.1"
+    "@sbx/common": "^0.0.2",
+    "@sbx/crypto": "^0.0.2",
+    "@sbx/epasa": "^0.0.2",
+    "@sbx/json-rpc": "^0.0.2",
+    "@sbx/signing": "^0.0.2"
   }
 }
