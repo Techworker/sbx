@@ -4,7 +4,7 @@ const Base58 = require('@pascalcoin-sbx/common').Base58;
 const BC = require('@pascalcoin-sbx/common').BC;
 
 const chai = require('chai');
-
+// test lerna
 chai.expect();
 const expect = chai.expect;
 
