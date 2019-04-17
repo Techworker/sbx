@@ -1,6 +1,6 @@
 {
   "name": "@sbx/crypto",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Cryptographic functionalities for the PascalCoin BlockChain project.",
   "main": "index.js",
   "directories": {
@@ -20,7 +20,7 @@
     "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
   },
   "dependencies": {
-    "@sbx/common": "^0.0.4",
+    "@sbx/common": "^0.0.5",
     "elliptic": "^6.4.1",
     "mipher": "^1.1.5"
   },

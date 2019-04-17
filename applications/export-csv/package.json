@@ -1,6 +1,6 @@
 {
   "name": "@sbx/application-export-csv",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Exports transactions.",
   "main": "index.js",
   "keywords": [
@@ -12,7 +12,7 @@
   "license": "MIT",
   "scripts": {},
   "dependencies": {
-    "@sbx/json-rpc": "^0.0.4",
+    "@sbx/json-rpc": "^0.0.5",
     "prompt": "^1.0.0"
   },
   "gitHead": "7f73410c512a5671f77439c984bf443ee449299f"
