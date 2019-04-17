@@ -1,6 +1,6 @@
 {
   "name": "sbx",
-  "private": false,
+  "private": true,
   "version": "0.0.1",
   "description": "A library to work with pascalcoin in nodejs and the browser.",
   "scripts": {
