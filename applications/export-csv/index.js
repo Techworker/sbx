@@ -16,13 +16,13 @@ function slugify(text) {
 }
 
 function appendCSV(account, date_from, date_to, csv) {
-  const f = slugify(`${account}_${date_from}_${date_to}.csv`);
+  const f = slugify(`${account}_${date_from}_${date_to}`) + '.csv';
 
   fs.appendFileSync('./' + f, csv);
 }
 
 function deleteCSV(account, date_from, date_to) {
-  const f = slugify(`${account}_${date_from}_${date_to}.csv`);
+  const f = slugify(`${account}_${date_from}_${date_to}`) + '.csv';
 
   if (fs.existsSync('./' + f)) {
     fs.unlinkSync('./' + f);
@@ -63,7 +63,7 @@ prompt.get(['account', 'year_from', 'month_from', 'day_from', 'year_to', 'month_
   let month_to = parseInt(result.month_to, 10) - 1;
   let day_to = parseInt(result.day_to, 10);
 
-  if (day_from > 0 && (Number.isNan(year_from) || Number.isNaN(month_from))) {
+  if (day_from > 0 && (Number.isNaN(year_from) || Number.isNaN(month_from))) {
     console.error('if you set the day, set month and year');
     process.exit();
   }
@@ -108,8 +108,8 @@ prompt.get(['account', 'year_from', 'month_from', 'day_from', 'year_to', 'month_
       }
     }
   } else {
-    year_to = 2050;
-    month_to = 12;
+    year_to = 2025;
+    month_to = 11;
     day_to = 31;
   }
 
@@ -122,7 +122,7 @@ prompt.get(['account', 'year_from', 'month_from', 'day_from', 'year_to', 'month_
 
   deleteCSV(account, formatDate(dFromDate), formatDate(dToDate));
 
-  const action = rpc.getAccountOperations({account: 1000, depth: 1000000});
+  const action = rpc.getAccountOperations({account: account, depth: 1000000});
   let counts = {
     account: account,
     reports: 0,
@@ -139,12 +139,18 @@ prompt.get(['account', 'year_from', 'month_from', 'day_from', 'year_to', 'month_
     operations = transform(operations);
     let csv = '';
     let txDate;
+    let optype;
 
     counts.reports++;
     let exitProcess = false;
 
     operations.forEach((operation) => {
+      txDate = new Date(operation.time * 1000);
+      optype = operation.opType;
       counts.all++;
+      if (exitProcess) {
+        return;
+      }
       if (operation.isTransaction()) {
         counts.tx++;
         let type = 'outgoing';
@@ -152,8 +158,6 @@ prompt.get(['account', 'year_from', 'month_from', 'day_from', 'year_to', 'month_
         if (operation.subType === 12) {
           type = 'incoming';
         }
-
-        txDate = new Date(operation.time * 1000);
 
         let skip = false;
 
@@ -165,23 +169,24 @@ prompt.get(['account', 'year_from', 'month_from', 'day_from', 'year_to', 'month_
           }
         }
 
-        if (exitProcess) {
+        if (exitProcess && csv !== '') {
           appendCSV(account, formatDate(dFromDate), formatDate(dToDate), csv);
+          csv = '';
           return false;
         }
 
         if (!skip) {
           let line = `${operation.block},`;
 
-          line += `${type},`;
-          line += `${operation.senders[0].account.account},`;
-          line += `${operation.receivers[0].account.account},`;
-          line += `${operation.amount.toStringOpt()},`;
-          line += `${operation.fee.toStringOpt()},`;
-          line += `${formatDate(txDate)},`;
-          line += `${operation.opTxt},`;
-          line += `${operation.payload.toString()},`;
-          line += `${operation.opHash.encode().toHex()}`;
+          line += `"${type}",`;
+          line += `"${operation.senders[0].account.account}",`;
+          line += `"${operation.receivers[0].account.account}",`;
+          line += `"${operation.amount.toStringOpt()}",`;
+          line += `"${operation.fee.toStringOpt()}",`;
+          line += `"${formatDate(txDate)}",`;
+          line += `"${operation.opTxt}",`;
+          line += `"${operation.payload.toString().replace(/"/g, '\\\"')}",`;
+          line += `"${operation.opHash.encode().toHex()}"`;
 
           csv += `${line}\n`;
           counts.txCollected++;
@@ -196,10 +201,13 @@ prompt.get(['account', 'year_from', 'month_from', 'day_from', 'year_to', 'month_
 
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
-    process.stdout.write(`R${counts.reports} ${counts.all}/${counts.tx}/${counts.txSkipped}/${counts.txCollected} ${txDate !== undefined ? formatDate(txDate) : ''}`);
+    process.stdout.write(`R${counts.reports} ${counts.all}/${counts.tx}/${counts.txSkipped}/${counts.txCollected} ${txDate !== undefined ? formatDate(txDate) : ''} [${optype}]`);
     // console.log((`R${counts.reports} ${counts.all}/${counts.tx}/${counts.txSkipped}/${counts.txCollected} ${txDate !== undefined ? formatDate(txDate) : ''}`));
-    appendCSV(account, formatDate(dFromDate), formatDate(dToDate), csv);
-  }, 50, 10, () => {
+    if (csv !== '') {
+      appendCSV(account, formatDate(dFromDate), formatDate(dToDate), csv);
+      csv = '';
+    }
+  }, 200, 10, () => {
     // console.log(' - giving node some time to rest..');
     process.stdout.write(' - giving node some time to rest..');
   }).then(() => {
