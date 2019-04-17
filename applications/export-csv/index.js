@@ -40,7 +40,7 @@ function formatDate(date) {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
-
+// hello
 prompt.get(['account', 'year_from', 'month_from', 'day_from', 'year_to', 'month_to', 'day_to', 'node'], (err, result) => {
 
   console.log('');
