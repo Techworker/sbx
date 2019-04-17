@@ -1,6 +1,6 @@
 {
   "name": "@sbx/graphql",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Graphql.",
   "main": "index.js",
   "directories": {
@@ -19,7 +19,7 @@
     "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
   },
   "dependencies": {
-    "@sbx/json-rpc": "^0.0.6",
+    "@sbx/json-rpc": "^0.0.7",
     "graphql": "^14.2.1"
   },
   "gitHead": "4320cc64746f9c8526f622525f0c104c08afbcb7"
