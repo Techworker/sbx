@@ -8,6 +8,9 @@
     "BlockChain",
     "Cryptography"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
   "license": "MIT",
   "scripts": {},
@@ -15,5 +18,5 @@
     "@sbx/json-rpc": "^0.0.7",
     "prompt": "^1.0.0"
   },
-  "gitHead": "4320cc64746f9c8526f622525f0c104c08afbcb7"
+  "gitHead": "193542dfc142ce356b871ffe484d221aea44973f"
 }
