@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@sbx/common"));
+		module.exports = factory(require("@pascalcoin-sbx/common"));
 	else if(typeof define === 'function' && define.amd)
-		define("@sbx/epasa", ["@sbx/common"], factory);
+		define("@pascalcoin-sbx/epasa", ["@pascalcoin-sbx/common"], factory);
 	else if(typeof exports === 'object')
-		exports["@sbx/epasa"] = factory(require("@sbx/common"));
+		exports["@pascalcoin-sbx/epasa"] = factory(require("@pascalcoin-sbx/common"));
 	else
-		root["@sbx/epasa"] = factory(root["@sbx/common"]);
+		root["@pascalcoin-sbx/epasa"] = factory(root["@pascalcoin-sbx/common"]);
 })(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE__sbx_common__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -776,9 +776,9 @@ module.exports = {
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const AccountNumber = __webpack_require__(/*! @sbx/common */ "@sbx/common").Types.AccountNumber;
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.AccountNumber;
 
-const AccountName = __webpack_require__(/*! @sbx/common */ "@sbx/common").Types.AccountName;
+const AccountName = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.AccountName;
 
 const MurmurHash3 = __webpack_require__(/*! murmur-hash */ "../../node_modules/murmur-hash/index.js").v3;
 
@@ -786,7 +786,7 @@ const Ascii = __webpack_require__(/*! ./Types/Ascii */ "./src/Types/Ascii.js");
 
 const Base58 = __webpack_require__(/*! ./Types/Base58 */ "./src/Types/Base58.js");
 
-const BC = __webpack_require__(/*! @sbx/common */ "@sbx/common").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 
 const P_ACCOUNT_NUMBER = Symbol('account_number');
 const P_ACCOUNT_NAME = Symbol('account_name');
@@ -1364,9 +1364,9 @@ const EPasa = __webpack_require__(/*! ./EPasa */ "./src/EPasa.js");
 
 const Ascii = __webpack_require__(/*! ./Types/Ascii */ "./src/Types/Ascii.js");
 
-const BC = __webpack_require__(/*! @sbx/common */ "@sbx/common").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 
-const AccountName = __webpack_require__(/*! @sbx/common */ "@sbx/common").Types.AccountName;
+const AccountName = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.AccountName;
 /**
  * A small parser for the EPASA format.
  */
@@ -1614,7 +1614,7 @@ module.exports = Parser;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const Util = __webpack_require__(/*! @sbx/common */ "@sbx/common").Util;
+const Util = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Util;
 
 const P_VALUE = Symbol('value'); // the list of characters to escape.
 
@@ -1779,9 +1779,9 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
 
 /***/ }),
 
-/***/ "@sbx/common":
+/***/ "@pascalcoin-sbx/common":
 /*!******************************!*\
-  !*** external "@sbx/common" ***!
+  !*** external "@pascalcoin-sbx/common" ***!
   \******************************/
 /*! no static exports found */
 /***/ (function(module, exports) {

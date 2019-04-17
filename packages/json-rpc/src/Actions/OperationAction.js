@@ -6,7 +6,7 @@
  */
 
 const BaseAction = require('./BaseAction');
-const Currency = require('@sbx/common').Types.Currency;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 
 /**
  * An object that holds infos about an operation action. It extends the

@@ -6,9 +6,9 @@
  */
 
 const Abstract = require('./Abstract');
-const BC = require('@sbx/common').BC;
-const Curve = require('@sbx/common').Types.Keys.Curve;
-const PublicKey = require('@sbx/common').Types.Keys.PublicKey;
+const BC = require('@pascalcoin-sbx/common').BC;
+const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
+const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 
 const P_NAME = Symbol('block');
 const P_ENC_PUBKEY = Symbol('publicKey');

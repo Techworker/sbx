@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const OperationHash = require('@sbx/common').Types.OperationHash;
-const BC = require('@sbx/common').BC;
+const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const chai = require('chai');
 

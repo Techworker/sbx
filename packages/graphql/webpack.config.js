@@ -5,7 +5,7 @@ const webpackBaseConfig = require('./../../webpack.config');
 const configLight = webpackBaseConfig(__dirname, '.light');
 
 configLight.externals = {
-    '@sbx/json-rpc': '@sbx/json-rpc'
+    '@pascalcoin-sbx/json-rpc': '@pascalcoin-sbx/json-rpc'
 };
 
 const configFull = webpackBaseConfig(__dirname, '');

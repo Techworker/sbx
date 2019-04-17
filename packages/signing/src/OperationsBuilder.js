@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-const BC = require('@sbx/common').BC;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const P_OPERATIONS = Symbol('operations');
 

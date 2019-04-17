@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const PrivateKey = require('@sbx/common').Types.Keys.PrivateKey;
-const Curve = require('@sbx/common').Types.Keys.Curve;
-const BC = require('@sbx/common').BC;
+const PrivateKey = require('@pascalcoin-sbx/common').Types.Keys.PrivateKey;
+const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const chai = require('chai');
 

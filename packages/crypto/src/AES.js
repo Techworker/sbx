@@ -9,7 +9,7 @@
 
 const mAES = require('mipher/dist/aes');
 const AES_CBC_ZeroPadding = require('./mipher/AES_CBC_ZeroPadding');
-const BC = require('@sbx/common').BC;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 /**
  * AES encryption / decryption for PascalCoin.

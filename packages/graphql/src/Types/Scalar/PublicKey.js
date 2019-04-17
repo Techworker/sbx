@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const PascalPublicKey = require('@sbx/common').Types.Keys.PublicKey;
+const PascalPublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 
 /**
  * A public key scalar type.

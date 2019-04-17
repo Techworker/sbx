@@ -1,4 +1,4 @@
-const Abstract = require('@sbx/json-rpc').Types.Abstract;
+const Abstract = require('@pascalcoin-sbx/json-rpc').Types.Abstract;
 const chai = require('chai');
 
 chai.expect();

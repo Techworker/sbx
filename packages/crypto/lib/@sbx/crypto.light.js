@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@sbx/common"));
+		module.exports = factory(require("@pascalcoin-sbx/common"));
 	else if(typeof define === 'function' && define.amd)
-		define("@sbx/crypto", ["@sbx/common"], factory);
+		define("@pascalcoin-sbx/crypto", ["@pascalcoin-sbx/common"], factory);
 	else if(typeof exports === 'object')
-		exports["@sbx/crypto"] = factory(require("@sbx/common"));
+		exports["@pascalcoin-sbx/crypto"] = factory(require("@pascalcoin-sbx/common"));
 	else
-		root["@sbx/crypto"] = factory(root["@sbx/common"]);
+		root["@pascalcoin-sbx/crypto"] = factory(root["@pascalcoin-sbx/common"]);
 })(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE__sbx_common__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -25540,7 +25540,7 @@ const mAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/miph
 
 const AES_CBC_ZeroPadding = __webpack_require__(/*! ./mipher/AES_CBC_ZeroPadding */ "./src/mipher/AES_CBC_ZeroPadding.js");
 
-const BC = __webpack_require__(/*! @sbx/common */ "@sbx/common").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 /**
  * AES encryption / decryption for PascalCoin.
  */
@@ -25620,9 +25620,9 @@ module.exports = AES;
  */
 
 
-const Sha = __webpack_require__(/*! @sbx/common */ "@sbx/common").Sha;
+const Sha = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Sha;
 
-const BC = __webpack_require__(/*! @sbx/common */ "@sbx/common").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 
 const AES = __webpack_require__(/*! ./AES */ "./src/AES.js");
 
@@ -25703,9 +25703,9 @@ module.exports = ECDH;
  */
 
 
-const Sha = __webpack_require__(/*! @sbx/common */ "@sbx/common").Sha;
+const Sha = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Sha;
 
-const BC = __webpack_require__(/*! @sbx/common */ "@sbx/common").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 /**
  * Key derivation function(s).
  */
@@ -25769,15 +25769,15 @@ const KDF = __webpack_require__(/*! ./KDF */ "./src/KDF.js");
 
 const Random = __webpack_require__(/*! mipher/dist/random */ "../../node_modules/mipher/dist/random.js");
 
-const Curve = __webpack_require__(/*! @sbx/common */ "@sbx/common").Types.Keys.Curve;
+const Curve = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.Curve;
 
-const PrivateKey = __webpack_require__(/*! @sbx/common */ "@sbx/common").Types.Keys.PrivateKey;
+const PrivateKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PrivateKey;
 
-const PublicKey = __webpack_require__(/*! @sbx/common */ "@sbx/common").Types.Keys.PublicKey;
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
 
-const KeyPair = __webpack_require__(/*! @sbx/common */ "@sbx/common").Types.Keys.KeyPair;
+const KeyPair = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.KeyPair;
 
-const BC = __webpack_require__(/*! @sbx/common */ "@sbx/common").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 /**
  * Handles cryptographic keys.
  */
@@ -25911,7 +25911,7 @@ module.exports = Keys;
  */
 
 
-const BC = __webpack_require__(/*! @sbx/common */ "@sbx/common").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 
 const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
 
@@ -26152,9 +26152,9 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
 
 /***/ }),
 
-/***/ "@sbx/common":
+/***/ "@pascalcoin-sbx/common":
 /*!******************************!*\
-  !*** external "@sbx/common" ***!
+  !*** external "@pascalcoin-sbx/common" ***!
   \******************************/
 /*! no static exports found */
 /***/ (function(module, exports) {

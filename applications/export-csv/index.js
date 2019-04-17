@@ -1,5 +1,5 @@
 const fs = require('fs');
-const sbxRpc = require('@sbx/json-rpc');
+const sbxRpc = require('@pascalcoin-sbx/json-rpc');
 
 const prompt = require('prompt');
 

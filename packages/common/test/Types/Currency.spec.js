@@ -1,4 +1,4 @@
-const Currency = require('@sbx/common').Types.Currency;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 
 const chai = require('chai');
 

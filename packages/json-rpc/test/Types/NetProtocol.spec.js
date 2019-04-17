@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const NetProtocol = require('@sbx/json-rpc').Types.NetProtocol;
+const NetProtocol = require('@pascalcoin-sbx/json-rpc').Types.NetProtocol;
 
 const chai = require('chai');
 

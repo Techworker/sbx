@@ -5,12 +5,12 @@
  * file that was distributed with this source code.
  */
 
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
-const AccountName = require('@sbx/common').Types.AccountName;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
 const MurmurHash3 = require('murmur-hash').v3;
 const Ascii = require('./Types/Ascii');
 const Base58 = require('./Types/Base58');
-const BC = require('@sbx/common').BC;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const P_ACCOUNT_NUMBER = Symbol('account_number');
 const P_ACCOUNT_NAME = Symbol('account_name');

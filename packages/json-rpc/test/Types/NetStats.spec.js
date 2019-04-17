@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const NetStats = require('@sbx/json-rpc').Types.NetStats;
+const NetStats = require('@pascalcoin-sbx/json-rpc').Types.NetStats;
 
 const chai = require('chai');
 

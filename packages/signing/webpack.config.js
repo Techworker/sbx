@@ -5,8 +5,8 @@ const webpackBaseConfig = require('./../../webpack.config');
 const configLight = webpackBaseConfig(__dirname, '.light');
 
 configLight.externals = {
-  '@sbx/common': '@sbx/common',
-  '@sbx/crypto': '@sbx/crypto'
+  '@pascalcoin-sbx/common': '@pascalcoin-sbx/common',
+  '@pascalcoin-sbx/crypto': '@pascalcoin-sbx/crypto'
 };
 
 const configFull = webpackBaseConfig(__dirname, '');

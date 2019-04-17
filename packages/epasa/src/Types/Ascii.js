@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-const Util = require('@sbx/common').Util;
+const Util = require('@pascalcoin-sbx/common').Util;
 
 const P_VALUE = Symbol('value');
 

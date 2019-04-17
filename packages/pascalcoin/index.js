@@ -1,7 +1,7 @@
 module.exports = {
-  Common: require('@sbx/common'),
-  Crypto: require('@sbx/crypto'),
-  JsonRpc: require('@sbx/json-rpc'),
-  Signing: require('@sbx/signing'),
-  EPasa: require('@sbx/epasa')
+  Common: require('@pascalcoin-sbx/common'),
+  Crypto: require('@pascalcoin-sbx/crypto'),
+  JsonRpc: require('@pascalcoin-sbx/json-rpc'),
+  Signing: require('@pascalcoin-sbx/signing'),
+  EPasa: require('@pascalcoin-sbx/epasa')
 };

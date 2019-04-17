@@ -1,4 +1,4 @@
-const Curve = require('@sbx/common').Types.Keys.Curve;
+const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
 const elliptic = require('elliptic');
 
 const chai = require('chai');

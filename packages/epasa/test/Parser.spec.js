@@ -1,7 +1,7 @@
 const chai = require('chai');
-const EPasaParser = require('@sbx/epasa').Parser;
-const EPasa = require('@sbx/epasa').EPasa;
-const BC = require('@sbx/common').BC;
+const EPasaParser = require('@pascalcoin-sbx/epasa').Parser;
+const EPasa = require('@pascalcoin-sbx/epasa').EPasa;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 chai.expect();
 const expect = chai.expect;

@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const Block = require('@sbx/json-rpc').Types.Block;
-const PublicKey = require('@sbx/common').Types.Keys.PublicKey;
-const Currency = require('@sbx/common').Types.Currency;
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
-const BC = require('@sbx/common').BC;
+const Block = require('@pascalcoin-sbx/json-rpc').Types.Block;
+const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const BC = require('@pascalcoin-sbx/common').BC;
 const BigNumber = require('bignumber.js');
 
 const chai = require('chai');

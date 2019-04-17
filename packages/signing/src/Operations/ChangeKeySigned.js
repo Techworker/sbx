@@ -6,9 +6,9 @@
  */
 
 const Abstract = require('./../Abstract');
-const BC = require('@sbx/common').BC;
-const PublicKey = require('@sbx/common').Types.Keys.PublicKey;
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
+const BC = require('@pascalcoin-sbx/common').BC;
+const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 
 const P_ACCOUNT_SIGNER = Symbol('account_signer');
 const P_ACCOUNT_TARGET = Symbol('account_target');

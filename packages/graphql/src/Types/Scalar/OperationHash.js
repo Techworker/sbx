@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const PascalOperationHash = require('@sbx/common').Types.OperationHash;
+const PascalOperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
 
 /**
  * Operation Hash scalar type.

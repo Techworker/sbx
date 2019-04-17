@@ -110,7 +110,7 @@ Object.keys(data.methods).forEach((m) => {
     gen += '**Example:**' + NL + NL;
 
     gen += '```js' + NL +
-        "const sbxRpc = require('@sbx/json-rpc');" + NL + NL +
+        "const sbxRpc = require('@pascalcoin-sbx/json-rpc');" + NL + NL +
         '// create an rpc client for a local wallet' + NL +
         "const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');" + NL + NL;
 
@@ -153,7 +153,7 @@ Object.keys(data.methods).forEach((m) => {
     gen += '**Example to fetch all data:**' + NL + NL;
 
     gen += '```js' + NL +
-        "const sbxRpc = require('@sbx/json-rpc');" + NL + NL +
+        "const sbxRpc = require('@pascalcoin-sbx/json-rpc');" + NL + NL +
         '// create an rpc client for a local wallet' + NL +
         "const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');" + NL + NL;
 
@@ -194,7 +194,7 @@ Object.keys(data.methods).forEach((m) => {
     gen += '**Example for custom paging:**' + NL + NL;
 
     gen += '```js' + NL +
-        "const sbxRpc = require('@sbx/json-rpc');" + NL + NL +
+        "const sbxRpc = require('@pascalcoin-sbx/json-rpc');" + NL + NL +
         '// create an rpc client for a local wallet' + NL +
         "const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');" + NL + NL;
 
@@ -238,7 +238,7 @@ Object.keys(data.methods).forEach((m) => {
     gen += '**Example to fetch all data but getting paged data reported.:**' + NL + NL;
 
     gen += '```js' + NL +
-        "const sbxRpc = require('@sbx/json-rpc');" + NL + NL +
+        "const sbxRpc = require('@pascalcoin-sbx/json-rpc');" + NL + NL +
         '// create an rpc client for a local wallet' + NL +
         "const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');" + NL + NL;
 

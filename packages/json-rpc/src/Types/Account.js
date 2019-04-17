@@ -7,11 +7,11 @@
 
 const Abstract = require('./Abstract');
 
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
-const AccountName = require('@sbx/common').Types.AccountName;
-const BC = require('@sbx/common').BC;
-const PublicKey = require('@sbx/common').Types.Keys.PublicKey;
-const Currency = require('@sbx/common').Types.Currency;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
+const BC = require('@pascalcoin-sbx/common').BC;
+const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 
 const P_ACCOUNT = Symbol('account');
 const P_ENC_PUBKEY = Symbol('enc_pubkey');

@@ -1,14 +1,14 @@
-const BC = require('@sbx/common').BC;
-const Keys = require('@sbx/crypto').Keys;
-const Account = require('@sbx/json-rpc').Types.Account;
-const Operation = require('@sbx/json-rpc').Types.Operation;
-const OperationsBuilder = require('@sbx/signing').OperationsBuilder;
-const DataOperation = require('@sbx/signing').Operations.Data;
+const BC = require('@pascalcoin-sbx/common').BC;
+const Keys = require('@pascalcoin-sbx/crypto').Keys;
+const Account = require('@pascalcoin-sbx/json-rpc').Types.Account;
+const Operation = require('@pascalcoin-sbx/json-rpc').Types.Operation;
+const OperationsBuilder = require('@pascalcoin-sbx/signing').OperationsBuilder;
+const DataOperation = require('@pascalcoin-sbx/signing').Operations.Data;
 
-const ConnectionError = require('@sbx/json-rpc').Errors.ConnectionError;
-const ResultError = require('@sbx/json-rpc').Errors.ResultError;
+const ConnectionError = require('@pascalcoin-sbx/json-rpc').Errors.ConnectionError;
+const ResultError = require('@pascalcoin-sbx/json-rpc').Errors.ResultError;
 
-const RPCClient = require('@sbx/json-rpc').Client;
+const RPCClient = require('@pascalcoin-sbx/json-rpc').Client;
 const rpc = RPCClient.factory('http://127.0.0.1:4103');
 
 let keyPair = Keys.decrypt(

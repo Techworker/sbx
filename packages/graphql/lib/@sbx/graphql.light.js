@@ -2,11 +2,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("@sbx/graphql", [], factory);
+		define("@pascalcoin-sbx/graphql", [], factory);
 	else if(typeof exports === 'object')
-		exports["@sbx/graphql"] = factory();
+		exports["@pascalcoin-sbx/graphql"] = factory();
 	else
-		root["@sbx/graphql"] = factory();
+		root["@pascalcoin-sbx/graphql"] = factory();
 })(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -28329,7 +28329,7 @@ module.exports = {
 
 const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
 
-const PascalAccountName = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountName;
+const PascalAccountName = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountName;
 /**
  * The scalar type for an account name.
  */
@@ -28407,7 +28407,7 @@ module.exports = new graphql.GraphQLScalarType(new AccountName());
 
 const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
 
-const PascalAccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+const PascalAccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 /**
  * A AccountNumber Scalar.
  */
@@ -28485,7 +28485,7 @@ module.exports = new graphql.GraphQLScalarType(new AccountNumber());
 
 const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
 
-const PascalCurrency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const PascalCurrency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 /**
  * Currency scalar.
  */
@@ -28563,7 +28563,7 @@ module.exports = new graphql.GraphQLScalarType(new Currency());
 
 const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 /**
  * Describes a HexaString type.
  */
@@ -28641,7 +28641,7 @@ module.exports = new graphql.GraphQLScalarType(new HexaString());
 
 const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
 
-const PascalOperationHash = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.OperationHash;
+const PascalOperationHash = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.OperationHash;
 /**
  * Operation Hash scalar type.
  */
@@ -28719,7 +28719,7 @@ module.exports = new graphql.GraphQLScalarType(new OperationHash());
 
 const graphql = __webpack_require__(/*! graphql */ "../../node_modules/graphql/index.mjs");
 
-const PascalPublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+const PascalPublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 /**
  * A public key scalar type.
  */

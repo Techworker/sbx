@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const NodeStatus = require('@sbx/json-rpc').Types.NodeStatus;
-const NetProtocol = require('@sbx/json-rpc').Types.NetProtocol;
-const NetStats = require('@sbx/json-rpc').Types.NetStats;
-const NodeServer = require('@sbx/json-rpc').Types.NodeServer;
-const BC = require('@sbx/common').BC;
+const NodeStatus = require('@pascalcoin-sbx/json-rpc').Types.NodeStatus;
+const NetProtocol = require('@pascalcoin-sbx/json-rpc').Types.NetProtocol;
+const NetStats = require('@pascalcoin-sbx/json-rpc').Types.NetStats;
+const NodeServer = require('@pascalcoin-sbx/json-rpc').Types.NodeServer;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const chai = require('chai');
 

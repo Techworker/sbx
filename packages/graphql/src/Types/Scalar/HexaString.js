@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const BC = require('@sbx/common').BC;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 /**
  * Describes a HexaString type.

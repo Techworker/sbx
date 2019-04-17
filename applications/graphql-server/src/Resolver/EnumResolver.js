@@ -1,4 +1,4 @@
-const Operation = require('@sbx/json-rpc').Types.Operation;
+const Operation = require('@pascalcoin-sbx/json-rpc').Types.Operation;
 
 module.exports = {
   OPTYPE: function (value) {

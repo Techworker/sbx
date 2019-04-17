@@ -1,16 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const Executor = require('@sbx/json-rpc').Executor;
-const BC = require('@sbx/common').BC;
-const OperationHash = require('@sbx/common').Types.OperationHash;
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
-const Account = require('@sbx/json-rpc').Types.Account;
-const Block = require('@sbx/json-rpc').Types.Block;
-const PublicKey = require('@sbx/common').Types.Keys.PublicKey;
-const PrivateKey = require('@sbx/common').Types.Keys.PrivateKey;
-const Currency = require('@sbx/common').Types.Currency;
-const KeyPair = require('@sbx/common').Types.Keys.KeyPair;
+const Executor = require('@pascalcoin-sbx/json-rpc').Executor;
+const BC = require('@pascalcoin-sbx/common').BC;
+const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const Account = require('@pascalcoin-sbx/json-rpc').Types.Account;
+const Block = require('@pascalcoin-sbx/json-rpc').Types.Block;
+const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const PrivateKey = require('@pascalcoin-sbx/common').Types.Keys.PrivateKey;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');

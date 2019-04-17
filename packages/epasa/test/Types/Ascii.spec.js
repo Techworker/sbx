@@ -1,4 +1,4 @@
-const Ascii = require('@sbx/epasa').Types.Ascii;
+const Ascii = require('@pascalcoin-sbx/epasa').Types.Ascii;
 const chai = require('chai');
 
 chai.expect();

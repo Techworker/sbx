@@ -1,5 +1,5 @@
 {
-  "name": "@sbx/common",
+  "name": "@pascalcoin-sbx/common",
   "version": "0.0.8",
   "description": "Core basics for the PascalCoin BlockChain project.",
   "main": "index.js",

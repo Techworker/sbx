@@ -7,7 +7,7 @@
 
 'use strict';
 
-const BC = require('@sbx/common').BC;
+const BC = require('@pascalcoin-sbx/common').BC;
 const mipherAES = require('mipher/dist/aes');
 const mipherRandom = require('mipher/dist/random');
 const KDF = require('./KDF');

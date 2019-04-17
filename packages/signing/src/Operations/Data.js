@@ -6,9 +6,9 @@
  */
 
 const Abstract = require('./../Abstract');
-const BC = require('@sbx/common').BC;
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
-const Currency = require('@sbx/common').Types.Currency;
+const BC = require('@pascalcoin-sbx/common').BC;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 
 const P_ACCOUNT_SIGNER = Symbol('account_signer');
 const P_ACCOUNT_SENDER = Symbol('account_sender');

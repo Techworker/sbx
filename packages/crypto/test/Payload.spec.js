@@ -1,5 +1,5 @@
-const Payload = require('@sbx/crypto').Payload;
-const BC = require('@sbx/common').BC;
+const Payload = require('@pascalcoin-sbx/crypto').Payload;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const chai = require('chai');
 

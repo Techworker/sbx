@@ -7,13 +7,13 @@
 
 const P_CALLER = Symbol('caller');
 
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
-const AccountName = require('@sbx/common').Types.AccountName;
-const OperationHash = require('@sbx/common').Types.OperationHash;
-const PublicKey = require('@sbx/common').Types.Keys.PublicKey;
-const KeyPair = require('@sbx/common').Types.Keys.KeyPair;
-const Currency = require('@sbx/common').Types.Currency;
-const BC = require('@sbx/common').BC;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
+const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
+const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const Block = require('./Types/Block');
 const WalletPublicKey = require('./Types/WalletPublicKey');

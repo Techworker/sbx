@@ -1,4 +1,4 @@
-const Base58 = require('@sbx/epasa').Types.Base58;
+const Base58 = require('@pascalcoin-sbx/epasa').Types.Base58;
 const chai = require('chai');
 
 chai.expect();

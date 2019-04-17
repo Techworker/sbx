@@ -6,10 +6,10 @@
  */
 
 const Abstract = require('./Abstract');
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
-const BC = require('@sbx/common').BC;
-const Currency = require('@sbx/common').Types.Currency;
-const OperationHash = require('@sbx/common').Types.OperationHash;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const BC = require('@pascalcoin-sbx/common').BC;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
 
 const Sender = require('./Sender');
 const Receiver = require('./Receiver');

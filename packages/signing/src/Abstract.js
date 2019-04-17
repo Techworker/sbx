@@ -7,8 +7,8 @@
 
 // const Payload = require('../Crypto/Payload');
 const Signer = require('./Signer');
-const BC = require('@sbx/common').BC;
-const Currency = require('@sbx/common').Types.Currency;
+const BC = require('@pascalcoin-sbx/common').BC;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 
 const P_PAYLOAD = Symbol('payload');
 const P_S = Symbol('s');

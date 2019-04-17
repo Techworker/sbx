@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const Sha = require('@sbx/common').Sha;
-const BC = require('@sbx/common').BC;
+const Sha = require('@pascalcoin-sbx/common').Sha;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const chai = require('chai');
 

@@ -2,11 +2,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("@sbx/crypto", [], factory);
+		define("@pascalcoin-sbx/crypto", [], factory);
 	else if(typeof exports === 'object')
-		exports["@sbx/crypto"] = factory();
+		exports["@pascalcoin-sbx/crypto"] = factory();
 	else
-		root["@sbx/crypto"] = factory();
+		root["@pascalcoin-sbx/crypto"] = factory();
 })(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -30837,7 +30837,7 @@ const mAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/miph
 
 const AES_CBC_ZeroPadding = __webpack_require__(/*! ./mipher/AES_CBC_ZeroPadding */ "./src/mipher/AES_CBC_ZeroPadding.js");
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 /**
  * AES encryption / decryption for PascalCoin.
  */
@@ -30917,9 +30917,9 @@ module.exports = AES;
  */
 
 
-const Sha = __webpack_require__(/*! @sbx/common */ "../common/index.js").Sha;
+const Sha = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Sha;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const AES = __webpack_require__(/*! ./AES */ "./src/AES.js");
 
@@ -31000,9 +31000,9 @@ module.exports = ECDH;
  */
 
 
-const Sha = __webpack_require__(/*! @sbx/common */ "../common/index.js").Sha;
+const Sha = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Sha;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 /**
  * Key derivation function(s).
  */
@@ -31066,15 +31066,15 @@ const KDF = __webpack_require__(/*! ./KDF */ "./src/KDF.js");
 
 const Random = __webpack_require__(/*! mipher/dist/random */ "../../node_modules/mipher/dist/random.js");
 
-const Curve = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.Curve;
+const Curve = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.Curve;
 
-const PrivateKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PrivateKey;
+const PrivateKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PrivateKey;
 
-const PublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
-const KeyPair = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.KeyPair;
+const KeyPair = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.KeyPair;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 /**
  * Handles cryptographic keys.
  */
@@ -31208,7 +31208,7 @@ module.exports = Keys;
  */
 
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
 

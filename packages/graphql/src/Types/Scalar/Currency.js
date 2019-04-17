@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const PascalCurrency = require('@sbx/common').Types.Currency;
+const PascalCurrency = require('@pascalcoin-sbx/common').Types.Currency;
 
 /**
  * Currency scalar.

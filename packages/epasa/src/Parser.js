@@ -7,8 +7,8 @@
 
 const EPasa = require('./EPasa');
 const Ascii = require('./Types/Ascii');
-const BC = require('@sbx/common').BC;
-const AccountName = require('@sbx/common').Types.AccountName;
+const BC = require('@pascalcoin-sbx/common').BC;
+const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
 
 /**
  * A small parser for the EPASA format.

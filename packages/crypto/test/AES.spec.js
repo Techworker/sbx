@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const AES = require('@sbx/crypto').AES;
-const BC = require('@sbx/common').BC;
+const AES = require('@pascalcoin-sbx/crypto').AES;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const chai = require('chai');
 

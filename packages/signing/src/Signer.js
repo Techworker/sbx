@@ -7,8 +7,8 @@
 
 'use strict';
 
-const Sha = require('@sbx/common').Sha;
-const Keys = require('@sbx/crypto').Keys;
+const Sha = require('@pascalcoin-sbx/common').Sha;
+const Keys = require('@pascalcoin-sbx/crypto').Keys;
 
 class Signer {
   /**

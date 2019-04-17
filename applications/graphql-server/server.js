@@ -1,6 +1,6 @@
 const fs = require('fs');
-const sbxGraphql = require('@sbx/graphql');
-const sbxRpc = require('@sbx/json-rpc');
+const sbxGraphql = require('@pascalcoin-sbx/graphql');
+const sbxRpc = require('@pascalcoin-sbx/json-rpc');
 const apollo = require('apollo-server');
 
 const AccountResolver = require('./src/Resolver/AccountResolver');

@@ -1,4 +1,4 @@
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const chai = require('chai');
 
 chai.expect();

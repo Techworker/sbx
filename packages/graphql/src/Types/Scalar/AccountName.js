@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const PascalAccountName = require('@sbx/common').Types.AccountName;
+const PascalAccountName = require('@pascalcoin-sbx/common').Types.AccountName;
 
 /**
  * The scalar type for an account name.

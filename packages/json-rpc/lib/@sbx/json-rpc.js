@@ -2,11 +2,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("@sbx/json-rpc", [], factory);
+		define("@pascalcoin-sbx/json-rpc", [], factory);
 	else if(typeof exports === 'object')
-		exports["@sbx/json-rpc"] = factory();
+		exports["@pascalcoin-sbx/json-rpc"] = factory();
 	else
-		root["@sbx/json-rpc"] = factory();
+		root["@pascalcoin-sbx/json-rpc"] = factory();
 })(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -10737,7 +10737,7 @@ module.exports = BaseAction;
  */
 const BaseAction = __webpack_require__(/*! ./BaseAction */ "./src/Actions/BaseAction.js");
 
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 /**
  * An object that holds infos about an operation action. It extends the
  * BaseAction functionality by methods which are useful for operations.
@@ -11125,15 +11125,15 @@ const Connection = __webpack_require__(/*! ./Types/Connection */ "./src/Types/Co
 
 const WalletPublicKey = __webpack_require__(/*! ./Types/WalletPublicKey */ "./src/Types/WalletPublicKey.js");
 
-const AccountName = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountName;
+const AccountName = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountName;
 
-const AccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
-const OperationHash = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.OperationHash;
+const OperationHash = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.OperationHash;
 
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const P_EXECUTOR = Symbol('executor');
 /**
@@ -12312,19 +12312,19 @@ module.exports = {
  */
 const P_CALLER = Symbol('caller');
 
-const AccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
-const AccountName = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountName;
+const AccountName = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountName;
 
-const OperationHash = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.OperationHash;
+const OperationHash = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.OperationHash;
 
-const PublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
-const KeyPair = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.KeyPair;
+const KeyPair = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.KeyPair;
 
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const Block = __webpack_require__(/*! ./Types/Block */ "./src/Types/Block.js");
 
@@ -12551,15 +12551,15 @@ module.exports = Abstract;
  */
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const AccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
-const AccountName = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountName;
+const AccountName = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountName;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
-const PublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
 const P_ACCOUNT = Symbol('account');
 const P_ENC_PUBKEY = Symbol('enc_pubkey');
@@ -12807,13 +12807,13 @@ const BigNumber = __webpack_require__(/*! bignumber.js */ "../../node_modules/bi
 
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const PublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
-const AccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const P_BLOCK = Symbol('block');
 const P_ENC_PUBKEY = Symbol('enc_pubkey');
@@ -13056,15 +13056,15 @@ module.exports = Block;
  */
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const AccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
-const AccountName = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountName;
+const AccountName = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountName;
 
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
-const PublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const P_ACCOUNT = Symbol('account');
 const P_N_OPERATION = Symbol('nOperation');
@@ -13687,7 +13687,7 @@ module.exports = NodeServer;
  */
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const NetProtocol = __webpack_require__(/*! ./NetProtocol */ "./src/Types/NetProtocol.js");
 
@@ -13890,13 +13890,13 @@ module.exports = NodeStatus;
  */
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const AccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
-const OperationHash = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.OperationHash;
+const OperationHash = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.OperationHash;
 
 const Sender = __webpack_require__(/*! ./Sender */ "./src/Types/Sender.js");
 
@@ -14501,11 +14501,11 @@ module.exports = Operation;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const P_OPERATIONS = Symbol('operations');
 const P_AMOUNT = Symbol('amount');
@@ -14582,11 +14582,11 @@ module.exports = RawOperations;
  */
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const AccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const P_ACCOUNT = Symbol('account');
 const P_AMOUNT = Symbol('amount');
@@ -14659,11 +14659,11 @@ module.exports = Receiver;
  */
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const AccountNumber = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.AccountNumber;
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
-const Currency = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Currency;
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const P_ACCOUNT = Symbol('account');
 const P_AMOUNT = Symbol('amount');
@@ -14748,9 +14748,9 @@ module.exports = Sender;
  */
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const PublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const P_DIGEST = Symbol('digest');
 const P_PUBKEY = Symbol('public_key');
@@ -14829,11 +14829,11 @@ module.exports = SignedMessage;
  */
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const BC = __webpack_require__(/*! @sbx/common */ "../common/index.js").BC;
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
-const Curve = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.Curve;
+const Curve = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.Curve;
 
-const PublicKey = __webpack_require__(/*! @sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
 const P_NAME = Symbol('block');
 const P_ENC_PUBKEY = Symbol('publicKey');

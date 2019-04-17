@@ -5,9 +5,9 @@
  * file that was distributed with this source code.
  */
 
-const Currency = require('@sbx/common').Types.Currency;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const Abstract = require('./Abstract');
-const BC = require('@sbx/common').BC;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const P_OPERATIONS = Symbol('operations');
 const P_AMOUNT = Symbol('amount');

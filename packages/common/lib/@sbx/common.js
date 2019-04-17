@@ -2,11 +2,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("@sbx/common", [], factory);
+		define("@pascalcoin-sbx/common", [], factory);
 	else if(typeof exports === 'object')
-		exports["@sbx/common"] = factory();
+		exports["@pascalcoin-sbx/common"] = factory();
 	else
-		root["@sbx/common"] = factory();
+		root["@pascalcoin-sbx/common"] = factory();
 })(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache

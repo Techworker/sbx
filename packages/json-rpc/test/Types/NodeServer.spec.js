@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const NodeServer = require('@sbx/json-rpc').Types.NodeServer;
+const NodeServer = require('@pascalcoin-sbx/json-rpc').Types.NodeServer;
 const chai = require('chai');
 
 chai.expect();

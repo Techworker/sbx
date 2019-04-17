@@ -6,8 +6,8 @@
  */
 
 const Abstract = require('./Abstract');
-const PublicKey = require('@sbx/common').Types.Keys.PublicKey;
-const BC = require('@sbx/common').BC;
+const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const P_DIGEST = Symbol('digest');
 const P_PUBKEY = Symbol('public_key');

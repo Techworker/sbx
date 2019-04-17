@@ -1,7 +1,7 @@
-const RPCClient = require('@sbx/json-rpc').Client;
-const RPCExecutor = require('@sbx/json-rpc').Executor;
-const RPCCaller = require('@sbx/json-rpc').Caller;
-const Account = require('@sbx/json-rpc').Types.Account;
+const RPCClient = require('@pascalcoin-sbx/json-rpc').Client;
+const RPCExecutor = require('@pascalcoin-sbx/json-rpc').Executor;
+const RPCCaller = require('@pascalcoin-sbx/json-rpc').Caller;
+const Account = require('@pascalcoin-sbx/json-rpc').Types.Account;
 
 const rpc = new RPCClient(
   new RPCExecutor(

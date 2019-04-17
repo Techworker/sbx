@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const Operation = require('@sbx/json-rpc').Types.Operation;
-const Changer = require('@sbx/json-rpc').Types.Changer;
-const PublicKey = require('@sbx/common').Types.Keys.PublicKey;
-const Currency = require('@sbx/common').Types.Currency;
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
-const AccountName = require('@sbx/common').Types.AccountName;
+const Operation = require('@pascalcoin-sbx/json-rpc').Types.Operation;
+const Changer = require('@pascalcoin-sbx/json-rpc').Types.Changer;
+const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
 
 const chai = require('chai');
 

@@ -6,7 +6,7 @@
  */
 
 const Abstract = require('./Abstract');
-const BC = require('@sbx/common').BC;
+const BC = require('@pascalcoin-sbx/common').BC;
 const NetProtocol = require('./NetProtocol');
 const NetStats = require('./NetStats');
 const NodeServer = require('./NodeServer');

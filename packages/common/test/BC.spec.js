@@ -1,5 +1,5 @@
 const chai = require('chai');
-const BC = require('@sbx/common').BC;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 chai.expect();
 const expect = chai.expect;

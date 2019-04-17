@@ -1,5 +1,5 @@
 {
-  "name": "@sbx/graphql",
+  "name": "@pascalcoin-sbx/graphql",
   "version": "0.0.8",
   "description": "Graphql.",
   "main": "index.js",
@@ -22,7 +22,7 @@
     "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
   },
   "dependencies": {
-    "@sbx/json-rpc": "^0.0.8",
+    "@pascalcoin-sbx/json-rpc": "^0.0.8",
     "graphql": "^14.2.1"
   },
   "gitHead": "193542dfc142ce356b871ffe484d221aea44973f"

@@ -12,11 +12,11 @@ const elliptic = require('elliptic/lib/elliptic/ec/index');
 const AES = require('./AES');
 const KDF = require('./KDF');
 const Random = require('mipher/dist/random');
-const Curve = require('@sbx/common').Types.Keys.Curve;
-const PrivateKey = require('@sbx/common').Types.Keys.PrivateKey;
-const PublicKey = require('@sbx/common').Types.Keys.PublicKey;
-const KeyPair = require('@sbx/common').Types.Keys.KeyPair;
-const BC = require('@sbx/common').BC;
+const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
+const PrivateKey = require('@pascalcoin-sbx/common').Types.Keys.PrivateKey;
+const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 /**
  * Handles cryptographic keys.

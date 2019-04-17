@@ -1,5 +1,5 @@
-const KDF = require('@sbx/crypto').KDF;
-const BC = require('@sbx/common').BC;
+const KDF = require('@pascalcoin-sbx/crypto').KDF;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const chai = require('chai');
 
