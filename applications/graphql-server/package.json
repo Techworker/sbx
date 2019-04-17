@@ -1,6 +1,6 @@
 {
   "name": "@sbx/application-graphql-server",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Graphql server.",
   "main": "index.js",
   "directories": {
@@ -18,7 +18,7 @@
   "license": "MIT",
   "scripts": {},
   "dependencies": {
-    "@sbx/graphql": "^0.0.7",
+    "@sbx/graphql": "^0.0.8",
     "apollo-server": "^2.4.8",
     "graphql": "^14.2.1"
   },
