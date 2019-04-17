@@ -1,6 +1,6 @@
 {
   "name": "@sbx/pascalcoin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "All in one package.",
   "main": "index.js",
   "directories": {
@@ -17,10 +17,10 @@
     "build": "webpack --env dev && webpack --env build"
   },
   "dependencies": {
-    "@sbx/common": "^0.0.2",
-    "@sbx/crypto": "^0.0.2",
-    "@sbx/epasa": "^0.0.2",
-    "@sbx/json-rpc": "^0.0.2",
-    "@sbx/signing": "^0.0.2"
+    "@sbx/common": "^0.0.3",
+    "@sbx/crypto": "^0.0.3",
+    "@sbx/epasa": "^0.0.3",
+    "@sbx/json-rpc": "^0.0.3",
+    "@sbx/signing": "^0.0.3"
   }
 }
