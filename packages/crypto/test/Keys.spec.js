@@ -5,6 +5,9 @@ const BC = require('@pascalcoin-sbx/common').BC;
 const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
 const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
 const PrivateKey = require('@pascalcoin-sbx/common').Types.Keys.PrivateKey;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
+
+const pkCoder = new PublicKeyCoder();
 
 const chai = require('chai');
 
@@ -56,7 +59,7 @@ describe('Crypto.Keys', () => {
 
           expect(kp.curve.id).to.be.equal(c);
           expect(kp.privateKey.encode().toHex()).to.be.equal(keyInfo.enc_privkey);
-          expect(kp.publicKey.toBase58()).to.be.equal(keyInfo.b58_pubkey);
+          expect(pkCoder.encodeToBase58(kp.publicKey)).to.be.equal(keyInfo.b58_pubkey);
         } else {
           expect(() => Keys.fromPrivateKey(PrivateKey.decode(BC.fromHex(keyInfo.enc_privkey)))).to.throw();
         }
@@ -78,7 +81,7 @@ describe('Crypto.Keys', () => {
 
           expect(kp.curve.id).to.be.equal(c);
           expect(kp.privateKey.encode().toHex()).to.be.equal(keyInfo.enc_privkey);
-          expect(kp.publicKey.toBase58()).to.be.equal(keyInfo.b58_pubkey);
+          expect(pkCoder.encodeToBase58(kp.publicKey)).to.be.equal(keyInfo.b58_pubkey);
         } else {
           expect(() => Keys.decrypt(
             BC.fromHex(keyInfo.encrypted),

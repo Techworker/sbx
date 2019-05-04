@@ -39,7 +39,7 @@ class ECDH {
 
     return {
       data: encryptedData,
-      key: secrectkey.slice(32, 32),
+      key: secrectkey.slice(32, 64),
       publicKey: new BC(tempKey.getPublic(true, 'buffer'))
     };
   }

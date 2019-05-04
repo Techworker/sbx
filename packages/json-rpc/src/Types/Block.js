@@ -5,12 +5,14 @@
  * file that was distributed with this source code.
  */
 
-const BigNumber = require('bignumber.js');
+const BN = require('bn.js');
 const Abstract = require('./Abstract');
-const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const BC = require('@pascalcoin-sbx/common').BC;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
+
+const pkCoder = new PublicKeyCoder();
 
 const P_BLOCK = Symbol('block');
 const P_ENC_PUBKEY = Symbol('enc_pubkey');
@@ -42,19 +44,19 @@ class Block extends Abstract {
     super(data);
 
     this[P_BLOCK] = parseInt(data.block, 10);
-    this[P_ENC_PUBKEY] = PublicKey.decode(BC.fromHex(data.enc_pubkey));
+    this[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
     this[P_REWARD] = new Currency(data.reward);
     this[P_FEE] = new Currency(data.fee);
     this[P_VER] = parseInt(data.ver, 10);
     this[P_VER_A] = parseInt(data.ver_a, 10);
     this[P_TIMESTAMP] = parseInt(data.timestamp, 10);
-    this[P_TARGET] = new BigNumber(data.target.toString());
-    this[P_NONCE] = new BigNumber(data.nonce.toString());
+    this[P_TARGET] = new BN(data.target.toString(), 10);
+    this[P_NONCE] = new BN(data.nonce.toString(), 10);
     this[P_PAYLOAD] = data.payload;
     this[P_SBH] = BC.fromHex(data.sbh);
     this[P_OPH] = BC.fromHex(data.oph);
     this[P_POW] = BC.fromHex(data.pow);
-    this[P_HASHRATEKHS] = new BigNumber(data.hashratekhs.toString());
+    this[P_HASHRATEKHS] = new BN(data.hashratekhs.toString(), 10);
     this[P_MATURATION] = parseInt(data.maturation, 10);
     this[P_OPERATIONS] = null;
     if (data.operations !== undefined) {

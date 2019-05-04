@@ -5,6 +5,8 @@
  * file that was distributed with this source code.
  */
 
+const Endian = require('./Endian');
+
 const P_BUFFER = Symbol('buffer');
 
 /**
@@ -41,10 +43,23 @@ class BC {
     }
 
     if (stringType === 'hex') {
-      return BC.fromHex(data);
+      try {
+        return BC.fromHex(data);
+      } catch (e) {
+        return BC.fromString(data);
+      }
     }
 
     return BC.fromString(data);
+  }
+
+  /**
+   * Gets an empty BC.
+   *
+   * @returns {BC}
+   */
+  static empty() {
+    return BC.from([]);
   }
 
   /**
@@ -86,7 +101,7 @@ class BC {
     }
 
     // TODO: UTF8?
-    return new BC(Buffer.from(str));
+    return new BC(Buffer.from(str, 'utf8'));
   }
 
   /**
@@ -176,14 +191,27 @@ class BC {
   }
 
   /**
-     * Switches the endianness of the BC.
-     *
-     * @returns {BC}
-     */
+   * Switches the endianness of the BC.
+   *
+   * @returns {BC}
+   */
   switchEndian() {
     return BC.fromHex(
       this[P_BUFFER].toString('hex').match(/../g).reverse().join(''),
     );
+  }
+
+  /**
+   * Switches the endianness of the BC.
+   *
+   * @returns {BC}
+   */
+  switchEndianIf(targetEndian) {
+    if (Endian.detect() !== targetEndian) {
+      return this.switchEndian();
+    }
+
+    return this;
   }
 
   /**
@@ -193,7 +221,11 @@ class BC {
      * @param {Number} end
      * @returns {BC}
      */
-  slice(start, end) {
+  slice(start, end = null) {
+    if (end === null) {
+      return new BC(this[P_BUFFER].slice(start));
+    }
+
     return new BC(this[P_BUFFER].slice(start, end));
   }
 
@@ -242,6 +274,92 @@ class BC {
    */
   equals(bc) {
     return Buffer.compare(BC.from(bc).buffer, this.buffer) === 0;
+  }
+
+  /**
+   * Reads an 8 bit integer value from the bc from the given offset.
+   *
+   * @param {Number} offset
+   * @param {Boolean} unsigned
+   * @returns {Number}
+   */
+  readInt8(offset, unsigned = true) {
+    return this[P_BUFFER][unsigned ? 'readUInt8' : 'readInt8'](offset);
+  }
+
+  /**
+   * Reads a 16 bit integer value from the bc from the given offset.
+   *
+   * @param {Number} offset
+   * @param {Boolean} unsigned
+   * @param {String} endian
+   * @returns {Number}
+   */
+  readInt16(offset, unsigned = true, endian = Endian.detect()) {
+    const method = `read${unsigned ? 'U' : ''}Int16${endian}`;
+
+    return this[P_BUFFER][method](offset);
+  }
+
+  /**
+   * Reads a 32 bit integer value from the bc from the given offset.
+   *
+   * @param {Number} offset
+   * @param {Boolean} unsigned
+   * @param {String} endian
+   * @returns {Number}
+   */
+  readInt32(offset, unsigned = true, endian = Endian.detect()) {
+    const method = `read${unsigned ? 'U' : ''}Int32${endian}`;
+
+    return this[P_BUFFER][method](offset);
+  }
+
+  /**
+   * Creates an 8 bit integer BC.
+   *
+   * @param {Number} value
+   * @param {Boolean} unsigned
+   * @returns {BC}
+   */
+  static fromInt8(value, unsigned = true) {
+    const method = `write${unsigned ? 'U' : ''}Int8`;
+    const buf = Buffer.allocUnsafe(1);
+
+    buf[method](value);
+    return new BC(buf);
+  }
+
+  /**
+   * Creates a 16 bit integer BC.
+   *
+   * @param {Number} value
+   * @param {Boolean} unsigned
+   * @param {String} endian
+   * @returns {BC}
+   */
+  static fromInt16(value, unsigned = true, endian = Endian.detect()) {
+    const method = `write${unsigned ? 'U' : ''}Int16${endian}`;
+    const buf = Buffer.allocUnsafe(2);
+
+    buf[method](value);
+    return new BC(buf);
+  }
+
+  /**
+   * Creates a 32 bit integer BC.
+   *
+   * @param {Number} value
+   * @param {Boolean} unsigned
+   * @param {String} endian
+   * @returns {BC}
+   */
+  static fromInt32(value, unsigned = true, endian = Endian.detect()) {
+    const method = `write${unsigned ? 'U' : ''}Int32${endian}`;
+    const buf = Buffer.allocUnsafe(4);
+
+    buf[method](value);
+    return new BC(buf);
   }
 }
 

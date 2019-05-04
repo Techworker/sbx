@@ -5,6 +5,8 @@
  * file that was distributed with this source code.
  */
 
+let detected = null;
+
 class Endian {
 
   /**
@@ -33,19 +35,21 @@ class Endian {
    * @returns {string}
    */
   static detect() {
-    var b = new ArrayBuffer(4);
-    var a = new Uint32Array(b);
-    var c = new Uint8Array(b);
+    if (detected === null) {
+      const b = new ArrayBuffer(4);
+      const a = new Uint32Array(b);
+      const c = new Uint8Array(b);
 
-    a[0] = 0xdeadbeef;
-    if (c[0] === 0xef) {
-      return Endian.LITTLE_ENDIAN;
-    }
-    if (c[0] === 0xde) {
-      return Endian.BIG_ENDIAN;
+      a[0] = 0xdeadbeef;
+      if (c[0] === 0xef) {
+        detected = Endian.LITTLE_ENDIAN;
+      }
+      if (c[0] === 0xde) {
+        detected = Endian.BIG_ENDIAN;
+      }
     }
 
-    throw new Error('unknown endianness');
+    return detected;
   }
 
   /**

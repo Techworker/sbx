@@ -20,7 +20,8 @@
   "dependencies": {
     "@pascalcoin-sbx/graphql": "^0.0.10",
     "apollo-server": "^2.4.8",
-    "graphql": "^14.2.1"
+    "graphql": "^14.2.1",
+    "md5": "^2.2.1"
   },
   "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad"
 }

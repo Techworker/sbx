@@ -4,7 +4,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 const P_PRIVATE_KEY = Symbol('private_key');
 const P_PUBLIC_KEY = Symbol('public_key');
 const P_CURVE = Symbol('curve');

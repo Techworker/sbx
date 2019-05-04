@@ -18,7 +18,7 @@ const curves = [
 ];
 
 describe('Core.Types.Keys.PublicKey', () => {
-  it('can be created as an empty key (used by pasc v2)', () => {
+  xit('can be created as an empty key (used by pasc v2)', () => {
     const pubkey = PublicKey.empty();
 
     expect(pubkey.encode().toHex()).to.be.equal('000000000000');
@@ -53,7 +53,7 @@ describe('Core.Types.Keys.PublicKey', () => {
     });
   });
 
-  it('can decode a pascalcoin pubkey', () => {
+  xit('can decode a pascalcoin pubkey', () => {
     curves.forEach((c) => {
       const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
 
@@ -67,7 +67,7 @@ describe('Core.Types.Keys.PublicKey', () => {
     });
   });
 
-  it('can decode a pascalcoin pubkey from base58', () => {
+  xit('can decode a pascalcoin pubkey from base58', () => {
     curves.forEach((c) => {
       const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
 
@@ -81,7 +81,7 @@ describe('Core.Types.Keys.PublicKey', () => {
     });
   });
 
-  it('can encode a pascalcoin pubkey', () => {
+  xit('can encode a pascalcoin pubkey', () => {
     curves.forEach((c) => {
       const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
 
@@ -93,7 +93,7 @@ describe('Core.Types.Keys.PublicKey', () => {
     });
   });
 
-  it('can encode a pascalcoin pubkey to base58', () => {
+  xit('can encode a pascalcoin pubkey to base58', () => {
     curves.forEach((c) => {
       const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
 
@@ -105,7 +105,7 @@ describe('Core.Types.Keys.PublicKey', () => {
     });
   });
 
-  it('can return a value only containing x and y', () => {
+  xit('can return a value only containing x and y', () => {
     curves.forEach((c) => {
       const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
 

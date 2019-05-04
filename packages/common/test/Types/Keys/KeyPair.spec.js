@@ -6,6 +6,8 @@ const PrivateKey = require('@pascalcoin-sbx/common').Types.Keys.PrivateKey;
 const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
 const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
 const BC = require('@pascalcoin-sbx/common').BC;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
+const coder = new PublicKeyCoder();
 
 const chai = require('chai');
 
@@ -26,11 +28,11 @@ describe('Core.Types.Keys.KeyPair', () => {
 
       keys.forEach((keyInfo) => {
         let priv = PrivateKey.decode(BC.fromHex(keyInfo.enc_privkey));
-        let pub = PublicKey.fromBase58(keyInfo.b58_pubkey);
+        let pub = coder.decodeFromBase58(keyInfo.b58_pubkey);
 
         const kp = new KeyPair(priv, pub);
 
-        expect(kp.publicKey.toBase58()).to.be.equal(keyInfo.b58_pubkey);
+        expect(coder.encodeToBase58(kp.publicKey)).to.be.equal(keyInfo.b58_pubkey);
         expect(kp.privateKey.encode().toHex()).to.be.equal(keyInfo.enc_privkey);
         expect(kp.curve.id).to.be.equal(c);
       });
@@ -52,7 +54,7 @@ describe('Core.Types.Keys.KeyPair', () => {
           // a 714 key
           b58wrong = '3GhhbopVb9wfo4HzecYwKYMWRvLCssTeFWjocfnWv12Yt3GtaW3seeatH9GqhVmnYrF586RKLwjFFMYn7Txq8X2D4qT7CbqrZgbdRm';
         }
-        let pub = PublicKey.fromBase58(b58wrong);
+        let pub = coder.decodeFromBase58(b58wrong);
 
         expect(() => new KeyPair(priv, pub)).to.throw();
       });

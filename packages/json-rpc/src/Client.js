@@ -653,18 +653,22 @@ class Client {
    * @returns {SignOperationAction}
    */
   signBuyAccount({
-    signerPubkey,
     buyerAccount,
     accountToPurchase,
     price,
-    sellerAccount
+    sellerAccount,
+    newPubkey,
+    amount,
+    signerPubkey
   }) {
     return new SignOperationAction('signbuyaccount', {
-      signer_pubkey: signerPubkey,
       buyer_account: new AccountNumber(buyerAccount),
       account_to_purchase: new AccountNumber(accountToPurchase),
       price: new Currency(price),
-      seller_account: new AccountNumber(sellerAccount)
+      seller_account: new AccountNumber(sellerAccount),
+      new_pubkey: newPubkey,
+      amount: amount,
+      signer_pubkey: signerPubkey,
     }, this[P_EXECUTOR], Operation, false);
   }
 

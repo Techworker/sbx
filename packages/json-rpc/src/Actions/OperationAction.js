@@ -54,7 +54,7 @@ class OperationAction extends BaseAction {
      * @returns {OperationAction}
      */
   withFee(fee) {
-    this.fee = new Currency(fee);
+    this.params.fee = new Currency(fee);
     return this;
   }
 

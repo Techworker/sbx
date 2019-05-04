@@ -5,7 +5,10 @@ const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const BC = require('@pascalcoin-sbx/common').BC;
-const BigNumber = require('bignumber.js');
+const BN = require('bn.js');
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
+
+const pkCoder = new PublicKeyCoder();
 
 const chai = require('chai');
 
@@ -28,7 +31,7 @@ describe('Core.Types.Block', () => {
 
       expect(block.block).to.be.equal(b.block);
       expect(block.publicKey).to.be.instanceof(PublicKey);
-      expect(block.publicKey.encode().toHex()).to.be.equal(b.enc_pubkey);
+      expect(pkCoder.encodeToBytes(block.publicKey).toHex()).to.be.equal(b.enc_pubkey);
 
       expect(block.reward).to.be.instanceof(Currency);
       expect(block.reward.toStringOpt()).to.be.equal(b.reward.toString());
@@ -39,9 +42,9 @@ describe('Core.Types.Block', () => {
       expect(block.ver).to.be.equal(b.ver);
       expect(block.verA).to.be.equal(b.ver_a);
       expect(block.timestamp).to.be.equal(b.timestamp);
-      expect(block.target).to.be.instanceof(BigNumber);
+      expect(BN.isBN(block.target)).to.be.equal(true);
       expect(block.target.toString()).to.be.equal(b.target.toString());
-      expect(block.nonce).to.be.instanceof(BigNumber);
+      expect(BN.isBN(block.nonce)).to.be.equal(true);
       expect(block.nonce.toString()).to.be.equal(b.nonce.toString());
       expect(block.payload).to.be.equal(b.payload);
       expect(block.sbh).to.be.instanceof(BC);
@@ -51,7 +54,7 @@ describe('Core.Types.Block', () => {
       expect(block.pow).to.be.instanceof(BC);
       expect(block.pow.toHex()).to.be.equal(b.pow);
 
-      expect(block.hashratekhs).to.be.instanceof(BigNumber);
+      expect(BN.isBN(block.hashratekhs)).to.be.equal(true);
       expect(block.hashratekhs.toString()).to.be.equal(b.hashratekhs.toString());
 
       expect(block.maturation).to.be.equal(b.maturation);

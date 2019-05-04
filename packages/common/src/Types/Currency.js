@@ -5,19 +5,37 @@
  * file that was distributed with this source code.
  */
 
-const BigNumber = require('bignumber.js');
+const BN = require('bn.js');
 
 const P_VALUE = Symbol('value');
+
+function toFixed(x) {
+  let base = new BN(10).pow(new BN(4));
+  let dm = x.divmod(base);
+
+  let mod = dm.mod.toString(10, 4);
+  let m = dm.div.toString();
+
+  let isNegative = false;
+
+  if (x.toString().substr(0, 1) === '-') {
+    if (m.substr(0, 1) === '-') {
+      m = m.substr(1);
+    }
+    if (mod.substr(0, 1) === '-') {
+      mod = mod.substr(1);
+    }
+    isNegative = true;
+  }
+
+  return `${isNegative ? '-' : ''}${m}.${mod}`;
+}
 
 /**
  * A simple wrapper around bignumber for the pascal currency and
  * basic math functions.
  */
 class Currency {
-  static get MIN_FEE() {
-    return new Currency('0.0001');
-  }
-
   /**
      * Creates a new Currency instance.
      *
@@ -31,16 +49,62 @@ class Currency {
       return;
     }
 
-    if (typeof pasc === 'string') {
-      pasc = pasc.split(',').join('');
+    if (BN.isBN(pasc)) {
+      this[P_VALUE] = pasc;
+      return;
     }
 
-    this[P_VALUE] = new BigNumber(pasc.toString());
+    pasc = pasc.toString();
+    pasc = pasc.split(',').join(''); // remove commas
+    // now split the '.'
+
+    const ten = new BN(10);
+    const base = ten.pow(new BN(4));
+
+    // Is it negative?
+    let negative = (pasc.substring(0, 1) === '-');
+
+    if (negative) {
+      pasc = pasc.substring(1);
+    }
+
+    if (pasc === '.') {
+      throw new Error(
+        `Invalid value ${pasc} cannot be converted to` +
+          ' base unit with 4 decimals.');
+    }
+
+    // Split it into a whole and fractional part
+    let comps = pasc.split('.');
+
+    if (comps.length > 2) { throw new Error('Too many decimal points'); }
+
+    let whole = comps[0], fraction = comps[1];
+
+    if (!whole) { whole = '0'; }
+    if (!fraction) { fraction = '0'; }
+    if (fraction.length > 4) {
+      throw new Error('Too many decimal places');
+    }
+
+    while (fraction.length < 4) {
+      fraction += '0';
+    }
+
+    whole = new BN(whole);
+    fraction = new BN(fraction);
+    let molina = (whole.mul(base)).add(fraction);
+
+    if (negative) {
+      molina = molina.neg();
+    }
+
+    this[P_VALUE] = new BN(molina.toString(10), 10);
   }
 
   static fromMolina(molina) {
     return new Currency(
-      new BigNumber(molina.toString()).dividedBy('10000')
+      new BN(molina.toString())
     );
   }
 
@@ -59,7 +123,7 @@ class Currency {
      * @returns {string}
      */
   toString() {
-    return this[P_VALUE].toFixed(4);
+    return toFixed(this[P_VALUE]);
   }
 
   /**
@@ -76,7 +140,7 @@ class Currency {
    * @returns {string}
    */
   toStringOpt(decimals = 4) {
-    return this[P_VALUE].toFixed(decimals)
+    return toFixed(this[P_VALUE])
       .replace(new RegExp('[0]+$'), '')
       .replace(new RegExp('[\.]+$'), '');
   }
@@ -87,7 +151,7 @@ class Currency {
      * @returns {Number}
      */
   toMolina() {
-    return parseFloat(this[P_VALUE].toString()) * 10000;
+    return this[P_VALUE].toString();
   }
 
   /**
@@ -99,7 +163,7 @@ class Currency {
      */
   add(addValue) {
     return new Currency(
-      this.value.plus(new Currency(addValue).value).toFixed(4),
+      this.value.add(new Currency(addValue).value),
     );
   }
 
@@ -112,7 +176,7 @@ class Currency {
      */
   sub(subValue) {
     return new Currency(
-      this.value.minus(new Currency(subValue).value).toFixed(4),
+      this.value.sub(new Currency(subValue).value)
     );
   }
 
@@ -124,9 +188,9 @@ class Currency {
      * @returns {Currency}
      */
   toPositive() {
-    if (!this[P_VALUE].isPositive()) {
+    if (this[P_VALUE].isNeg() === true) {
       return new Currency(
-        this[P_VALUE].multipliedBy(-1).toFixed(4),
+        this[P_VALUE].neg(),
       );
     }
 
@@ -141,7 +205,7 @@ class Currency {
    * @returns {boolean}
    */
   eq(value) {
-    return this[P_VALUE].isEqualTo(new Currency(value).value);
+    return this[P_VALUE].eq(new Currency(value).value);
   }
 
   /**
@@ -152,7 +216,7 @@ class Currency {
    * @returns {boolean}
    */
   gt(value) {
-    return this[P_VALUE].isGreaterThan(new Currency(value).value);
+    return this[P_VALUE].gt(new Currency(value).value);
   }
 
   /**
@@ -163,7 +227,7 @@ class Currency {
    * @returns {boolean}
    */
   lt(value) {
-    return this[P_VALUE].isLessThan(new Currency(value).value);
+    return this[P_VALUE].lt(new Currency(value).value);
   }
 
   /**
@@ -174,7 +238,7 @@ class Currency {
    * @returns {boolean}
    */
   lteq(value) {
-    return this[P_VALUE].isLessThanOrEqualTo(new Currency(value).value);
+    return this[P_VALUE].lte(new Currency(value).value);
   }
 
   /**
@@ -185,7 +249,11 @@ class Currency {
    * @returns {boolean}
    */
   gteq(value) {
-    return this[P_VALUE].isGreaterThanOrEqualTo(new Currency(value).value);
+    return this[P_VALUE].gte(new Currency(value).value);
+  }
+
+  get bn() {
+    return this[P_VALUE];
   }
 
   /**

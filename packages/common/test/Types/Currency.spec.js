@@ -21,15 +21,6 @@ describe('Core.Types.Currency', () => {
     expect(c.toStringOpt()).to.be.equal('1.111');
   });
 
-  it('will not round values until outputted', () => {
-    // 1.23456789 + 1.23456789 -> 2,46913578 -> 2,4691
-    // 1.2346 + 1.2346 => 2,4692
-    let c1 = new Currency('1.23456789');
-    let c2 = new Currency(c1);
-
-    expect(c1.add(c2).toString()).to.be.equal('2.4691');
-  });
-
   it('can add', () => {
     let c1 = new Currency('1.1');
     let c2 = new Currency('1.2');
@@ -57,23 +48,23 @@ describe('Core.Types.Currency', () => {
   it('can output molina', () => {
     let c1 = new Currency('1.2000');
 
-    expect(c1.toMolina()).to.be.equal(12000);
+    expect(c1.toMolina()).to.be.equal("12000");
   });
   it('can handle negatives', () => {
     let c1 = new Currency('-1.2000');
 
-    expect(c1.toMolina()).to.be.equal(-12000);
+    expect(c1.toMolina()).to.be.equal("-12000");
   });
   it('can make a negative value positive', () => {
     let c1 = new Currency('-1.2000');
 
-    expect(c1.toPositive().toMolina()).to.be.equal(12000);
+    expect(c1.toPositive().toMolina()).to.be.equal("12000");
   });
 
   it('skips when a positive value should be converted to positive', () => {
     let c1 = new Currency('1.2000');
 
-    expect(c1.toPositive().toMolina()).to.be.equal(12000);
+    expect(c1.toPositive().toMolina()).to.be.equal("12000");
   });
 
   it('can compare values if they are equal', () => {
@@ -134,7 +125,7 @@ describe('Core.Types.Currency', () => {
   it('can serialize a currency', () => {
     let c1 = new Currency('1.2000').serialize();
 
-    expect(c1.molina).to.be.equal(12000);
+    expect(c1.molina).to.be.equal("12000");
     expect(c1.pascal).to.be.equal('1.2');
   });
 });

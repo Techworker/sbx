@@ -10,8 +10,10 @@ const Abstract = require('./Abstract');
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
 const BC = require('@pascalcoin-sbx/common').BC;
-const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
+
+const pkCoder = new PublicKeyCoder();
 
 const P_ACCOUNT = Symbol('account');
 const P_ENC_PUBKEY = Symbol('enc_pubkey');
@@ -58,7 +60,7 @@ class Account extends Abstract {
     super(data);
 
     this[P_ACCOUNT] = new AccountNumber(data.account);
-    this[P_ENC_PUBKEY] = PublicKey.decode(BC.fromHex(data.enc_pubkey));
+    this[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
     this[P_BALANCE] = new Currency(data.balance);
     this[P_N_OPERATION] = parseInt(data.n_operation, 10);
     this[P_UPDATED_B] = parseInt(data.updated_b, 10);
@@ -87,7 +89,7 @@ class Account extends Abstract {
       this[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
       this[P_PRIVATE_SALE] = data.private_sale;
       if (data.new_enc_pubkey !== '000000000000' && data.new_enc_pubkey !== undefined) {
-        this[P_NEW_ENC_PUBKEY] = PublicKey.decode(BC.fromHex(data.new_enc_pubkey));
+        this[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
       }
     }
   }

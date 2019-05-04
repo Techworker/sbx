@@ -1,0 +1,60 @@
+Arguments: 
+  /usr/local/bin/node /usr/share/yarn/bin/yarn.js run build
+
+PATH: 
+  /home/ben/Code/crypto/pascalcoin/untitled/packages/pascalcoin/node_modules/.bin:/home/ben/Code/crypto/pascalcoin/untitled/packages/node_modules/.bin:/home/ben/Code/crypto/pascalcoin/untitled/node_modules/.bin:/home/ben/Code/crypto/pascalcoin/node_modules/.bin:/home/ben/Code/crypto/node_modules/.bin:/home/ben/Code/node_modules/.bin:/home/ben/node_modules/.bin:/home/node_modules/.bin:/node_modules/.bin:/usr/local/bin:/home/ben/.cargo/bin:/home/ben/Code/crypto/pascalcoin/untitled/node_modules/.bin:/home/ben/.cargo/bin:/home/ben/bin:/home/ben/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/ben/.dotnet/tools
+
+Yarn version: 
+  1.9.4
+
+Node version: 
+  12.0.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/ben/Code/crypto/pascalcoin/untitled/packages/pascalcoin/package.json: Unexpected token } in JSON at position 680
+      at JSON.parse (<anonymous>)
+      at /usr/share/yarn/lib/cli.js:1130:59
+      at Generator.next (<anonymous>)
+      at step (/usr/share/yarn/lib/cli.js:92:30)
+      at /usr/share/yarn/lib/cli.js:103:13
+
+npm manifest: 
+  {
+    "name": "@pascalcoin-sbx/pascalcoin",
+    "version": "0.0.10",
+    "description": "All in one package.",
+    "main": "index.js",
+    "directories": {
+      "test": "test"
+    },
+    "publishConfig": {
+      "access": "public"
+    },
+    "keywords": [
+      "PascalCoin",
+      "BlockChain",
+      "Cryptography"
+    ],
+    "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+      "build": "webpack --env dev && webpack --env build"
+    },
+    "dependencies": {
+      "@pascalcoin-sbx/common": "^0.0.10",
+      "@pascalcoin-sbx/crypto": "^0.0.10",
+      "@pascalcoin-sbx/epasa": "^0.0.10",
+      "@pascalcoin-sbx/json-rpc": "^0.0.10",
+      "@pascalcoin-sbx/signing": "^0.0.10",
+    },
+    "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

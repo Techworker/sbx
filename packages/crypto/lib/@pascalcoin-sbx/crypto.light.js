@@ -101,6 +101,7 @@ return /******/ (function(modules) { // webpackBootstrap
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var asn1 = exports;
@@ -121,6 +122,7 @@ asn1.encoders = __webpack_require__(/*! ./asn1/encoders */ "../../node_modules/a
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/api.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var asn1 = __webpack_require__(/*! ../asn1 */ "../../node_modules/asn1.js/lib/asn1.js");
@@ -193,6 +195,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/base/buffer.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -320,6 +323,7 @@ EncoderBuffer.prototype.join = function join(out, offset) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/base/index.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var base = exports;
@@ -337,6 +341,7 @@ base.Node = __webpack_require__(/*! ./node */ "../../node_modules/asn1.js/lib/as
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/base/node.js ***!
   \********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Reporter = __webpack_require__(/*! ../base */ "../../node_modules/asn1.js/lib/asn1/base/index.js").Reporter;
@@ -982,6 +987,7 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/base/reporter.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1114,6 +1120,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/constants/der.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constants = __webpack_require__(/*! ../constants */ "../../node_modules/asn1.js/lib/asn1/constants/index.js");
@@ -1167,6 +1174,7 @@ exports.tagByName = constants._reverse(exports.tag);
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/constants/index.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constants = exports;
@@ -1197,6 +1205,7 @@ constants.der = __webpack_require__(/*! ./der */ "../../node_modules/asn1.js/lib
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/decoders/der.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1532,6 +1541,7 @@ function derDecodeLen(buf, primitive, fail) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/decoders/index.js ***!
   \*************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var decoders = exports;
@@ -1547,6 +1557,7 @@ decoders.pem = __webpack_require__(/*! ./pem */ "../../node_modules/asn1.js/lib/
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/decoders/pem.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1607,6 +1618,7 @@ PEMDecoder.prototype.decode = function decode(data, options) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/encoders/der.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1913,6 +1925,7 @@ function encodeTag(tag, primitive, cls, reporter) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/encoders/index.js ***!
   \*************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var encoders = exports;
@@ -1928,6 +1941,7 @@ encoders.pem = __webpack_require__(/*! ./pem */ "../../node_modules/asn1.js/lib/
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/encoders/pem.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1960,6 +1974,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/base64-js/index.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2123,6 +2138,7 @@ function fromByteArray (uint8) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/bn.js/lib/bn.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -5562,6 +5578,7 @@ function fromByteArray (uint8) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/brorand/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var r;
@@ -5638,6 +5655,7 @@ if (typeof self === 'object') {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/aes.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 // based on the aes implimentation in triple sec
@@ -5877,6 +5895,7 @@ module.exports.AES = AES
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/authCipher.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var aes = __webpack_require__(/*! ./aes */ "../../node_modules/browserify-aes/aes.js")
@@ -6005,6 +6024,7 @@ module.exports = StreamCipher
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/browser.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ciphers = __webpack_require__(/*! ./encrypter */ "../../node_modules/browserify-aes/encrypter.js")
@@ -6029,6 +6049,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/decrypter.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var AuthCipher = __webpack_require__(/*! ./authCipher */ "../../node_modules/browserify-aes/authCipher.js")
@@ -6164,6 +6185,7 @@ exports.createDecipheriv = createDecipheriv
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/encrypter.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MODES = __webpack_require__(/*! ./modes */ "../../node_modules/browserify-aes/modes/index.js")
@@ -6289,6 +6311,7 @@ exports.createCipher = createCipher
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/ghash.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -6389,6 +6412,7 @@ module.exports = GHASH
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/incr32.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 function incr32 (iv) {
@@ -6415,6 +6439,7 @@ module.exports = incr32
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/cbc.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var xor = __webpack_require__(/*! buffer-xor */ "../../node_modules/buffer-xor/index.js")
@@ -6443,6 +6468,7 @@ exports.decrypt = function (self, block) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/cfb.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -6487,6 +6513,7 @@ exports.encrypt = function (self, data, decrypt) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/cfb1.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -6540,6 +6567,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/cfb8.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -6576,6 +6604,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/ctr.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var xor = __webpack_require__(/*! buffer-xor */ "../../node_modules/buffer-xor/index.js")
@@ -6617,6 +6646,7 @@ exports.encrypt = function (self, chunk) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/ecb.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 exports.encrypt = function (self, block) {
@@ -6635,6 +6665,7 @@ exports.decrypt = function (self, block) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/index.js ***!
   \********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var modeModules = {
@@ -6664,6 +6695,7 @@ module.exports = modes
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/list.json ***!
   \*********************************************************************************************/
 /*! exports provided: aes-128-ecb, aes-192-ecb, aes-256-ecb, aes-128-cbc, aes-192-cbc, aes-256-cbc, aes128, aes192, aes256, aes-128-cfb, aes-192-cfb, aes-256-cfb, aes-128-cfb8, aes-192-cfb8, aes-256-cfb8, aes-128-cfb1, aes-192-cfb1, aes-256-cfb1, aes-128-ofb, aes-192-ofb, aes-256-ofb, aes-128-ctr, aes-192-ctr, aes-256-ctr, aes-128-gcm, aes-192-gcm, aes-256-gcm, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"aes-128-ecb":{"cipher":"AES","key":128,"iv":0,"mode":"ECB","type":"block"},"aes-192-ecb":{"cipher":"AES","key":192,"iv":0,"mode":"ECB","type":"block"},"aes-256-ecb":{"cipher":"AES","key":256,"iv":0,"mode":"ECB","type":"block"},"aes-128-cbc":{"cipher":"AES","key":128,"iv":16,"mode":"CBC","type":"block"},"aes-192-cbc":{"cipher":"AES","key":192,"iv":16,"mode":"CBC","type":"block"},"aes-256-cbc":{"cipher":"AES","key":256,"iv":16,"mode":"CBC","type":"block"},"aes128":{"cipher":"AES","key":128,"iv":16,"mode":"CBC","type":"block"},"aes192":{"cipher":"AES","key":192,"iv":16,"mode":"CBC","type":"block"},"aes256":{"cipher":"AES","key":256,"iv":16,"mode":"CBC","type":"block"},"aes-128-cfb":{"cipher":"AES","key":128,"iv":16,"mode":"CFB","type":"stream"},"aes-192-cfb":{"cipher":"AES","key":192,"iv":16,"mode":"CFB","type":"stream"},"aes-256-cfb":{"cipher":"AES","key":256,"iv":16,"mode":"CFB","type":"stream"},"aes-128-cfb8":{"cipher":"AES","key":128,"iv":16,"mode":"CFB8","type":"stream"},"aes-192-cfb8":{"cipher":"AES","key":192,"iv":16,"mode":"CFB8","type":"stream"},"aes-256-cfb8":{"cipher":"AES","key":256,"iv":16,"mode":"CFB8","type":"stream"},"aes-128-cfb1":{"cipher":"AES","key":128,"iv":16,"mode":"CFB1","type":"stream"},"aes-192-cfb1":{"cipher":"AES","key":192,"iv":16,"mode":"CFB1","type":"stream"},"aes-256-cfb1":{"cipher":"AES","key":256,"iv":16,"mode":"CFB1","type":"stream"},"aes-128-ofb":{"cipher":"AES","key":128,"iv":16,"mode":"OFB","type":"stream"},"aes-192-ofb":{"cipher":"AES","key":192,"iv":16,"mode":"OFB","type":"stream"},"aes-256-ofb":{"cipher":"AES","key":256,"iv":16,"mode":"OFB","type":"stream"},"aes-128-ctr":{"cipher":"AES","key":128,"iv":16,"mode":"CTR","type":"stream"},"aes-192-ctr":{"cipher":"AES","key":192,"iv":16,"mode":"CTR","type":"stream"},"aes-256-ctr":{"cipher":"AES","key":256,"iv":16,"mode":"CTR","type":"stream"},"aes-128-gcm":{"cipher":"AES","key":128,"iv":12,"mode":"GCM","type":"auth"},"aes-192-gcm":{"cipher":"AES","key":192,"iv":12,"mode":"GCM","type":"auth"},"aes-256-gcm":{"cipher":"AES","key":256,"iv":12,"mode":"GCM","type":"auth"}};
@@ -6675,6 +6707,7 @@ module.exports = {"aes-128-ecb":{"cipher":"AES","key":128,"iv":0,"mode":"ECB","t
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/ofb.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(/*! buffer-xor */ "../../node_modules/buffer-xor/index.js")
@@ -6703,6 +6736,7 @@ exports.encrypt = function (self, chunk) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/streamCipher.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var aes = __webpack_require__(/*! ./aes */ "../../node_modules/browserify-aes/aes.js")
@@ -6741,6 +6775,7 @@ module.exports = StreamCipher
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-cipher/browser.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DES = __webpack_require__(/*! browserify-des */ "../../node_modules/browserify-des/index.js")
@@ -6819,6 +6854,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-des/index.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var CipherBase = __webpack_require__(/*! cipher-base */ "../../node_modules/cipher-base/index.js")
@@ -6880,6 +6916,7 @@ DES.prototype._final = function () {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-des/modes.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 exports['des-ecb'] = {
@@ -6915,6 +6952,7 @@ exports['des-ede'] = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-rsa/index.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js");
@@ -6967,6 +7005,7 @@ function getr(priv) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/algos.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./browser/algorithms.json */ "../../node_modules/browserify-sign/browser/algorithms.json")
@@ -6979,6 +7018,7 @@ module.exports = __webpack_require__(/*! ./browser/algorithms.json */ "../../nod
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/algorithms.json ***!
   \******************************************************************************************************/
 /*! exports provided: sha224WithRSAEncryption, RSA-SHA224, sha256WithRSAEncryption, RSA-SHA256, sha384WithRSAEncryption, RSA-SHA384, sha512WithRSAEncryption, RSA-SHA512, RSA-SHA1, ecdsa-with-SHA1, sha256, sha224, sha384, sha512, DSA-SHA, DSA-SHA1, DSA, DSA-WITH-SHA224, DSA-SHA224, DSA-WITH-SHA256, DSA-SHA256, DSA-WITH-SHA384, DSA-SHA384, DSA-WITH-SHA512, DSA-SHA512, DSA-RIPEMD160, ripemd160WithRSA, RSA-RIPEMD160, md5WithRSAEncryption, RSA-MD5, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"sha224WithRSAEncryption":{"sign":"rsa","hash":"sha224","id":"302d300d06096086480165030402040500041c"},"RSA-SHA224":{"sign":"ecdsa/rsa","hash":"sha224","id":"302d300d06096086480165030402040500041c"},"sha256WithRSAEncryption":{"sign":"rsa","hash":"sha256","id":"3031300d060960864801650304020105000420"},"RSA-SHA256":{"sign":"ecdsa/rsa","hash":"sha256","id":"3031300d060960864801650304020105000420"},"sha384WithRSAEncryption":{"sign":"rsa","hash":"sha384","id":"3041300d060960864801650304020205000430"},"RSA-SHA384":{"sign":"ecdsa/rsa","hash":"sha384","id":"3041300d060960864801650304020205000430"},"sha512WithRSAEncryption":{"sign":"rsa","hash":"sha512","id":"3051300d060960864801650304020305000440"},"RSA-SHA512":{"sign":"ecdsa/rsa","hash":"sha512","id":"3051300d060960864801650304020305000440"},"RSA-SHA1":{"sign":"rsa","hash":"sha1","id":"3021300906052b0e03021a05000414"},"ecdsa-with-SHA1":{"sign":"ecdsa","hash":"sha1","id":""},"sha256":{"sign":"ecdsa","hash":"sha256","id":""},"sha224":{"sign":"ecdsa","hash":"sha224","id":""},"sha384":{"sign":"ecdsa","hash":"sha384","id":""},"sha512":{"sign":"ecdsa","hash":"sha512","id":""},"DSA-SHA":{"sign":"dsa","hash":"sha1","id":""},"DSA-SHA1":{"sign":"dsa","hash":"sha1","id":""},"DSA":{"sign":"dsa","hash":"sha1","id":""},"DSA-WITH-SHA224":{"sign":"dsa","hash":"sha224","id":""},"DSA-SHA224":{"sign":"dsa","hash":"sha224","id":""},"DSA-WITH-SHA256":{"sign":"dsa","hash":"sha256","id":""},"DSA-SHA256":{"sign":"dsa","hash":"sha256","id":""},"DSA-WITH-SHA384":{"sign":"dsa","hash":"sha384","id":""},"DSA-SHA384":{"sign":"dsa","hash":"sha384","id":""},"DSA-WITH-SHA512":{"sign":"dsa","hash":"sha512","id":""},"DSA-SHA512":{"sign":"dsa","hash":"sha512","id":""},"DSA-RIPEMD160":{"sign":"dsa","hash":"rmd160","id":""},"ripemd160WithRSA":{"sign":"rsa","hash":"rmd160","id":"3021300906052b2403020105000414"},"RSA-RIPEMD160":{"sign":"rsa","hash":"rmd160","id":"3021300906052b2403020105000414"},"md5WithRSAEncryption":{"sign":"rsa","hash":"md5","id":"3020300c06082a864886f70d020505000410"},"RSA-MD5":{"sign":"rsa","hash":"md5","id":"3020300c06082a864886f70d020505000410"}};
@@ -6990,6 +7030,7 @@ module.exports = {"sha224WithRSAEncryption":{"sign":"rsa","hash":"sha224","id":"
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/curves.json ***!
   \**************************************************************************************************/
 /*! exports provided: 1.3.132.0.10, 1.3.132.0.33, 1.2.840.10045.3.1.1, 1.2.840.10045.3.1.7, 1.3.132.0.34, 1.3.132.0.35, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"1.3.132.0.10":"secp256k1","1.3.132.0.33":"p224","1.2.840.10045.3.1.1":"p192","1.2.840.10045.3.1.7":"p256","1.3.132.0.34":"p384","1.3.132.0.35":"p521"};
@@ -7001,6 +7042,7 @@ module.exports = {"1.3.132.0.10":"secp256k1","1.3.132.0.33":"p224","1.2.840.1004
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/index.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(/*! create-hash */ "../../node_modules/create-hash/browser.js")
@@ -7104,6 +7146,7 @@ module.exports = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/sign.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -7261,6 +7304,7 @@ module.exports.makeKey = makeKey
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/verify.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -7356,6 +7400,7 @@ module.exports = verify
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/buffer-xor/index.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {module.exports = function xor (a, b) {
@@ -7378,6 +7423,7 @@ module.exports = verify
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/buffer/index.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9180,6 +9226,7 @@ function isnan (val) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/cipher-base/index.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -9290,6 +9337,7 @@ module.exports = CipherBase
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/core-util-is/lib/util.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
@@ -9409,6 +9457,7 @@ function objectToString(o) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-ecdh/browser.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(/*! elliptic */ "../../node_modules/elliptic/lib/elliptic.js")
@@ -9545,6 +9594,7 @@ function formatReturnValue (bn, enc, len) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-hash/browser.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9587,6 +9637,7 @@ module.exports = function createHash (alg) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-hash/md5.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MD5 = __webpack_require__(/*! md5.js */ "../../node_modules/md5.js/index.js")
@@ -9603,6 +9654,7 @@ module.exports = function (buffer) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-hmac/browser.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9677,6 +9729,7 @@ module.exports = function createHmac (alg, key) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-hmac/legacy.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9735,6 +9788,7 @@ module.exports = Hmac
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/crypto-browserify/index.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9844,6 +9898,7 @@ exports.constants = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des.js ***!
   \********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9863,6 +9918,7 @@ exports.EDE = __webpack_require__(/*! ./des/ede */ "../../node_modules/des.js/li
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/cbc.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9940,6 +9996,7 @@ proto._update = function _update(inp, inOff, out, outOff) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/cipher.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10093,6 +10150,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/des.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10248,6 +10306,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/ede.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10315,6 +10374,7 @@ EDE.prototype._unpad = DES.prototype._unpad;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/utils.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10583,6 +10643,7 @@ exports.padSplit = function padSplit(num, size, group) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/diffie-hellman/browser.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var generatePrime = __webpack_require__(/*! ./lib/generatePrime */ "../../node_modules/diffie-hellman/lib/generatePrime.js")
@@ -10637,6 +10698,7 @@ exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/diffie-hellman/lib/dh.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var BN = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js");
@@ -10813,6 +10875,7 @@ function formatReturnValue(bn, enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/diffie-hellman/lib/generatePrime.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var randomBytes = __webpack_require__(/*! randombytes */ "../../node_modules/randombytes/browser.js");
@@ -10929,6 +10992,7 @@ function findPrime(bits, gen) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/diffie-hellman/lib/primes.json ***!
   \*********************************************************************************************/
 /*! exports provided: modp1, modp2, modp5, modp14, modp15, modp16, modp17, modp18, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"modp1":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a63a3620ffffffffffffffff"},"modp2":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece65381ffffffffffffffff"},"modp5":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff"},"modp14":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aacaa68ffffffffffffffff"},"modp15":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a93ad2caffffffffffffffff"},"modp16":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c934063199ffffffffffffffff"},"modp17":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c93402849236c3fab4d27c7026c1d4dcb2602646dec9751e763dba37bdf8ff9406ad9e530ee5db382f413001aeb06a53ed9027d831179727b0865a8918da3edbebcf9b14ed44ce6cbaced4bb1bdb7f1447e6cc254b332051512bd7af426fb8f401378cd2bf5983ca01c64b92ecf032ea15d1721d03f482d7ce6e74fef6d55e702f46980c82b5a84031900b1c9e59e7c97fbec7e8f323a97a7e36cc88be0f1d45b7ff585ac54bd407b22b4154aacc8f6d7ebf48e1d814cc5ed20f8037e0a79715eef29be32806a1d58bb7c5da76f550aa3d8a1fbff0eb19ccb1a313d55cda56c9ec2ef29632387fe8d76e3c0468043e8f663f4860ee12bf2d5b0b7474d6e694f91e6dcc4024ffffffffffffffff"},"modp18":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c93402849236c3fab4d27c7026c1d4dcb2602646dec9751e763dba37bdf8ff9406ad9e530ee5db382f413001aeb06a53ed9027d831179727b0865a8918da3edbebcf9b14ed44ce6cbaced4bb1bdb7f1447e6cc254b332051512bd7af426fb8f401378cd2bf5983ca01c64b92ecf032ea15d1721d03f482d7ce6e74fef6d55e702f46980c82b5a84031900b1c9e59e7c97fbec7e8f323a97a7e36cc88be0f1d45b7ff585ac54bd407b22b4154aacc8f6d7ebf48e1d814cc5ed20f8037e0a79715eef29be32806a1d58bb7c5da76f550aa3d8a1fbff0eb19ccb1a313d55cda56c9ec2ef29632387fe8d76e3c0468043e8f663f4860ee12bf2d5b0b7474d6e694f91e6dbe115974a3926f12fee5e438777cb6a932df8cd8bec4d073b931ba3bc832b68d9dd300741fa7bf8afc47ed2576f6936ba424663aab639c5ae4f5683423b4742bf1c978238f16cbe39d652de3fdb8befc848ad922222e04a4037c0713eb57a81a23f0c73473fc646cea306b4bcbc8862f8385ddfa9d4b7fa2c087e879683303ed5bdd3a062b3cf5b3a278a66d2a13f83f44f82ddf310ee074ab6a364597e899a0255dc164f31cc50846851df9ab48195ded7ea1b1d510bd7ee74d73faf36bc31ecfa268359046f4eb879f924009438b481c6cd7889a002ed5ee382bc9190da6fc026e479558e4475677e9aa9e3050e2765694dfc81f56e880b96e7160c980dd98edd3dfffffffffffffffff"}};
@@ -10940,6 +11004,7 @@ module.exports = {"modp1":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10965,6 +11030,7 @@ elliptic.eddsa = __webpack_require__(/*! ./elliptic/eddsa */ "../../node_modules
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/base.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11352,6 +11418,7 @@ BasePoint.prototype.dblp = function dblp(k) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/edwards.js ***!
   \*****************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11797,6 +11864,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/index.js ***!
   \***************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11817,6 +11885,7 @@ curve.edwards = __webpack_require__(/*! ./edwards */ "../../node_modules/ellipti
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/mont.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12009,6 +12078,7 @@ Point.prototype.getX = function getX() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/short.js ***!
   \***************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12958,6 +13028,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curves.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13175,6 +13246,7 @@ defineCurve('secp256k1', {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/ec/index.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13427,6 +13499,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/ec/key.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13558,6 +13631,7 @@ KeyPair.prototype.inspect = function inspect() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/ec/signature.js ***!
   \****************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13705,6 +13779,7 @@ Signature.prototype.toDER = function toDER(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/eddsa/index.js ***!
   \***************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13835,6 +13910,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/eddsa/key.js ***!
   \*************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13943,6 +14019,7 @@ module.exports = KeyPair;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/eddsa/signature.js ***!
   \*******************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14021,6 +14098,7 @@ module.exports = Signature;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/precomputed/secp256k1.js ***!
   \*************************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -14812,6 +14890,7 @@ module.exports = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/utils.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14944,6 +15023,7 @@ utils.intFromLE = intFromLE;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/package.json ***!
   \************************************************************************************/
 /*! exports provided: name, version, description, main, files, scripts, repository, keywords, author, license, bugs, homepage, devDependencies, dependencies, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"name":"elliptic","version":"6.4.1","description":"EC cryptography","main":"lib/elliptic.js","files":["lib"],"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","unit":"istanbul test _mocha --reporter=spec test/index.js","test":"npm run lint && npm run unit","version":"grunt dist && git add dist/"},"repository":{"type":"git","url":"git@github.com:indutny/elliptic"},"keywords":["EC","Elliptic","curve","Cryptography"],"author":"Fedor Indutny <fedor@indutny.com>","license":"MIT","bugs":{"url":"https://github.com/indutny/elliptic/issues"},"homepage":"https://github.com/indutny/elliptic","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"}};
@@ -14955,6 +15035,7 @@ module.exports = {"name":"elliptic","version":"6.4.1","description":"EC cryptogr
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/events/events.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15415,6 +15496,7 @@ function unwrapListeners(arr) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/evp_bytestokey/index.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -15471,6 +15553,7 @@ module.exports = EVP_BytesToKey
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash-base/index.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15578,6 +15661,7 @@ module.exports = HashBase
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = exports;
@@ -15604,6 +15688,7 @@ hash.ripemd160 = hash.ripemd.ripemd160;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/common.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15708,6 +15793,7 @@ BlockHash.prototype._pad = function pad() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/hmac.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15767,6 +15853,7 @@ Hmac.prototype.digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/ripemd.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15925,6 +16012,7 @@ var sh = [
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15944,6 +16032,7 @@ exports.sha512 = __webpack_require__(/*! ./sha/512 */ "../../node_modules/hash.j
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/1.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16030,6 +16119,7 @@ SHA1.prototype._digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/224.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16072,6 +16162,7 @@ SHA224.prototype._digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/256.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16189,6 +16280,7 @@ SHA256.prototype._digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/384.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16236,6 +16328,7 @@ SHA384.prototype._digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/512.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16578,6 +16671,7 @@ function g1_512_lo(xh, xl) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/common.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16639,6 +16733,7 @@ exports.g1_256 = g1_256;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/utils.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16929,6 +17024,7 @@ exports.shr64_lo = shr64_lo;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hmac-drbg/lib/hmac-drbg.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17054,6 +17150,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/ieee754/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -17149,6 +17246,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/indexof/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 
@@ -17169,6 +17267,7 @@ module.exports = function(arr, obj){
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/inherits/inherits_browser.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 if (typeof Object.create === 'function') {
@@ -17203,6 +17302,7 @@ if (typeof Object.create === 'function') {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/isarray/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -17219,6 +17319,7 @@ module.exports = Array.isArray || function (arr) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/md5.js/index.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17377,6 +17478,7 @@ module.exports = MD5
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/miller-rabin/lib/mr.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var bn = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js");
@@ -17503,6 +17605,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/minimalistic-assert/index.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = assert;
@@ -17525,6 +17628,7 @@ assert.equal = function assertEqual(l, r, msg) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/minimalistic-crypto-utils/lib/utils.js ***!
   \*****************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17595,6 +17699,7 @@ utils.encode = function encode(arr, enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/aes.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18204,6 +18309,7 @@ exports.AES_CTR_PKCS7 = AES_CTR_PKCS7;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/base.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18577,6 +18683,7 @@ var Util;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/blockmode.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18754,11 +18861,178 @@ exports.CTR = CTR;
 
 /***/ }),
 
+/***/ "../../node_modules/mipher/dist/hmac.js":
+/*!**********************************************************************************!*\
+  !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/hmac.js ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+///////////////////////////////////////////////////////////////////////////////
+// \author (c) Marco Paland (marco@paland.com)
+//             2015, PALANDesign Hannover, Germany
+//
+// \license The MIT License (MIT)
+//
+// This file is part of the mipher crypto library.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+// \brief HMAC implementation
+//        Generates a HMAC value
+//
+///////////////////////////////////////////////////////////////////////////////
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var base_1 = __webpack_require__(/*! ./base */ "../../node_modules/mipher/dist/base.js");
+var padding_1 = __webpack_require__(/*! ./padding */ "../../node_modules/mipher/dist/padding.js");
+var sha1_1 = __webpack_require__(/*! ./sha1 */ "../../node_modules/mipher/dist/sha1.js");
+var sha256_1 = __webpack_require__(/*! ./sha256 */ "../../node_modules/mipher/dist/sha256.js");
+var sha512_1 = __webpack_require__(/*! ./sha512 */ "../../node_modules/mipher/dist/sha512.js");
+/**
+ * HMAC class
+ */
+var HMAC = /** @class */ (function () {
+    /**
+     * ctor
+     * @param {Hash} hasher Hashing function
+     */
+    function HMAC(hasher) {
+        this.hasher = hasher;
+        this.hashSize = hasher.hashSize;
+        this.B = this.hashSize <= 32 ? 64 : 128; // according to RFC4868
+        this.iPad = 0x36;
+        this.oPad = 0x5c;
+    }
+    /**
+     * Init the HMAC
+     * @param {Uint8Array} key The key
+     */
+    HMAC.prototype.init = function (key) {
+        // process the key
+        var _key = new Uint8Array(key);
+        if (_key.length > this.B) {
+            // keys longer than blocksize are shortened
+            this.hasher.init();
+            _key = this.hasher.digest(key);
+        }
+        _key = (new padding_1.ZeroPadding()).pad(_key, this.B);
+        // setup the key pads
+        this.iKeyPad = new Uint8Array(this.B);
+        this.oKeyPad = new Uint8Array(this.B);
+        for (var i = 0; i < this.B; ++i) {
+            this.iKeyPad[i] = this.iPad ^ _key[i];
+            this.oKeyPad[i] = this.oPad ^ _key[i];
+        }
+        // security: delete the key
+        base_1.Util.clear(_key);
+        // initial hash
+        this.hasher.init();
+        this.hasher.update(this.iKeyPad);
+        return this;
+    };
+    /**
+     * Update the HMAC with additional message data
+     * @param {Uint8Array} msg Additional message data
+     * @return {HMAC} this object
+     */
+    HMAC.prototype.update = function (msg) {
+        msg = msg || new Uint8Array(0);
+        this.hasher.update(msg);
+        return this;
+    };
+    /**
+     * Finalize the HMAC with additional message data
+     * @param {Uint8Array} msg Additional message data
+     * @return {Uint8Array} HMAC (Hash-based Message Authentication Code)
+     */
+    HMAC.prototype.digest = function (msg) {
+        msg = msg || new Uint8Array(0);
+        var sum1 = this.hasher.digest(msg); // get sum 1
+        this.hasher.init();
+        return this.hasher.update(this.oKeyPad).digest(sum1);
+    };
+    /**
+     * All in one step
+     * @param {Uint8Array} key Key
+     * @param {Uint8Array} msg Message data
+     * @return {Uint8Array} Hash as byte array
+     */
+    HMAC.prototype.hash = function (key, msg) {
+        return this.init(key).digest(msg);
+    };
+    /**
+     * Performs a quick selftest
+     * @return {Boolean} True if successful
+     */
+    HMAC.prototype.selftest = function () {
+        return false;
+    };
+    return HMAC;
+}());
+exports.HMAC = HMAC;
+///////////////////////////////////////////////////////////////////////////////
+var HMAC_SHA1 = /** @class */ (function (_super) {
+    __extends(HMAC_SHA1, _super);
+    function HMAC_SHA1() {
+        return _super.call(this, new sha1_1.SHA1()) || this;
+    }
+    return HMAC_SHA1;
+}(HMAC));
+exports.HMAC_SHA1 = HMAC_SHA1;
+var HMAC_SHA256 = /** @class */ (function (_super) {
+    __extends(HMAC_SHA256, _super);
+    function HMAC_SHA256() {
+        return _super.call(this, new sha256_1.SHA256()) || this;
+    }
+    return HMAC_SHA256;
+}(HMAC));
+exports.HMAC_SHA256 = HMAC_SHA256;
+var HMAC_SHA512 = /** @class */ (function (_super) {
+    __extends(HMAC_SHA512, _super);
+    function HMAC_SHA512() {
+        return _super.call(this, new sha512_1.SHA512()) || this;
+    }
+    return HMAC_SHA512;
+}(HMAC));
+exports.HMAC_SHA512 = HMAC_SHA512;
+
+
+/***/ }),
+
 /***/ "../../node_modules/mipher/dist/padding.js":
 /*!*************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/padding.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18884,6 +19158,7 @@ exports.ZeroPadding = ZeroPadding;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/random.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19288,11 +19563,219 @@ exports.Random = Random;
 
 /***/ }),
 
+/***/ "../../node_modules/mipher/dist/sha1.js":
+/*!**********************************************************************************!*\
+  !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/sha1.js ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+///////////////////////////////////////////////////////////////////////////////
+// \author (c) Marco Paland (marco@paland.com)
+//             2015-2016, PALANDesign Hannover, Germany
+//
+// \license The MIT License (MIT)
+//
+// This file is part of the mipher crypto library.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+// \brief SHA1 implementation
+//        Generates a 20 byte (160 bit) hash value
+//        CAUTION: SHA1 is meant to be broken, consider using a more secure hash
+//                 like SHA512 or better SHA3
+//
+///////////////////////////////////////////////////////////////////////////////
+Object.defineProperty(exports, "__esModule", { value: true });
+var base_1 = __webpack_require__(/*! ./base */ "../../node_modules/mipher/dist/base.js");
+/**
+ * SHA1 class
+ */
+var SHA1 = /** @class */ (function () {
+    /**
+     * SHA1 ctor
+     */
+    function SHA1() {
+        this.hashSize = 20;
+        this.buffer = new Uint8Array(64);
+        this.K = new Uint32Array([0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6]);
+        // circular left-shift operator
+        this.S = function (n, x) { return (x << n) | (x >>> 32 - n); };
+        this.F = function (t, b, c, d) {
+            if (t <= 19) {
+                return (b & c) | (~b & d);
+            }
+            else if (t <= 39) {
+                return b ^ c ^ d;
+            }
+            else if (t <= 59) {
+                return (b & c) | (b & d) | (c & d);
+            }
+            else if (t <= 79) {
+                return b ^ c ^ d;
+            }
+        };
+        this.init();
+    }
+    /**
+     * Init the hash
+     * @return {SHA1} this
+     */
+    SHA1.prototype.init = function () {
+        this.H = new Uint32Array([0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0]);
+        this.bufferIndex = 0;
+        this.count = new Uint32Array(2);
+        base_1.Util.clear(this.buffer);
+        return this;
+    };
+    /**
+     * Perform one transformation cycle
+     */
+    SHA1.prototype.transform = function () {
+        var h = this.H, a = h[0], b = h[1], c = h[2], d = h[3], e = h[4];
+        // convert byte buffer to words
+        var w = new Uint32Array(80);
+        for (var i = 0; i < 16; i++) {
+            w[i] = (this.buffer[(i << 2) + 3]) | (this.buffer[(i << 2) + 2] << 8) | (this.buffer[(i << 2) + 1] << 16) | (this.buffer[i << 2] << 24);
+        }
+        for (var t = 0; t < 80; t++) {
+            if (t >= 16) {
+                w[t] = this.S(1, w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16]);
+            }
+            var tmp = (this.S(5, a) + this.F(t, b, c, d) + e + w[t] + this.K[Math.floor(t / 20)]) | 0;
+            e = d;
+            d = c;
+            c = this.S(30, b);
+            b = a;
+            a = tmp;
+        }
+        h[0] = (h[0] + a) | 0;
+        h[1] = (h[1] + b) | 0;
+        h[2] = (h[2] + c) | 0;
+        h[3] = (h[3] + d) | 0;
+        h[4] = (h[4] + e) | 0;
+    };
+    /**
+     * Update the hash with additional message data
+     * @param {Uint8Array} msg Additional message data as byte array
+     * @return {SHA1} this
+     */
+    SHA1.prototype.update = function (msg) {
+        msg = msg || new Uint8Array(0);
+        // process the msg as many times as possible, the rest is stored in the buffer
+        // message is processed in 512 bit (64 byte chunks)
+        for (var i = 0; i < msg.length; i++) {
+            this.buffer[this.bufferIndex++] = msg[i];
+            if (this.bufferIndex === 64) {
+                this.transform();
+                this.bufferIndex = 0;
+            }
+        }
+        // counter update (number of message bits)
+        var c = this.count;
+        if ((c[0] += (msg.length << 3)) < (msg.length << 3)) {
+            c[1]++;
+        }
+        c[1] += (msg.length >>> 29);
+        return this;
+    };
+    /**
+     * Finalize the hash with additional message data
+     * @param {Uint8Array} msg Additional message data as byte array
+     * @return {Uint8Array} Hash as 20 byte array
+     */
+    SHA1.prototype.digest = function (msg) {
+        this.update(msg);
+        // append '1'
+        var b = this.buffer, idx = this.bufferIndex;
+        b[idx++] = 0x80;
+        // zeropad up to byte pos 56
+        while (idx !== 56) {
+            if (idx === 64) {
+                this.transform();
+                idx = 0;
+            }
+            b[idx++] = 0;
+        }
+        // append length in bits
+        var c = this.count;
+        b[56] = (c[1] >>> 24) & 0xff;
+        b[57] = (c[1] >>> 16) & 0xff;
+        b[58] = (c[1] >>> 8) & 0xff;
+        b[59] = (c[1] >>> 0) & 0xff;
+        b[60] = (c[0] >>> 24) & 0xff;
+        b[61] = (c[0] >>> 16) & 0xff;
+        b[62] = (c[0] >>> 8) & 0xff;
+        b[63] = (c[0] >>> 0) & 0xff;
+        this.transform();
+        // return the hash as byte array (20 bytes)
+        var hash = new Uint8Array(20);
+        for (var i = 0; i < 5; i++) {
+            hash[(i << 2) + 0] = (this.H[i] >>> 24) & 0xff;
+            hash[(i << 2) + 1] = (this.H[i] >>> 16) & 0xff;
+            hash[(i << 2) + 2] = (this.H[i] >>> 8) & 0xff;
+            hash[(i << 2) + 3] = (this.H[i] >>> 0) & 0xff;
+        }
+        // clear internal states and prepare for new hash
+        this.init();
+        return hash;
+    };
+    /**
+     * All in one step
+     * @param {Uint8Array} msg Additional message data
+     * @return {Uint8Array} Hash as 20 byte array
+     */
+    SHA1.prototype.hash = function (msg) {
+        return this.init().digest(msg);
+    };
+    /**
+     * Performs a quick selftest
+     * @return {Boolean} True if successful
+     */
+    SHA1.prototype.selftest = function () {
+        var cumulative = new SHA1(), sha = new SHA1();
+        var toBeHashed = '', hash;
+        for (var i = 0; i < 10; i++) {
+            for (var n = 100 * i; n < 100 * (i + 1); n++) {
+                hash = base_1.Convert.bin2hex(sha.hash(base_1.Convert.str2bin(toBeHashed)));
+                cumulative.update(base_1.Convert.str2bin(hash));
+                toBeHashed = (hash.substring(0, 2) + toBeHashed).substring(0, n + 1);
+            }
+        }
+        hash = base_1.Convert.bin2hex(cumulative.digest());
+        return hash === '00665a042bac62281f2f3666c3565dd005d364dc';
+    };
+    return SHA1;
+}());
+exports.SHA1 = SHA1;
+
+
+/***/ }),
+
 /***/ "../../node_modules/mipher/dist/sha256.js":
 /*!************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/sha256.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19500,11 +19983,314 @@ exports.SHA256 = SHA256;
 
 /***/ }),
 
+/***/ "../../node_modules/mipher/dist/sha512.js":
+/*!************************************************************************************!*\
+  !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/sha512.js ***!
+  \************************************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+///////////////////////////////////////////////////////////////////////////////
+// \author (c) Marco Paland (marco@paland.com)
+//             2015-2018, PALANDesign Hannover, Germany
+//
+// \license The MIT License (MIT)
+//
+// This file is part of the mipher crypto library.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+// \brief SHA512 implementation
+//        Generates a 64 byte (512 bit) hash value
+//
+///////////////////////////////////////////////////////////////////////////////
+Object.defineProperty(exports, "__esModule", { value: true });
+var base_1 = __webpack_require__(/*! ./base */ "../../node_modules/mipher/dist/base.js");
+/**
+ * SHA512 class
+ */
+var SHA512 = /** @class */ (function () {
+    /**
+     * SHA512 ctor
+     */
+    function SHA512() {
+        this.hashSize = 64;
+        this.buffer = new Uint8Array(128); // 128 byte array
+        this.K = new Uint32Array([
+            0x428a2f98, 0xd728ae22, 0x71374491, 0x23ef65cd, 0xb5c0fbcf, 0xec4d3b2f, 0xe9b5dba5, 0x8189dbbc,
+            0x3956c25b, 0xf348b538, 0x59f111f1, 0xb605d019, 0x923f82a4, 0xaf194f9b, 0xab1c5ed5, 0xda6d8118,
+            0xd807aa98, 0xa3030242, 0x12835b01, 0x45706fbe, 0x243185be, 0x4ee4b28c, 0x550c7dc3, 0xd5ffb4e2,
+            0x72be5d74, 0xf27b896f, 0x80deb1fe, 0x3b1696b1, 0x9bdc06a7, 0x25c71235, 0xc19bf174, 0xcf692694,
+            0xe49b69c1, 0x9ef14ad2, 0xefbe4786, 0x384f25e3, 0x0fc19dc6, 0x8b8cd5b5, 0x240ca1cc, 0x77ac9c65,
+            0x2de92c6f, 0x592b0275, 0x4a7484aa, 0x6ea6e483, 0x5cb0a9dc, 0xbd41fbd4, 0x76f988da, 0x831153b5,
+            0x983e5152, 0xee66dfab, 0xa831c66d, 0x2db43210, 0xb00327c8, 0x98fb213f, 0xbf597fc7, 0xbeef0ee4,
+            0xc6e00bf3, 0x3da88fc2, 0xd5a79147, 0x930aa725, 0x06ca6351, 0xe003826f, 0x14292967, 0x0a0e6e70,
+            0x27b70a85, 0x46d22ffc, 0x2e1b2138, 0x5c26c926, 0x4d2c6dfc, 0x5ac42aed, 0x53380d13, 0x9d95b3df,
+            0x650a7354, 0x8baf63de, 0x766a0abb, 0x3c77b2a8, 0x81c2c92e, 0x47edaee6, 0x92722c85, 0x1482353b,
+            0xa2bfe8a1, 0x4cf10364, 0xa81a664b, 0xbc423001, 0xc24b8b70, 0xd0f89791, 0xc76c51a3, 0x0654be30,
+            0xd192e819, 0xd6ef5218, 0xd6990624, 0x5565a910, 0xf40e3585, 0x5771202a, 0x106aa070, 0x32bbd1b8,
+            0x19a4c116, 0xb8d2d0c8, 0x1e376c08, 0x5141ab53, 0x2748774c, 0xdf8eeb99, 0x34b0bcb5, 0xe19b48a8,
+            0x391c0cb3, 0xc5c95a63, 0x4ed8aa4a, 0xe3418acb, 0x5b9cca4f, 0x7763e373, 0x682e6ff3, 0xd6b2b8a3,
+            0x748f82ee, 0x5defb2fc, 0x78a5636f, 0x43172f60, 0x84c87814, 0xa1f0ab72, 0x8cc70208, 0x1a6439ec,
+            0x90befffa, 0x23631e28, 0xa4506ceb, 0xde82bde9, 0xbef9a3f7, 0xb2c67915, 0xc67178f2, 0xe372532b,
+            0xca273ece, 0xea26619c, 0xd186b8c7, 0x21c0c207, 0xeada7dd6, 0xcde0eb1e, 0xf57d4f7f, 0xee6ed178,
+            0x06f067aa, 0x72176fba, 0x0a637dc5, 0xa2c898a6, 0x113f9804, 0xbef90dae, 0x1b710b35, 0x131c471b,
+            0x28db77f5, 0x23047d84, 0x32caab7b, 0x40c72493, 0x3c9ebe0a, 0x15c9bebc, 0x431d67c4, 0x9c100d4c,
+            0x4cc5d4be, 0xcb3e42b6, 0x597f299c, 0xfc657e2a, 0x5fcb6fab, 0x3ad6faec, 0x6c44198c, 0x4a475817
+        ]);
+        this.init();
+    }
+    /**
+     * Init the hash
+     * @return {Object} this
+     */
+    SHA512.prototype.init = function () {
+        this.H = new Uint32Array([0x6a09e667, 0xf3bcc908, 0xbb67ae85, 0x84caa73b, 0x3c6ef372, 0xfe94f82b, 0xa54ff53a, 0x5f1d36f1,
+            0x510e527f, 0xade682d1, 0x9b05688c, 0x2b3e6c1f, 0x1f83d9ab, 0xfb41bd6b, 0x5be0cd19, 0x137e2179]);
+        this.bufferIndex = 0;
+        this.count = new Uint32Array(2);
+        base_1.Util.clear(this.buffer);
+        return this;
+    };
+    /**
+     * Perform one transformation cycle
+     */
+    SHA512.prototype.transform = function () {
+        var h = this.H, h0h = h[0], h0l = h[1], h1h = h[2], h1l = h[3], h2h = h[4], h2l = h[5], h3h = h[6], h3l = h[7], h4h = h[8], h4l = h[9], h5h = h[10], h5l = h[11], h6h = h[12], h6l = h[13], h7h = h[14], h7l = h[15];
+        var ah = h0h, al = h0l, bh = h1h, bl = h1l, ch = h2h, cl = h2l, dh = h3h, dl = h3l, eh = h4h, el = h4l, fh = h5h, fl = h5l, gh = h6h, gl = h6l, hh = h7h, hl = h7l;
+        // convert byte buffer into w[0..31]
+        var i, w = new Uint32Array(160);
+        for (i = 0; i < 32; i++) {
+            w[i] = (this.buffer[(i << 2) + 3]) |
+                (this.buffer[(i << 2) + 2] << 8) |
+                (this.buffer[(i << 2) + 1] << 16) |
+                (this.buffer[(i << 2)] << 24);
+        }
+        // fill w[32..159]
+        var gamma0xl, gamma0xh, gamma0l, gamma0h, gamma1xl, gamma1xh, gamma1l, gamma1h, wrl, wrh, wr7l, wr7h, wr16l, wr16h;
+        for (i = 16; i < 80; i++) {
+            // Gamma0
+            gamma0xh = w[(i - 15) * 2];
+            gamma0xl = w[(i - 15) * 2 + 1];
+            gamma0h = ((gamma0xl << 31) | (gamma0xh >>> 1)) ^
+                ((gamma0xl << 24) | (gamma0xh >>> 8)) ^
+                ((gamma0xh >>> 7));
+            gamma0l = ((gamma0xh << 31) | (gamma0xl >>> 1)) ^
+                ((gamma0xh << 24) | (gamma0xl >>> 8)) ^
+                ((gamma0xh << 25) | (gamma0xl >>> 7));
+            // Gamma1
+            gamma1xh = w[(i - 2) * 2];
+            gamma1xl = w[(i - 2) * 2 + 1];
+            gamma1h = ((gamma1xl << 13) | (gamma1xh >>> 19)) ^
+                ((gamma1xh << 3) | (gamma1xl >>> 29)) ^
+                ((gamma1xh >>> 6));
+            gamma1l = ((gamma1xh << 13) | (gamma1xl >>> 19)) ^
+                ((gamma1xl << 3) | (gamma1xh >>> 29)) ^
+                ((gamma1xh << 26) | (gamma1xl >>> 6));
+            // shortcuts
+            wr7h = w[(i - 7) * 2],
+                wr7l = w[(i - 7) * 2 + 1],
+                wr16h = w[(i - 16) * 2],
+                wr16l = w[(i - 16) * 2 + 1];
+            // W(round) = gamma0 + W(round - 7) + gamma1 + W(round - 16)
+            wrl = gamma0l + wr7l;
+            wrh = gamma0h + wr7h + ((wrl >>> 0) < (gamma0l >>> 0) ? 1 : 0);
+            wrl += gamma1l;
+            wrh += gamma1h + ((wrl >>> 0) < (gamma1l >>> 0) ? 1 : 0);
+            wrl += wr16l;
+            wrh += wr16h + ((wrl >>> 0) < (wr16l >>> 0) ? 1 : 0);
+            // store
+            w[i * 2] = wrh;
+            w[i * 2 + 1] = wrl;
+        }
+        // compress
+        var chl, chh, majl, majh, sig0l, sig0h, sig1l, sig1h, krl, krh, t1l, t1h, t2l, t2h;
+        for (i = 0; i < 80; i++) {
+            // Ch
+            chh = (eh & fh) ^ (~eh & gh);
+            chl = (el & fl) ^ (~el & gl);
+            // Maj
+            majh = (ah & bh) ^ (ah & ch) ^ (bh & ch);
+            majl = (al & bl) ^ (al & cl) ^ (bl & cl);
+            // Sigma0
+            sig0h = ((al << 4) | (ah >>> 28)) ^ ((ah << 30) | (al >>> 2)) ^ ((ah << 25) | (al >>> 7));
+            sig0l = ((ah << 4) | (al >>> 28)) ^ ((al << 30) | (ah >>> 2)) ^ ((al << 25) | (ah >>> 7));
+            // Sigma1
+            sig1h = ((el << 18) | (eh >>> 14)) ^ ((el << 14) | (eh >>> 18)) ^ ((eh << 23) | (el >>> 9));
+            sig1l = ((eh << 18) | (el >>> 14)) ^ ((eh << 14) | (el >>> 18)) ^ ((el << 23) | (eh >>> 9));
+            // K(round)
+            krh = this.K[i * 2];
+            krl = this.K[i * 2 + 1];
+            // t1 = h + sigma1 + ch + K(round) + W(round)
+            t1l = hl + sig1l;
+            t1h = hh + sig1h + ((t1l >>> 0) < (hl >>> 0) ? 1 : 0);
+            t1l += chl;
+            t1h += chh + ((t1l >>> 0) < (chl >>> 0) ? 1 : 0);
+            t1l += krl;
+            t1h += krh + ((t1l >>> 0) < (krl >>> 0) ? 1 : 0);
+            t1l = t1l + w[i * 2 + 1];
+            t1h += w[i * 2] + ((t1l >>> 0) < (w[i * 2 + 1] >>> 0) ? 1 : 0);
+            // t2 = sigma0 + maj
+            t2l = sig0l + majl;
+            t2h = sig0h + majh + ((t2l >>> 0) < (sig0l >>> 0) ? 1 : 0);
+            // update working variables
+            hh = gh;
+            hl = gl;
+            gh = fh;
+            gl = fl;
+            fh = eh;
+            fl = el;
+            el = (dl + t1l) | 0;
+            eh = (dh + t1h + ((el >>> 0) < (dl >>> 0) ? 1 : 0)) | 0;
+            dh = ch;
+            dl = cl;
+            ch = bh;
+            cl = bl;
+            bh = ah;
+            bl = al;
+            al = (t1l + t2l) | 0;
+            ah = (t1h + t2h + ((al >>> 0) < (t1l >>> 0) ? 1 : 0)) | 0;
+        }
+        // intermediate hash
+        h0l = h[1] = (h0l + al) | 0;
+        h[0] = (h0h + ah + ((h0l >>> 0) < (al >>> 0) ? 1 : 0)) | 0;
+        h1l = h[3] = (h1l + bl) | 0;
+        h[2] = (h1h + bh + ((h1l >>> 0) < (bl >>> 0) ? 1 : 0)) | 0;
+        h2l = h[5] = (h2l + cl) | 0;
+        h[4] = (h2h + ch + ((h2l >>> 0) < (cl >>> 0) ? 1 : 0)) | 0;
+        h3l = h[7] = (h3l + dl) | 0;
+        h[6] = (h3h + dh + ((h3l >>> 0) < (dl >>> 0) ? 1 : 0)) | 0;
+        h4l = h[9] = (h4l + el) | 0;
+        h[8] = (h4h + eh + ((h4l >>> 0) < (el >>> 0) ? 1 : 0)) | 0;
+        h5l = h[11] = (h5l + fl) | 0;
+        h[10] = (h5h + fh + ((h5l >>> 0) < (fl >>> 0) ? 1 : 0)) | 0;
+        h6l = h[13] = (h6l + gl) | 0;
+        h[12] = (h6h + gh + ((h6l >>> 0) < (gl >>> 0) ? 1 : 0)) | 0;
+        h7l = h[15] = (h7l + hl) | 0;
+        h[14] = (h7h + hh + ((h7l >>> 0) < (hl >>> 0) ? 1 : 0)) | 0;
+    };
+    /**
+     * Update the hash with additional message data
+     * @param {Uint8Array} msg Additional message data as byte array
+     * @return {SHA512} this
+     */
+    SHA512.prototype.update = function (msg) {
+        msg = msg || new Uint8Array(0);
+        // process the msg as many times as possible, the rest is stored in the buffer
+        // message is processed in 1024 bit (128 byte chunks)
+        for (var i = 0; i < msg.length; i++) {
+            this.buffer[this.bufferIndex++] = msg[i];
+            if (this.bufferIndex === 128) {
+                this.transform();
+                this.bufferIndex = 0;
+            }
+        }
+        // counter update (number of message bits)
+        var c = this.count;
+        if ((c[0] += (msg.length << 3)) < (msg.length << 3)) {
+            c[1]++;
+        }
+        c[1] += (msg.length >>> 29);
+        return this;
+    };
+    /**
+     * Finalize the hash with additional message data
+     * @param {Uint8Array} msg Additional message data as byte array
+     * @return {Uint8Array} Hash as 64 byte array
+     */
+    SHA512.prototype.digest = function (msg) {
+        this.update(msg);
+        // append '1'
+        var b = this.buffer, idx = this.bufferIndex;
+        b[idx++] = 0x80;
+        // zeropad up to byte pos 112
+        while (idx !== 112) {
+            if (idx === 128) {
+                this.transform();
+                idx = 0;
+            }
+            b[idx++] = 0;
+        }
+        // append length in bits
+        var c = this.count;
+        b[112] = b[113] = b[114] = b[115] = b[116] = b[117] = b[118] = b[119] = 0;
+        b[120] = (c[1] >>> 24) & 0xff;
+        b[121] = (c[1] >>> 16) & 0xff;
+        b[122] = (c[1] >>> 8) & 0xff;
+        b[123] = (c[1] >>> 0) & 0xff;
+        b[124] = (c[0] >>> 24) & 0xff;
+        b[125] = (c[0] >>> 16) & 0xff;
+        b[126] = (c[0] >>> 8) & 0xff;
+        b[127] = (c[0] >>> 0) & 0xff;
+        this.transform();
+        // return the hash as byte array
+        var i, hash = new Uint8Array(64);
+        for (i = 0; i < 16; i++) {
+            hash[(i << 2) + 0] = (this.H[i] >>> 24) & 0xff;
+            hash[(i << 2) + 1] = (this.H[i] >>> 16) & 0xff;
+            hash[(i << 2) + 2] = (this.H[i] >>> 8) & 0xff;
+            hash[(i << 2) + 3] = (this.H[i]) & 0xff;
+        }
+        // clear internal states and prepare for new hash
+        this.init();
+        return hash;
+    };
+    /**
+     * All in one step
+     * @param {Uint8Array} msg Additional message data
+     * @return {Uint8Array} Hash as 64 byte array
+     */
+    SHA512.prototype.hash = function (msg) {
+        return this.init().digest(msg);
+    };
+    /**
+     * Performs a quick selftest
+     * @return {Boolean} True if successful
+     */
+    SHA512.prototype.selftest = function () {
+        var cumulative = new SHA512(), sha = new SHA512();
+        var toBeHashed = '', hash;
+        for (var i = 0; i < 10; i++) {
+            for (var n = 100 * i; n < 100 * (i + 1); n++) {
+                hash = base_1.Convert.bin2hex(sha.hash(base_1.Convert.str2bin(toBeHashed)));
+                cumulative.update(base_1.Convert.str2bin(hash));
+                toBeHashed = (hash.substring(0, 2) + toBeHashed).substring(0, n + 1);
+            }
+        }
+        hash = base_1.Convert.bin2hex(cumulative.digest());
+        return hash === '602923787640dd6d77a99b101c379577a4054df2d61f39c74172cafa2d9f5b26a11b40b7ba4cdc87e84a4ab91b85391cb3e1c0200f3e3d5e317486aae7bebbf3';
+    };
+    return SHA512;
+}());
+exports.SHA512 = SHA512;
+
+
+/***/ }),
+
 /***/ "../../node_modules/parse-asn1/aesid.json":
 /*!************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/aesid.json ***!
   \************************************************************************************/
 /*! exports provided: 2.16.840.1.101.3.4.1.1, 2.16.840.1.101.3.4.1.2, 2.16.840.1.101.3.4.1.3, 2.16.840.1.101.3.4.1.4, 2.16.840.1.101.3.4.1.21, 2.16.840.1.101.3.4.1.22, 2.16.840.1.101.3.4.1.23, 2.16.840.1.101.3.4.1.24, 2.16.840.1.101.3.4.1.41, 2.16.840.1.101.3.4.1.42, 2.16.840.1.101.3.4.1.43, 2.16.840.1.101.3.4.1.44, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"2.16.840.1.101.3.4.1.1":"aes-128-ecb","2.16.840.1.101.3.4.1.2":"aes-128-cbc","2.16.840.1.101.3.4.1.3":"aes-128-ofb","2.16.840.1.101.3.4.1.4":"aes-128-cfb","2.16.840.1.101.3.4.1.21":"aes-192-ecb","2.16.840.1.101.3.4.1.22":"aes-192-cbc","2.16.840.1.101.3.4.1.23":"aes-192-ofb","2.16.840.1.101.3.4.1.24":"aes-192-cfb","2.16.840.1.101.3.4.1.41":"aes-256-ecb","2.16.840.1.101.3.4.1.42":"aes-256-cbc","2.16.840.1.101.3.4.1.43":"aes-256-ofb","2.16.840.1.101.3.4.1.44":"aes-256-cfb"};
@@ -19516,6 +20302,7 @@ module.exports = {"2.16.840.1.101.3.4.1.1":"aes-128-ecb","2.16.840.1.101.3.4.1.2
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/asn1.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19650,6 +20437,7 @@ exports.signature = asn1.define('signature', function () {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/certificate.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19751,6 +20539,7 @@ module.exports = X509Certificate
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/fixProc.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 // adapted from https://github.com/apatil/pemstrip
@@ -19793,6 +20582,7 @@ module.exports = function (okey, password) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/index.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var asn1 = __webpack_require__(/*! ./asn1 */ "../../node_modules/parse-asn1/asn1.js")
@@ -19911,6 +20701,7 @@ function decrypt (data, password) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/browser.js ***!
   \********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports.pbkdf2 = __webpack_require__(/*! ./lib/async */ "../../node_modules/pbkdf2/lib/async.js")
@@ -19924,6 +20715,7 @@ exports.pbkdf2Sync = __webpack_require__(/*! ./lib/sync */ "../../node_modules/p
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/lib/async.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {var checkParameters = __webpack_require__(/*! ./precondition */ "../../node_modules/pbkdf2/lib/precondition.js")
@@ -20036,6 +20828,7 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/lib/default-encoding.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {var defaultEncoding
@@ -20058,6 +20851,7 @@ module.exports = defaultEncoding
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/lib/precondition.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
@@ -20098,6 +20892,7 @@ module.exports = function (password, salt, iterations, keylen) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/lib/sync-browser.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var md5 = __webpack_require__(/*! create-hash/md5 */ "../../node_modules/create-hash/md5.js")
@@ -20213,6 +21008,7 @@ module.exports = pbkdf2
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/process-nextick-args/index.js ***!
   \********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20270,6 +21066,7 @@ function nextTick(fn, arg1, arg2, arg3) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/process/browser.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -20465,6 +21262,7 @@ process.umask = function() { return 0; };
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/browser.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports.publicEncrypt = __webpack_require__(/*! ./publicEncrypt */ "../../node_modules/public-encrypt/publicEncrypt.js")
@@ -20486,6 +21284,7 @@ exports.publicDecrypt = function publicDecrypt (key, buf) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/mgf.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var createHash = __webpack_require__(/*! create-hash */ "../../node_modules/create-hash/browser.js")
@@ -20516,6 +21315,7 @@ function i2ops (c) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/privateDecrypt.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parseKeys = __webpack_require__(/*! parse-asn1 */ "../../node_modules/parse-asn1/index.js")
@@ -20632,6 +21432,7 @@ function compare (a, b) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/publicEncrypt.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parseKeys = __webpack_require__(/*! parse-asn1 */ "../../node_modules/parse-asn1/index.js")
@@ -20731,6 +21532,7 @@ function nonZero (len) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/withPublic.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var BN = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js")
@@ -20754,6 +21556,7 @@ module.exports = withPublic
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/xor.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = function xor (a, b) {
@@ -20773,6 +21576,7 @@ module.exports = function xor (a, b) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/randombytes/browser.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20836,6 +21640,7 @@ function randomBytes (size, cb) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/randomfill/browser.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20957,6 +21762,7 @@ function randomFillSync (buf, offset, size) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/duplex-browser.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./lib/_stream_duplex.js */ "../../node_modules/readable-stream/lib/_stream_duplex.js");
@@ -20969,6 +21775,7 @@ module.exports = __webpack_require__(/*! ./lib/_stream_duplex.js */ "../../node_
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_duplex.js ***!
   \****************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21111,6 +21918,7 @@ Duplex.prototype._destroy = function (err, cb) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_passthrough.js ***!
   \*********************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21169,6 +21977,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_readable.js ***!
   \******************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22200,6 +23009,7 @@ function indexOf(xs, x) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_transform.js ***!
   \*******************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22425,6 +23235,7 @@ function done(stream, er, data) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_writable.js ***!
   \******************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23124,6 +23935,7 @@ Writable.prototype._destroy = function (err, cb) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/internal/streams/BufferList.js ***!
   \*****************************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23214,6 +24026,7 @@ if (util && util.inspect && util.inspect.custom) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/internal/streams/destroy.js ***!
   \**************************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23299,6 +24112,7 @@ module.exports = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/internal/streams/stream-browser.js ***!
   \*********************************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! events */ "../../node_modules/events/events.js").EventEmitter;
@@ -23311,6 +24125,7 @@ module.exports = __webpack_require__(/*! events */ "../../node_modules/events/ev
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/passthrough.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./readable */ "../../node_modules/readable-stream/readable-browser.js").PassThrough
@@ -23323,6 +24138,7 @@ module.exports = __webpack_require__(/*! ./readable */ "../../node_modules/reada
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/readable-browser.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(/*! ./lib/_stream_readable.js */ "../../node_modules/readable-stream/lib/_stream_readable.js");
@@ -23341,6 +24157,7 @@ exports.PassThrough = __webpack_require__(/*! ./lib/_stream_passthrough.js */ ".
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/transform.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./readable */ "../../node_modules/readable-stream/readable-browser.js").Transform
@@ -23353,6 +24170,7 @@ module.exports = __webpack_require__(/*! ./readable */ "../../node_modules/reada
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/writable-browser.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./lib/_stream_writable.js */ "../../node_modules/readable-stream/lib/_stream_writable.js");
@@ -23365,6 +24183,7 @@ module.exports = __webpack_require__(/*! ./lib/_stream_writable.js */ "../../nod
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/ripemd160/index.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23540,6 +24359,7 @@ module.exports = RIPEMD160
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/safe-buffer/index.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* eslint-disable node/no-deprecated-api */
@@ -23613,6 +24433,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/setimmediate/setImmediate.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -23811,6 +24632,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/hash.js ***!
   \*****************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -23903,6 +24725,7 @@ module.exports = Hash
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/index.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var exports = module.exports = function SHA (algorithm) {
@@ -23929,6 +24752,7 @@ exports.sha512 = __webpack_require__(/*! ./sha512 */ "../../node_modules/sha.js/
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha.js ***!
   \****************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -24034,6 +24858,7 @@ module.exports = Sha
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha1.js ***!
   \*****************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -24144,6 +24969,7 @@ module.exports = Sha1
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha224.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -24208,6 +25034,7 @@ module.exports = Sha224
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha256.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -24354,6 +25181,7 @@ module.exports = Sha256
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha384.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js")
@@ -24422,6 +25250,7 @@ module.exports = Sha384
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha512.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js")
@@ -24693,6 +25522,7 @@ module.exports = Sha512
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/stream-browserify/index.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -24831,6 +25661,7 @@ Stream.prototype.pipe = function(dest, options) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/string_decoder/lib/string_decoder.js ***!
   \***************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25138,6 +25969,7 @@ function simpleEnd(buf) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/timers-browserify/main.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -25213,6 +26045,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/util-deprecate/browser.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -25292,6 +26125,7 @@ function config (name) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/vm-browserify/index.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var indexOf = __webpack_require__(/*! indexof */ "../../node_modules/indexof/index.js");
@@ -25441,6 +26275,7 @@ exports.createContext = Script.createContext = function (context) {
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 var g;
@@ -25472,6 +26307,7 @@ module.exports = g;
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -25505,6 +26341,7 @@ module.exports = function(module) {
   !*** ./index.js ***!
   \******************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -25514,7 +26351,9 @@ module.exports = {
   Keys: __webpack_require__(/*! ./src/Keys */ "./src/Keys.js"),
   Payload: __webpack_require__(/*! ./src/Payload */ "./src/Payload.js"),
   mipher: {
-    AES_CBC_ZeroPadding: __webpack_require__(/*! ./src/mipher/AES_CBC_ZeroPadding */ "./src/mipher/AES_CBC_ZeroPadding.js")
+    AES_CBC_ZeroPadding: __webpack_require__(/*! ./src/mipher/AES_CBC_ZeroPadding */ "./src/mipher/AES_CBC_ZeroPadding.js"),
+    HMAC_MD5: __webpack_require__(/*! ./src/mipher/HMAC_MD5 */ "./src/mipher/HMAC_MD5.js"),
+    MD5: __webpack_require__(/*! ./src/mipher/MD5Mipher */ "./src/mipher/MD5Mipher.js")
   }
 };
 
@@ -25525,6 +26364,7 @@ module.exports = {
   !*** ./src/AES.js ***!
   \********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25609,6 +26449,7 @@ module.exports = AES;
   !*** ./src/ECDH.js ***!
   \*********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25650,7 +26491,7 @@ class ECDH {
     let encryptedData = AES.encryptZeroPadding(secrectkey.slice(0, 32), data, new Uint8Array(16));
     return {
       data: encryptedData,
-      key: secrectkey.slice(32, 32),
+      key: secrectkey.slice(32, 64),
       publicKey: new BC(tempKey.getPublic(true, 'buffer'))
     };
   }
@@ -25692,6 +26533,7 @@ module.exports = ECDH;
   !*** ./src/KDF.js ***!
   \********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25750,6 +26592,7 @@ module.exports = KDF;
   !*** ./src/Keys.js ***!
   \*********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25900,6 +26743,7 @@ module.exports = Keys;
   !*** ./src/Payload.js ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26045,6 +26889,7 @@ module.exports = Payload;
   !*** ./src/mipher/AES_CBC_ZeroPadding.js ***!
   \*******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
@@ -26096,11 +26941,125 @@ module.exports = AES_CBC_ZeroPadding;
 
 /***/ }),
 
+/***/ "./src/mipher/HMAC_MD5.js":
+/*!********************************!*\
+  !*** ./src/mipher/HMAC_MD5.js ***!
+  \********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const MipherHMAC = __webpack_require__(/*! mipher/dist/hmac */ "../../node_modules/mipher/dist/hmac.js").HMAC;
+
+const MipherMD5 = __webpack_require__(/*! ./MD5Mipher */ "./src/mipher/MD5Mipher.js");
+/**
+ * AES-CBC + ZeroPadding integration using the mipher library
+ */
+
+
+class HMAC_MD5 {
+  static hash(key, data) {
+    return new MipherHMAC(new MipherMD5()).init(key).update(data).digest('hex');
+  }
+
+}
+
+module.exports = HMAC_MD5;
+
+/***/ }),
+
+/***/ "./src/mipher/MD5Mipher.js":
+/*!*********************************!*\
+  !*** ./src/mipher/MD5Mipher.js ***!
+  \*********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(Buffer) {const MD5 = __webpack_require__(/*! md5.js */ "../../node_modules/md5.js/index.js");
+/**
+ * SHA512 class
+ */
+
+
+class MD5Mipher {
+  get hashSize() {
+    return 32;
+  }
+  /**
+     * SHA512 ctor
+     */
+
+
+  constructor() {
+    this.sponge = new MD5();
+  }
+  /**
+     * Init the hash
+     * @return {Object} this
+     */
+
+
+  init() {
+    return new MD5Mipher();
+  }
+  /**
+     * Update the hash with additional message data
+     * @param {Uint8Array} msg Additional message data as byte array
+     * @return {SHA512} this
+     */
+
+
+  update(msg) {
+    this.sponge.update(Buffer.from(msg));
+  }
+  /**
+     * Finalize the hash with additional message data
+     * @param {Uint8Array} msg Additional message data as byte array
+     * @return {Uint8Array} Hash as 64 byte array
+     */
+
+
+  digest(msg = null) {
+    if (msg !== null) {
+      this.update(msg);
+    }
+
+    return this.sponge.digest('hex');
+  }
+  /**
+     * All in one step
+     * @param {Uint8Array} msg Additional message data
+     * @return {Uint8Array} Hash as 64 byte array
+     */
+
+
+  hash(msg) {
+    return new MD5Mipher().update(msg).digest();
+  }
+  /**
+     * Performs a quick selftest
+     * @return {Boolean} True if successful
+     */
+
+
+  selftest() {
+    return true;
+  }
+
+}
+
+module.exports = MD5Mipher;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/buffer/index.js */ "../../node_modules/buffer/index.js").Buffer))
+
+/***/ }),
+
 /***/ 0:
 /*!************************!*\
   !*** multi ./index.js ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitled/packages/crypto/index.js */"./index.js");
@@ -26113,6 +27072,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** buffer (ignored) ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -26124,6 +27084,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** crypto (ignored) ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -26135,6 +27096,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** util (ignored) ***!
   \**********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -26146,6 +27108,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** util (ignored) ***!
   \**********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -26157,6 +27120,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** external "@pascalcoin-sbx/common" ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__pascalcoin_sbx_common__;

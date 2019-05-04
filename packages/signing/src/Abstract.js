@@ -6,9 +6,11 @@
  */
 
 // const Payload = require('../Crypto/Payload');
-const Signer = require('./Signer');
 const BC = require('@pascalcoin-sbx/common').BC;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const PascalCoinInfo = require('@pascalcoin-sbx/common').PascalCoinInfo;
+const Sha = require('@pascalcoin-sbx/common').Sha;
+const Keys = require('@pascalcoin-sbx/crypto').Keys;
 
 const P_PAYLOAD = Symbol('payload');
 const P_S = Symbol('s');
@@ -17,9 +19,30 @@ const P_FEE = Symbol('fee');
 const P_N_OPERATION = Symbol('nOperation');
 
 /**
+ * Signs the given digest with the given keypair and returns the r and s
+ * values (because thats all that is needed).
+ *
+ * @param {KeyPair} keyPair
+ * @param {BC} digest
+ */
+function signWithHash(keyPair, digest) {
+  const hash = Sha.sha256(digest);
+
+  return Keys.sign(keyPair, hash);
+}
+
+function signWithDigest(keyPair, digest) {
+  return Keys.sign(keyPair, digest);
+}
+
+/**
  * Abstract class for RPC response objects.
  */
 class Abstract {
+
+  /**
+   * Constructor.
+   */
   constructor() {
     this[P_PAYLOAD] = BC.fromString('');
     this[P_S] = null;
@@ -28,12 +51,12 @@ class Abstract {
   }
 
   /**
-     * Sets the payload of the transaction instance.
-     *
-     * @param {BC} payload
-     *
-     * @returns {Abstract}
-     */
+   * Sets the payload of the transaction instance.
+   *
+   * @param {BC} payload
+   *
+   * @returns {Abstract}
+   */
   withPayload(payload) {
     this[P_PAYLOAD] = payload;
     return this;
@@ -55,19 +78,27 @@ class Abstract {
    *
    * @returns {Abstract}
    */
-  withMinFee() {
-    this[P_FEE] = Currency.MIN_FEE;
+  withMinFee(lastKnownBlock = null) {
+    this[P_FEE] = PascalCoinInfo.MIN_FEE(lastKnownBlock);
     return this;
   }
 
   /**
-     * Returns a BC with the digest that needs to be hashed.
-     *
-     * @return {BC}
-     */
-  // eslint-disable-next-line class-methods-use-this
-  digest() {
-    throw new Error('Not implemented');
+   * Returns a BC with the digest that needs to be hashed.
+   *
+   * @return {BC}
+   */
+  digest(coder) {
+    return coder.encodeToBytes(this);
+  }
+
+  /**
+   * Returns a BC with the digest that needs to be hashed.
+   *
+   * @return {BC}
+   */
+  raw(coder) {
+    return coder.encodeToBytes(this);
   }
 
   /**
@@ -85,9 +116,9 @@ class Abstract {
     let signResult;
 
     if (useDigest === true) {
-      signResult = Signer.signWithDigest(keyPair, digest);
+      signResult = signWithDigest(keyPair, digest);
     } else {
-      signResult = Signer.signWithHash(keyPair, digest);
+      signResult = signWithHash(keyPair, digest);
     }
 
     // save results
@@ -97,149 +128,53 @@ class Abstract {
     return this;
   }
 
-  /**
-     * Returns the BC for a rawoperations info.
-     *
-     * @return {BC}
-     */
-  toRaw() { // eslint-disable-line class-methods-use-this
-    throw new Error('Not implemented');
+  signFromDecoded(nOperation, r, s) {
+    this[P_N_OPERATION] = nOperation;
+    this[P_R] = r;
+    this[P_S] = s;
   }
 
-  /**
-     * Returns a new instance of the derived class based on the given raw
-     * string.
-     *
-     * @return {Abstract}
-     */
-  // eslint-disable-next-line class-methods-use-this
-  static fromRaw() {
-    throw new Error('Not implemented');
-  }
-
-  /**
-     * Gets a BC from the given int value.
-     *
-     * @param {Number} value
-     * @param {Number|undefined} size
-     * @returns {BC}
-     */
-  // eslint-disable-next-line class-methods-use-this
-  bcFromInt(value, size = null) {
-    return (size === null ?
-      BC.fromInt(value) :
-      BC.fromInt(value, size)).switchEndian();
-  }
-
-  /**
-     * Gets the given string as a byte collection with the size of the string
-     * prepended.
-     *
-     * @param {String} value
-     * @returns {BC}
-     */
-  bcFromStringWithSize(value) {
-    return BC.concat(
-      this.bcFromInt(value.length, 2),
-      this.bcFromString(value),
-    );
-  }
-
-  /**
-   * Gets the given BC as a byte collection with the size of
-   * the BC prepended.
+    /**
+   * Gets the prepared payload.
    *
-   * @param {BC} value
    * @returns {BC}
    */
-  bcFromBcWithSize(value) {
-    return BC.concat(
-      this.bcFromInt(value.length, 2),
-      value,
-    );
-  }
-
-  /**
-   * Extracts a BC with size from the given BC.
-   *
-   * @param {BC} value
-   * @param {Number} offset
-   * @returns {BC}
-   */
-  static readBCWithSize(value, offset) {
-    const data = {
-      size: value.slice(offset, offset + 2).switchEndian().toInt()
-    };
-
-    data.value = value.slice(offset + 2, offset + 2 + data.size);
-    return data;
-  }
-
-  /**
-     * Gets the BC from the given string.
-     *
-     * @param {String} value
-     * @returns {BC}
-     */
-  bcFromString(value) { // eslint-disable-line class-methods-use-this
-    return BC.fromString(value);
-  }
-
-  /**
-     * Returns the BC for an r and s signing result.
-     *
-     * @param {BC} r
-     * @param {BC} s
-     * @returns {BC}
-     */
-  bcFromSign(r, s) {
-    return BC.concat(
-      this.bcFromBcWithSize(r),
-      this.bcFromBcWithSize(s),
-    );
-  }
-
-  /**
-     * Gets the prepared payload.
-     *
-     * @returns {BC}
-     */
   get payload() {
     return this[P_PAYLOAD];
   }
 
   /**
-     * Gets the r value of the sign result.
-     *
-     * @returns {BC|null}
-     */
+   * Gets the r value of the sign result.
+   *
+   * @returns {BC|null}
+   */
   get r() {
     return this[P_R];
   }
 
   /**
-     * Gets the s value of the sign result.
-     *
-     * @returns {BC|null}
-     */
+   * Gets the s value of the sign result.
+   *
+   * @returns {BC|null}
+   */
   get s() {
     return this[P_S];
   }
 
   /**
-     * Gets the fee.
-     *
-     * @returns {Currency}
-     */
+   * Gets the fee.
+   *
+   * @returns {Currency}
+   */
   get fee() {
     return this[P_FEE];
   }
 
   /**
-     * Gets the n operation.
-     *
-     * @returns {Number}
-     */
+   * Gets the n operation.
+   *
+   * @returns {Number}
+   */
   get nOperation() {
     return this[P_N_OPERATION];
   }

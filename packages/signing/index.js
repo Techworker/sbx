@@ -1,5 +1,7 @@
 module.exports = {
-  OperationsBuilder: require('./src/OperationsBuilder'),
-  Signer: require('./src/Signer'),
+  OperationList: require('./src/OperationList'),
+  Coding: {
+    PublicKeyWithLength: require('./src/Coding/PublicKeyWithLength')
+  },
   Operations: require('./src/Operations')
 };

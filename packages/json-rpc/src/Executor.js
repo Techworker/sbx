@@ -14,10 +14,13 @@ const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const BC = require('@pascalcoin-sbx/common').BC;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 
 const Block = require('./Types/Block');
 const WalletPublicKey = require('./Types/WalletPublicKey');
 const Account = require('./Types/Account');
+
+const publicKeyCoder = new PublicKeyCoder();
 
 /**
  * Simple function that transforms the values of an object to make them usable
@@ -43,11 +46,11 @@ function transformRpcParams(params) {
       if (item instanceof BC) {
         newParams[newField] = item.toHex();
       } else if (item instanceof PublicKey) {
-        newParams[newField] = item.encode().toHex();
+        newParams[newField] = publicKeyCoder.encodeToBytes(item).toHex();
       } else if (item instanceof WalletPublicKey) {
-        newParams[newField] = item.publicKey.encode().toHex();
+        newParams[newField] = publicKeyCoder.encodeToBytes(item.publicKey).toHex();
       } else if (item instanceof KeyPair) {
-        newParams[newField] = item.publicKey.encode().toHex();
+        newParams[newField] = publicKeyCoder.encodeToBytes(item.publicKey).toHex();
       } else {
         newField = newField.replace('enc_pubkey', 'b58_pubkey');
         newParams[newField] = item.toString();

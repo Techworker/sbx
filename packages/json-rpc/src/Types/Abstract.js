@@ -14,7 +14,7 @@ class Abstract {
   /**
      * Constructor.
      *
-     * @param {Object} initializationData
+   * @param {Object} initializationData
      */
   constructor(initializationData) {
     if (new.target === Abstract) {

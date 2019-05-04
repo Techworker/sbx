@@ -6,6 +6,9 @@ const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
+
+const pkCoder = new PublicKeyCoder();
 
 const chai = require('chai');
 
@@ -60,7 +63,7 @@ describe('Core.Types.Operation.Changer', () => {
             expect(changer.newPublicKey).to.be.equal(null);
           } else {
             expect(changer.newPublicKey).to.be.instanceof(PublicKey);
-            expect(changer.newPublicKey.encode().toHex()).to.be.equal(rawChanger.new_enc_pubkey);
+            expect(pkCoder.encodeToBytes(changer.newPublicKey).toHex()).to.be.equal(rawChanger.new_enc_pubkey);
           }
 
           if (rawChanger.new_name === undefined) {

@@ -143,8 +143,13 @@ class Keys {
     const ecPair = elliptic(keyPair.curve.name).keyFromPrivate(keyPair.privateKey.key.buffer);
 
     const signature = ecPair.sign(digest.buffer, ecPair.getPrivate('hex'), 'hex', {
-      canonical: true
+      canonical: false
     });
+
+    // Verify signature
+    if (ecPair.verify(digest.buffer, signature.toDER()) === false) {
+      throw Error('Unable to verify the sign result.');
+    }
 
     return {
       s: new BC(Buffer.from(signature.s.toArray())),
