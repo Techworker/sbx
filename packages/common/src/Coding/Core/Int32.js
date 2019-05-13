@@ -19,10 +19,9 @@ class Int32 extends AbstractInt {
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 
@@ -32,9 +31,7 @@ class Int32 extends AbstractInt {
   }
 
   /**
-   * Gets the size in bytes.
-   *
-   * @returns {number}
+   * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
     return 4;

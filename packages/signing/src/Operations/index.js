@@ -33,5 +33,11 @@ let Items = {
   }
 };
 
-Items.digestCoderFor = operation => Items[operation.constructor.new].DigestCoder;
-Items.rawCoderFor = operation => Items[operation.constructor.new].RawCoder;
+Items.digestCoderFor = operation => {
+  return Items[operation.constructor.name].DigestCoder;
+};
+Items.rawCoderFor = operation => {
+  return Items[operation.constructor.name].RawCoder;
+};
+
+module.exports = Items;

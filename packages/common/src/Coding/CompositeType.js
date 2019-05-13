@@ -12,7 +12,7 @@ const P_SUBTYPES = Symbol('subtypes');
 const P_SIZE_ENCODED = Symbol('size_encoded');
 
 /**
- * A Type that itself is made up of multiple other types.
+ * A Type that itself is made up of multiple other (sub-)types.
  */
 class CompositeType extends AbstractType {
   /**
@@ -25,7 +25,7 @@ class CompositeType extends AbstractType {
   }
 
   /**
-   * Gets the config for all fields.
+   * Gets all subtypes.
    *
    * @returns {Array}
    */
@@ -34,19 +34,16 @@ class CompositeType extends AbstractType {
   }
 
   /**
-   * Gets the size of the field type (only available after encoding).
-   *
-   * @return {*}
+   * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
     return this[P_SIZE_ENCODED];
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 
@@ -62,6 +59,7 @@ class CompositeType extends AbstractType {
    */
   addSubType(field) {
     this[P_SUBTYPES].push(field);
+    return this;
   }
 
   clearSubTypes() {
@@ -82,7 +80,7 @@ class CompositeType extends AbstractType {
     bc = BC.from(bc);
 
     this.subTypes.forEach((subType) => {
-      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset));
+      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), toArray, obj);
       offset += subType.encodedSize;
     });
 
@@ -108,7 +106,7 @@ class CompositeType extends AbstractType {
       }
 
       // we will use the first available
-      bc = bc.append(subType.encodeToBytes(subTypeValue));
+      bc = bc.append(subType.encodeToBytes(subTypeValue, objOrArray));
     });
 
     this[P_SIZE_ENCODED] = bc.length;
@@ -116,11 +114,9 @@ class CompositeType extends AbstractType {
   }
 
   /**
-   * Describes the current composite type instance.
-   *
-   * @param {*} value
-   * @return {Object}
+   * @inheritDoc AbstractType#describe
    */
+  /* istanbul ignore next */
   describe(value) {
     let description = super.describe(value);
 

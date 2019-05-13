@@ -18,8 +18,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --env dev && webpack --env build && npm run test",
-    "dev": "webpack --progress --colors --watch --env dev",
-    "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
+    "dev": "webpack --progress --colors --watch --env dev"
   },
   "dependencies": {
     "@pascalcoin-sbx/json-rpc": "^0.0.10",

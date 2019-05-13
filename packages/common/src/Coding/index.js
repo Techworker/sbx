@@ -1,6 +1,8 @@
 module.exports = {
-  CompositeType: require('./CompositeType'),
   AbstractType: require('./AbstractType'),
+  CompositeType: require('./CompositeType'),
+  Repeating: require('./Repeating'),
+  Decissive: require('./Decissive'),
   Core: {
     AbstractInt: require('./Core/AbstractInt'),
     Int8: require('./Core/Int8'),
@@ -10,7 +12,8 @@ module.exports = {
     StringWithLength: require('./Core/StringWithLength'),
     StringWithoutLength: require('./Core/StringWithoutLength'),
     BytesWithLength: require('./Core/BytesWithLength'),
-    BytesWithoutLength: require('./Core/BytesWithoutLength')
+    BytesWithoutLength: require('./Core/BytesWithoutLength'),
+    BytesFixedLength: require('./Core/BytesFixedLength')
   },
   Pascal: {
     Keys: {

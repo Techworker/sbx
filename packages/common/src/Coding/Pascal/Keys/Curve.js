@@ -18,10 +18,9 @@ class Curve extends Int16 {
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 

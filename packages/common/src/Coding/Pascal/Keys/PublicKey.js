@@ -1,5 +1,5 @@
 const Curve = require('./Curve');
-const HexaStringWithLength = require('../../Core/BytesWithLength');
+const BytesWithLength = require('../../Core/BytesWithLength');
 const CompositeType = require('../../CompositeType');
 const BC = require('../../../BC');
 const Sha = require('../../../Sha');
@@ -19,15 +19,14 @@ class PublicKey extends CompositeType {
   constructor(id = null) {
     super(id || 'pubkey');
     this.addSubType(new Curve('curve'));
-    this.addSubType(new HexaStringWithLength('x'));
-    this.addSubType(new HexaStringWithLength('y'));
+    this.addSubType(new BytesWithLength('x', 2));
+    this.addSubType(new BytesWithLength('y', 2));
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 

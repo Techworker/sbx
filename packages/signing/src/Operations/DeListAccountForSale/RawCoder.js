@@ -23,7 +23,7 @@ class RawCoder extends CompositeType {
         .description('The account that will be listed.')
     );
     this.addSubType(
-      new Coding.Pascal.OpType(2)
+      new Coding.Pascal.OpType('optype', 2)
         .withFixedValue(opType)
         .description(`The optype of the operation (${opType})`)
     );
@@ -36,15 +36,15 @@ class RawCoder extends CompositeType {
         .description('The fee associated with the operation')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('payload')
+      new Coding.Core.BytesWithLength('payload', 2)
         .description('The payload of the operation.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('r')
+      new Coding.Core.BytesWithLength('r', 2)
         .description('R value of the signed operation.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('s')
+      new Coding.Core.BytesWithLength('s', 2)
         .description('R value of the signed operation.')
     );
   }

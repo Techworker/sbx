@@ -21,10 +21,9 @@ class AbstractInt extends AbstractType {
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 
@@ -57,11 +56,9 @@ class AbstractInt extends AbstractType {
   }
 
   /**
-   * Gets the description of the currents type instance.
-   *
-   * @param {*|null} value
-   * @return {{id: String, type: {extra: {}, name: string}, encodedSize: Number}}
+   * @inheritDoc AbstractType#describe
    */
+  /* istanbul ignore next */
   describe(value) {
     let description = super.describe(value);
 

@@ -4,7 +4,7 @@ const BC = require('./../../BC');
 const P_SIZE_ENCODED = Symbol('size_encoded');
 
 /**
- * A field type to write dynamic strings without prepending the length.
+ * A field type to write bytes without prepending the length.
  */
 class BytesWithoutLength extends AbstractType {
 
@@ -19,10 +19,9 @@ class BytesWithoutLength extends AbstractType {
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 
@@ -33,16 +32,14 @@ class BytesWithoutLength extends AbstractType {
   }
 
   /**
-   * Gets the size in bytes of the encoded value.
-   *
-   * @returns {number}
+   * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
     return this[P_SIZE_ENCODED];
   }
 
   /**
-   * Decodes the string value from the given bytes
+   * In fact this does nothing other than updating the internal size.
    *
    * @param {BC} bc
    * @returns {BC}
@@ -53,9 +50,9 @@ class BytesWithoutLength extends AbstractType {
   }
 
   /**
-   * Encodes the given value.
+   * Encodes the given value to a collection of bytes.
    *
-   * @param {BC} value
+   * @param {Buffer|Uint8Array|BC|String} value
    * @returns {BC}
    */
   encodeToBytes(value) {
@@ -66,11 +63,9 @@ class BytesWithoutLength extends AbstractType {
   }
 
   /**
-   * Gets the description of the currents type instance.
-   *
-   * @param {*|null} value
-   * @return {{id: String, type: {extra: {}, name: string}, encodedSize: Number}}
+   * @inheritDoc AbstractType#describe
    */
+  /* istanbul ignore next */
   describe(value) {
     let description = {
       id: this.id,

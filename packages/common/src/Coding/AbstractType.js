@@ -4,13 +4,14 @@ const P_HAS_FIXED_VALUE = Symbol('has_fixed_value');
 const P_DESCRIPTION = Symbol('description');
 
 /**
- * Abstract field type to encode and decode values.
+ * Abstract field type to encode and decode values. Abstracts encodeToBytes and decodeFromBytes as
+ * basic implementations but in fact it can be anything.
  */
 class AbstractType {
   /**
    * Constructor.
    *
-   * @param {string} id
+   * @param {string|null} id
    */
   constructor(id = null) {
     this[P_ID] = id;
@@ -45,10 +46,9 @@ class AbstractType {
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     return {
       name: 'AbstractType',
@@ -59,7 +59,7 @@ class AbstractType {
   }
 
   /**
-   * Gets the encoded size.
+   * Gets the encoded size of the type.
    *
    * @return {Number}
    */
@@ -77,7 +77,7 @@ class AbstractType {
   }
 
   /**
-   * Returns the encoded value.
+   * Returns the encoded bytes for the given value.
    *
    * @param {*} value
    */
@@ -90,13 +90,14 @@ class AbstractType {
    *
    * @param {*} value
    */
+  /* istanbul ignore next */
   describe(value) {
     let description = {
       id: this.id,
       type: this.typeInfo
     };
 
-    if(this.hasFixedValue) {
+    if (this.hasFixedValue) {
       description.fixed = this.fixedValue;
     }
 
@@ -128,10 +129,6 @@ class AbstractType {
 
     this[P_DESCRIPTION] = description;
     return this;
-  }
-
-  normalize(value) {
-    return value;
   }
 }
 

@@ -49,15 +49,15 @@ class RawCoder extends CompositeType {
         .description('The fee associated the operation.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('payload')
+      new Coding.Core.BytesWithLength('payload', 2)
         .description('The payload of the operation.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('r')
+      new Coding.Core.BytesWithLength('r', 2)
         .description('R value of the signed operation.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('s')
+      new Coding.Core.BytesWithLength('s', 2)
         .description('R value of the signed operation.')
     );
   }

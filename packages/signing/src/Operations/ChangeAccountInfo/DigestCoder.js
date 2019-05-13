@@ -32,7 +32,7 @@ class DigestCoder extends CompositeType {
         .description('The fee paid for the operation.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('payload')
+      new Coding.Core.BytesWithLength('payload', 2)
         .description('The payload of the operation.')
     );
     this.addSubType(
@@ -57,7 +57,8 @@ class DigestCoder extends CompositeType {
         .description('The new type of the account.')
     );
     this.addSubType(
-      new Coding.Pascal.OpType(1).withFixedValue(opType)
+      new Coding.Pascal.OpType('optype', 1)
+        .withFixedValue(opType)
         .description('The buy account optype as 8 bit int8')
     );
   }

@@ -59,7 +59,7 @@ class DigestCoder extends CompositeType {
         .description('The new public key of the account.')
     );
     this.addSubType(
-      new Coding.Pascal.OpType(1)
+      new Coding.Pascal.OpType('optype', 1)
         .withFixedValue(opType)
         .description('The buy account optype as 8 bit int8')
     );

@@ -5,8 +5,8 @@
  * file that was distributed with this source code.
  */
 
-const RawOperations = require('../Types/RawOperations');
 const OperationAction = require('./OperationAction');
+const BC = require('@pascalcoin-sbx/common').BC;
 
 /**
  * This object derives from an operation action and extends the functionality
@@ -42,11 +42,11 @@ class SignOperationAction extends OperationAction {
   /**
      * Sets the raw operations instance of a previous result.
      *
-     * @param {RawOperations|BC|String} rawoperations
+     * @param {BC|String} rawoperations
      * @return {SignOperationAction}
      */
   withRawOperations(rawoperations) {
-    this.params.rawoperations = new RawOperations(rawoperations);
+    this.params.rawoperations = BC.from(rawoperations);
   }
 
   isValid() {

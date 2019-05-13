@@ -48,11 +48,11 @@ class DigestCoder extends CompositeType {
         .description('The fee associated with the operation')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('payload')
+      new Coding.Core.BytesWithLength('payload', 2)
         .description('The payload of the operation.')
     );
     this.addSubType(
-      new Coding.Pascal.OpType(1)
+      new Coding.Pascal.OpType('optype', 1)
         .withFixedValue(opType)
         .description('The optype as 8bit int.')
     );

@@ -47,7 +47,7 @@ class DigestCoder extends CompositeType {
         .withFixedValue(PublicKey.empty().curve)
     );
     this.addSubType(
-      new Coding.Pascal.OpType(1)
+      new Coding.Pascal.OpType('optype', 1)
         .description('Operation type.')
         .withFixedValue(opType)
     );

@@ -16,8 +16,8 @@ class OpType extends AbstractType {
    *
    * @param {Number} byteSize
    */
-  constructor(byteSize) {
-    super(`optype_int${byteSize * 8}`);
+  constructor(id, byteSize) {
+    super(id || `optype_int${byteSize * 8}`);
     switch (byteSize) {
       case 1:
         this[P_INT_TYPE] = new Int8('OpType[Int8]', true);
@@ -35,10 +35,9 @@ class OpType extends AbstractType {
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = this[P_INT_TYPE].typeInfo;
 
@@ -48,9 +47,7 @@ class OpType extends AbstractType {
   }
 
   /**
-   * Gets the size in bytes.
-   *
-   * @returns {number}
+   * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
     return this[P_INT_TYPE].encodedSize;
@@ -77,11 +74,9 @@ class OpType extends AbstractType {
   }
 
   /**
-   * Gets the description of the currents type instance.
-   *
-   * @param {*|null} value
-   * @return {{id: String, type: {extra: {}, name: string}, encodedSize: Number}}
+   * @inheritDoc AbstractType#describe
    */
+  /* istanbul ignore next */
   describe(value) {
     let description = super.describe(value);
     description.encodedSize = this.encodedSize;

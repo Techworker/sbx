@@ -6,38 +6,37 @@
  */
 
 const BC = require('./../BC');
-const CompositeType = require('./CompositeType');
+const AbstractType = require('./AbstractType');
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_REPEAT_LIMIT = Symbol('repeat_limit');
+const P_TYPE = Symbol('type');
 
 /**
  * A Type that itself is made up of multiple other types.
  */
-class Repeating extends CompositeType {
+class Repeating extends AbstractType {
   /**
    * Constructor
    */
-  constructor(id, repeatLimit = -1) {
+  constructor(id, type, repeatLimit = -1) {
     super(id || 'repeating');
     super.description('A type that itself has one repeating type that will be written / read until the limit is reached or data is empty.');
+    this[P_TYPE] = type;
     this[P_REPEAT_LIMIT] = repeatLimit;
   }
 
   /**
-   * Gets the size of the field type (only available after encoding).
-   *
-   * @return {*}
+   * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
     return this[P_SIZE_ENCODED];
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 
@@ -58,11 +57,18 @@ class Repeating extends CompositeType {
 
     bc = BC.from(bc);
 
+    let counter = 0;
+    let limitArrived = false;
+
     do {
-      const decoded = this.subTypes[0].decodeFromBytes(bc.slice(offset);
+      const decoded = this[P_TYPE].decodeFromBytes(bc.slice(offset));
+
       result.push(decoded);
-      offset += this.subTypes[0].encodedSize;
-    } while(offset > bc.length - 1);
+      offset += this[P_TYPE].encodedSize;
+      counter++;
+      limitArrived = (this[P_REPEAT_LIMIT] > -1 && this[P_REPEAT_LIMIT] === counter);
+
+    } while (offset < bc.length && !limitArrived);
 
     return result;
   }
@@ -75,25 +81,12 @@ class Repeating extends CompositeType {
    */
   encodeToBytes(arr) {
     let bc = BC.empty();
-    let localSubTypes = [];
 
-    localSubTypes.push(this.subTypes[0]);
-    localSubTypes.forEach((subType, idx) => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[idx === 0 ? subType.id : this[P_RESOLVED_FIELD_ID]];
+    arr.forEach((item, idx) => {
+      if (idx >= this[P_REPEAT_LIMIT] && this[P_REPEAT_LIMIT] > -1) {
+        return;
       }
-
-      // we will use the first available
-      bc = bc.append(subType.encodeToBytes(subTypeValue));
-
-      // append other resolved subtype
-      if (idx === 0) {
-        localSubTypes.push(this[P_SUBTYPE_RESOLVER](subTypeValue));
-      }
+      bc = bc.append(this[P_TYPE].encodeToBytes(item));
     });
 
     this[P_SIZE_ENCODED] = bc.length;
@@ -101,11 +94,9 @@ class Repeating extends CompositeType {
   }
 
   /**
-   * Describes the current composite type instance.
-   *
-   * @param {*} value
-   * @return {Object}
+   * @inheritDoc AbstractType#describe
    */
+  /* istanbul ignore next */
   describe(value) {
     let description = super.describe(value);
 
@@ -133,4 +124,4 @@ class Repeating extends CompositeType {
   }
 }
 
-module.exports = Decissive;
+module.exports = Repeating;

@@ -9,31 +9,12 @@
 const BC = require('@pascalcoin-sbx/common').BC;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const PascalCoinInfo = require('@pascalcoin-sbx/common').PascalCoinInfo;
-const Sha = require('@pascalcoin-sbx/common').Sha;
-const Keys = require('@pascalcoin-sbx/crypto').Keys;
 
 const P_PAYLOAD = Symbol('payload');
 const P_S = Symbol('s');
 const P_R = Symbol('r');
 const P_FEE = Symbol('fee');
 const P_N_OPERATION = Symbol('nOperation');
-
-/**
- * Signs the given digest with the given keypair and returns the r and s
- * values (because thats all that is needed).
- *
- * @param {KeyPair} keyPair
- * @param {BC} digest
- */
-function signWithHash(keyPair, digest) {
-  const hash = Sha.sha256(digest);
-
-  return Keys.sign(keyPair, hash);
-}
-
-function signWithDigest(keyPair, digest) {
-  return Keys.sign(keyPair, digest);
-}
 
 /**
  * Abstract class for RPC response objects.
@@ -83,53 +64,12 @@ class Abstract {
     return this;
   }
 
-  /**
-   * Returns a BC with the digest that needs to be hashed.
-   *
-   * @return {BC}
-   */
-  digest(coder) {
-    return coder.encodeToBytes(this);
-  }
-
-  /**
-   * Returns a BC with the digest that needs to be hashed.
-   *
-   * @return {BC}
-   */
-  raw(coder) {
-    return coder.encodeToBytes(this);
-  }
-
-  /**
-   * Signs the given operation and returns a new rawoperations string.
-   *
-   * @param {KeyPair} keyPair
-   * @param {Number} nOperation
-   * @param {Boolean} useDigest
-   * @returns {Abstract}
-   */
-  sign(keyPair, nOperation, useDigest = false) {
+  withNOperation(nOperation) {
     this[P_N_OPERATION] = nOperation;
-    const digest = this.digest();
-
-    let signResult;
-
-    if (useDigest === true) {
-      signResult = signWithDigest(keyPair, digest);
-    } else {
-      signResult = signWithHash(keyPair, digest);
-    }
-
-    // save results
-    this[P_R] = signResult.r;
-    this[P_S] = signResult.s;
-
     return this;
   }
 
-  signFromDecoded(nOperation, r, s) {
-    this[P_N_OPERATION] = nOperation;
+  withSign(r, s) {
     this[P_R] = r;
     this[P_S] = s;
   }
@@ -187,6 +127,11 @@ class Abstract {
   get isSigned() {
     return this[P_S] !== null && this[P_R] !== null;
   }
+
+  usesDigestToSign() {
+    return false;
+  }
+
 }
 
 module.exports = Abstract;

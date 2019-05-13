@@ -10,16 +10,6 @@ class Util {
     return ('' + string).replace(/([?!${}*:()|=^[\]\/\\.+])/g, '\\$1');
   }
 
-  static promiseWhile(data, condition, action) {
-    let whilst = (data) => {
-      return condition(data) ?
-        action(data).then(whilst) :
-        Promise.resolve(data);
-    };
-
-    return whilst(data);
-  };
-
   // https://stackoverflow.com/questions/46479169/check-if-value-is-a-symbol-in-javascript
   static isSymbol(x) {
     return typeof x === 'symbol' ||

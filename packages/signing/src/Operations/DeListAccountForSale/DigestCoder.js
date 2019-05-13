@@ -57,7 +57,7 @@ class DigestCoder extends CompositeType {
         .description('The block number until the account is locked.')
     );
     this.addSubType(
-      new Coding.Pascal.OpType(1)
+      new Coding.Pascal.OpType('optype', 1)
         .withFixedValue(opType)
         .description('The optype as 8bit int.')
     );

@@ -14,7 +14,6 @@ const SignOperationAction = require('./Actions/SignOperationAction');
 const Account = require('./Types/Account');
 const Block = require('./Types/Block');
 const SignedMessage = require('./Types/SignedMessage');
-const RawOperations = require('./Types/RawOperations');
 const NodeStatus = require('./Types/NodeStatus');
 const Operation = require('./Types/Operation');
 const Sender = require('./Types/Sender');
@@ -771,7 +770,7 @@ class Client {
   /**
    * Removes an operation from the given rawoperations.
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    * @param {Number} index
    *
    * @returns {BaseAction}
@@ -783,13 +782,13 @@ class Client {
     return new BaseAction('operationsdelete', {
       rawoperations,
       index: index !== null ? parseInt(index, 10) : index
-    }, this[P_EXECUTOR], RawOperations, false);
+    }, this[P_EXECUTOR], BC, false);
   }
 
   /**
    * Gets the information about the given operation
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    *
    * @returns {BaseAction}
    */
@@ -804,7 +803,7 @@ class Client {
   /**
    * Executes the given operations
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    *
    * @returns {BaseAction}
    */
@@ -1005,7 +1004,7 @@ class Client {
   /**
    * Adds an operation to a multioperation
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    * @param {Boolean} autoNOperation
    * @param {Object[]|Sender[]} senders
    * @param {Object[]|Receiver[]} receivers
@@ -1026,13 +1025,13 @@ class Client {
       senders: senders.map((sen) => new Sender(sen)),
       receivers: receivers.map((rec) => new Receiver(rec)),
       changesinfo: changesinfo.map((chng) => new Changer(chng))
-    }, this[P_EXECUTOR], RawOperations, true);
+    }, this[P_EXECUTOR], BC, true);
   }
 
   /**
    * Signs the given rawoperations
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    * @param {Object} accountsAndKeys
    *
    * @returns {BaseAction}
@@ -1050,7 +1049,7 @@ class Client {
   /**
    * Signs the given rawoperations online
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    *
    * @returns {BaseAction}
    */

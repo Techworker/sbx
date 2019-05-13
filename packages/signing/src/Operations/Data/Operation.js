@@ -135,14 +135,8 @@ class Data extends Abstract {
     return this[P_AMOUNT];
   }
 
-  /**
-   * Data ops are signed with the digest, not the hash of the digest.
-   *
-   * @param {KeyPair} keyPair
-   * @param {Number} nOperation
-   */
-  sign(keyPair, nOperation) {
-    super.sign(keyPair, nOperation, true);
+  usesDigestToSign() {
+    return true;
   }
 }
 

@@ -19,10 +19,9 @@ class StringWithoutLength extends AbstractType {
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 
@@ -33,9 +32,7 @@ class StringWithoutLength extends AbstractType {
   }
 
   /**
-   * Gets the size in bytes of the encoded value.
-   *
-   * @returns {number}
+   * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
     return this[P_SIZE_ENCODED];
@@ -65,11 +62,9 @@ class StringWithoutLength extends AbstractType {
   }
 
   /**
-   * Gets the description of the currents type instance.
-   *
-   * @param {*|null} value
-   * @return {{id: String, type: {extra: {}, name: string}, encodedSize: Number}}
+   * @inheritDoc AbstractType#describe
    */
+  /* istanbul ignore next */
   describe(value) {
     let description = {
       id: this.id,

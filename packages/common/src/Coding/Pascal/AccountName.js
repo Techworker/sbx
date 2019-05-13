@@ -18,10 +18,9 @@ class AccountName extends StringWithLength {
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 
@@ -52,11 +51,9 @@ class AccountName extends StringWithLength {
   }
 
   /**
-   * Gets the description of the currents type instance.
-   *
-   * @param {*|null} value
-   * @return {{id: String, type: {extra: {}, name: string}, encodedSize: Number}}
+   * @inheritDoc AbstractType#describe
    */
+  /* istanbul ignore next */
   describe(value) {
     return super.describe(value);
   }

@@ -39,6 +39,11 @@ class DeListAccountForSale extends Abstract {
     super();
     this[P_ACCOUNT_SIGNER] = new AccountNumber(accountSigner);
     this[P_ACCOUNT_TARGET] = new AccountNumber(accountTarget);
+    this[P_PRICE] = new Currency(0);
+    this[P_ACCOUNT_TO_PAY] = new AccountNumber(0);
+    this[P_NEW_PUBLIC_KEY] = PublicKey.empty();
+    this[P_LOCKED_UNTIL_BLOCK] = 0;
+
   }
 
   get signer() {
@@ -47,6 +52,22 @@ class DeListAccountForSale extends Abstract {
 
   get target() {
     return this[P_ACCOUNT_TARGET];
+  }
+
+  get price() {
+    return this[P_PRICE];
+  }
+
+  get accountToPay() {
+    return this[P_ACCOUNT_TO_PAY];
+  }
+
+  get newPublicKey() {
+    return this[P_NEW_PUBLIC_KEY];
+  }
+
+  get lockedUntilBlock() {
+    return this[P_LOCKED_UNTIL_BLOCK];
   }
 }
 

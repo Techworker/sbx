@@ -10,36 +10,34 @@ const CompositeType = require('./CompositeType');
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_SUBTYPE_RESOLVER = Symbol('subtype_resolver');
-const P_RESOLVED_FIELD_ID = Symbol('resolved_field_id');
+const P_MARKER_FIELD = Symbol('marker_field');
 
 /**
- * A Type that itself is made up of multiple other types.
+ * A Type that itself is made up of multiple other types. The types are selected dynamically
+ * depending on the given resolver.
  */
 class Decissive extends CompositeType {
   /**
    * Constructor
    */
-  constructor(id, subTypeResolver, resolvedFieldId) {
+  constructor(id, markerField, subTypeResolver) {
     super(id || 'decissive');
     super.description('A type that itself has many sub types but only some are triggere based on a marker.');
     this[P_SUBTYPE_RESOLVER] = subTypeResolver;
-    this[P_RESOLVED_FIELD_ID] = resolvedFieldId;
+    this[P_MARKER_FIELD] = markerField;
   }
 
   /**
-   * Gets the size of the field type (only available after encoding).
-   *
-   * @return {*}
+   * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
     return this[P_SIZE_ENCODED];
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 
@@ -55,20 +53,10 @@ class Decissive extends CompositeType {
    * @param {Boolean} toArray
    * @return {Object}
    */
-  decodeFromBytes(bc, toArray = false) {
-    const obj = {};
-    let offset = 0;
+  decodeFromBytes(bc, toArray = false, all = {}) {
+    let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
 
-    bc = BC.from(bc);
-
-    // read the first subtype, which is the marker
-    obj[this.subTypes[0].id] = this.subTypes[0].decodeFromBytes(bc.slice(offset));
-    offset += this.subTypes[0].encodedSize;
-
-    obj[this[P_RESOLVED_FIELD_ID]] = this[P_SUBTYPE_RESOLVER](obj[this.subTypes[0].id])
-      .decodeFromBytes(bc.slice(offset));
-
-    return toArray ? Object.values(obj) : obj;
+    return subType.decodeFromBytes(bc, toArray);
   }
 
   /**
@@ -77,39 +65,18 @@ class Decissive extends CompositeType {
    * @param {Object|Array} objOrArray
    * @returns {BC}
    */
-  encodeToBytes(objOrArray) {
-    let bc = BC.empty();
-    let localSubTypes = [];
-
-    localSubTypes.push(this.subTypes[0]);
-    localSubTypes.forEach((subType, idx) => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[idx === 0 ? subType.id : this[P_RESOLVED_FIELD_ID]];
-      }
-
-      // we will use the first available
-      bc = bc.append(subType.encodeToBytes(subTypeValue));
-
-      // append other resolved subtype
-      if (idx === 0) {
-        localSubTypes.push(this[P_SUBTYPE_RESOLVER](subTypeValue));
-      }
-    });
+  encodeToBytes(objOrArray, all) {
+    let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
+    let bc = subType.encodeToBytes(objOrArray);
 
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
   }
 
   /**
-   * Describes the current composite type instance.
-   *
-   * @param {*} value
-   * @return {Object}
+   * @inheritDoc AbstractType#describe
    */
+  /* istanbul ignore next */
   describe(value) {
     let description = super.describe(value);
 

@@ -1,5 +1,5 @@
 const PublicKey = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
-const HexaStringWithLength = require('@pascalcoin-sbx/common').Coding.Core.BytesWithLength;
+const BytesWithLength = require('@pascalcoin-sbx/common').Coding.Core.BytesWithLength;
 const PascalPublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 
 const publicKeyCoding = new PublicKey();
@@ -7,10 +7,10 @@ const publicKeyCoding = new PublicKey();
 /**
  * A special Int32 type that can handle account number.
  */
-class PublicKeyWithLength extends HexaStringWithLength {
+class PublicKeyWithLength extends BytesWithLength {
 
   constructor(id = null) {
-    super(id || 'pubkey');
+    super(id || 'pubkey', 16);
   }
 
   /**

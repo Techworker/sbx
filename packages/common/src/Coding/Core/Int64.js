@@ -1,6 +1,23 @@
 const AbstractInt = require('./AbstractInt');
 const BC = require('./../../BC');
+const Endian = require('./../../Endian');
 const BN = require('bn.js');
+
+function validate64Bit(isUnsigned, value) {
+  if (isUnsigned) {
+    if (value.isNeg()) {
+      throw new Error('64bit value is negative. Only signed allowed.');
+    } else if (value.gt(new BN('18446744073709551615'))) {
+      throw new Error('Invalid unsigned 64 bit value.');
+    }
+  } else if (!isUnsigned) {
+    if (value.gt(new BN('9223372036854775807')) || value.lt(new BN('-9223372036854775808'))) {
+      throw new Error('Invalid signed 64 bit value.');
+    }
+  }
+
+  return value;
+}
 
 /**
  * Field type for 64bit int values using BN.js.
@@ -14,16 +31,15 @@ class Int64 extends AbstractInt {
    * @param {Boolean} unsigned
    * @param {String} endian
    */
-  constructor(id, unsigned, endian) {
+  constructor(id, unsigned = true, endian = Endian.LITTLE_ENDIAN) {
     super(id || 'int64', unsigned, endian);
     this.description('8byte 64bit int value');
   }
 
   /**
-   * Gets the type description.
-   *
-   * @returns {{extra: {}, name: string}}
+   * @inheritDoc AbstractType#typeInfo
    */
+  /* istanbul ignore next */
   get typeInfo() {
     let info = super.typeInfo;
 
@@ -34,9 +50,7 @@ class Int64 extends AbstractInt {
   }
 
   /**
-   * Gets the size in bytes.
-   *
-   * @returns {number}
+   * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
     return 8;
@@ -49,24 +63,32 @@ class Int64 extends AbstractInt {
    * @returns {BN}
    */
   decodeFromBytes(bc) {
-    return new BN(bc.buffer, 10, this.endian.toLowerCase());
+    let value = new BN(bc.buffer, 10, this.endian.toLowerCase());
+
+    if (!this.unsigned) {
+      value = value.fromTwos(64);
+    }
+
+    return validate64Bit(this.unsigned, value);
   }
 
   /**
    * Appends the given currency value to the given BC.
    *
-   * @param {BC} value
+   * @param {BN} value
    */
   encodeToBytes(value) {
+    value = validate64Bit(this.unsigned, value);
+    if (!this.unsigned) {
+      value = value.toTwos(64);
+    }
     return BC.from(value.toBuffer(this.endian.toLowerCase(), this.encodedSize));
   }
 
   /**
-   * Gets the description of the currents type instance.
-   *
-   * @param {BN} value
-   * @return {{id: String, type: {extra: {}, name: string}, encodedSize: Number}}
+   * @inheritDoc AbstractType#describe
    */
+  /* istanbul ignore next */
   describe(value) {
     let description = super.describe(value);
 
