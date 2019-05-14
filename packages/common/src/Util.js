@@ -9,12 +9,6 @@ class Util {
   static escapeRegex(string) {
     return ('' + string).replace(/([?!${}*:()|=^[\]\/\\.+])/g, '\\$1');
   }
-
-  // https://stackoverflow.com/questions/46479169/check-if-value-is-a-symbol-in-javascript
-  static isSymbol(x) {
-    return typeof x === 'symbol' ||
-        typeof x === 'object' && Object.prototype.toString.call(x) === '[object Symbol]';
-  }
 }
 
 module.exports = Util;
