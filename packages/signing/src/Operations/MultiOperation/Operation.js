@@ -6,7 +6,6 @@
  */
 
 const Abstract = require('./../../Abstract');
-const Changer = require('./Changer/Changer');
 const Receiver = require('./Receiver/Receiver');
 const Sender = require('./Sender/Sender');
 
@@ -72,24 +71,6 @@ class MultiOperation extends Abstract {
     }
     this[P_RECEIVERS_UQ][uq] = uq;
     this[P_RECEIVERS].push(receiver);
-  }
-
-  addChanger() {
-    let changer = new Changer(
-      operation.target,
-      keyPair,
-      operation.newName,
-      operation.newType,
-      operation.newPublicKey,
-      operation.changeType
-    );
-
-    changer.withNOperation(operation.nOperation);
-    changer.withPayload(operation.payload);
-    this[P_CHANGERS][operation.target] = {
-      keyPair: keyPair,
-      changer
-    };
   }
 
   get senders() {

@@ -26900,6 +26900,12 @@ module.exports = Payload;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
 
 const mipherPadding = __webpack_require__(/*! mipher/dist/padding */ "../../node_modules/mipher/dist/padding.js");
@@ -26957,6 +26963,12 @@ module.exports = AES_CBC_ZeroPadding;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const MipherHMAC = __webpack_require__(/*! mipher/dist/hmac */ "../../node_modules/mipher/dist/hmac.js").HMAC;
 
 const MipherMD5 = __webpack_require__(/*! ./MD5Mipher */ "./src/mipher/MD5Mipher.js");
@@ -26984,7 +26996,13 @@ module.exports = HMAC_MD5;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {const MD5 = __webpack_require__(/*! md5.js */ "../../node_modules/md5.js/index.js");
+/* WEBPACK VAR INJECTION */(function(Buffer) {/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const MD5 = __webpack_require__(/*! md5.js */ "../../node_modules/md5.js/index.js");
 /**
  * SHA512 class
  */

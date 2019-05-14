@@ -26993,6 +26993,12 @@ module.exports = Base58;
 /*! all exports used */
 /***/ (function(module, exports) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const P_ID = Symbol('id');
 const P_FIXED_VALUE = Symbol('fixed_value');
 const P_HAS_FIXED_VALUE = Symbol('has_fixed_value');
@@ -27070,17 +27076,21 @@ class AbstractType {
   /**
    * Decodes a value using the rules defined in the method from the given bytes.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {*}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     throw new Error('Missing implementation for decodeFromBytes.');
   }
   /**
    * Returns the encoded bytes for the given value.
    *
    * @param {*} value
+   * @return {*}
    */
 
 
@@ -27136,6 +27146,17 @@ class AbstractType {
 
     this[P_DESCRIPTION] = description;
     return this;
+  }
+  /**
+   * Gets a value indicating whether the type can be decoded. It is
+   * not possible in some circumstances.
+   *
+   * @return {boolean}
+   */
+
+
+  get canDecode() {
+    return true;
   }
 
 }
@@ -27219,33 +27240,34 @@ class CompositeType extends AbstractType {
     this[P_SUBTYPES].push(field);
     return this;
   }
-
-  clearSubTypes() {
-    this[P_SUBTYPES] = [];
-  }
   /**
    * Decodes the given bytes into an object.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
-   * @return {Object}
+   * @param {Object} options
+   * @param {*} all
+   * @return {*}
    */
 
 
-  decodeFromBytes(bc, toArray = false) {
+  decodeFromBytes(bc, options = {}, all = null) {
+    if (this.canDecode === false) {
+      throw new Error('This type cannot be decoded.');
+    }
+
     const obj = {};
     let offset = 0;
     bc = BC.from(bc);
     this.subTypes.forEach(subType => {
-      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), toArray, obj);
+      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), options, obj);
       offset += subType.encodedSize;
     });
-    return toArray ? Object.values(obj) : obj;
+    return options.toArray ? Object.values(obj) : obj;
   }
   /**
    * Encodes the given object to a list of bytes.
    *
-   * @param {Object|Array} objOrArray
+   * @param {Object|Array|*} objOrArray
    * @returns {BC}
    */
 
@@ -27312,6 +27334,12 @@ module.exports = CompositeType;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
 
 const P_ENDIAN = Symbol('endian');
@@ -27403,13 +27431,19 @@ module.exports = AbstractInt;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 
 const P_SIZE = Symbol('size');
 /**
- * A field type to write bytes without prepending the length.
+ * A field type to encode and decode bytes with a fixed length.
  */
 
 class BytesFixedLength extends AbstractType {
@@ -27417,10 +27451,11 @@ class BytesFixedLength extends AbstractType {
    * Constructor
    *
    * @param {String} id
+   * @param {Number} length
    */
   constructor(id, length) {
-    super(id || 'bytes_fixed_length');
-    this.description('Btes without length prepended.');
+    super(id || 'bytes_fixed_length_' + length);
+    this.description('Bytes with a fixed length of ' + length);
     this[P_SIZE] = length;
   }
   /**
@@ -27445,15 +27480,17 @@ class BytesFixedLength extends AbstractType {
     return this[P_SIZE];
   }
   /**
-   * In fact this does nothing other than updating the internal size.
+   * Returns the values of the given bc in the configured length.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {BC}
    */
 
 
-  decodeFromBytes(bc) {
-    return bc.slice(0, this[P_SIZE]);
+  decodeFromBytes(bc, options = {}, all = null) {
+    return BC.from(bc).slice(0, this[P_SIZE]);
   }
   /**
    * Encodes the given value to a collection of bytes.
@@ -27503,6 +27540,12 @@ module.exports = BytesFixedLength;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
 
 const Int8 = __webpack_require__(/*! ./Int8 */ "../common/src/Coding/Core/Int8.js");
@@ -27529,9 +27572,10 @@ class BytesWithLength extends AbstractType {
    * Constructor
    *
    * @param {string} id
+   * @param {Number} byteSize
    */
   constructor(id, byteSize = 1) {
-    super(id || `bytes_size${byteSize * 8}`);
+    super(id || `bytes_with_length_${byteSize * 8}`);
     this.description('Bytes with variable size prepended');
     this[P_BYTES_FIELD] = new BytesWithoutLength('value');
 
@@ -27549,7 +27593,7 @@ class BytesWithLength extends AbstractType {
         break;
 
       default:
-        throw new Error('IntSize must be either 8, 16 or 32');
+        throw new Error('InByteSize must be either 8, 16 or 32');
     }
   }
   /**
@@ -27576,12 +27620,14 @@ class BytesWithLength extends AbstractType {
   /**
    * Decodes the string value from the given bytes
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {BC}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(bc) + this[P_LENGTH_FIELD].encodedSize;
     return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_SIZE_ENCODED]));
   }
@@ -27633,13 +27679,19 @@ module.exports = BytesWithLength;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 /**
- * A field type to write bytes without prepending the length.
+ * A field type to write bytes without prepending the length. This cannot be decoded in some circumstances.
  */
 
 class BytesWithoutLength extends AbstractType {
@@ -27650,7 +27702,7 @@ class BytesWithoutLength extends AbstractType {
    */
   constructor(id = null) {
     super(id || 'bytes_without_length');
-    this.description('Btes without length prepended.');
+    this.description('Bytes without length prepended.');
   }
   /**
    * @inheritDoc AbstractType#typeInfo
@@ -27676,12 +27728,14 @@ class BytesWithoutLength extends AbstractType {
   /**
    * In fact this does nothing other than updating the internal size.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {BC}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
   }
@@ -27734,6 +27788,12 @@ module.exports = BytesWithoutLength;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
@@ -27778,13 +27838,15 @@ class Int16 extends AbstractInt {
   /**
    * Decodes the int16 value from the given bytes.
    *
-   * @param {BC} bc
-   * @returns {Number}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {Number|*}
    */
 
 
-  decodeFromBytes(bc) {
-    return bc.readInt16(0, this.unsigned, this.endian);
+  decodeFromBytes(bc, options = {}, all = null) {
+    return BC.from(bc).readInt16(0, this.unsigned, this.endian);
   }
   /**
    * Encodes the given Int16 value to a byte sequence.
@@ -27812,6 +27874,12 @@ module.exports = Int16;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
@@ -27856,13 +27924,15 @@ class Int32 extends AbstractInt {
   /**
    * Reads the given int32 value.
    *
-   * @param {BC} bc
-   * @returns {Number}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {Number|*}
    */
 
 
-  decodeFromBytes(bc) {
-    return bc.readInt32(0, this.unsigned, this.endian);
+  decodeFromBytes(bc, options = {}, all = null) {
+    return BC.from(bc).readInt32(0, this.unsigned, this.endian);
   }
   /**
    * Appends the given Int32 value.
@@ -27890,6 +27960,12 @@ module.exports = Int32;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
@@ -27954,13 +28030,15 @@ class Int64 extends AbstractInt {
   /**
    * Reads the pascal currency value from the given BC.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {BN}
    */
 
 
-  decodeFromBytes(bc) {
-    let value = new BN(bc.buffer, 10, this.endian.toLowerCase());
+  decodeFromBytes(bc, options = {}, all = null) {
+    let value = new BN(BC.from(bc).buffer, 10, this.endian.toLowerCase());
 
     if (!this.unsigned) {
       value = value.fromTwos(64);
@@ -28018,6 +28096,12 @@ module.exports = Int64;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
 
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
@@ -28064,16 +28148,18 @@ class Int8 extends AbstractInt {
   /**
    * Reads the int8 value from the given bytes.
    *
-   * @param {BC} bc
-   * @returns {Number}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {Number|*}
    */
 
 
-  decodeFromBytes(bc) {
-    return bc.readInt8(0, this.unsigned, this.endian);
+  decodeFromBytes(bc, options = {}, all = null) {
+    return BC.from(bc).readInt8(0, this.unsigned);
   }
   /**
-   * Appends the given int8 value.
+   * Encodes the given int8 value.
    *
    * @param {Number} value
    * @returns {BC}
@@ -28081,7 +28167,7 @@ class Int8 extends AbstractInt {
 
 
   encodeToBytes(value) {
-    return BC.fromInt8(value, this.unsigned, this.endian);
+    return BC.fromInt8(value, this.unsigned);
   }
 
 }
@@ -28098,6 +28184,14 @@ module.exports = Int8;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
 
 const Int8 = __webpack_require__(/*! ./Int8 */ "../common/src/Coding/Core/Int8.js");
@@ -28112,7 +28206,7 @@ const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.j
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_LENGTH_FIELD = Symbol('length_field');
-const P_BYTES_FIELD = Symbol('bytes_field');
+const P_STRING_FIELD = Symbol('bytes_field');
 /**
  * A field type to write dynamic strings (prepends the length).
  */
@@ -28121,7 +28215,7 @@ class StringWithLength extends AbstractType {
   constructor(id, byteSize = 1) {
     super(id || `bytes_size${byteSize * 8}`);
     this.description('String with size prepended');
-    this[P_BYTES_FIELD] = new StringWithoutLength('value');
+    this[P_STRING_FIELD] = new StringWithoutLength('value');
 
     switch (byteSize) {
       case 1:
@@ -28164,19 +28258,21 @@ class StringWithLength extends AbstractType {
   /**
    * Decodes the string value from the given bytes
    *
-   * @param {BC} bc
-   * @returns {BC}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {String}
    */
 
 
-  decodeFromBytes(bc) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(bc);
-    return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_LENGTH_FIELD].encodedSize + this[P_SIZE_ENCODED]));
+  decodeFromBytes(bc, options = {}, all = null) {
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc));
+    return this[P_STRING_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_LENGTH_FIELD].encodedSize + this[P_SIZE_ENCODED]));
   }
   /**
    * Encodes the given value.
    *
-   * @param {BC} value
+   * @param {String} value
    * @returns {BC}
    */
 
@@ -28184,7 +28280,7 @@ class StringWithLength extends AbstractType {
   encodeToBytes(value) {
     this[P_SIZE_ENCODED] = value.length;
     let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED]);
-    return bc.append(this[P_BYTES_FIELD].encodeToBytes(value));
+    return bc.append(this[P_STRING_FIELD].encodeToBytes(value));
   }
   /**
    * @inheritDoc AbstractType#describe
@@ -28219,6 +28315,12 @@ module.exports = StringWithLength;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
@@ -28262,13 +28364,15 @@ class StringWithoutLength extends AbstractType {
   /**
    * Decodes the string value from the given bytes
    *
-   * @param {BC} bc
-   * @returns {BC}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {String}
    */
 
 
-  decodeFromBytes(bc) {
-    return bc.toString();
+  decodeFromBytes(bc, options = {}, all = null) {
+    return BC.from(bc).toString();
   }
   /**
    * Encodes the given value.
@@ -28375,9 +28479,9 @@ class Decissive extends CompositeType {
    */
 
 
-  decodeFromBytes(bc, toArray = false, all = {}) {
+  decodeFromBytes(bc, options = {}, all = null) {
     let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
-    return subType.decodeFromBytes(bc, toArray);
+    return subType.decodeFromBytes(bc, options, all);
   }
   /**
    * Encodes the given object to a list of bytes.
@@ -28438,7 +28542,13 @@ module.exports = Decissive;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-const PascalAccountName = __webpack_require__(/*! ./../../Types/AccountName */ "../common/src/Types/AccountName.js");
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const AccountNameType = __webpack_require__(/*! ./../../Types/AccountName */ "../common/src/Types/AccountName.js");
 
 const StringWithLength = __webpack_require__(/*! ../Core/StringWithLength */ "../common/src/Coding/Core/StringWithLength.js");
 /**
@@ -28472,19 +28582,21 @@ class AccountName extends StringWithLength {
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
-   * @param {BC} bc
-   * @returns {PascalAccountName}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {AccountNameType}
    */
 
 
-  decodeFromBytes(bc) {
-    return new PascalAccountName(super.decodeFromBytes(bc));
+  decodeFromBytes(bc, options = {}, all = null) {
+    return new AccountNameType(super.decodeFromBytes(bc));
   }
   /**
    *
    * Appends the given pascalcoin account number to the BC.
    *
-   * @param {PascalAccountName} value
+   * @param {AccountNameType} value
    */
 
 
@@ -28516,7 +28628,13 @@ module.exports = AccountName;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-const PascalAccountNumber = __webpack_require__(/*! ./../../Types/AccountNumber */ "../common/src/Types/AccountNumber.js");
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const AccountNumberType = __webpack_require__(/*! ./../../Types/AccountNumber */ "../common/src/Types/AccountNumber.js");
 
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
 
@@ -28552,19 +28670,22 @@ class AccountNumber extends Int32 {
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
-   * @param {BC} bc
-   * @returns {PascalAccountNumber}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {AccountNumberType}
    */
 
 
-  decodeFromBytes(bc) {
-    return new PascalAccountNumber(super.decodeFromBytes(bc));
+  decodeFromBytes(bc, options = {}, all = null) {
+    return new AccountNumberType(super.decodeFromBytes(bc));
   }
   /**
    *
    * Appends the given pascalcoin account number to the BC.
    *
-   * @param {PascalAccountNumber} value
+   * @param {AccountNumberType} value
+   * @return {BC}
    */
 
 
@@ -28596,9 +28717,15 @@ module.exports = AccountNumber;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const Int64 = __webpack_require__(/*! ./../Core/Int64 */ "../common/src/Coding/Core/Int64.js");
 
-const PascalCurrency = __webpack_require__(/*! ./../../Types/Currency */ "../common/src/Types/Currency.js");
+const CurrencyType = __webpack_require__(/*! ./../../Types/Currency */ "../common/src/Types/Currency.js");
 
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
 /**
@@ -28632,18 +28759,21 @@ class Currency extends Int64 {
   /**
    * Reads the pascal currency value from the given BC.
    *
-   * @param {BC} bc
-   * @returns {PascalCurrency}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {CurrencyType}
    */
 
 
-  decodeFromBytes(bc) {
-    return PascalCurrency.fromMolina(super.decodeFromBytes(bc));
+  decodeFromBytes(bc, options = {}, all = null) {
+    return CurrencyType.fromMolina(super.decodeFromBytes(bc));
   }
   /**
    * Appends the given currency value to the given BC.
    *
-   * @param {PascalCurrency} value
+   * @param {CurrencyType} value
+   * @return {BC}
    */
 
 
@@ -28675,13 +28805,19 @@ module.exports = Currency;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-const PascalCurve = __webpack_require__(/*! ./../../../Types/Keys/Curve */ "../common/src/Types/Keys/Curve.js");
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const CurveType = __webpack_require__(/*! ./../../../Types/Keys/Curve */ "../common/src/Types/Keys/Curve.js");
 
 const Endian = __webpack_require__(/*! ./../../../Endian */ "../common/src/Endian.js");
 
 const Int16 = __webpack_require__(/*! ./../../Core/Int16 */ "../common/src/Coding/Core/Int16.js");
 /**
- * A special Int64 type that can handle pascalcoin currencies.
+ * A special pascal type that can en/decode a curve id.
  */
 
 
@@ -28711,18 +28847,21 @@ class Curve extends Int16 {
   /**
    * Reads the pascal currency value from the given BC.
    *
-   * @param {BC} bc
-   * @returns {PascalCurve}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {CurveType}
    */
 
 
-  decodeFromBytes(bc) {
-    return new PascalCurve(super.decodeFromBytes(bc));
+  decodeFromBytes(bc, options = {}, all = null) {
+    return new CurveType(super.decodeFromBytes(bc));
   }
   /**
    * Appends the given currency value to the given BC.
    *
-   * @param {PascalCurve} value
+   * @param {CurveType} value
+   * @return {BC}
    */
 
 
@@ -28744,6 +28883,12 @@ module.exports = Curve;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const Curve = __webpack_require__(/*! ./Curve */ "../common/src/Coding/Pascal/Keys/Curve.js");
 
 const BytesWithLength = __webpack_require__(/*! ../../Core/BytesWithLength */ "../common/src/Coding/Core/BytesWithLength.js");
@@ -28752,7 +28897,7 @@ const CompositeType = __webpack_require__(/*! ../../CompositeType */ "../common/
 
 const PrivateKeyType = __webpack_require__(/*! ./../../../../src/Types/Keys/PrivateKey */ "../common/src/Types/Keys/PrivateKey.js");
 /**
- * A Public Key value.
+ * A coder for a private key.
  */
 
 
@@ -28763,7 +28908,7 @@ class PrivateKey extends CompositeType {
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'pubkey');
+    super(id || 'private_key');
     this.addSubType(new Curve('curve'));
     this.addSubType(new BytesWithLength('key', 2));
   }
@@ -28783,19 +28928,21 @@ class PrivateKey extends CompositeType {
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {PrivateKeyType}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
     return new PrivateKeyType(decoded.key, decoded.curve);
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
    *
-   * @param {BC} bc
+   * @param {PrivateKeyType} value
    * @returns {PrivateKeyType}
    */
 
@@ -28818,9 +28965,17 @@ module.exports = PrivateKey;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const Curve = __webpack_require__(/*! ./Curve */ "../common/src/Coding/Pascal/Keys/Curve.js");
 
 const BytesWithLength = __webpack_require__(/*! ../../Core/BytesWithLength */ "../common/src/Coding/Core/BytesWithLength.js");
+
+const BytesWithoutLength = __webpack_require__(/*! ../../Core/BytesWithoutLength */ "../common/src/Coding/Core/BytesWithoutLength.js");
 
 const CompositeType = __webpack_require__(/*! ../../CompositeType */ "../common/src/Coding/CompositeType.js");
 
@@ -28830,7 +28985,7 @@ const Sha = __webpack_require__(/*! ../../../Sha */ "../common/src/Sha.js");
 
 const Base58 = __webpack_require__(/*! ../../../Base58 */ "../common/src/Base58.js");
 
-const PascalPublicKey = __webpack_require__(/*! ./../../../../src/Types/Keys/PublicKey */ "../common/src/Types/Keys/PublicKey.js");
+const PublicKeyType = __webpack_require__(/*! ./../../../../src/Types/Keys/PublicKey */ "../common/src/Types/Keys/PublicKey.js");
 /**
  * A Public Key value.
  */
@@ -28841,12 +28996,19 @@ class PublicKey extends CompositeType {
    * Constructor.
    *
    * @param {String} id
+   * @param {Boolean} omitXYLenghts
    */
-  constructor(id = null) {
-    super(id || 'pubkey');
-    this.addSubType(new Curve('curve'));
-    this.addSubType(new BytesWithLength('x', 2));
-    this.addSubType(new BytesWithLength('y', 2));
+  constructor(id = null, omitXYLenghts = false) {
+    super(id || 'public_key');
+    this.addSubType(new Curve('curve')); // oh come on..
+
+    if (omitXYLenghts) {
+      this.addSubType(new BytesWithoutLength('x'));
+      this.addSubType(new BytesWithoutLength('y'));
+    } else {
+      this.addSubType(new BytesWithLength('x', 2));
+      this.addSubType(new BytesWithLength('y', 2));
+    }
   }
   /**
    * @inheritDoc AbstractType#typeInfo
@@ -28864,14 +29026,16 @@ class PublicKey extends CompositeType {
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
    *
-   * @param {BC} bc
-   * @returns {PascalPublicKey}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {PublicKeyType}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
-    return new PascalPublicKey(decoded.x, decoded.y, decoded.curve);
+    return new PublicKeyType(decoded.x, decoded.y, decoded.curve);
   }
   /**
    * Gets the base58 representation of a public key.
@@ -28915,6 +29079,12 @@ module.exports = PublicKey;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
 
 const Int32 = __webpack_require__(/*! ./../Core/Int32 */ "../common/src/Coding/Core/Int32.js");
@@ -28946,38 +29116,6 @@ class NOperation extends Int32 {
     info.hierarchy.push(info.name);
     return info;
   }
-  /**
-   * Reads a value and returns a new PascalCoin AccountNumber instance.
-   *
-   * @param {BC} bc
-   * @returns {PascalAccountName}
-   */
-
-
-  decodeFromBytes(bc) {
-    return super.decodeFromBytes(bc);
-  }
-  /**
-   *
-   * Appends the given pascalcoin account number to the BC.
-   *
-   * @param {Number} value
-   */
-
-
-  encodeToBytes(value) {
-    return super.encodeToBytes(value);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    return super.describe(value);
-  }
 
 }
 
@@ -28993,6 +29131,12 @@ module.exports = NOperation;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
 
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
@@ -29060,12 +29204,14 @@ class OpType extends AbstractType {
   /**
    * Decodes and returns the optype.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @return {Number}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     return this[P_INT_TYPE].decodeFromBytes(bc);
   }
   /**
@@ -29112,6 +29258,12 @@ module.exports = OpType;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
 
 const CompositeType = __webpack_require__(/*! ./../CompositeType */ "../common/src/Coding/CompositeType.js");
@@ -29160,20 +29312,22 @@ class OperationHash extends CompositeType {
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {OperationHash}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
     return new OperationHashType(decoded.block, decoded.account, decoded.nOperation, decoded.md160);
   }
   /**
-   *
    * Appends the given pascalcoin account number to the BC.
    *
    * @param {OperationHash} value
+   * @return {BC}
    */
 
 
@@ -29261,7 +29415,7 @@ class Repeating extends AbstractType {
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     let result = [];
     let offset = 0;
     bc = BC.from(bc);
@@ -29343,6 +29497,12 @@ module.exports = Repeating;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 module.exports = {
   AbstractType: __webpack_require__(/*! ./AbstractType */ "../common/src/Coding/AbstractType.js"),
   CompositeType: __webpack_require__(/*! ./CompositeType */ "../common/src/Coding/CompositeType.js"),
@@ -30749,6 +30909,12 @@ module.exports = PublicKey;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 module.exports = {
   Curve: __webpack_require__(/*! ./Curve */ "../common/src/Types/Keys/Curve.js"),
   PrivateKey: __webpack_require__(/*! ./PrivateKey */ "../common/src/Types/Keys/PrivateKey.js"),
@@ -30858,6 +31024,12 @@ module.exports = OperationHash;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 module.exports = {
   AccountName: __webpack_require__(/*! ./AccountName */ "../common/src/Types/AccountName.js"),
   AccountNumber: __webpack_require__(/*! ./AccountNumber */ "../common/src/Types/AccountNumber.js"),
@@ -30876,6 +31048,12 @@ module.exports = {
 /*! all exports used */
 /***/ (function(module, exports) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 class Util {
   /**
    * https://github.com/MauroJr/escape-regex/blob/master/index.js
@@ -31460,6 +31638,12 @@ module.exports = Payload;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
 
 const mipherPadding = __webpack_require__(/*! mipher/dist/padding */ "../../node_modules/mipher/dist/padding.js");
@@ -31517,6 +31701,12 @@ module.exports = AES_CBC_ZeroPadding;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const MipherHMAC = __webpack_require__(/*! mipher/dist/hmac */ "../../node_modules/mipher/dist/hmac.js").HMAC;
 
 const MipherMD5 = __webpack_require__(/*! ./MD5Mipher */ "./src/mipher/MD5Mipher.js");
@@ -31544,7 +31734,13 @@ module.exports = HMAC_MD5;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {const MD5 = __webpack_require__(/*! md5.js */ "../../node_modules/md5.js/index.js");
+/* WEBPACK VAR INJECTION */(function(Buffer) {/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const MD5 = __webpack_require__(/*! md5.js */ "../../node_modules/md5.js/index.js");
 /**
  * SHA512 class
  */

@@ -281,6 +281,12 @@ module.exports = Abstract;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding.Pascal.Keys.PublicKey;
 
 const BytesWithLength = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding.Core.BytesWithLength;
@@ -294,17 +300,19 @@ const publicKeyCoding = new PublicKey();
 
 class PublicKeyWithLength extends BytesWithLength {
   constructor(id = null) {
-    super(id || 'pubkey', 16);
+    super(id || 'pubkey', 2);
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {PascalPublicKey}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const pubKey = super.decodeFromBytes(bc);
     const parsed = publicKeyCoding.decodeFromBytes(pubKey);
     return new PascalPublicKey(parsed.x, parsed.y, parsed.curve);
@@ -347,13 +355,16 @@ const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin
 
 const CompositeType = Coding.CompositeType;
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a BuyAccount Operation.
  */
 
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('buy_operation_digest');
-    super.description('Digest for buy account operation'); // config for digest creation
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('buy_op_digest');
+    super.description('Digest encoder for a BuyAccount operation.'); // config for digest creation
 
     this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The buyer account.'));
     this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
@@ -364,8 +375,29 @@ class DigestCoder extends CompositeType {
     this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').description('Curve ID 0 - previously active in <= v2.').withFixedValue(PublicKey.empty().curve));
     this.addSubType(new Coding.Pascal.Currency('price').description('The price of the account to buy'));
     this.addSubType(new Coding.Pascal.AccountNumber('seller').description('The account number of the seller'));
-    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the account.'));
-    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The buy account optype as 8 bit int8'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey', true).description('The new public key of the account.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(6).description('The buy account optype as 8 bit int8'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Buy Account Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+
+
+  get canDecode() {
+    return false;
   }
 
 }
@@ -401,7 +433,7 @@ const P_ACCOUNT_PRICE = Symbol('price');
 const P_SELLER_ACCOUNT = Symbol('seller');
 const P_NEW_PUBLIC_KEY = Symbol('new_public_key');
 /**
- * A transaction object that can be signed.
+ * Representation of a signable BuyAccount operation.
  */
 
 class BuyAccount extends Abstract {
@@ -434,26 +466,62 @@ class BuyAccount extends Abstract {
     this[P_SELLER_ACCOUNT] = new AccountNumber(seller);
     this[P_NEW_PUBLIC_KEY] = newPublicKey;
   }
+  /**
+   * Gets the buyer account.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get sender() {
     return this[P_SENDER];
   }
+  /**
+   * Gets the account to buy.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get target() {
     return this[P_TARGET];
   }
+  /**
+   * Gets the amount to be transferred.
+   *
+   * @return {Currency}
+   */
+
 
   get amount() {
     return this[P_AMOUNT];
   }
+  /**
+   * Gets the price of the account.
+   *
+   * @return {Currency}
+   */
+
 
   get price() {
     return this[P_ACCOUNT_PRICE];
   }
+  /**
+   * Gets the account of the seller.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get seller() {
     return this[P_SELLER_ACCOUNT];
   }
+  /**
+   * Gets the new public key of the bought account.
+   *
+   * @return {PublicKey}
+   */
+
 
   get newPublicKey() {
     return this[P_NEW_PUBLIC_KEY];
@@ -487,24 +555,19 @@ const CompositeType = Coding.CompositeType;
 
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
 
-const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/BuyAccount/Operation.js");
+const BuyAccount = __webpack_require__(/*! ./Operation */ "./src/Operations/BuyAccount/Operation.js");
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a BuyAccount operation.
  */
 
 
 class RawCoder extends CompositeType {
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Buy Account Operation (RAW)';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  constructor(opType) {
-    super('buy_operation_raw');
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('buy_op_raw');
     this.description('The coder for the raw representation of a BuyAccount operation');
-    this.description('Encoded BuyAccount Operation');
     this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The buyer account.'));
     this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
     this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account to buy.'));
@@ -519,13 +582,36 @@ class RawCoder extends CompositeType {
     this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the sign operation.'));
     this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the sign operation.'));
   }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
 
-  decodeFromBytes(bc) {
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Buy Account Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the encoded BuyAccount operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {BuyAccount}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(decoded.sender, decoded.target, decoded.amount, decoded.price, decoded.seller, decoded.newPublicKey);
+    const op = new BuyAccount(decoded.sender, decoded.target, decoded.amount, decoded.price, decoded.seller, decoded.newPublicKey);
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
     return op;
   }
 
@@ -555,16 +641,20 @@ const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin
 
 const CompositeType = Coding.CompositeType;
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a ChangeAccountInfo Operation.
  */
 
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('change_info_operation_digest'); // config for digest creation
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('change_info_op_digest');
+    this.description('Digest encoder for a ChangeAccountInfo operation.'); // config for digest creation
 
     this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The signer of the operation.'));
     this.addSubType(new Coding.Pascal.AccountNumber('target').description('The target account to change info of.'));
-    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the signer.'));
     this.addSubType(new Coding.Pascal.Currency('fee').description('The fee paid for the operation.'));
     this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
     this.addSubType(new Coding.Pascal.Keys.PublicKey('v2_public_key').description('Empty pubkey (6 zero bytes) - previously active in <= v2.').withFixedValue(PublicKey.empty()));
@@ -572,7 +662,28 @@ class DigestCoder extends CompositeType {
     this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the account.'));
     this.addSubType(new Coding.Pascal.AccountName('newName').description('The new name of the account.'));
     this.addSubType(new Coding.Core.Int16('newType').description('The new type of the account.'));
-    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The buy account optype as 8 bit int8'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(8).description('The change account info optype as 8 bit int8'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Change Account Info Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+
+
+  get canDecode() {
+    return false;
   }
 
 }
@@ -614,24 +725,24 @@ const P_WITH_NEW_PUBKEY = Symbol('with_new_pubkey');
 const P_WITH_NEW_NAME = Symbol('with_new_name');
 const P_WITH_NEW_TYPE = Symbol('with_new_type');
 /**
- * A transaction object that can be signed.
+ * Representation of a signable ChangeAccountInfo operation.
  */
 
 class ChangeAccountInfo extends Abstract {
   /**
-     * Gets the optype.
-     *
-     * @returns {number}
-     */
+   * Gets the optype.
+   *
+   * @returns {number}
+   */
   get opType() {
     return 8;
   }
   /**
-     * Constructor.
-     *
-     * @param {Account|AccountNumber|Number|String} accountSigner
-     * @param {Account|AccountNumber|Number|String} accountTarget
-     */
+   * Constructor.
+   *
+   * @param {Account|AccountNumber|Number|String} accountSigner
+   * @param {Account|AccountNumber|Number|String} accountTarget
+   */
 
 
   constructor(accountSigner, accountTarget) {
@@ -646,22 +757,52 @@ class ChangeAccountInfo extends Abstract {
     this[P_WITH_NEW_NAME] = false;
     this[P_WITH_NEW_TYPE] = false;
   }
+  /**
+   * Gets the signer account of the operation.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get signer() {
     return this[P_ACCOUNT_SIGNER];
   }
+  /**
+   * Gets the target account to change.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get target() {
     return this[P_ACCOUNT_TARGET];
   }
+  /**
+   * Gets the new public key of the target.
+   *
+   * @return {PublicKey}
+   */
+
 
   get newPublicKey() {
     return this[P_NEW_PUBLIC_KEY];
   }
+  /**
+   * Gets the new name of the target.
+   *
+   * @return {AccountName}
+   */
+
 
   get newName() {
     return this[P_NEW_NAME];
   }
+  /**
+   * Gets the new type of the target account.
+   *
+   * @return {Number}
+   */
+
 
   get newType() {
     return this[P_NEW_TYPE];
@@ -691,11 +832,11 @@ class ChangeAccountInfo extends Abstract {
     return changeType;
   }
   /**
-     * Will set the new public key.
-     *
-     * @param {PublicKey} publicKey
-     * @returns {ChangeAccountInfo}
-     */
+   * Will set the new public key.
+   *
+   * @param {PublicKey} publicKey
+   * @returns {ChangeAccountInfo}
+   */
 
 
   withNewPublicKey(publicKey) {
@@ -756,16 +897,19 @@ const CompositeType = Coding.CompositeType;
 
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
 
-const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/ChangeAccountInfo/Operation.js");
+const ChangeAccountInfo = __webpack_require__(/*! ./Operation */ "./src/Operations/ChangeAccountInfo/Operation.js");
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a ChangeAccountInfo operation.
  */
 
 
 class RawCoder extends CompositeType {
-  constructor(opType) {
-    super('buy_operation_raw');
-    this.description('Encoded BuyAccount Operation');
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('change_account_info_op_raw');
+    this.description('The coder for the raw representation of a ChangeAccountInfo operation');
     this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The signer of the operation.'));
     this.addSubType(new Coding.Pascal.AccountNumber('target').description('The target account to change info of.'));
     this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
@@ -779,16 +923,39 @@ class RawCoder extends CompositeType {
     this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the sign operation.'));
     this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the sign operation.'));
   }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
 
-  decodeFromBytes(bc) {
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Change Account Info Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the encoded ChangeAccountInfo operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {ChangeAccountInfo}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(decoded.signer, decoded.target);
+    const op = new ChangeAccountInfo(decoded.signer, decoded.target);
     op.withNewType(decoded.type);
     op.withNewName(decoded.name);
     op.withNewPublicKey(decoded.newPublicKey);
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
     return op;
   }
 
@@ -798,10 +965,10 @@ module.exports = RawCoder;
 
 /***/ }),
 
-/***/ "./src/Operations/ChangeKey.js":
-/*!*************************************!*\
-  !*** ./src/Operations/ChangeKey.js ***!
-  \*************************************/
+/***/ "./src/Operations/ChangeKey/DigestCoder.js":
+/*!*************************************************!*\
+  !*** ./src/Operations/ChangeKey/DigestCoder.js ***!
+  \*************************************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
@@ -812,61 +979,122 @@ module.exports = RawCoder;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const Abstract = __webpack_require__(/*! ./../Abstract */ "./src/Abstract.js");
-
-const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding;
 
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
 
+const CompositeType = Coding.CompositeType;
+/**
+ * The digest encoder of a ChangeKey Operation.
+ */
+
+class DigestCoder extends CompositeType {
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('data_op_digest');
+    this.description('Digest encoder for a ChangeKey operation.'); // config for digest creation
+
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated with the operation'));
+    this.addSubType(new Coding.Core.BytesWithoutLength('payload').description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').description('Curve ID 0 - previously active in <= v2.').withFixedValue(PublicKey.empty().curve));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the account.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(2).description('The optype as 8bit int.'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Change Key Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+
+
+  get canDecode() {
+    return false;
+  }
+
+}
+
+module.exports = DigestCoder;
+
+/***/ }),
+
+/***/ "./src/Operations/ChangeKey/Operation.js":
+/*!***********************************************!*\
+  !*** ./src/Operations/ChangeKey/Operation.js ***!
+  \***********************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Abstract = __webpack_require__(/*! ./../../Abstract */ "./src/Abstract.js");
+
 const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.AccountNumber;
 
-const P_ACCOUNT_SIGNER = Symbol('account_signer');
+const P_SIGNER = Symbol('signer');
 const P_NEW_PUBLIC_KEY = Symbol('new_public_key');
 /**
- * A transaction object that can be signed.
+ * Representation of a signable ChangeKey operation.
  */
 
 class ChangeKey extends Abstract {
   /**
-     * Gets the optype.
-     *
-     * @returns {number}
-     */
-  static get OPTYPE() {
+   * Gets the optype.
+   *
+   * @returns {number}
+   */
+  get opType() {
     return 2;
   }
   /**
-     *
-     * @param {Account|AccountNumber|Number|String} accountSigner
-     * @param {PublicKey} newPublicKey
-     */
+   * Constructor.
+   * @param {Account|AccountNumber|Number|String} accountSigner
+   * @param {PublicKey} newPublicKey
+   */
 
 
   constructor(accountSigner, newPublicKey) {
     super();
-    this[P_ACCOUNT_SIGNER] = new AccountNumber(accountSigner);
+    this[P_SIGNER] = new AccountNumber(accountSigner);
     this[P_NEW_PUBLIC_KEY] = newPublicKey;
   }
   /**
-     * Gets the digest of the operation.
-     *
-     * @returns {BC}
-     */
+   * Gets the account number of the signer and the account to be changed.
+   *
+   * @return {AccountNumber}
+   */
 
 
-  digest() {
-    return BC.concat(this.bcFromInt(this[P_ACCOUNT_SIGNER].account, 4), this.bcFromInt(this.nOperation, 4), this.bcFromInt(this.fee.toMolina(), 8), this.payload, this.bcFromInt(PublicKey.empty().curve.id, 2), // just zero as curve id
-    this[P_NEW_PUBLIC_KEY].encode(), this.bcFromInt(ChangeKey.OPTYPE));
+  get signer() {
+    return this[P_SIGNER];
   }
   /**
-     * Gets the raw implementation.
-     *
-     * @returns {BC}
-     */
+   * Gets the new public key of the account.
+   * @return {PublicKey}
+   */
 
 
-  toRaw() {
-    return BC.concat(this.bcFromInt(ChangeKey.OPTYPE, 4), this.bcFromInt(this[P_ACCOUNT_SIGNER].account, 4), this.bcFromInt(this.nOperation, 4), this.bcFromInt(this.fee.toMolina(), 8), this.bcFromBcWithSize(this.payload), PublicKey.empty().encode(), this.bcFromInt(this[P_NEW_PUBLIC_KEY].encode().length, 2), this[P_NEW_PUBLIC_KEY].encode(), this.bcFromSign(this.r, this.s));
+  get newPublicKey() {
+    return this[P_NEW_PUBLIC_KEY];
   }
 
 }
@@ -875,10 +1103,10 @@ module.exports = ChangeKey;
 
 /***/ }),
 
-/***/ "./src/Operations/ChangeKeySigned.js":
-/*!*******************************************!*\
-  !*** ./src/Operations/ChangeKeySigned.js ***!
-  \*******************************************/
+/***/ "./src/Operations/ChangeKey/RawCoder.js":
+/*!**********************************************!*\
+  !*** ./src/Operations/ChangeKey/RawCoder.js ***!
+  \**********************************************/
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
@@ -889,19 +1117,166 @@ module.exports = ChangeKey;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const Abstract = __webpack_require__(/*! ./../Abstract */ "./src/Abstract.js");
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding;
 
-const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
+const CompositeType = Coding.CompositeType;
 
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
 
+const ChangeKey = __webpack_require__(/*! ./Operation */ "./src/Operations/ChangeKey/Operation.js");
+
+const PublicKeyWithLength = __webpack_require__(/*! ./../../Coding/PublicKeyWithLength */ "./src/Coding/PublicKeyWithLength.js");
+/**
+ * The raw coder for a ChangeKey operation.
+ */
+
+
+class RawCoder extends CompositeType {
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('change_key_op_raw');
+    this.description('The coder for the raw representation of a ChangeKey operation');
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The signer of the operation.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee paid for the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('v2_public_key').description('Empty pubkey (6 zero bytes) - previously active in <= v2.').withFixedValue(PublicKey.empty()));
+    this.addSubType(new PublicKeyWithLength('newPublicKey').description('The new public key of the account.'));
+    this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the sign operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the sign operation.'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Change Key Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the encoded ChangeKey operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {ChangeKey}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
+    const decoded = super.decodeFromBytes(bc);
+    const op = new ChangeKey(decoded.signer, decoded.newPublicKey);
+    op.withFee(decoded.fee);
+    op.withPayload(decoded.payload);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
+    return op;
+  }
+
+}
+
+module.exports = RawCoder;
+
+/***/ }),
+
+/***/ "./src/Operations/ChangeKeySigned/DigestCoder.js":
+/*!*******************************************************!*\
+  !*** ./src/Operations/ChangeKeySigned/DigestCoder.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding;
+
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
+
+const CompositeType = Coding.CompositeType;
+/**
+ * The digest encoder of a ChangeKey Operation.
+ */
+
+class DigestCoder extends CompositeType {
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('change_key_signed_op_digest');
+    this.description('Digest encoder for a ChangeKeySigned operation.'); // config for digest creation
+
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that should be changed.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated with the operation'));
+    this.addSubType(new Coding.Core.BytesWithoutLength('payload').description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').description('Curve ID 0 - previously active in <= v2.').withFixedValue(PublicKey.empty().curve));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the account.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(7).description('The optype as 8bit int.'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Change Key Signed Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+
+
+  get canDecode() {
+    return false;
+  }
+
+}
+
+module.exports = DigestCoder;
+
+/***/ }),
+
+/***/ "./src/Operations/ChangeKeySigned/Operation.js":
+/*!*****************************************************!*\
+  !*** ./src/Operations/ChangeKeySigned/Operation.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Abstract = __webpack_require__(/*! ./../../Abstract */ "./src/Abstract.js");
+
 const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.AccountNumber;
 
-const P_ACCOUNT_SIGNER = Symbol('account_signer');
-const P_ACCOUNT_TARGET = Symbol('account_target');
+const P_SIGNER = Symbol('signer');
+const P_TARGET = Symbol('target');
 const P_NEW_PUBLIC_KEY = Symbol('new_public_key');
 /**
- * A transaction object that can be signed.
+ * Representation of a signable ChangeKeySigned operation.
  */
 
 class ChangeKeySigned extends Abstract {
@@ -910,47 +1285,142 @@ class ChangeKeySigned extends Abstract {
    *
    * @returns {number}
    */
-  static get OPTYPE() {
+  get opType() {
     return 7;
   }
   /**
+   * Constructor.
    *
    * @param {Account|AccountNumber|Number|String} accountSigner
+   * @param {Account|AccountNumber|Number|String} accountTarget
    * @param {PublicKey} newPublicKey
    */
 
 
   constructor(accountSigner, accountTarget, newPublicKey) {
     super();
-    this[P_ACCOUNT_SIGNER] = new AccountNumber(accountSigner);
-    this[P_ACCOUNT_TARGET] = new AccountNumber(accountTarget);
+    this[P_SIGNER] = new AccountNumber(accountSigner);
+    this[P_TARGET] = new AccountNumber(accountTarget);
     this[P_NEW_PUBLIC_KEY] = newPublicKey;
   }
   /**
-   * Gets the digest of the operation.
+   * Gets the account number of the signer.
    *
-   * @returns {BC}
+   * @return {AccountNumber}
    */
 
 
-  digest() {
-    return BC.concat(this.bcFromInt(this[P_ACCOUNT_SIGNER].account, 4), this.bcFromInt(this[P_ACCOUNT_TARGET].account, 4), this.bcFromInt(this.nOperation, 4), this.bcFromInt(this.fee.toMolina(), 8), this.payload, this.bcFromInt(PublicKey.empty().curve.id, 2), // just zero as curve id
-    this[P_NEW_PUBLIC_KEY].encode(), this.bcFromInt(ChangeKeySigned.OPTYPE));
+  get signer() {
+    return this[P_SIGNER];
   }
   /**
-   * Gets the raw implementation.
+   * Gets the account number of the account to be changed.
    *
-   * @returns {BC}
+   * @return {AccountNumber}
    */
 
 
-  toRaw() {
-    return BC.concat(this.bcFromInt(ChangeKeySigned.OPTYPE, 4), this.bcFromInt(this[P_ACCOUNT_SIGNER].account, 4), this.bcFromInt(this[P_ACCOUNT_TARGET].account, 4), this.bcFromInt(this.nOperation, 4), this.bcFromInt(this.fee.toMolina(), 8), this.bcFromBcWithSize(this.payload), PublicKey.empty().encode(), this.bcFromInt(this[P_NEW_PUBLIC_KEY].encode().length, 2), this[P_NEW_PUBLIC_KEY].encode(), this.bcFromSign(this.r, this.s));
+  get target() {
+    return this[P_TARGET];
+  }
+  /**
+   * Gets the new public key of the target account.
+   *
+   * @return {PublicKey}
+   */
+
+
+  get newPublicKey() {
+    return this[P_NEW_PUBLIC_KEY];
   }
 
 }
 
 module.exports = ChangeKeySigned;
+
+/***/ }),
+
+/***/ "./src/Operations/ChangeKeySigned/RawCoder.js":
+/*!****************************************************!*\
+  !*** ./src/Operations/ChangeKeySigned/RawCoder.js ***!
+  \****************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding;
+
+const CompositeType = Coding.CompositeType;
+
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
+
+const ChangeKeySigned = __webpack_require__(/*! ./Operation */ "./src/Operations/ChangeKeySigned/Operation.js");
+
+const PublicKeyWithLength = __webpack_require__(/*! ./../../Coding/PublicKeyWithLength */ "./src/Coding/PublicKeyWithLength.js");
+/**
+ * The raw coder for a ChangeKey operation.
+ */
+
+
+class RawCoder extends CompositeType {
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('change_key_signed_op_raw');
+    this.description('The coder for the raw representation of a ChangeKeySigned operation');
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The signer of the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The target account to be changed.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee paid for the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('v2_public_key').description('Empty pubkey (6 zero bytes) - previously active in <= v2.').withFixedValue(PublicKey.empty()));
+    this.addSubType(new PublicKeyWithLength('newPublicKey').description('The new public key of the account.'));
+    this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the sign operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the sign operation.'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Change Key Signed Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the encoded ChangeKeySigned operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {ChangeKey}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
+    const decoded = super.decodeFromBytes(bc);
+    const op = new ChangeKeySigned(decoded.signer, decoded.target, decoded.newPublicKey);
+    op.withFee(decoded.fee);
+    op.withPayload(decoded.payload);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
+    return op;
+  }
+
+}
+
+module.exports = RawCoder;
 
 /***/ }),
 
@@ -974,12 +1444,16 @@ const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sb
 
 const CompositeType = Coding.CompositeType;
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a DATA Operation.
  */
 
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('data_operation_digest'); // config for digest creation
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('data_op_digest');
+    this.description('Digest encoder for a DATA operation.'); // config for digest creation
 
     this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
     this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The account that sends the operation.'));
@@ -990,7 +1464,28 @@ class DigestCoder extends CompositeType {
     this.addSubType(new Coding.Pascal.Currency('amount').description('The amount associated with the operation.'));
     this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated with the operation'));
     this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
-    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The optype as 8bit int.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(10).description('The optype as 8bit int.'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Data Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+
+
+  get canDecode() {
+    return false;
   }
 
 }
@@ -1026,7 +1521,7 @@ const P_DATA_TYPE = Symbol('data_type');
 const P_DATA_SEQUENCE = Symbol('data_sequence');
 const P_AMOUNT = Symbol('amount');
 /**
- * A DATA operation object that can be signed.
+ * Representation of a signable DATA operation.
  */
 
 class Data extends Abstract {
@@ -1152,6 +1647,13 @@ class Data extends Abstract {
   get amount() {
     return this[P_AMOUNT];
   }
+  /**
+   * Forces the signer to use the digest instead of the hash of the digest
+   * to sign the operation.
+   *
+   * @return {boolean}
+   */
+
 
   usesDigestToSign() {
     return true;
@@ -1183,15 +1685,19 @@ const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sb
 
 const CompositeType = Coding.CompositeType;
 
-const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/Data/Operation.js");
+const Data = __webpack_require__(/*! ./Operation */ "./src/Operations/Data/Operation.js");
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a DATA operation.
  */
 
 
 class RawCoder extends CompositeType {
-  constructor(opType) {
+  /**
+   * Constructor
+   */
+  constructor() {
     super('data_operation_raw');
+    this.description('The coder for the raw representation of a Data operation');
     this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
     this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The account that sends the operation.'));
     this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will receive the operation.'));
@@ -1204,16 +1710,39 @@ class RawCoder extends CompositeType {
     this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the signed operation.'));
     this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('R value of the signed operation.'));
   }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
 
-  decodeFromBytes(bc) {
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Data Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the encoded Data operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {Data}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(decoded.signer, decoded.sender, decoded.target);
+    const op = new Data(decoded.signer, decoded.sender, decoded.target);
     op.withDataType(decoded.dataType);
     op.withDataSequence(decoded.dataSequence);
     op.withAmount(decoded.amount);
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
     return op;
   }
 
@@ -1243,12 +1772,16 @@ const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin
 
 const CompositeType = Coding.CompositeType;
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a Delist Operation.
  */
 
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('delist_operation_digest'); // config for digest creation
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('delist_op_digest');
+    this.description('Digest encoder for a Delist operation.'); // config for digest creation
 
     this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
     this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will be de-listed.'));
@@ -1260,7 +1793,28 @@ class DigestCoder extends CompositeType {
     this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').withFixedValue(PublicKey.empty().curve).description('Curve ID 0 - previously active in <= v2.'));
     this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the buyer (private sale).'));
     this.addSubType(new Coding.Core.Int32('lockedUntilBlock').description('The block number until the account is locked.'));
-    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The optype as 8bit int.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(5).description('The optype as 8bit int.'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Delist Account Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+
+
+  get canDecode() {
+    return false;
   }
 
 }
@@ -1298,7 +1852,7 @@ const P_ACCOUNT_TO_PAY = Symbol('account_to_pay');
 const P_NEW_PUBLIC_KEY = Symbol('new_public_key');
 const P_LOCKED_UNTIL_BLOCK = Symbol('locked_until_block');
 /**
- * A transaction object that can be signed.
+ * Representation of a signable Delist operation.
  */
 
 class DeListAccountForSale extends Abstract {
@@ -1311,9 +1865,10 @@ class DeListAccountForSale extends Abstract {
     return 5;
   }
   /**
+   * Constructor.
    *
-   * @param accountSigner
-   * @param accountTarget
+   * @param {Number|AccountNumber} accountSigner
+   * @param {Number|AccountNumber} accountTarget
    */
 
 
@@ -1326,26 +1881,62 @@ class DeListAccountForSale extends Abstract {
     this[P_NEW_PUBLIC_KEY] = PublicKey.empty();
     this[P_LOCKED_UNTIL_BLOCK] = 0;
   }
+  /**
+   * Gets the signer of the delist operation.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get signer() {
     return this[P_ACCOUNT_SIGNER];
   }
+  /**
+   * Gets the account that should be delisted.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get target() {
     return this[P_ACCOUNT_TARGET];
   }
+  /**
+   * Gets the price of the account (defaulted to 0).
+   *
+   * @return {Currency}
+   */
+
 
   get price() {
     return this[P_PRICE];
   }
+  /**
+   * Gets the account that should have received the amount on sale (defaulted to 0)
+   *
+   * @return {Currency}
+   */
+
 
   get accountToPay() {
     return this[P_ACCOUNT_TO_PAY];
   }
+  /**
+   * Gets the new public key in case of a private sale (defaulted to an empty pubkey).
+   *
+   * @return {PublicKey}
+   */
+
 
   get newPublicKey() {
     return this[P_NEW_PUBLIC_KEY];
   }
+  /**
+   * Gets the value until when the account is locked (defaulted to 0).
+   *
+   * @return {Number}
+   */
+
 
   get lockedUntilBlock() {
     return this[P_LOCKED_UNTIL_BLOCK];
@@ -1375,31 +1966,58 @@ const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sb
 
 const CompositeType = Coding.CompositeType;
 
-const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/DeListAccountForSale/Operation.js");
+const DeList = __webpack_require__(/*! ./Operation */ "./src/Operations/DeListAccountForSale/Operation.js");
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a Delist operation.
  */
 
 
 class RawCoder extends CompositeType {
-  constructor(opType) {
+  /**
+   * Constructor
+   */
+  constructor() {
     super('delist_operation_raw');
+    this.description('The coder for the raw representation of a Delist Account operation');
     this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
     this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will be listed.'));
-    this.addSubType(new Coding.Pascal.OpType('optype', 2).withFixedValue(opType).description(`The optype of the operation (${opType})`));
+    this.addSubType(new Coding.Pascal.OpType('optype', 2).withFixedValue(5).description('The optype of the operation (5)'));
     this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
     this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated with the operation'));
     this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
     this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the signed operation.'));
     this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('R value of the signed operation.'));
   }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
 
-  decodeFromBytes(bc) {
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Delist Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the encoded Delist operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {Data}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(decoded.signer, decoded.target);
+    const op = new DeList(decoded.signer, decoded.target);
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
     return op;
   }
 
@@ -1431,12 +2049,16 @@ const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sb
 
 const CompositeType = Coding.CompositeType;
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a List Operation.
  */
 
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('data_operation_digest'); // config for digest creation
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('list_op_digest');
+    this.description('Digest encoder for a List operation.'); // config for digest creation
 
     this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
     this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will be listed.'));
@@ -1448,7 +2070,28 @@ class DigestCoder extends CompositeType {
     this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').withFixedValue(PublicKey.empty().curve).description('Curve ID 0 - previously active in <= v2.'));
     this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the buyer (private sale).'));
     this.addSubType(new Coding.Core.Int32('lockedUntilBlock', true, Endian.LITTLE_ENDIAN).description('The block number until the account is locked.'));
-    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The optype as 8bit int.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(4).description('The optype as 8bit int.'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'List Account Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+
+
+  get canDecode() {
+    return false;
   }
 
 }
@@ -1486,24 +2129,25 @@ const P_ACCOUNT_TO_PAY = Symbol('account_to_pay');
 const P_NEW_PUBLIC_KEY = Symbol('new_public_key');
 const P_LOCKED_UNTIL_BLOCK = Symbol('locked_until_block');
 /**
- * A transaction object that can be signed.
+ * Representation of a signable List operation.
  */
 
 class ListAccountForSale extends Abstract {
   /**
-     * Gets the optype.
-     *
-     * @returns {number}
-     */
+   * Gets the optype.
+   *
+   * @returns {number}
+   */
   get opType() {
     return 4;
   }
   /**
+   * Constructor.
    *
-   * @param accountSigner
-   * @param accountTarget
-   * @param price
-   * @param accountToPay
+   * @param {Number|AccountNumber} accountSigner
+   * @param {Number|AccountNumber} accountTarget
+   * @param {Currency} price
+   * @param {Number|AccountNumber} accountToPay
    */
 
 
@@ -1516,26 +2160,63 @@ class ListAccountForSale extends Abstract {
     this[P_NEW_PUBLIC_KEY] = PublicKey.empty();
     this[P_LOCKED_UNTIL_BLOCK] = 0;
   }
+  /**
+   * Gets the signer of the list operation.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get signer() {
     return this[P_ACCOUNT_SIGNER];
   }
+  /**
+   * Gets the account that should be listed.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get target() {
     return this[P_ACCOUNT_TARGET];
   }
+  /**
+   * Gets the price of the listed account (target)
+   *
+   * @return {Currency}
+   */
+
 
   get price() {
     return this[P_PRICE];
   }
+  /**
+   * Gets the account where the money should be send to on sale.
+   *
+   * @return {AccountNumber}
+   */
+
 
   get accountToPay() {
     return this[P_ACCOUNT_TO_PAY];
   }
+  /**
+   * Gets the new public key in case its a private sale.
+   *
+   * @return {PublicKey}
+   */
+
 
   get newPublicKey() {
     return this[P_NEW_PUBLIC_KEY];
   }
+  /**
+   * Gets the block number until when the account is locked in case of a
+   * private sale.
+   *
+   * @return {Number}
+   */
+
 
   get lockedUntilBlock() {
     return this[P_LOCKED_UNTIL_BLOCK];
@@ -1583,18 +2264,22 @@ const PublicKeyWithLength = __webpack_require__(/*! ./../../Coding/PublicKeyWith
 
 const CompositeType = Coding.CompositeType;
 
-const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/ListAccountForSale/Operation.js");
+const ListOperation = __webpack_require__(/*! ./Operation */ "./src/Operations/ListAccountForSale/Operation.js");
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a List operation.
  */
 
 
 class RawCoder extends CompositeType {
-  constructor(opType) {
+  /**
+   * Constructor
+   */
+  constructor() {
     super('list_operation_raw');
+    this.description('The coder for the raw representation of a List Account operation');
     this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
     this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will be listed.'));
-    this.addSubType(new Coding.Pascal.OpType('optype', 2).withFixedValue(opType).description(`The optype of the operation (${opType})`));
+    this.addSubType(new Coding.Pascal.OpType('optype', 2).withFixedValue(4).description('The optype of the operation (4)'));
     this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
     this.addSubType(new Coding.Pascal.Currency('price').description('The price of the target account.'));
     this.addSubType(new Coding.Pascal.AccountNumber('accountToPay').description('The account where the amount goes to when the target is sold.'));
@@ -1606,20 +2291,335 @@ class RawCoder extends CompositeType {
     this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the signed operation.'));
     this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the signed operation.'));
   }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
 
-  decodeFromBytes(bc) {
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'List Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the encoded List operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {ListOperation}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(decoded.signer, decoded.target, decoded.price, decoded.accountToPay);
+    const op = new ListOperation(decoded.signer, decoded.target, decoded.price, decoded.accountToPay);
     op.asPrivateSale(decoded.newPublicKey, decoded.lockedUntilBlock);
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
     return op;
   }
 
 }
 
 module.exports = RawCoder;
+
+/***/ }),
+
+/***/ "./src/Operations/MultiOperation/Operation.js":
+/*!****************************************************!*\
+  !*** ./src/Operations/MultiOperation/Operation.js ***!
+  \****************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Abstract = __webpack_require__(/*! ./../../Abstract */ "./src/Abstract.js");
+
+const Receiver = __webpack_require__(/*! ./Receiver/Receiver */ "./src/Operations/MultiOperation/Receiver/Receiver.js");
+
+const Sender = __webpack_require__(/*! ./Sender/Sender */ "./src/Operations/MultiOperation/Sender/Sender.js");
+
+const P_OPERATIONS = Symbol('operations');
+const P_CHANGERS = Symbol('changers');
+const P_SENDERS = Symbol('senders');
+const P_RECEIVERS = Symbol('receivers');
+const P_RECEIVERS_UQ = Symbol('receivers_uq');
+const P_KEYPAIRS = Symbol('keypairs');
+/**
+ * Representation of a signable ChangeKey operation.
+ */
+
+class MultiOperation extends Abstract {
+  /**
+   * Gets the optype.
+   *
+   * @returns {number}
+   */
+  get opType() {
+    return 9;
+  }
+  /**
+   * Constructor.
+   */
+
+
+  constructor() {
+    super();
+    this[P_OPERATIONS] = [];
+    this[P_SENDERS] = {};
+    this[P_RECEIVERS] = [];
+    this[P_CHANGERS] = {};
+    this[P_RECEIVERS_UQ] = {};
+    this[P_KEYPAIRS] = {};
+  }
+
+  addTransaction(keyPair, operation, receiverPayload = null) {
+    // transaction operation, first create a single sender
+    if (this[P_SENDERS][operation.sender] === undefined) {
+      let sender = new Sender(operation.sender, operation.amount);
+      sender.withNOperation(operation.nOperation);
+      sender.withPayload(operation.payload);
+      this[P_SENDERS][operation.sender] = sender;
+    } else {
+      this[P_SENDERS][operation.sender].addAmount(operation.amount);
+    }
+
+    this[P_KEYPAIRS][operation.sender] = keyPair;
+    let receiver = new Receiver(operation.target, operation.amount);
+    receiver.withPayload(receiverPayload || operation.payload);
+    const uq = receiver.payload.toHex() + receiver.amount.toStringOpt();
+
+    if (this[P_RECEIVERS_UQ][uq] !== undefined) {
+      throw new Error('Receivers must have unique amount and payload.');
+    }
+
+    this[P_RECEIVERS_UQ][uq] = uq;
+    this[P_RECEIVERS].push(receiver);
+  }
+
+  get senders() {
+    return Object.values(this[P_SENDERS]);
+  }
+
+  get sendersCount() {
+    return this.senders.length;
+  }
+
+  get receivers() {
+    return this[P_RECEIVERS];
+  }
+
+  get receiversCount() {
+    return this[P_RECEIVERS].length;
+  }
+
+  get changers() {
+    return Object.values(this[P_CHANGERS]);
+  }
+
+  get changersCount() {
+    return this.changers.length;
+  }
+
+}
+
+module.exports = MultiOperation;
+
+/***/ }),
+
+/***/ "./src/Operations/MultiOperation/RawAndDigestCoder.js":
+/*!************************************************************!*\
+  !*** ./src/Operations/MultiOperation/RawAndDigestCoder.js ***!
+  \************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Endian;
+
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding;
+
+const CompositeType = Coding.CompositeType;
+
+const ChangeKey = __webpack_require__(/*! ./Operation */ "./src/Operations/MultiOperation/Operation.js");
+/**
+ * The raw coder for a ChangeKey operation.
+ */
+
+
+class RawAndDigestCoder extends CompositeType {
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('change_key_op_raw');
+    this.description('The coder for the raw representation of a ChangeKey operation');
+    this.addSubType(new Coding.Core.Int16('protocol').description('The protocol version (3).').withFixedValue(3));
+    this.addSubType(new Coding.Core.Int16('sendersCount', true, Endian.LITTLE_ENDIAN).description('The number of senders'));
+    this.addSubType(new Coding.Repeating('senders', new RawAndDigestCoder()).description('Senders of the multi-operation'));
+    this.addSubType(new Coding.Core.Int16('receiversCount', true, Endian.LITTLE_ENDIAN).description('The number of receivers'));
+    this.addSubType(new Coding.Repeating('receivers', new RawAndDigestCoder()).description('Receivers of the multi-operation'));
+    this.addSubType(new Coding.Core.Int16('changersCount', true, Endian.LITTLE_ENDIAN).description('The number of changers'));
+    this.addSubType(new Coding.Repeating('changers', new RawAndDigestCoder()).description('Changers of the multi-operation'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Change Key Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the encoded ChangeKey operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {ChangeKey}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
+    const decoded = super.decodeFromBytes(bc);
+    const op = new ChangeKey(decoded.signer, decoded.newPublicKey);
+    op.withFee(decoded.fee);
+    op.withPayload(decoded.payload);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
+    return op;
+  }
+
+}
+
+module.exports = RawAndDigestCoder;
+
+/***/ }),
+
+/***/ "./src/Operations/MultiOperation/Receiver/Receiver.js":
+/*!************************************************************!*\
+  !*** ./src/Operations/MultiOperation/Receiver/Receiver.js ***!
+  \************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Abstract = __webpack_require__(/*! ./../../../Abstract */ "./src/Abstract.js");
+
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.AccountNumber;
+
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Currency;
+
+const P_ACCOUNT = Symbol('account');
+const P_AMOUNT = Symbol('amount');
+/**
+ * Representation of a signable ChangeKey operation.
+ */
+
+class Receiver extends Abstract {
+  /**
+   * Constructor.
+   */
+  constructor(account, amount) {
+    super();
+    this[P_ACCOUNT] = new AccountNumber(account);
+    this[P_AMOUNT] = new Currency(amount);
+  }
+
+  get account() {
+    return this[P_ACCOUNT];
+  }
+
+  get amount() {
+    return this[P_AMOUNT];
+  }
+
+}
+
+module.exports = Receiver;
+
+/***/ }),
+
+/***/ "./src/Operations/MultiOperation/Sender/Sender.js":
+/*!********************************************************!*\
+  !*** ./src/Operations/MultiOperation/Sender/Sender.js ***!
+  \********************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Abstract = __webpack_require__(/*! ./../../../Abstract */ "./src/Abstract.js");
+
+const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.AccountNumber;
+
+const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Currency;
+
+const P_ACCOUNT = Symbol('account');
+const P_AMOUNT = Symbol('amount');
+/**
+ * Representation of a signable ChangeKey operation.
+ */
+
+class Sender extends Abstract {
+  /**
+   * Constructor.
+   */
+  constructor(account, amount) {
+    super();
+    this[P_ACCOUNT] = new AccountNumber(account);
+    this[P_AMOUNT] = new Currency(amount);
+  }
+
+  get account() {
+    return this[P_ACCOUNT];
+  }
+
+  addAmount(amount) {
+    this[P_AMOUNT] = this[P_AMOUNT].add(new Currency(amount));
+  }
+
+  get amount() {
+    return this[P_AMOUNT];
+  }
+
+}
+
+module.exports = Sender;
 
 /***/ }),
 
@@ -1643,12 +2643,16 @@ const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin
 
 const CompositeType = Coding.CompositeType;
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a Transaction Operation.
  */
 
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('tx_operation_digest'); // config for digest creation
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('tx_op_digest');
+    this.description('Digest encoder for a Transaction operation.'); // config for digest creation
 
     this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The sender account.'));
     this.addSubType(new Coding.Pascal.NOperation('nOperation').description('The next n_operation value of the sender.'));
@@ -1657,7 +2661,28 @@ class DigestCoder extends CompositeType {
     this.addSubType(new Coding.Pascal.Currency('fee').description('The fee included in the operation.'));
     this.addSubType(new Coding.Core.BytesWithoutLength('payload').description('The payload of the operation.'));
     this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').description('Curve ID 0 - previously active in <= v2.').withFixedValue(PublicKey.empty().curve));
-    this.addSubType(new Coding.Pascal.OpType('optype', 1).description('Operation type.').withFixedValue(opType));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).description('Operation type.').withFixedValue(1));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Transaction Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+
+
+  get canDecode() {
+    return false;
   }
 
 }
@@ -1690,7 +2715,7 @@ const P_ACCOUNT_SENDER = Symbol('sender');
 const P_ACCOUNT_TARGET = Symbol('target');
 const P_AMOUNT = Symbol('amount');
 /**
- * A transaction object that can be signed.
+ * Representation of a signable Transaction operation.
  */
 
 class Transaction extends Abstract {
@@ -1701,6 +2726,22 @@ class Transaction extends Abstract {
      */
   get opType() {
     return 1;
+  }
+  /**
+   * Creates a new Transaction instance with the given data. The payload is
+   * empty by default and not encoded.
+   *
+   * @param {AccountNumber|Account|String|Number} sender
+   * @param {AccountNumber|Account|String|Number} target
+   * @param {Currency} amount
+     */
+
+
+  constructor(sender, target, amount) {
+    super();
+    this[P_ACCOUNT_SENDER] = new AccountNumber(sender);
+    this[P_ACCOUNT_TARGET] = new AccountNumber(target);
+    this[P_AMOUNT] = new Currency(amount);
   }
   /**
    * Gets the sender account.
@@ -1729,22 +2770,6 @@ class Transaction extends Abstract {
   get amount() {
     return this[P_AMOUNT];
   }
-  /**
-     * Creates a new Transaction instance with the given data. The payload is
-     * empty by default and not encoded.
-     *
-   * @param {AccountNumber|Account|String|Number} sender
-   * @param {AccountNumber|Account|String|Number} target
-   * @param {Currency} amount
-     */
-
-
-  constructor(sender, target, amount) {
-    super();
-    this[P_ACCOUNT_SENDER] = new AccountNumber(sender);
-    this[P_ACCOUNT_TARGET] = new AccountNumber(target);
-    this[P_AMOUNT] = new Currency(amount);
-  }
 
 }
 
@@ -1772,15 +2797,19 @@ const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin
 
 const CompositeType = Coding.CompositeType;
 
-const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/Transaction/Operation.js");
+const Transaction = __webpack_require__(/*! ./Operation */ "./src/Operations/Transaction/Operation.js");
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a Transaction operation.
  */
 
 
 class RawCoder extends CompositeType {
+  /**
+   * Constructor
+   */
   constructor() {
     super('data_operation_raw');
+    this.description('The coder for the raw representation of a Transaction operation');
     this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The sender account.'));
     this.addSubType(new Coding.Pascal.NOperation('nOperation').description('The next n_operation value of the sender.'));
     this.addSubType(new Coding.Pascal.AccountNumber('target').description('The receiving account.'));
@@ -1791,13 +2820,36 @@ class RawCoder extends CompositeType {
     this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the signed operation.'));
     this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the signed operation.'));
   }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
 
-  decodeFromBytes(bc) {
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Transaction Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the encoded Transaction operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {ListOperation}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(decoded.sender, decoded.target, decoded.amount);
+    const op = new Transaction(decoded.sender, decoded.target, decoded.amount);
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
     return op;
   }
 
@@ -1815,9 +2867,23 @@ module.exports = RawCoder;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 let Items = {
-  ChangeKey: __webpack_require__(/*! ./ChangeKey */ "./src/Operations/ChangeKey.js"),
-  ChangeKeySigned: __webpack_require__(/*! ./ChangeKeySigned */ "./src/Operations/ChangeKeySigned.js"),
+  ChangeKey: {
+    Operation: __webpack_require__(/*! ./ChangeKey/Operation */ "./src/Operations/ChangeKey/Operation.js"),
+    RawCoder: __webpack_require__(/*! ./ChangeKey/RawCoder */ "./src/Operations/ChangeKey/RawCoder.js"),
+    DigestCoder: __webpack_require__(/*! ./ChangeKey/DigestCoder */ "./src/Operations/ChangeKey/DigestCoder.js")
+  },
+  ChangeKeySigned: {
+    Operation: __webpack_require__(/*! ./ChangeKeySigned/Operation */ "./src/Operations/ChangeKeySigned/Operation.js"),
+    RawCoder: __webpack_require__(/*! ./ChangeKeySigned/RawCoder */ "./src/Operations/ChangeKeySigned/RawCoder.js"),
+    DigestCoder: __webpack_require__(/*! ./ChangeKeySigned/DigestCoder */ "./src/Operations/ChangeKeySigned/DigestCoder.js")
+  },
   ChangeAccountInfo: {
     Operation: __webpack_require__(/*! ./ChangeAccountInfo/Operation */ "./src/Operations/ChangeAccountInfo/Operation.js"),
     RawCoder: __webpack_require__(/*! ./ChangeAccountInfo/RawCoder */ "./src/Operations/ChangeAccountInfo/RawCoder.js"),
@@ -1847,15 +2913,16 @@ let Items = {
     Operation: __webpack_require__(/*! ./BuyAccount/Operation */ "./src/Operations/BuyAccount/Operation.js"),
     RawCoder: __webpack_require__(/*! ./BuyAccount/RawCoder */ "./src/Operations/BuyAccount/RawCoder.js"),
     DigestCoder: __webpack_require__(/*! ./BuyAccount/DigestCoder */ "./src/Operations/BuyAccount/DigestCoder.js")
+  },
+  MultiOperation: {
+    Operation: __webpack_require__(/*! ./MultiOperation/Operation */ "./src/Operations/MultiOperation/Operation.js"),
+    RawCoder: __webpack_require__(/*! ./MultiOperation/RawAndDigestCoder */ "./src/Operations/MultiOperation/RawAndDigestCoder.js"),
+    DigestCoder: __webpack_require__(/*! ./MultiOperation/RawAndDigestCoder */ "./src/Operations/MultiOperation/RawAndDigestCoder.js")
   }
 };
 
 Items.digestCoderFor = operation => {
   return Items[operation.constructor.name].DigestCoder;
-};
-
-Items.rawCoderFor = operation => {
-  return Items[operation.constructor.name].RawCoder;
 };
 
 module.exports = Items;
@@ -1959,7 +3026,15 @@ const ListRawCoder = __webpack_require__(/*! ./Operations/ListAccountForSale/Raw
 
 const DeListRawCoder = __webpack_require__(/*! ./Operations/DeListAccountForSale/RawCoder */ "./src/Operations/DeListAccountForSale/RawCoder.js");
 
+const BuyRawCoder = __webpack_require__(/*! ./Operations/BuyAccount/RawCoder */ "./src/Operations/BuyAccount/RawCoder.js");
+
+const ChangeKeyRawCoder = __webpack_require__(/*! ./Operations/ChangeKey/RawCoder */ "./src/Operations/ChangeKey/RawCoder.js");
+
+const ChangeKeySignedRawCoder = __webpack_require__(/*! ./Operations/ChangeKeySigned/RawCoder */ "./src/Operations/ChangeKeySigned/RawCoder.js");
+
 const ChangeAccountInfoRawCoder = __webpack_require__(/*! ./Operations/ChangeAccountInfo/RawCoder */ "./src/Operations/ChangeAccountInfo/RawCoder.js");
+
+const MultiOperationRawCoder = __webpack_require__(/*! ./Operations/MultiOperation/RawAndDigestCoder */ "./src/Operations/MultiOperation/RawAndDigestCoder.js");
 
 const CompositeType = Coding.CompositeType;
 /**
@@ -1976,19 +3051,31 @@ class RawOperationsCoder extends CompositeType {
     operationType.addSubType(new Coding.Decissive('operation', 'optype', markerValue => {
       switch (markerValue) {
         case 1:
-          return new TransactionRawCoder(1);
+          return new TransactionRawCoder();
+
+        case 2:
+          return new ChangeKeyRawCoder();
 
         case 4:
-          return new ListRawCoder(4);
+          return new ListRawCoder();
 
         case 5:
-          return new DeListRawCoder(5);
+          return new DeListRawCoder();
+
+        case 6:
+          return new BuyRawCoder();
+
+        case 7:
+          return new ChangeKeySignedRawCoder();
 
         case 8:
-          return new ChangeAccountInfoRawCoder(8);
+          return new ChangeAccountInfoRawCoder();
+
+        case 9:
+          return new MultiOperationRawCoder();
 
         case 10:
-          return new DataRawCoder(10);
+          return new DataRawCoder();
 
         default:
           throw new Error('Unable to map marker to a coder.');
@@ -2011,6 +3098,12 @@ module.exports = RawOperationsCoder;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const Sha = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Sha;
 
 const Keys = __webpack_require__(/*! @pascalcoin-sbx/crypto */ "@pascalcoin-sbx/crypto").Keys;
@@ -2029,6 +3122,14 @@ function signWithHash(keyPair, digest) {
   const hash = Sha.sha256(digest);
   return Keys.sign(keyPair, hash);
 }
+/**
+ * Signs the digest.
+ *
+ * @param {KeyPair} keyPair
+ * @param {BC} digest
+ * @return {{r: BC, s: BC}}
+ */
+
 
 function signWithDigest(keyPair, digest) {
   return Keys.sign(keyPair, digest);
@@ -2046,7 +3147,7 @@ class Signer {
   sign(keyPair, operation) {
     const DigestCoder = Operations.digestCoderFor(operation);
     const digest = new DigestCoder(operation.opType).encodeToBytes(operation);
-    let signResult; // TODO: check DATA operation
+    let signResult;
 
     if (operation.usesDigestToSign() === true) {
       signResult = signWithDigest(keyPair, digest);
@@ -2056,6 +3157,15 @@ class Signer {
 
 
     return signResult;
+  }
+  /**
+   * TODO
+   * @param operation
+   */
+
+
+  signMultiOperation(operation) {// const DigestCoder = Operations.digestCoderFor(operation);
+    // const digest = new DigestCoder(operation.opType).encodeToBytes(operation);
   }
 
 }

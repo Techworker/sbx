@@ -14,7 +14,7 @@ const BuyRawCoder = require('./Operations/BuyAccount/RawCoder');
 const ChangeKeyRawCoder = require('./Operations/ChangeKey/RawCoder');
 const ChangeKeySignedRawCoder = require('./Operations/ChangeKeySigned/RawCoder');
 const ChangeAccountInfoRawCoder = require('./Operations/ChangeAccountInfo/RawCoder');
-const MultiOperationRawCoder = require('./Operations/MultiOperation/RawCoder');
+const MultiOperationRawCoder = require('./Operations/MultiOperation/RawAndDigestCoder');
 const CompositeType = Coding.CompositeType;
 
 /**

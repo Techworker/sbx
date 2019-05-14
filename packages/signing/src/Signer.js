@@ -57,10 +57,13 @@ class Signer {
     return signResult;
   }
 
+  /**
+   * TODO
+   * @param operation
+   */
   signMultiOperation(operation) {
-    const DigestCoder = Operations.digestCoderFor(operation);
-    const digest = new DigestCoder(operation.opType).encodeToBytes(operation);
-
+    // const DigestCoder = Operations.digestCoderFor(operation);
+    // const digest = new DigestCoder(operation.opType).encodeToBytes(operation);
   }
 }
 

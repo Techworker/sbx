@@ -29,7 +29,7 @@ class RawCoder extends CompositeType {
     this.addSubType(
       new Coding.Pascal.OpType('optype', 2)
         .withFixedValue(5)
-        .description(`The optype of the operation (5)`)
+        .description('The optype of the operation (5)')
     );
     this.addSubType(
       new Coding.Pascal.NOperation()
@@ -69,10 +69,11 @@ class RawCoder extends CompositeType {
    * Decodes the encoded Delist operation.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
+   * @param {Object} options
+   * @param {*} all
    * @return {Data}
    */
-  decodeFromBytes(bc, toArray = false) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
     const op = new DeList(
       decoded.signer,

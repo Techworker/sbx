@@ -33,7 +33,7 @@ class RawCoder extends CompositeType {
     this.addSubType(
       new Coding.Pascal.OpType('optype', 2)
         .withFixedValue(4)
-        .description(`The optype of the operation (4)`)
+        .description('The optype of the operation (4)')
     );
     this.addSubType(
       new Coding.Pascal.NOperation()
@@ -94,10 +94,11 @@ class RawCoder extends CompositeType {
    * Decodes the encoded List operation.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
+   * @param {Object} options
+   * @param {*} all
    * @return {ListOperation}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
     const op = new ListOperation(
       decoded.signer,

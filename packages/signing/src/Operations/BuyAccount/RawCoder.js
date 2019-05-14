@@ -93,11 +93,12 @@ class RawCoder extends CompositeType {
    * Decodes the encoded BuyAccount operation.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
+   * @param {Object} options
+   * @param {*} all
    * @return {BuyAccount}
    */
-  decodeFromBytes(bc, toArray = false) {
-    const decoded = super.decodeFromBytes(bc, false);
+  decodeFromBytes(bc, options = {}, all = null) {
+    const decoded = super.decodeFromBytes(bc);
     const op = new BuyAccount(
       decoded.sender,
       decoded.target,

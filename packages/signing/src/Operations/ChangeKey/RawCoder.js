@@ -72,11 +72,12 @@ class RawCoder extends CompositeType {
    * Decodes the encoded ChangeKey operation.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
+   * @param {Object} options
+   * @param {*} all
    * @return {ChangeKey}
    */
-  decodeFromBytes(bc, toArray = false) {
-    const decoded = super.decodeFromBytes(bc, false);
+  decodeFromBytes(bc, options = {}, all = null) {
+    const decoded = super.decodeFromBytes(bc);
     const op = new ChangeKey(
       decoded.signer,
       decoded.newPublicKey

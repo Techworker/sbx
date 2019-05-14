@@ -23,10 +23,12 @@ class PublicKeyWithLength extends BytesWithLength {
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {PascalPublicKey}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const pubKey = super.decodeFromBytes(bc);
     const parsed = publicKeyCoding.decodeFromBytes(pubKey);
 

@@ -49,11 +49,12 @@ class RawAndDigestCoder extends CompositeType {
    * Decodes the encoded Sender.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
+   * @param {Object} options
+   * @param {*} all
    * @return {ChangeKey}
    */
-  decodeFromBytes(bc, toArray = false) {
-    const decoded = super.decodeFromBytes(bc, false);
+  decodeFromBytes(bc, options = {}, all = null) {
+    const decoded = super.decodeFromBytes(bc);
     const receiver = new Receiver(
       decoded.account,
       decoded.amount

@@ -16,9 +16,6 @@ const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const BC = require('@pascalcoin-sbx/common').BC;
 const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
-const Sender = require('./Types/Sender');
-const Changer = require('./Types/Changer');
-const Receiver = require('./Types/Receiver');
 
 const Block = require('./Types/Block');
 const WalletPublicKey = require('./Types/WalletPublicKey');

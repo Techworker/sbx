@@ -8,12 +8,7 @@
 const Endian = require('@pascalcoin-sbx/common').Endian;
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const CompositeType = Coding.CompositeType;
-const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const ChangeKey = require('./Operation');
-const PublicKeyWithLength = require('./../../Coding/PublicKeyWithLength');
-const SenderRawAndDigestCoder = require('./Sender/RawAndDigestCoder');
-const ReceiverRawAndDigestCoder = require('./Receiver/RawAndDigestCoder');
-const ChangerRawAndDigestCoder = require('./Changer/RawAndDigestCoder');
 
 /**
  * The raw coder for a ChangeKey operation.
@@ -74,11 +69,12 @@ class RawAndDigestCoder extends CompositeType {
    * Decodes the encoded ChangeKey operation.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
+   * @param {Object} options
+   * @param {*} all
    * @return {ChangeKey}
    */
-  decodeFromBytes(bc, toArray = false) {
-    const decoded = super.decodeFromBytes(bc, false);
+  decodeFromBytes(bc, options = {}, all = null) {
+    const decoded = super.decodeFromBytes(bc);
     const op = new ChangeKey(
       decoded.signer,
       decoded.newPublicKey

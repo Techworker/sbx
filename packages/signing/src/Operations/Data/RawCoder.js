@@ -82,10 +82,11 @@ class RawCoder extends CompositeType {
    * Decodes the encoded Data operation.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
+   * @param {Object} options
+   * @param {*} all
    * @return {Data}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
     const op = new Data(
       decoded.signer,

@@ -6495,6 +6495,12 @@ module.exports = SignOperationAction;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 module.exports = {
   BaseAction: __webpack_require__(/*! ./BaseAction */ "./src/Actions/BaseAction.js"),
   OperationAction: __webpack_require__(/*! ./OperationAction */ "./src/Actions/OperationAction.js"),
@@ -6568,6 +6574,10 @@ class Caller {
         if (err !== null || error !== undefined || result === undefined) {
           if (err !== null && err.constructor.name === 'FetchError') {
             return reject(new ConnectionError(err));
+          }
+
+          if (error !== null && err.constructor.name !== 'FetchError') {
+            return reject(new ResultError(error.code, error.message));
           }
 
           if (result !== undefined) {
@@ -7744,6 +7754,12 @@ module.exports = Client;
 /*! all exports used */
 /***/ (function(module, exports) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const P_ORIGINAL = Symbol('original');
 const P_MESSAGE = Symbol('message');
 
@@ -7775,6 +7791,12 @@ module.exports = ConnectionError;
 /*! all exports used */
 /***/ (function(module, exports) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 const P_CODE = Symbol('code');
 const P_MESSAGE = Symbol('message');
 
@@ -7806,6 +7828,12 @@ module.exports = ResultError;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 module.exports = {
   ConnectionError: __webpack_require__(/*! ./ConnectionError */ "./src/Errors/ConnectionError.js"),
   ResultError: __webpack_require__(/*! ./ResultError */ "./src/Errors/ResultError.js")
@@ -7898,6 +7926,52 @@ function transformRpcParams(params) {
       }
     } else if (typeof item === 'boolean') {
       newParams[field] = item;
+    } else if (field === 'senders') {
+      newParams[field] = item.map(senderItem => {
+        let o = {
+          account: senderItem.account.account,
+          amount: senderItem.amount.toStringOpt(),
+          payload: senderItem.payload.toHex()
+        };
+
+        if (!isNaN(senderItem.nOperation)) {
+          o.n_operation = senderItem.nOperation;
+        }
+
+        return o;
+      });
+    } else if (field === 'receivers') {
+      newParams[field] = item.map(receiverItem => {
+        return {
+          account: receiverItem.account.account,
+          amount: receiverItem.amount.toStringOpt(),
+          payload: receiverItem.payload.toHex()
+        };
+      });
+    } else if (field === 'changesinfo') {
+      newParams[field] = item.map(changerItem => {
+        let o = {
+          account: changerItem.account.account
+        };
+
+        if (changerItem.newPublicKey !== null) {
+          o.new_b58_pubkey = new PublicKeyCoder().encodeToBase58(changerItem.newPublicKey);
+        }
+
+        if (changerItem.newName !== null) {
+          o.new_name = changerItem.newName.toString();
+        }
+
+        if (changerItem.newType !== null) {
+          o.new_type = changerItem.newType;
+        }
+
+        if (!isNaN(changerItem.nOperation)) {
+          o.n_operation = changerItem.nOperation;
+        }
+
+        return o;
+      });
     } else if (item.constructor.name === 'Array') {
       if (item.length > 0) {
         newParams[field] = item;
@@ -10426,6 +10500,12 @@ module.exports = WalletPublicKey;
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 module.exports = {
   Account: __webpack_require__(/*! ./Account */ "./src/Types/Account.js"),
   Block: __webpack_require__(/*! ./Block */ "./src/Types/Block.js"),
