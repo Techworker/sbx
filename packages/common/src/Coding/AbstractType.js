@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const P_ID = Symbol('id');
 const P_FIXED_VALUE = Symbol('fixed_value');
 const P_HAS_FIXED_VALUE = Symbol('has_fixed_value');
@@ -70,9 +77,12 @@ class AbstractType {
   /**
    * Decodes a value using the rules defined in the method from the given bytes.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {*}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     throw new Error('Missing implementation for decodeFromBytes.');
   }
 
@@ -80,6 +90,7 @@ class AbstractType {
    * Returns the encoded bytes for the given value.
    *
    * @param {*} value
+   * @return {*}
    */
   encodeToBytes(value) {
     throw new Error('Missing implementation for encodeToBytes.');
@@ -129,6 +140,16 @@ class AbstractType {
 
     this[P_DESCRIPTION] = description;
     return this;
+  }
+
+  /**
+   * Gets a value indicating whether the type can be decoded. It is
+   * not possible in some circumstances.
+   *
+   * @return {boolean}
+   */
+  get canDecode() {
+    return true;
   }
 }
 

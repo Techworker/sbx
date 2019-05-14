@@ -1,10 +1,18 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const Curve = require('./Curve');
 const BytesWithLength = require('../../Core/BytesWithLength');
+const BytesWithoutLength = require('../../Core/BytesWithoutLength');
 const CompositeType = require('../../CompositeType');
 const BC = require('../../../BC');
 const Sha = require('../../../Sha');
 const Base58 = require('../../../Base58');
-const PascalPublicKey = require('./../../../../src/Types/Keys/PublicKey');
+const PublicKeyType = require('./../../../../src/Types/Keys/PublicKey');
 
 /**
  * A Public Key value.
@@ -15,12 +23,20 @@ class PublicKey extends CompositeType {
    * Constructor.
    *
    * @param {String} id
+   * @param {Boolean} omitXYLenghts
    */
-  constructor(id = null) {
-    super(id || 'pubkey');
+  constructor(id = null, omitXYLenghts = false) {
+    super(id || 'public_key');
     this.addSubType(new Curve('curve'));
-    this.addSubType(new BytesWithLength('x', 2));
-    this.addSubType(new BytesWithLength('y', 2));
+
+    // oh come on..
+    if (omitXYLenghts) {
+      this.addSubType(new BytesWithoutLength('x'));
+      this.addSubType(new BytesWithoutLength('y'));
+    } else {
+      this.addSubType(new BytesWithLength('x', 2));
+      this.addSubType(new BytesWithLength('y', 2));
+    }
   }
 
   /**
@@ -38,13 +54,15 @@ class PublicKey extends CompositeType {
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
    *
-   * @param {BC} bc
-   * @returns {PascalPublicKey}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {PublicKeyType}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
 
-    return new PascalPublicKey(decoded.x, decoded.y, decoded.curve);
+    return new PublicKeyType(decoded.x, decoded.y, decoded.curve);
   }
 
   /**

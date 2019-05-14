@@ -52,7 +52,7 @@ class Repeating extends AbstractType {
    * @param {BC|Buffer|Uint8Array|String} bc
    * @return {Object}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     let result = [];
     let offset = 0;
 

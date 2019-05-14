@@ -56,6 +56,9 @@ class Caller {
           if (err !== null && err.constructor.name === 'FetchError') {
             return reject(new ConnectionError(err));
           }
+          if (error !== null && err.constructor.name !== 'FetchError') {
+            return reject(new ResultError(error.code, error.message));
+          }
           if (result !== undefined) {
             return reject(new ResultError(error.code, error.message));
           }

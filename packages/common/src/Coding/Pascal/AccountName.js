@@ -1,4 +1,11 @@
-const PascalAccountName = require('./../../Types/AccountName');
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+const AccountNameType = require('./../../Types/AccountName');
 const StringWithLength = require('../Core/StringWithLength');
 
 /**
@@ -32,18 +39,20 @@ class AccountName extends StringWithLength {
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
-   * @param {BC} bc
-   * @returns {PascalAccountName}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {AccountNameType}
    */
-  decodeFromBytes(bc) {
-    return new PascalAccountName(super.decodeFromBytes(bc));
+  decodeFromBytes(bc, options = {}, all = null) {
+    return new AccountNameType(super.decodeFromBytes(bc));
   }
 
   /**
    *
    * Appends the given pascalcoin account number to the BC.
    *
-   * @param {PascalAccountName} value
+   * @param {AccountNameType} value
    */
   encodeToBytes(value) {
     return super.encodeToBytes(value.toString());

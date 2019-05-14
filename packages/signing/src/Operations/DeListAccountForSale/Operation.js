@@ -18,7 +18,7 @@ const P_NEW_PUBLIC_KEY = Symbol('new_public_key');
 const P_LOCKED_UNTIL_BLOCK = Symbol('locked_until_block');
 
 /**
- * A transaction object that can be signed.
+ * Representation of a signable Delist operation.
  */
 class DeListAccountForSale extends Abstract {
   /**
@@ -31,9 +31,10 @@ class DeListAccountForSale extends Abstract {
   }
 
   /**
+   * Constructor.
    *
-   * @param accountSigner
-   * @param accountTarget
+   * @param {Number|AccountNumber} accountSigner
+   * @param {Number|AccountNumber} accountTarget
    */
   constructor(accountSigner, accountTarget) {
     super();
@@ -46,26 +47,56 @@ class DeListAccountForSale extends Abstract {
 
   }
 
+  /**
+   * Gets the signer of the delist operation.
+   *
+   * @return {AccountNumber}
+   */
   get signer() {
     return this[P_ACCOUNT_SIGNER];
   }
 
+  /**
+   * Gets the account that should be delisted.
+   *
+   * @return {AccountNumber}
+   */
   get target() {
     return this[P_ACCOUNT_TARGET];
   }
 
+  /**
+   * Gets the price of the account (defaulted to 0).
+   *
+   * @return {Currency}
+   */
   get price() {
     return this[P_PRICE];
   }
 
+  /**
+   * Gets the account that should have received the amount on sale (defaulted to 0)
+   *
+   * @return {Currency}
+   */
   get accountToPay() {
     return this[P_ACCOUNT_TO_PAY];
   }
 
+  /**
+   * Gets the new public key in case of a private sale (defaulted to an empty pubkey).
+   *
+   * @return {PublicKey}
+   */
   get newPublicKey() {
     return this[P_NEW_PUBLIC_KEY];
   }
 
+  /**
+   * Gets the value until when the account is locked (defaulted to 0).
+   *
+   * @return {Number}
+   */
   get lockedUntilBlock() {
     return this[P_LOCKED_UNTIL_BLOCK];
   }

@@ -18,24 +18,25 @@ const P_NEW_PUBLIC_KEY = Symbol('new_public_key');
 const P_LOCKED_UNTIL_BLOCK = Symbol('locked_until_block');
 
 /**
- * A transaction object that can be signed.
+ * Representation of a signable List operation.
  */
 class ListAccountForSale extends Abstract {
   /**
-     * Gets the optype.
-     *
-     * @returns {number}
-     */
+   * Gets the optype.
+   *
+   * @returns {number}
+   */
   get opType() {
     return 4;
   }
 
   /**
+   * Constructor.
    *
-   * @param accountSigner
-   * @param accountTarget
-   * @param price
-   * @param accountToPay
+   * @param {Number|AccountNumber} accountSigner
+   * @param {Number|AccountNumber} accountTarget
+   * @param {Currency} price
+   * @param {Number|AccountNumber} accountToPay
    */
   constructor(accountSigner, accountTarget, price, accountToPay) {
     super();
@@ -47,26 +48,57 @@ class ListAccountForSale extends Abstract {
     this[P_LOCKED_UNTIL_BLOCK] = 0;
   }
 
+  /**
+   * Gets the signer of the list operation.
+   *
+   * @return {AccountNumber}
+   */
   get signer() {
     return this[P_ACCOUNT_SIGNER];
   }
 
+  /**
+   * Gets the account that should be listed.
+   *
+   * @return {AccountNumber}
+   */
   get target() {
     return this[P_ACCOUNT_TARGET];
   }
 
+  /**
+   * Gets the price of the listed account (target)
+   *
+   * @return {Currency}
+   */
   get price() {
     return this[P_PRICE];
   }
 
+  /**
+   * Gets the account where the money should be send to on sale.
+   *
+   * @return {AccountNumber}
+   */
   get accountToPay() {
     return this[P_ACCOUNT_TO_PAY];
   }
 
+  /**
+   * Gets the new public key in case its a private sale.
+   *
+   * @return {PublicKey}
+   */
   get newPublicKey() {
     return this[P_NEW_PUBLIC_KEY];
   }
 
+  /**
+   * Gets the block number until when the account is locked in case of a
+   * private sale.
+   *
+   * @return {Number}
+   */
   get lockedUntilBlock() {
     return this[P_LOCKED_UNTIL_BLOCK];
   }

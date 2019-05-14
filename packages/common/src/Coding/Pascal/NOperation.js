@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const Endian = require('./../../Endian');
 const Int32 = require('./../Core/Int32');
 
@@ -26,34 +33,6 @@ class NOperation extends Int32 {
     info.name = 'NOperation';
     info.hierarchy.push(info.name);
     return info;
-  }
-
-  /**
-   * Reads a value and returns a new PascalCoin AccountNumber instance.
-   *
-   * @param {BC} bc
-   * @returns {PascalAccountName}
-   */
-  decodeFromBytes(bc) {
-    return super.decodeFromBytes(bc);
-  }
-
-  /**
-   *
-   * Appends the given pascalcoin account number to the BC.
-   *
-   * @param {Number} value
-   */
-  encodeToBytes(value) {
-    return super.encodeToBytes(value);
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    return super.describe(value);
   }
 }
 

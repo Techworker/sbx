@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const Endian = require('./../../Endian');
 const AbstractType = require('./../AbstractType');
 const Int8 = require('./../Core/Int8');
@@ -56,10 +63,12 @@ class OpType extends AbstractType {
   /**
    * Decodes and returns the optype.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @return {Number}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     return this[P_INT_TYPE].decodeFromBytes(bc);
   }
 

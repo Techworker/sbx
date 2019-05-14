@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const PublicKey = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 const BytesWithLength = require('@pascalcoin-sbx/common').Coding.Core.BytesWithLength;
 const PascalPublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
@@ -10,7 +17,7 @@ const publicKeyCoding = new PublicKey();
 class PublicKeyWithLength extends BytesWithLength {
 
   constructor(id = null) {
-    super(id || 'pubkey', 16);
+    super(id || 'pubkey', 2);
   }
 
   /**

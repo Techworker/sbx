@@ -14,7 +14,7 @@ const P_ACCOUNT_TARGET = Symbol('target');
 const P_AMOUNT = Symbol('amount');
 
 /**
- * A transaction object that can be signed.
+ * Representation of a signable Transaction operation.
  */
 class Transaction extends Abstract {
   /**
@@ -24,6 +24,21 @@ class Transaction extends Abstract {
      */
   get opType() {
     return 1;
+  }
+
+  /**
+   * Creates a new Transaction instance with the given data. The payload is
+   * empty by default and not encoded.
+   *
+   * @param {AccountNumber|Account|String|Number} sender
+   * @param {AccountNumber|Account|String|Number} target
+   * @param {Currency} amount
+     */
+  constructor(sender, target, amount) {
+    super();
+    this[P_ACCOUNT_SENDER] = new AccountNumber(sender);
+    this[P_ACCOUNT_TARGET] = new AccountNumber(target);
+    this[P_AMOUNT] = new Currency(amount);
   }
 
   /**
@@ -48,21 +63,6 @@ class Transaction extends Abstract {
    */
   get amount() {
     return this[P_AMOUNT];
-  }
-
-  /**
-     * Creates a new Transaction instance with the given data. The payload is
-     * empty by default and not encoded.
-     *
-   * @param {AccountNumber|Account|String|Number} sender
-   * @param {AccountNumber|Account|String|Number} target
-   * @param {Currency} amount
-     */
-  constructor(sender, target, amount) {
-    super();
-    this[P_ACCOUNT_SENDER] = new AccountNumber(sender);
-    this[P_ACCOUNT_TARGET] = new AccountNumber(target);
-    this[P_AMOUNT] = new Currency(amount);
   }
 }
 

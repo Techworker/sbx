@@ -62,35 +62,35 @@ class CompositeType extends AbstractType {
     return this;
   }
 
-  clearSubTypes() {
-    this[P_SUBTYPES] = [];
-  }
-
   /**
    * Decodes the given bytes into an object.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
-   * @return {Object}
+   * @param {Object} options
+   * @param {*} all
+   * @return {*}
    */
-  decodeFromBytes(bc, toArray = false) {
+  decodeFromBytes(bc, options = {}, all = null) {
+    if (this.canDecode === false) {
+      throw new Error('This type cannot be decoded.');
+    }
     const obj = {};
     let offset = 0;
 
     bc = BC.from(bc);
 
     this.subTypes.forEach((subType) => {
-      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), toArray, obj);
+      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), options, obj);
       offset += subType.encodedSize;
     });
 
-    return toArray ? Object.values(obj) : obj;
+    return options.toArray ? Object.values(obj) : obj;
   }
 
   /**
    * Encodes the given object to a list of bytes.
    *
-   * @param {Object|Array} objOrArray
+   * @param {Object|Array|*} objOrArray
    * @returns {BC}
    */
   encodeToBytes(objOrArray) {

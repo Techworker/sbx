@@ -9,25 +9,18 @@ const Coding = require('@pascalcoin-sbx/common').Coding;
 const Endian = require('@pascalcoin-sbx/common').Endian;
 const CompositeType = Coding.CompositeType;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
-const Operation = require('./Operation');
+const BuyAccount = require('./Operation');
 
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a BuyAccount operation.
  */
 class RawCoder extends CompositeType {
-
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'Buy Account Operation (RAW)';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  constructor(opType) {
-    super('buy_operation_raw');
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('buy_op_raw');
     this.description('The coder for the raw representation of a BuyAccount operation');
-    this.description('Encoded BuyAccount Operation');
     this.addSubType(
       new Coding.Pascal.AccountNumber('sender')
         .description('The buyer account.')
@@ -84,9 +77,28 @@ class RawCoder extends CompositeType {
     );
   }
 
-  decodeFromBytes(bc) {
-    const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+  /* istanbul ignore next */
+  get typeInfo() {
+    let info = super.typeInfo;
+
+    info.name = 'Buy Account Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  /**
+   * Decodes the encoded BuyAccount operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Boolean} toArray
+   * @return {BuyAccount}
+   */
+  decodeFromBytes(bc, toArray = false) {
+    const decoded = super.decodeFromBytes(bc, false);
+    const op = new BuyAccount(
       decoded.sender,
       decoded.target,
       decoded.amount,
@@ -97,7 +109,8 @@ class RawCoder extends CompositeType {
 
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
 
     return op;
   }

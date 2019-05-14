@@ -1,10 +1,17 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const AbstractType = require('./../AbstractType');
 const BC = require('./../../BC');
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 
 /**
- * A field type to write bytes without prepending the length.
+ * A field type to write bytes without prepending the length. This cannot be decoded in some circumstances.
  */
 class BytesWithoutLength extends AbstractType {
 
@@ -15,7 +22,7 @@ class BytesWithoutLength extends AbstractType {
    */
   constructor(id = null) {
     super(id || 'bytes_without_length');
-    this.description('Btes without length prepended.');
+    this.description('Bytes without length prepended.');
   }
 
   /**
@@ -41,10 +48,12 @@ class BytesWithoutLength extends AbstractType {
   /**
    * In fact this does nothing other than updating the internal size.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {BC}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
   }

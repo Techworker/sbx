@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const Sha = require('@pascalcoin-sbx/common').Sha;
 const Keys = require('@pascalcoin-sbx/crypto').Keys;
 const Operations = require('./Operations');
@@ -15,6 +22,13 @@ function signWithHash(keyPair, digest) {
   return Keys.sign(keyPair, hash);
 }
 
+/**
+ * Signs the digest.
+ *
+ * @param {KeyPair} keyPair
+ * @param {BC} digest
+ * @return {{r: BC, s: BC}}
+ */
 function signWithDigest(keyPair, digest) {
   return Keys.sign(keyPair, digest);
 }
@@ -33,7 +47,6 @@ class Signer {
     const digest = new DigestCoder(operation.opType).encodeToBytes(operation);
     let signResult;
 
-    // TODO: check DATA operation
     if (operation.usesDigestToSign() === true) {
       signResult = signWithDigest(keyPair, digest);
     } else {
@@ -42,6 +55,12 @@ class Signer {
 
     // save results
     return signResult;
+  }
+
+  signMultiOperation(operation) {
+    const DigestCoder = Operations.digestCoderFor(operation);
+    const digest = new DigestCoder(operation.opType).encodeToBytes(operation);
+
   }
 }
 

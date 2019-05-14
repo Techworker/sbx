@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const AbstractInt = require('./AbstractInt');
 const BC = require('./../../BC');
 
@@ -40,11 +47,13 @@ class Int32 extends AbstractInt {
   /**
    * Reads the given int32 value.
    *
-   * @param {BC} bc
-   * @returns {Number}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {Number|*}
    */
-  decodeFromBytes(bc) {
-    return bc.readInt32(0, this.unsigned, this.endian);
+  decodeFromBytes(bc, options = {}, all = null) {
+    return BC.from(bc).readInt32(0, this.unsigned, this.endian);
   }
 
   /**

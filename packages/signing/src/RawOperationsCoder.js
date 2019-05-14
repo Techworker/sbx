@@ -10,7 +10,11 @@ const TransactionRawCoder = require('./Operations/Transaction/RawCoder');
 const DataRawCoder = require('./Operations/Data/RawCoder');
 const ListRawCoder = require('./Operations/ListAccountForSale/RawCoder');
 const DeListRawCoder = require('./Operations/DeListAccountForSale/RawCoder');
+const BuyRawCoder = require('./Operations/BuyAccount/RawCoder');
+const ChangeKeyRawCoder = require('./Operations/ChangeKey/RawCoder');
+const ChangeKeySignedRawCoder = require('./Operations/ChangeKeySigned/RawCoder');
 const ChangeAccountInfoRawCoder = require('./Operations/ChangeAccountInfo/RawCoder');
+const MultiOperationRawCoder = require('./Operations/MultiOperation/RawCoder');
 const CompositeType = Coding.CompositeType;
 
 /**
@@ -27,15 +31,23 @@ class RawOperationsCoder extends CompositeType {
     operationType.addSubType(new Coding.Decissive('operation', 'optype', (markerValue) => {
       switch (markerValue) {
         case 1:
-          return new TransactionRawCoder(1);
+          return new TransactionRawCoder();
+        case 2:
+          return new ChangeKeyRawCoder();
         case 4:
-          return new ListRawCoder(4);
+          return new ListRawCoder();
         case 5:
-          return new DeListRawCoder(5);
+          return new DeListRawCoder();
+        case 6:
+          return new BuyRawCoder();
+        case 7:
+          return new ChangeKeySignedRawCoder();
         case 8:
-          return new ChangeAccountInfoRawCoder(8);
+          return new ChangeAccountInfoRawCoder();
+        case 9:
+          return new MultiOperationRawCoder();
         case 10:
-          return new DataRawCoder(10);
+          return new DataRawCoder();
         default:
           throw new Error('Unable to map marker to a coder.');
       }

@@ -9,12 +9,16 @@ const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const CompositeType = Coding.CompositeType;
 
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a BuyAccount Operation.
  */
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('buy_operation_digest');
-    super.description('Digest for buy account operation');
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('buy_op_digest');
+    super.description('Digest encoder for a BuyAccount operation.');
+
     // config for digest creation
     this.addSubType(
       new Coding.Pascal.AccountNumber('sender')
@@ -54,14 +58,33 @@ class DigestCoder extends CompositeType {
         .description('The account number of the seller')
     );
     this.addSubType(
-      new Coding.Pascal.Keys.PublicKey('newPublicKey')
+      new Coding.Pascal.Keys.PublicKey('newPublicKey', true)
         .description('The new public key of the account.')
     );
     this.addSubType(
       new Coding.Pascal.OpType('optype', 1)
-        .withFixedValue(opType)
+        .withFixedValue(6)
         .description('The buy account optype as 8 bit int8')
     );
+  }
+
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+  /* istanbul ignore next */
+  get typeInfo() {
+    let info = super.typeInfo;
+
+    info.name = 'Buy Account Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+  get canDecode() {
+    return false;
   }
 }
 

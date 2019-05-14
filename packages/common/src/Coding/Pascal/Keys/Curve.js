@@ -1,9 +1,16 @@
-const PascalCurve = require('./../../../Types/Keys/Curve');
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+const CurveType = require('./../../../Types/Keys/Curve');
 const Endian = require('./../../../Endian');
 const Int16 = require('./../../Core/Int16');
 
 /**
- * A special Int64 type that can handle pascalcoin currencies.
+ * A special pascal type that can en/decode a curve id.
  */
 class Curve extends Int16 {
 
@@ -32,17 +39,20 @@ class Curve extends Int16 {
   /**
    * Reads the pascal currency value from the given BC.
    *
-   * @param {BC} bc
-   * @returns {PascalCurve}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {CurveType}
    */
-  decodeFromBytes(bc) {
-    return new PascalCurve(super.decodeFromBytes(bc));
+  decodeFromBytes(bc, options = {}, all = null) {
+    return new CurveType(super.decodeFromBytes(bc));
   }
 
   /**
    * Appends the given currency value to the given BC.
    *
-   * @param {PascalCurve} value
+   * @param {CurveType} value
+   * @return {BC}
    */
   encodeToBytes(value) {
     return super.encodeToBytes(value.id);

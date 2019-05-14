@@ -8,14 +8,18 @@
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const CompositeType = Coding.CompositeType;
-const Operation = require('./Operation');
+const Transaction = require('./Operation');
 
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a Transaction operation.
  */
 class RawCoder extends CompositeType {
+  /**
+   * Constructor
+   */
   constructor() {
     super('data_operation_raw');
+    this.description('The coder for the raw representation of a Transaction operation');
     this.addSubType(
       new Coding.Pascal.AccountNumber('sender')
         .description('The sender account.')
@@ -55,9 +59,28 @@ class RawCoder extends CompositeType {
     );
   }
 
-  decodeFromBytes(bc) {
-    const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+  /* istanbul ignore next */
+  get typeInfo() {
+    let info = super.typeInfo;
+
+    info.name = 'Transaction Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  /**
+   * Decodes the encoded Transaction operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Boolean} toArray
+   * @return {ListOperation}
+   */
+  decodeFromBytes(bc, toArray = false) {
+    const decoded = super.decodeFromBytes(bc, false);
+    const op = new Transaction(
       decoded.sender,
       decoded.target,
       decoded.amount
@@ -65,7 +88,8 @@ class RawCoder extends CompositeType {
 
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
 
     return op;
   }

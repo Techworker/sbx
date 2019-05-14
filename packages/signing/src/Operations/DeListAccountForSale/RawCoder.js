@@ -6,14 +6,18 @@
  */
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const CompositeType = Coding.CompositeType;
-const Operation = require('./Operation');
+const DeList = require('./Operation');
 
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a Delist operation.
  */
 class RawCoder extends CompositeType {
-  constructor(opType) {
+  /**
+   * Constructor
+   */
+  constructor() {
     super('delist_operation_raw');
+    this.description('The coder for the raw representation of a Delist Account operation');
     this.addSubType(
       new Coding.Pascal.AccountNumber('signer')
         .description('The account that executes the operation.')
@@ -24,8 +28,8 @@ class RawCoder extends CompositeType {
     );
     this.addSubType(
       new Coding.Pascal.OpType('optype', 2)
-        .withFixedValue(opType)
-        .description(`The optype of the operation (${opType})`)
+        .withFixedValue(5)
+        .description(`The optype of the operation (5)`)
     );
     this.addSubType(
       new Coding.Pascal.NOperation()
@@ -49,16 +53,36 @@ class RawCoder extends CompositeType {
     );
   }
 
-  decodeFromBytes(bc) {
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+  /* istanbul ignore next */
+  get typeInfo() {
+    let info = super.typeInfo;
+
+    info.name = 'Delist Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  /**
+   * Decodes the encoded Delist operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Boolean} toArray
+   * @return {Data}
+   */
+  decodeFromBytes(bc, toArray = false) {
     const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(
+    const op = new DeList(
       decoded.signer,
       decoded.target
     );
 
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
 
     return op;
   }

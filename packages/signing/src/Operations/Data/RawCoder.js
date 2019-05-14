@@ -8,14 +8,18 @@
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const Endian = require('@pascalcoin-sbx/common').Endian;
 const CompositeType = Coding.CompositeType;
-const Operation = require('./Operation');
+const Data = require('./Operation');
 
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a DATA operation.
  */
 class RawCoder extends CompositeType {
-  constructor(opType) {
+  /**
+   * Constructor
+   */
+  constructor() {
     super('data_operation_raw');
+    this.description('The coder for the raw representation of a Data operation');
     this.addSubType(
       new Coding.Pascal.AccountNumber('signer')
         .description('The account that executes the operation.')
@@ -62,9 +66,28 @@ class RawCoder extends CompositeType {
     );
   }
 
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+  /* istanbul ignore next */
+  get typeInfo() {
+    let info = super.typeInfo;
+
+    info.name = 'Data Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  /**
+   * Decodes the encoded Data operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Boolean} toArray
+   * @return {Data}
+   */
   decodeFromBytes(bc) {
     const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(
+    const op = new Data(
       decoded.signer,
       decoded.sender,
       decoded.target
@@ -75,7 +98,8 @@ class RawCoder extends CompositeType {
     op.withAmount(decoded.amount);
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
 
     return op;
   }

@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const Endian = require('./../../Endian');
 const CompositeType = require('./../CompositeType');
 const Int32 = require('./../Core/Int32');
@@ -41,20 +48,22 @@ class OperationHash extends CompositeType {
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {OperationHash}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     const decoded = super.decodeFromBytes(bc);
 
     return new OperationHashType(decoded.block, decoded.account, decoded.nOperation, decoded.md160);
   }
 
   /**
-   *
    * Appends the given pascalcoin account number to the BC.
    *
    * @param {OperationHash} value
+   * @return {BC}
    */
   encodeToBytes(value) {
     return super.encodeToBytes(value);

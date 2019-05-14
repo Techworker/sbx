@@ -17,7 +17,7 @@ const P_DATA_SEQUENCE = Symbol('data_sequence');
 const P_AMOUNT = Symbol('amount');
 
 /**
- * A DATA operation object that can be signed.
+ * Representation of a signable DATA operation.
  */
 class Data extends Abstract {
   /**
@@ -135,6 +135,12 @@ class Data extends Abstract {
     return this[P_AMOUNT];
   }
 
+  /**
+   * Forces the signer to use the digest instead of the hash of the digest
+   * to sign the operation.
+   *
+   * @return {boolean}
+   */
   usesDigestToSign() {
     return true;
   }

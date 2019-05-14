@@ -1,4 +1,11 @@
-const PascalAccountNumber = require('./../../Types/AccountNumber');
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+const AccountNumberType = require('./../../Types/AccountNumber');
 const Endian = require('./../../Endian');
 const Int32 = require('./../Core/Int32');
 
@@ -32,18 +39,21 @@ class AccountNumber extends Int32 {
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
-   * @param {BC} bc
-   * @returns {PascalAccountNumber}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {AccountNumberType}
    */
-  decodeFromBytes(bc) {
-    return new PascalAccountNumber(super.decodeFromBytes(bc));
+  decodeFromBytes(bc, options = {}, all = null) {
+    return new AccountNumberType(super.decodeFromBytes(bc));
   }
 
   /**
    *
    * Appends the given pascalcoin account number to the BC.
    *
-   * @param {PascalAccountNumber} value
+   * @param {AccountNumberType} value
+   * @return {BC}
    */
   encodeToBytes(value) {
     return super.encodeToBytes(value.account);

@@ -1,5 +1,12 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const Int64 = require('./../Core/Int64');
-const PascalCurrency = require('./../../Types/Currency');
+const CurrencyType = require('./../../Types/Currency');
 const Endian = require('./../../Endian');
 
 /**
@@ -32,17 +39,20 @@ class Currency extends Int64 {
   /**
    * Reads the pascal currency value from the given BC.
    *
-   * @param {BC} bc
-   * @returns {PascalCurrency}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {CurrencyType}
    */
-  decodeFromBytes(bc) {
-    return PascalCurrency.fromMolina(super.decodeFromBytes(bc));
+  decodeFromBytes(bc, options = {}, all = null) {
+    return CurrencyType.fromMolina(super.decodeFromBytes(bc));
   }
 
   /**
    * Appends the given currency value to the given BC.
    *
-   * @param {PascalCurrency} value
+   * @param {CurrencyType} value
+   * @return {BC}
    */
   encodeToBytes(value) {
     return super.encodeToBytes(value.bn);

@@ -9,11 +9,15 @@ const Endian = require('@pascalcoin-sbx/common').Endian;
 const CompositeType = Coding.CompositeType;
 
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a DATA Operation.
  */
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('data_operation_digest');
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('data_op_digest');
+    this.description('Digest encoder for a DATA operation.');
     // config for digest creation
     this.addSubType(
       new Coding.Pascal.AccountNumber('signer')
@@ -53,9 +57,28 @@ class DigestCoder extends CompositeType {
     );
     this.addSubType(
       new Coding.Pascal.OpType('optype', 1)
-        .withFixedValue(opType)
+        .withFixedValue(10)
         .description('The optype as 8bit int.')
     );
+  }
+
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+  /* istanbul ignore next */
+  get typeInfo() {
+    let info = super.typeInfo;
+
+    info.name = 'Data Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+  get canDecode() {
+    return false;
   }
 }
 

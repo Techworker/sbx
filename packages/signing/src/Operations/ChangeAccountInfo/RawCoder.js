@@ -8,15 +8,18 @@
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const CompositeType = Coding.CompositeType;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
-const Operation = require('./Operation');
+const ChangeAccountInfo = require('./Operation');
 
 /**
- * A DATA operation object that can be signed.
+ * The raw coder for a ChangeAccountInfo operation.
  */
 class RawCoder extends CompositeType {
-  constructor(opType) {
-    super('buy_operation_raw');
-    this.description('Encoded BuyAccount Operation');
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('change_account_info_op_raw');
+    this.description('The coder for the raw representation of a ChangeAccountInfo operation');
     this.addSubType(
       new Coding.Pascal.AccountNumber('signer')
         .description('The signer of the operation.')
@@ -68,9 +71,28 @@ class RawCoder extends CompositeType {
     );
   }
 
-  decodeFromBytes(bc) {
-    const decoded = super.decodeFromBytes(bc);
-    const op = new Operation(
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+  /* istanbul ignore next */
+  get typeInfo() {
+    let info = super.typeInfo;
+
+    info.name = 'Change Account Info Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  /**
+   * Decodes the encoded ChangeAccountInfo operation.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Boolean} toArray
+   * @return {ChangeAccountInfo}
+   */
+  decodeFromBytes(bc, toArray = false) {
+    const decoded = super.decodeFromBytes(bc, false);
+    const op = new ChangeAccountInfo(
       decoded.signer,
       decoded.target
     );
@@ -80,11 +102,11 @@ class RawCoder extends CompositeType {
     op.withNewPublicKey(decoded.newPublicKey);
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);
-    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    op.withNOperation(decoded.nOperation);
+    op.withSign(decoded.r, decoded.s);
 
     return op;
   }
-
 }
 
 module.exports = RawCoder;

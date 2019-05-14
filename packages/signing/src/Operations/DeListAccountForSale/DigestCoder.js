@@ -9,11 +9,15 @@ const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const CompositeType = Coding.CompositeType;
 
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a Delist Operation.
  */
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('delist_operation_digest');
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('delist_op_digest');
+    this.description('Digest encoder for a Delist operation.');
     // config for digest creation
     this.addSubType(
       new Coding.Pascal.AccountNumber('signer')
@@ -58,9 +62,28 @@ class DigestCoder extends CompositeType {
     );
     this.addSubType(
       new Coding.Pascal.OpType('optype', 1)
-        .withFixedValue(opType)
+        .withFixedValue(5)
         .description('The optype as 8bit int.')
     );
+  }
+
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+  /* istanbul ignore next */
+  get typeInfo() {
+    let info = super.typeInfo;
+
+    info.name = 'Delist Account Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+  get canDecode() {
+    return false;
   }
 }
 

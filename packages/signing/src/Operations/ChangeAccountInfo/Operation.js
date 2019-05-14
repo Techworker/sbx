@@ -23,24 +23,24 @@ const P_WITH_NEW_NAME = Symbol('with_new_name');
 const P_WITH_NEW_TYPE = Symbol('with_new_type');
 
 /**
- * A transaction object that can be signed.
+ * Representation of a signable ChangeAccountInfo operation.
  */
 class ChangeAccountInfo extends Abstract {
   /**
-     * Gets the optype.
-     *
-     * @returns {number}
-     */
+   * Gets the optype.
+   *
+   * @returns {number}
+   */
   get opType() {
     return 8;
   }
 
   /**
-     * Constructor.
-     *
-     * @param {Account|AccountNumber|Number|String} accountSigner
-     * @param {Account|AccountNumber|Number|String} accountTarget
-     */
+   * Constructor.
+   *
+   * @param {Account|AccountNumber|Number|String} accountSigner
+   * @param {Account|AccountNumber|Number|String} accountTarget
+   */
   constructor(accountSigner, accountTarget) {
     super();
     this[P_ACCOUNT_SIGNER] = new AccountNumber(accountSigner);
@@ -55,22 +55,47 @@ class ChangeAccountInfo extends Abstract {
     this[P_WITH_NEW_TYPE] = false;
   }
 
+  /**
+   * Gets the signer account of the operation.
+   *
+   * @return {AccountNumber}
+   */
   get signer() {
     return this[P_ACCOUNT_SIGNER];
   }
 
+  /**
+   * Gets the target account to change.
+   *
+   * @return {AccountNumber}
+   */
   get target() {
     return this[P_ACCOUNT_TARGET];
   }
 
+  /**
+   * Gets the new public key of the target.
+   *
+   * @return {PublicKey}
+   */
   get newPublicKey() {
     return this[P_NEW_PUBLIC_KEY];
   }
 
+  /**
+   * Gets the new name of the target.
+   *
+   * @return {AccountName}
+   */
   get newName() {
     return this[P_NEW_NAME];
   }
 
+  /**
+   * Gets the new type of the target account.
+   *
+   * @return {Number}
+   */
   get newType() {
     return this[P_NEW_TYPE];
   }
@@ -97,11 +122,11 @@ class ChangeAccountInfo extends Abstract {
   }
 
   /**
-     * Will set the new public key.
-     *
-     * @param {PublicKey} publicKey
-     * @returns {ChangeAccountInfo}
-     */
+   * Will set the new public key.
+   *
+   * @param {PublicKey} publicKey
+   * @returns {ChangeAccountInfo}
+   */
   withNewPublicKey(publicKey) {
     this[P_NEW_PUBLIC_KEY] = publicKey;
     this[P_WITH_NEW_PUBKEY] = true;

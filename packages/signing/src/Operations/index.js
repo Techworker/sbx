@@ -1,6 +1,21 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 let Items = {
-  ChangeKey: require('./ChangeKey'),
-  ChangeKeySigned: require('./ChangeKeySigned'),
+  ChangeKey: {
+    Operation: require('./ChangeKey/Operation'),
+    RawCoder: require('./ChangeKey/RawCoder'),
+    DigestCoder: require('./ChangeKey/DigestCoder')
+  },
+  ChangeKeySigned: {
+    Operation: require('./ChangeKeySigned/Operation'),
+    RawCoder: require('./ChangeKeySigned/RawCoder'),
+    DigestCoder: require('./ChangeKeySigned/DigestCoder')
+  },
   ChangeAccountInfo: {
     Operation: require('./ChangeAccountInfo/Operation'),
     RawCoder: require('./ChangeAccountInfo/RawCoder'),
@@ -30,14 +45,15 @@ let Items = {
     Operation: require('./BuyAccount/Operation'),
     RawCoder: require('./BuyAccount/RawCoder'),
     DigestCoder: require('./BuyAccount/DigestCoder')
+  },
+  MultiOperation: {
+    Operation: require('./MultiOperation/Operation'),
+    RawCoder: require('./MultiOperation/RawAndDigestCoder'),
+    DigestCoder: require('./MultiOperation/RawAndDigestCoder')
   }
 };
 
 Items.digestCoderFor = operation => {
   return Items[operation.constructor.name].DigestCoder;
 };
-Items.rawCoderFor = operation => {
-  return Items[operation.constructor.name].RawCoder;
-};
-
 module.exports = Items;

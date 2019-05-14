@@ -17,7 +17,7 @@ const P_SELLER_ACCOUNT = Symbol('seller');
 const P_NEW_PUBLIC_KEY = Symbol('new_public_key');
 
 /**
- * A transaction object that can be signed.
+ * Representation of a signable BuyAccount operation.
  */
 class BuyAccount extends Abstract {
   /**
@@ -49,26 +49,56 @@ class BuyAccount extends Abstract {
     this[P_NEW_PUBLIC_KEY] = newPublicKey;
   }
 
+  /**
+   * Gets the buyer account.
+   *
+   * @return {AccountNumber}
+   */
   get sender() {
     return this[P_SENDER];
   }
 
+  /**
+   * Gets the account to buy.
+   *
+   * @return {AccountNumber}
+   */
   get target() {
     return this[P_TARGET];
   }
 
+  /**
+   * Gets the amount to be transferred.
+   *
+   * @return {Currency}
+   */
   get amount() {
     return this[P_AMOUNT];
   }
 
+  /**
+   * Gets the price of the account.
+   *
+   * @return {Currency}
+   */
   get price() {
     return this[P_ACCOUNT_PRICE];
   }
 
+  /**
+   * Gets the account of the seller.
+   *
+   * @return {AccountNumber}
+   */
   get seller() {
     return this[P_SELLER_ACCOUNT];
   }
 
+  /**
+   * Gets the new public key of the bought account.
+   *
+   * @return {PublicKey}
+   */
   get newPublicKey() {
     return this[P_NEW_PUBLIC_KEY];
   }

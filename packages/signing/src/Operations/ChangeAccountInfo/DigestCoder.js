@@ -9,11 +9,16 @@ const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const CompositeType = Coding.CompositeType;
 
 /**
- * A DATA operation object that can be signed.
+ * The digest encoder of a ChangeAccountInfo Operation.
  */
 class DigestCoder extends CompositeType {
-  constructor(opType) {
-    super('change_info_operation_digest');
+  /**
+   * Constructor
+   */
+  constructor() {
+    super('change_info_op_digest');
+    this.description('Digest encoder for a ChangeAccountInfo operation.');
+
     // config for digest creation
     this.addSubType(
       new Coding.Pascal.AccountNumber('signer')
@@ -25,7 +30,7 @@ class DigestCoder extends CompositeType {
     );
     this.addSubType(
       new Coding.Pascal.NOperation()
-        .description('The next n_operation value of the buyer.')
+        .description('The next n_operation value of the signer.')
     );
     this.addSubType(
       new Coding.Pascal.Currency('fee')
@@ -58,9 +63,28 @@ class DigestCoder extends CompositeType {
     );
     this.addSubType(
       new Coding.Pascal.OpType('optype', 1)
-        .withFixedValue(opType)
-        .description('The buy account optype as 8 bit int8')
+        .withFixedValue(8)
+        .description('The change account info optype as 8 bit int8')
     );
+  }
+
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+  /* istanbul ignore next */
+  get typeInfo() {
+    let info = super.typeInfo;
+
+    info.name = 'Change Account Info Operation (DIGEST)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  /**
+   * @inheritDoc AbstractType#canDecode
+   */
+  get canDecode() {
+    return false;
   }
 }
 

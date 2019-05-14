@@ -52,10 +52,10 @@ class Decissive extends CompositeType {
    * @param {Boolean} toArray
    * @return {Object}
    */
-  decodeFromBytes(bc, toArray = false, all = {}) {
+  decodeFromBytes(bc, options = {}, all = null) {
     let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
 
-    return subType.decodeFromBytes(bc, toArray);
+    return subType.decodeFromBytes(bc, options, all);
   }
 
   /**

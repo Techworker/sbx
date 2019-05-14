@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const AbstractType = require('./../AbstractType');
 const BC = require('./../../BC');
 
@@ -41,11 +48,13 @@ class StringWithoutLength extends AbstractType {
   /**
    * Decodes the string value from the given bytes
    *
-   * @param {BC} bc
-   * @returns {BC}
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @returns {String}
    */
-  decodeFromBytes(bc) {
-    return bc.toString();
+  decodeFromBytes(bc, options = {}, all = null) {
+    return BC.from(bc).toString();
   }
 
   /**

@@ -1044,7 +1044,7 @@
       "params": [
         {
           "name": "rawoperations",
-          "type": "RawOperations",
+          "type": "BC",
           "required": true
         },
         {

@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const AbstractInt = require('./AbstractInt');
 const BC = require('./../../BC');
 const Endian = require('./../../Endian');
@@ -59,11 +66,13 @@ class Int64 extends AbstractInt {
   /**
    * Reads the pascal currency value from the given BC.
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {BN}
    */
-  decodeFromBytes(bc) {
-    let value = new BN(bc.buffer, 10, this.endian.toLowerCase());
+  decodeFromBytes(bc, options = {}, all = null) {
+    let value = new BN(BC.from(bc).buffer, 10, this.endian.toLowerCase());
 
     if (!this.unsigned) {
       value = value.fromTwos(64);
@@ -82,6 +91,7 @@ class Int64 extends AbstractInt {
     if (!this.unsigned) {
       value = value.toTwos(64);
     }
+
     return BC.from(value.toBuffer(this.endian.toLowerCase(), this.encodedSize));
   }
 

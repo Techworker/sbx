@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const AbstractType = require('./../AbstractType');
 const Int8 = require('./Int8');
 const Int16 = require('./Int16');
@@ -14,14 +21,14 @@ const P_BYTES_FIELD = Symbol('bytes_field');
  * A field type to write dynamic content in form of bytes (prepends the length).
  */
 class BytesWithLength extends AbstractType {
-
   /**
    * Constructor
    *
    * @param {string} id
+   * @param {Number} byteSize
    */
   constructor(id, byteSize = 1) {
-    super(id || `bytes_size${byteSize * 8}`);
+    super(id || `bytes_with_length_${byteSize * 8}`);
     this.description('Bytes with variable size prepended');
     this[P_BYTES_FIELD] = new BytesWithoutLength('value');
 
@@ -36,7 +43,7 @@ class BytesWithLength extends AbstractType {
         this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
         break;
       default:
-        throw new Error('IntSize must be either 8, 16 or 32');
+        throw new Error('InByteSize must be either 8, 16 or 32');
     }
 
   }
@@ -64,10 +71,12 @@ class BytesWithLength extends AbstractType {
   /**
    * Decodes the string value from the given bytes
    *
-   * @param {BC} bc
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
    * @returns {BC}
    */
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, options = {}, all = null) {
     this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(bc) + this[P_LENGTH_FIELD].encodedSize;
     return this[P_BYTES_FIELD].decodeFromBytes(
       bc.slice(
