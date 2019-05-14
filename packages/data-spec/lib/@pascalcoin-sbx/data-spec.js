@@ -101,6 +101,7 @@ return /******/ (function(modules) { // webpackBootstrap
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/base-x/index.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 // base-x encoding / decoding
@@ -262,6 +263,7 @@ module.exports = function base (ALPHABET) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/base64-js/index.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -425,6 +427,7 @@ function fromByteArray (uint8) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/bn.js/lib/bn.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -3864,6 +3867,7 @@ function fromByteArray (uint8) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/bs58/index.js ***!
   \****************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var basex = __webpack_require__(/*! base-x */ "../../node_modules/base-x/index.js")
@@ -3879,6 +3883,7 @@ module.exports = basex(ALPHABET)
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/buffer/index.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5681,6 +5686,7 @@ function isnan (val) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/ieee754/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -5776,6 +5782,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/isarray/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -5792,6 +5799,7 @@ module.exports = Array.isArray || function (arr) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/base.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6165,6 +6173,7 @@ var Util;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/sha256.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6377,6 +6386,7 @@ exports.SHA256 = SHA256;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/sha512.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6678,6 +6688,7 @@ exports.SHA512 = SHA512;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/safe-buffer/index.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* eslint-disable node/no-deprecated-api */
@@ -6751,6 +6762,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 var g;
@@ -6782,6 +6794,7 @@ module.exports = g;
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -6815,6 +6828,7 @@ module.exports = function(module) {
   !*** ../common/index.js ***!
   \**************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -6835,6 +6849,7 @@ module.exports = {
   !*** ../common/src/BC.js ***!
   \***************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/**
@@ -6882,7 +6897,11 @@ class BC {
     }
 
     if (stringType === 'hex') {
-      return BC.fromHex(data);
+      try {
+        return BC.fromHex(data);
+      } catch (e) {
+        return BC.fromString(data);
+      }
     }
 
     return BC.fromString(data);
@@ -6939,7 +6958,7 @@ class BC {
     } // TODO: UTF8?
 
 
-    return new BC(Buffer.from(str));
+    return new BC(Buffer.from(str, 'utf8'));
   }
   /**
      * Gets a new BC from an integer.
@@ -7168,20 +7187,6 @@ class BC {
     return this[P_BUFFER][method](offset);
   }
   /**
-   * Reads a 64 bit integer value from the bc from the given offset.
-   *
-   * @param {Number} offset
-   * @param {Boolean} unsigned
-   * @param {String} endian
-   * @returns {Number}
-   */
-
-
-  readInt64(offset, unsigned = true, endian = Endian.detect()) {
-    const method = `read${unsigned ? 'U' : ''}Int${endian}`;
-    return this[P_BUFFER][method](offset, 5);
-  }
-  /**
    * Creates an 8 bit integer BC.
    *
    * @param {Number} value
@@ -7228,22 +7233,6 @@ class BC {
     buf[method](value);
     return new BC(buf);
   }
-  /**
-   * Creates a 64 bit integer BC.
-   *
-   * @param {Number} value
-   * @param {Boolean} unsigned
-   * @param {String} endian
-   * @returns {BC}
-   */
-
-
-  static fromInt64(value, unsigned = true, endian = Endian.detect()) {
-    const method = `write${unsigned ? 'U' : ''}Int${endian}`;
-    const buf = Buffer.allocUnsafe(8);
-    buf[method](value, 0, 5);
-    return new BC(buf);
-  }
 
 }
 
@@ -7257,6 +7246,7 @@ module.exports = BC;
   !*** ../common/src/Base58.js ***!
   \*******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7309,42 +7299,27 @@ module.exports = Base58;
   !*** ../common/src/Coding/AbstractType.js ***!
   \********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 const P_ID = Symbol('id');
 const P_FIXED_VALUE = Symbol('fixed_value');
+const P_HAS_FIXED_VALUE = Symbol('has_fixed_value');
+const P_DESCRIPTION = Symbol('description');
 /**
- * Abstract field type.
+ * Abstract field type to encode and decode values. Abstracts encodeToBytes and decodeFromBytes as
+ * basic implementations but in fact it can be anything.
  */
 
 class AbstractType {
   /**
    * Constructor.
    *
-   * @param {string} id
+   * @param {string|null} id
    */
   constructor(id = null) {
     this[P_ID] = id;
-  }
-  /**
-   * Read a value using the rules defined in the method from the given BC.
-   *
-   * @param {BC} bc
-   */
-
-
-  decodeFromBytes(bc) {
-    throw new Error('Missing implementation for decodeFromBytes.');
-  }
-  /**
-   * Appends the given value to the given BC.
-   *
-   * @param {*} value
-   */
-
-
-  encodeToBytes(value) {
-    throw new Error('Missing implementation for encodeToBytes.');
+    this[P_HAS_FIXED_VALUE] = false;
   }
   /**
    * Gets the field ident.
@@ -7357,6 +7332,92 @@ class AbstractType {
     return this[P_ID];
   }
   /**
+   * Gets a value indicating whether the field type has a fixed value.
+   *
+   * @returns {Boolean}
+   */
+
+
+  get hasFixedValue() {
+    return this[P_HAS_FIXED_VALUE];
+  }
+  /**
+   * Gets the fixed value.
+   *
+   * @returns {*}
+   */
+
+
+  get fixedValue() {
+    return this[P_FIXED_VALUE];
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    return {
+      name: 'AbstractType',
+      description: this.description(),
+      extra: {},
+      hierarchy: ['AbstractType']
+    };
+  }
+  /**
+   * Gets the encoded size of the type.
+   *
+   * @return {Number}
+   */
+
+
+  get encodedSize() {
+    throw new Error('Encoded size getter not implemented');
+  }
+  /**
+   * Decodes a value using the rules defined in the method from the given bytes.
+   *
+   * @param {BC} bc
+   */
+
+
+  decodeFromBytes(bc) {
+    throw new Error('Missing implementation for decodeFromBytes.');
+  }
+  /**
+   * Returns the encoded bytes for the given value.
+   *
+   * @param {*} value
+   */
+
+
+  encodeToBytes(value) {
+    throw new Error('Missing implementation for encodeToBytes.');
+  }
+  /**
+   * Describes the type.
+   *
+   * @param {*} value
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = {
+      id: this.id,
+      type: this.typeInfo
+    };
+
+    if (this.hasFixedValue) {
+      description.fixed = this.fixedValue;
+    }
+
+    return description;
+  }
+  /**
    * Sets a fixed value.
    *
    * @param {*} value
@@ -7364,17 +7425,26 @@ class AbstractType {
    */
 
 
-  setFixedValue(value) {
+  withFixedValue(value) {
     this[P_FIXED_VALUE] = value;
+    this[P_HAS_FIXED_VALUE] = true;
     return this;
   }
+  /**
+   * Sets the description and returns the type or gets the description itself.
+   *
+   * @param {String} description
+   * @returns {AbstractType|String}
+   */
 
-  get hasFixedValue() {
-    return this.hasOwnProperty(P_FIXED_VALUE);
-  }
 
-  get fixedValue() {
-    return this[P_FIXED_VALUE];
+  description(description = null) {
+    if (description === null) {
+      return this[P_DESCRIPTION];
+    }
+
+    this[P_DESCRIPTION] = description;
+    return this;
   }
 
 }
@@ -7388,6 +7458,7 @@ module.exports = AbstractType;
   !*** ../common/src/Coding/CompositeType.js ***!
   \*********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -7400,9 +7471,10 @@ const BC = __webpack_require__(/*! ./../BC */ "../common/src/BC.js");
 
 const AbstractType = __webpack_require__(/*! ./AbstractType */ "../common/src/Coding/AbstractType.js");
 
-const P_FIELDS = Symbol('fields');
+const P_SUBTYPES = Symbol('subtypes');
+const P_SIZE_ENCODED = Symbol('size_encoded');
 /**
- * A BC reader and writer for binary data.
+ * A Type that itself is made up of multiple other (sub-)types.
  */
 
 class CompositeType extends AbstractType {
@@ -7410,83 +7482,129 @@ class CompositeType extends AbstractType {
    * Constructor
    */
   constructor(id) {
-    super(id);
-    this[P_FIELDS] = [];
+    super(id || 'composite_type');
+    super.description('A type that itself is made up of multiple other types.');
+    this[P_SUBTYPES] = [];
   }
   /**
-   * Adds a field config.
+   * Gets all subtypes.
+   *
+   * @returns {Array}
+   */
+
+
+  get subTypes() {
+    return this[P_SUBTYPES];
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'CompositeType';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Adds a new field (type) definition.
    *
    * @param {AbstractType} field
    */
 
 
-  addField(field) {
-    this[P_FIELDS].push(field);
+  addSubType(field) {
+    this[P_SUBTYPES].push(field);
+    return this;
+  }
+
+  clearSubTypes() {
+    this[P_SUBTYPES] = [];
   }
   /**
-   * Gets the config for all fields.
-   *
-   * @returns {*}
-   */
-
-
-  get fields() {
-    return this[P_FIELDS];
-  }
-  /**
-   * Reads the given byte collection into an object.
+   * Decodes the given bytes into an object.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Boolean} toArray
+   * @return {Object}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, toArray = false) {
     const obj = {};
     let offset = 0;
     bc = BC.from(bc);
-    this.fields.forEach(fieldType => {
-      obj[fieldType.id] = fieldType.decodeFromBytes(bc.slice(offset));
-      offset += fieldType.size;
+    this.subTypes.forEach(subType => {
+      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), toArray, obj);
+      offset += subType.encodedSize;
     });
-    return obj;
+    return toArray ? Object.values(obj) : obj;
   }
   /**
-   * Writes the given object to a BC.
+   * Encodes the given object to a list of bytes.
    *
-   * @param {Object} obj
+   * @param {Object|Array} objOrArray
    * @returns {BC}
    */
 
 
-  encodeToBytes(obj, returnExplanation = false) {
+  encodeToBytes(objOrArray) {
     let bc = BC.empty();
-    let explain = {};
-    this.fields.forEach(field => {
-      let fieldValue;
+    this.subTypes.forEach((subType, idx) => {
+      let subTypeValue;
 
-      if (field.hasFixedValue) {
-        fieldValue = field.fixedValue;
+      if (subType.hasFixedValue) {
+        subTypeValue = subType.fixedValue;
       } else {
-        if (field.isStatic) {
-          fieldValue = obj.constructor[field.id];
-        } else {
-          fieldValue = obj[field.id];
-        }
-      }
+        subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[subType.id];
+      } // we will use the first available
 
-      if (returnExplanation) {
-        explain[field.id] = field.encodeToBytes(fieldValue).toHex();
-      } else {
-        // we will use the first available
-        bc = bc.append(field.encodeToBytes(fieldValue));
-      }
+
+      bc = bc.append(subType.encodeToBytes(subTypeValue, objOrArray));
     });
+    this[P_SIZE_ENCODED] = bc.length;
+    return bc;
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
 
-    if (returnExplanation) {
-      return explain;
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = description.encoded.length;
     }
 
-    return bc;
+    description.subTypes = [];
+    this.subTypes.forEach(subType => {
+      let subTypeValue;
+
+      if (subType.hasFixedValue) {
+        subTypeValue = subType.fixedValue;
+      } else {
+        subTypeValue = value[subType.id];
+      }
+
+      description.subTypes.push(subType.describe(subTypeValue));
+    });
+    return description;
   }
 
 }
@@ -7500,6 +7618,7 @@ module.exports = CompositeType;
   !*** ../common/src/Coding/Core/AbstractInt.js ***!
   \************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
@@ -7524,6 +7643,23 @@ class AbstractInt extends AbstractType {
     this[P_ENDIAN] = endian;
   }
   /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'AbstractInt';
+    info.extra = {
+      unsigned: this.unsigned,
+      endian: this.endian
+    };
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
    * Gets the endianness.
    *
    * @returns {String}
@@ -7543,6 +7679,24 @@ class AbstractInt extends AbstractType {
   get unsigned() {
     return this[P_UNSIGNED];
   }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+    description.encodedSize = this.encodedSize;
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.encoded = this.encodeToBytes(value).toHex();
+    }
+
+    return description;
+  }
 
 }
 
@@ -7550,11 +7704,12 @@ module.exports = AbstractInt;
 
 /***/ }),
 
-/***/ "../common/src/Coding/Core/FixedString.js":
-/*!************************************************!*\
-  !*** ../common/src/Coding/Core/FixedString.js ***!
-  \************************************************/
+/***/ "../common/src/Coding/Core/BytesFixedLength.js":
+/*!*****************************************************!*\
+  !*** ../common/src/Coding/Core/BytesFixedLength.js ***!
+  \*****************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
@@ -7562,29 +7717,44 @@ const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 
 const P_SIZE = Symbol('size');
-const P_APPEND = Symbol('append');
-const P_PREPEND = Symbol('prepend');
 /**
- * Field types for string with an exact length.
+ * A field type to write bytes without prepending the length.
  */
 
-class FixedString extends AbstractType {
+class BytesFixedLength extends AbstractType {
   /**
-   * Constructor.
+   * Constructor
    *
    * @param {String} id
-   * @param {Number} size
-   * @param {BC|null} append
-   * @param {BC|null} prepend
    */
-  constructor(id, size, append = null, prepend = null) {
-    super(id);
-    this[P_SIZE] = size;
-    this[P_APPEND] = append;
-    this[P_PREPEND] = prepend;
+  constructor(id, length) {
+    super(id || 'bytes_fixed_length');
+    this.description('Btes without length prepended.');
+    this[P_SIZE] = length;
   }
   /**
-   * Reads the string.
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'BytesFixedLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE];
+  }
+  /**
+   * In fact this does nothing other than updating the internal size.
    *
    * @param {BC} bc
    * @returns {BC}
@@ -7595,40 +7765,273 @@ class FixedString extends AbstractType {
     return bc.slice(0, this[P_SIZE]);
   }
   /**
-   * Appends the given string to the given BC.
+   * Encodes the given value to a collection of bytes.
    *
-   * @param {String} value
+   * @param {Buffer|Uint8Array|BC|String} value
    * @returns {BC}
    */
 
 
   encodeToBytes(value) {
-    let v = BC.from(value);
-
-    if (v.length < this[P_SIZE]) {
-      if (this[P_APPEND] !== null) {
-        v = v.append(BC.fromHex(this[P_APPEND].toHex().repeat(this[P_SIZE] - v.length())));
-      } else {
-        v = v.prepend(BC.fromHex(this[P_PREPEND].toHex().repeat(this[P_SIZE] - v.length())));
-      }
-    }
-
-    return v;
+    value = BC.from(value);
+    return value.slice(0, this[P_SIZE]);
   }
   /**
-   * Gets the size in bytes.
-   *
-   * @returns {Number}
+   * @inheritDoc AbstractType#describe
    */
 
+  /* istanbul ignore next */
 
-  get size() {
-    return this[P_SIZE];
+
+  describe(value) {
+    let description = {
+      id: this.id,
+      type: this.typeInfo
+    };
+    description.encodedSize = this[P_SIZE];
+
+    if (arguments.length > 0) {
+      description.value = value;
+      description.encoded = this.encodeToBytes(value);
+    }
+
+    return description;
   }
 
 }
 
-module.exports = FixedString;
+module.exports = BytesFixedLength;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Core/BytesWithLength.js":
+/*!****************************************************!*\
+  !*** ../common/src/Coding/Core/BytesWithLength.js ***!
+  \****************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
+
+const Int8 = __webpack_require__(/*! ./Int8 */ "../common/src/Coding/Core/Int8.js");
+
+const Int16 = __webpack_require__(/*! ./Int16 */ "../common/src/Coding/Core/Int16.js");
+
+const Int32 = __webpack_require__(/*! ./Int32 */ "../common/src/Coding/Core/Int32.js");
+
+const BytesWithoutLength = __webpack_require__(/*! ./BytesWithoutLength */ "../common/src/Coding/Core/BytesWithoutLength.js");
+
+const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
+
+const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_LENGTH_FIELD = Symbol('length_field');
+const P_BYTES_FIELD = Symbol('bytes_field');
+/**
+ * A field type to write dynamic content in form of bytes (prepends the length).
+ */
+
+class BytesWithLength extends AbstractType {
+  /**
+   * Constructor
+   *
+   * @param {string} id
+   */
+  constructor(id, byteSize = 1) {
+    super(id || `bytes_size${byteSize * 8}`);
+    this.description('Bytes with variable size prepended');
+    this[P_BYTES_FIELD] = new BytesWithoutLength('value');
+
+    switch (byteSize) {
+      case 1:
+        this[P_LENGTH_FIELD] = new Int8('length', true);
+        break;
+
+      case 2:
+        this[P_LENGTH_FIELD] = new Int16('length', true, Endian.LITTLE_ENDIAN);
+        break;
+
+      case 4:
+        this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
+        break;
+
+      default:
+        throw new Error('IntSize must be either 8, 16 or 32');
+    }
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'BytesWithLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * Decodes the string value from the given bytes
+   *
+   * @param {BC} bc
+   * @returns {BC}
+   */
+
+
+  decodeFromBytes(bc) {
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(bc) + this[P_LENGTH_FIELD].encodedSize;
+    return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_SIZE_ENCODED]));
+  }
+  /**
+   * Encodes the given value.
+   *
+   * @param {Buffer|Uint8Array|BC|String} value
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(value) {
+    value = BC.from(value);
+    this[P_SIZE_ENCODED] = value.length + this[P_LENGTH_FIELD].encodedSize;
+    let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED] - this[P_LENGTH_FIELD].encodedSize);
+    return bc.append(this[P_BYTES_FIELD].encodeToBytes(value));
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.decodedSimple = value.toHex();
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = this.encodedSize;
+    }
+
+    return description;
+  }
+
+}
+
+module.exports = BytesWithLength;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Core/BytesWithoutLength.js":
+/*!*******************************************************!*\
+  !*** ../common/src/Coding/Core/BytesWithoutLength.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
+
+const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+/**
+ * A field type to write bytes without prepending the length.
+ */
+
+class BytesWithoutLength extends AbstractType {
+  /**
+   * Constructor
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'bytes_without_length');
+    this.description('Btes without length prepended.');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'BytesWithoutLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * In fact this does nothing other than updating the internal size.
+   *
+   * @param {BC} bc
+   * @returns {BC}
+   */
+
+
+  decodeFromBytes(bc) {
+    this[P_SIZE_ENCODED] = bc.length;
+    return bc;
+  }
+  /**
+   * Encodes the given value to a collection of bytes.
+   *
+   * @param {Buffer|Uint8Array|BC|String} value
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(value) {
+    let encoded = BC.from(value);
+    this[P_SIZE_ENCODED] = encoded.length;
+    return encoded;
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = {
+      id: this.id,
+      type: this.typeInfo
+    };
+
+    if (arguments.length > 0) {
+      description.value = value;
+      description.encoded = this.encodeToBytes(value);
+      description.encodedSize = this.encodedSize;
+    }
+
+    return description;
+  }
+
+}
+
+module.exports = BytesWithoutLength;
 
 /***/ }),
 
@@ -7637,28 +8040,63 @@ module.exports = FixedString;
   !*** ../common/src/Coding/Core/Int16.js ***!
   \******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 /**
- * Field type for 16bit ints.
+ * Field type for a 16bit int value.
  */
 
 
 class Int16 extends AbstractInt {
   /**
-   * Reads the int16 value.
+   * Constructor.
+   *
+   * @param {String} id
+   * @param {Boolean} unsigned
+   * @param {String} endian
+   */
+  constructor(id, unsigned, endian) {
+    super(id || 'int16', unsigned, endian);
+    this.description('2byte 16bit int value');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Int16';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return 2;
+  }
+  /**
+   * Decodes the int16 value from the given bytes.
    *
    * @param {BC} bc
    * @returns {Number}
    */
+
+
   decodeFromBytes(bc) {
     return bc.readInt16(0, this.unsigned, this.endian);
   }
   /**
-   * Appends the given Int16 value.
+   * Encodes the given Int16 value to a byte sequence.
    *
    * @param {Number} value
    * @returns {BC}
@@ -7667,16 +8105,6 @@ class Int16 extends AbstractInt {
 
   encodeToBytes(value) {
     return BC.fromInt16(value, this.unsigned, this.endian);
-  }
-  /**
-   * Gets the size in bytes.
-   *
-   * @returns {number}
-   */
-
-
-  get size() {
-    return 2;
   }
 
 }
@@ -7690,6 +8118,7 @@ module.exports = Int16;
   !*** ../common/src/Coding/Core/Int32.js ***!
   \******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
@@ -7702,11 +8131,45 @@ const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 
 class Int32 extends AbstractInt {
   /**
+   * Constructor
+   *
+   * @param {String} id
+   * @param {Boolean} unsigned
+   * @param {String} endian
+   */
+  constructor(id, unsigned, endian) {
+    super(id || 'int32', unsigned, endian);
+    this.description('4byte 32bit int value');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Int32';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return 4;
+  }
+  /**
    * Reads the given int32 value.
    *
    * @param {BC} bc
    * @returns {Number}
    */
+
+
   decodeFromBytes(bc) {
     return bc.readInt32(0, this.unsigned, this.endian);
   }
@@ -7721,16 +8184,6 @@ class Int32 extends AbstractInt {
   encodeToBytes(value) {
     return BC.fromInt32(value, this.unsigned, this.endian);
   }
-  /**
-   * Gets the number of bytes.
-   *
-   * @returns {Number}
-   */
-
-
-  get size() {
-    return 4;
-  }
 
 }
 
@@ -7743,46 +8196,121 @@ module.exports = Int32;
   !*** ../common/src/Coding/Core/Int64.js ***!
   \******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+
+const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
+
+const BN = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js");
+
+function validate64Bit(isUnsigned, value) {
+  if (isUnsigned) {
+    if (value.isNeg()) {
+      throw new Error('64bit value is negative. Only signed allowed.');
+    } else if (value.gt(new BN('18446744073709551615'))) {
+      throw new Error('Invalid unsigned 64 bit value.');
+    }
+  } else if (!isUnsigned) {
+    if (value.gt(new BN('9223372036854775807')) || value.lt(new BN('-9223372036854775808'))) {
+      throw new Error('Invalid signed 64 bit value.');
+    }
+  }
+
+  return value;
+}
 /**
- * Field type for 64bit int values.
+ * Field type for 64bit int values using BN.js.
  */
 
 
 class Int64 extends AbstractInt {
   /**
-   * Reads the given int64 value.
+   * Constructor
    *
-   * @param {BC} bc
-   * @returns {Number}
+   * @param {String} id
+   * @param {Boolean} unsigned
+   * @param {String} endian
    */
-  decodeFromBytes(bc) {
-    return bc.readInt64(0, this.unsigned, this.endian);
+  constructor(id, unsigned = true, endian = Endian.LITTLE_ENDIAN) {
+    super(id || 'int64', unsigned, endian);
+    this.description('8byte 64bit int value');
   }
   /**
-   * Appends the given Int64 value.
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Int64';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return 8;
+  }
+  /**
+   * Reads the pascal currency value from the given BC.
    *
-   * @param {string} value
-   * @returns {BC}
+   * @param {BC} bc
+   * @returns {BN}
+   */
+
+
+  decodeFromBytes(bc) {
+    let value = new BN(bc.buffer, 10, this.endian.toLowerCase());
+
+    if (!this.unsigned) {
+      value = value.fromTwos(64);
+    }
+
+    return validate64Bit(this.unsigned, value);
+  }
+  /**
+   * Appends the given currency value to the given BC.
+   *
+   * @param {BN} value
    */
 
 
   encodeToBytes(value) {
-    return BC.fromInt64(value, this.unsigned, this.endian);
+    value = validate64Bit(this.unsigned, value);
+
+    if (!this.unsigned) {
+      value = value.toTwos(64);
+    }
+
+    return BC.from(value.toBuffer(this.endian.toLowerCase(), this.encodedSize));
   }
   /**
-   * Gets the number of bytes.
-   *
-   * @returns {Number}
+   * @inheritDoc AbstractType#describe
    */
 
+  /* istanbul ignore next */
 
-  get size() {
-    return 8;
+
+  describe(value) {
+    let description = super.describe(value);
+    description.encodedSize = this.encodedSize;
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.decodedSimple = value.toString(10, this.encodedSize);
+      description.encoded = this.encodeToBytes(value).toHex();
+    }
+
+    return description;
   }
 
 }
@@ -7796,6 +8324,7 @@ module.exports = Int64;
   !*** ../common/src/Coding/Core/Int8.js ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
@@ -7804,7 +8333,7 @@ const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.j
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 /**
- * Fields type for an 8 Bit value.
+ * Fields type for an 8Bit int value.
  */
 
 
@@ -7816,10 +8345,33 @@ class Int8 extends AbstractInt {
    * @param {Boolean} unsigned
    */
   constructor(id, unsigned) {
-    super(id, unsigned, Endian.LITTLE_ENDIAN);
+    super(id || 'int8', unsigned, Endian.LITTLE_ENDIAN);
+    this.description('1byte 8bit int value');
   }
   /**
-   * Reads the int8 value.
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Int8';
+    info.hierarchy.push(info.name);
+    delete info.extra.endian;
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return 1;
+  }
+  /**
+   * Reads the int8 value from the given bytes.
    *
    * @param {BC} bc
    * @returns {Number}
@@ -7840,16 +8392,6 @@ class Int8 extends AbstractInt {
   encodeToBytes(value) {
     return BC.fromInt8(value, this.unsigned, this.endian);
   }
-  /**
-   * Gets the size in bytes.
-   *
-   * @returns {number}
-   */
-
-
-  get size() {
-    return 1;
-  }
 
 }
 
@@ -7857,40 +8399,188 @@ module.exports = Int8;
 
 /***/ }),
 
-/***/ "../common/src/Coding/Core/VariableString.js":
-/*!***************************************************!*\
-  !*** ../common/src/Coding/Core/VariableString.js ***!
-  \***************************************************/
+/***/ "../common/src/Coding/Core/StringWithLength.js":
+/*!*****************************************************!*\
+  !*** ../common/src/Coding/Core/StringWithLength.js ***!
+  \*****************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
 
+const Int8 = __webpack_require__(/*! ./Int8 */ "../common/src/Coding/Core/Int8.js");
+
 const Int16 = __webpack_require__(/*! ./Int16 */ "../common/src/Coding/Core/Int16.js");
 
-const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+const Int32 = __webpack_require__(/*! ./Int32 */ "../common/src/Coding/Core/Int32.js");
+
+const StringWithoutLength = __webpack_require__(/*! ./StringWithoutLength */ "../common/src/Coding/Core/StringWithoutLength.js");
 
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
 
-const P_SIZE = Symbol('size');
-const lengthField = new Int16('length', true, Endian.LITTLE_ENDIAN);
+const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_LENGTH_FIELD = Symbol('length_field');
+const P_BYTES_FIELD = Symbol('bytes_field');
 /**
  * A field type to write dynamic strings (prepends the length).
  */
 
-class VariableString extends AbstractType {
+class StringWithLength extends AbstractType {
+  constructor(id, byteSize = 1) {
+    super(id || `bytes_size${byteSize * 8}`);
+    this.description('String with size prepended');
+    this[P_BYTES_FIELD] = new StringWithoutLength('value');
+
+    switch (byteSize) {
+      case 1:
+        this[P_LENGTH_FIELD] = new Int8('length', true);
+        break;
+
+      case 2:
+        this[P_LENGTH_FIELD] = new Int16('length', true, Endian.LITTLE_ENDIAN);
+        break;
+
+      case 4:
+        this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
+        break;
+
+      default:
+        throw new Error('ByteSize must be either 1, 2 or 4');
+    }
+  }
   /**
-   * Reads the string from the BC.
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'StringWithLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * Decodes the string value from the given bytes
    *
    * @param {BC} bc
    * @returns {BC}
    */
+
+
   decodeFromBytes(bc) {
-    this[P_SIZE] = lengthField.decodeFromBytes(bc) + lengthField.size;
-    return bc.slice(lengthField.size, this[P_SIZE]);
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(bc);
+    return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_LENGTH_FIELD].encodedSize + this[P_SIZE_ENCODED]));
   }
   /**
-   * Appends the string to the BC.
+   * Encodes the given value.
+   *
+   * @param {BC} value
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(value) {
+    this[P_SIZE_ENCODED] = value.length;
+    let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED]);
+    return bc.append(this[P_BYTES_FIELD].encodeToBytes(value));
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.encoded = this.encodeToBytes(value);
+      description.encodedSize = this.encodedSize;
+    }
+
+    return description;
+  }
+
+}
+
+module.exports = StringWithLength;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Core/StringWithoutLength.js":
+/*!********************************************************!*\
+  !*** ../common/src/Coding/Core/StringWithoutLength.js ***!
+  \********************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
+
+const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+/**
+ * A field type to write dynamic strings without prepending the length.
+ */
+
+class StringWithoutLength extends AbstractType {
+  /**
+   * Constructor
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'string_without_length');
+    this.description('Single string value without length prepended.');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'StringWithoutLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * Decodes the string value from the given bytes
+   *
+   * @param {BC} bc
+   * @returns {BC}
+   */
+
+
+  decodeFromBytes(bc) {
+    return bc.toString();
+  }
+  /**
+   * Encodes the given value.
    *
    * @param {String} value
    * @returns {BC}
@@ -7898,24 +8588,232 @@ class VariableString extends AbstractType {
 
 
   encodeToBytes(value) {
-    let v = BC.from(value);
-    v = v.prepend(lengthField.encodeToBytes(v.length));
-    return v;
+    let encoded = BC.from(value, 'string');
+    this[P_SIZE_ENCODED] = encoded.length;
+    return encoded;
   }
   /**
-   * Gets the size in bytes.
-   *
-   * @returns {Number}
+   * @inheritDoc AbstractType#describe
    */
 
+  /* istanbul ignore next */
 
-  get size() {
-    return this[P_SIZE];
+
+  describe(value) {
+    let description = {
+      id: this.id,
+      type: this.typeInfo
+    };
+
+    if (arguments.length > 0) {
+      description.value = value;
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = this.encodedSize;
+    }
+
+    return description;
   }
 
 }
 
-module.exports = VariableString;
+module.exports = StringWithoutLength;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Decissive.js":
+/*!*****************************************!*\
+  !*** ../common/src/Coding/Decissive.js ***!
+  \*****************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const CompositeType = __webpack_require__(/*! ./CompositeType */ "../common/src/Coding/CompositeType.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_SUBTYPE_RESOLVER = Symbol('subtype_resolver');
+const P_MARKER_FIELD = Symbol('marker_field');
+/**
+ * A Type that itself is made up of multiple other types. The types are selected dynamically
+ * depending on the given resolver.
+ */
+
+class Decissive extends CompositeType {
+  /**
+   * Constructor
+   */
+  constructor(id, markerField, subTypeResolver) {
+    super(id || 'decissive');
+    super.description('A type that itself has many sub types but only some are triggere based on a marker.');
+    this[P_SUBTYPE_RESOLVER] = subTypeResolver;
+    this[P_MARKER_FIELD] = markerField;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Decissive';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the given bytes into an object.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Boolean} toArray
+   * @return {Object}
+   */
+
+
+  decodeFromBytes(bc, toArray = false, all = {}) {
+    let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
+    return subType.decodeFromBytes(bc, toArray);
+  }
+  /**
+   * Encodes the given object to a list of bytes.
+   *
+   * @param {Object|Array} objOrArray
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(objOrArray, all) {
+    let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
+    let bc = subType.encodeToBytes(objOrArray);
+    this[P_SIZE_ENCODED] = bc.length;
+    return bc;
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = description.encoded.length;
+    }
+
+    description.subTypes = [];
+    this.subTypes.forEach(subType => {
+      let subTypeValue;
+
+      if (subType.hasFixedValue) {
+        subTypeValue = subType.fixedValue;
+      } else {
+        subTypeValue = value[subType.id];
+      }
+
+      description.subTypes.push(subType.describe(subTypeValue));
+    });
+    return description;
+  }
+
+}
+
+module.exports = Decissive;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Pascal/AccountName.js":
+/*!**************************************************!*\
+  !*** ../common/src/Coding/Pascal/AccountName.js ***!
+  \**************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const PascalAccountName = __webpack_require__(/*! ./../../Types/AccountName */ "../common/src/Types/AccountName.js");
+
+const StringWithLength = __webpack_require__(/*! ../Core/StringWithLength */ "../common/src/Coding/Core/StringWithLength.js");
+/**
+ * A pascal related type that can de/encode an account name.
+ */
+
+
+class AccountName extends StringWithLength {
+  /**
+   * Constructor
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'account_name');
+    this.description('An account name');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'AccountName';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin AccountNumber instance.
+   *
+   * @param {BC} bc
+   * @returns {PascalAccountName}
+   */
+
+
+  decodeFromBytes(bc) {
+    return new PascalAccountName(super.decodeFromBytes(bc));
+  }
+  /**
+   *
+   * Appends the given pascalcoin account number to the BC.
+   *
+   * @param {PascalAccountName} value
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value.toString());
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
+  }
+
+}
+
+module.exports = AccountName;
 
 /***/ }),
 
@@ -7924,6 +8822,7 @@ module.exports = VariableString;
   !*** ../common/src/Coding/Pascal/AccountNumber.js ***!
   \****************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const PascalAccountNumber = __webpack_require__(/*! ./../../Types/AccountNumber */ "../common/src/Types/AccountNumber.js");
@@ -7943,7 +8842,21 @@ class AccountNumber extends Int32 {
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'account', false, Endian.LITTLE_ENDIAN);
+    super(id || 'account', true, Endian.LITTLE_ENDIAN);
+    this.description('An account number');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'AccountNumber';
+    info.hierarchy.push(info.name);
+    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
@@ -7967,6 +8880,16 @@ class AccountNumber extends Int32 {
   encodeToBytes(value) {
     return super.encodeToBytes(value.account);
   }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
+  }
 
 }
 
@@ -7979,9 +8902,10 @@ module.exports = AccountNumber;
   !*** ../common/src/Coding/Pascal/Currency.js ***!
   \***********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
+const Int64 = __webpack_require__(/*! ./../Core/Int64 */ "../common/src/Coding/Core/Int64.js");
 
 const PascalCurrency = __webpack_require__(/*! ./../../Types/Currency */ "../common/src/Types/Currency.js");
 
@@ -7991,14 +8915,28 @@ const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.j
  */
 
 
-class Currency extends AbstractType {
+class Currency extends Int64 {
   /**
    * Constructor.
    *
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'currency');
+    super(id || 'currency', false, Endian.LITTLE_ENDIAN);
+    this.description('A type for currency values.');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Currency';
+    info.hierarchy.push(info.name);
+    return info;
   }
   /**
    * Reads the pascal currency value from the given BC.
@@ -8019,13 +8957,22 @@ class Currency extends AbstractType {
 
 
   encodeToBytes(value) {
-    return value.bn.toArrayLike(Buffer, Endian.LITTLE_ENDIAN.toLowerCase(), 8);
+    return super.encodeToBytes(value.bn);
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
   }
 
 }
 
 module.exports = Currency;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../node_modules/buffer/index.js */ "../../node_modules/buffer/index.js").Buffer))
 
 /***/ }),
 
@@ -8034,6 +8981,7 @@ module.exports = Currency;
   !*** ../common/src/Coding/Pascal/Keys/Curve.js ***!
   \*************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const PascalCurve = __webpack_require__(/*! ./../../../Types/Keys/Curve */ "../common/src/Types/Keys/Curve.js");
@@ -8053,7 +9001,21 @@ class Curve extends Int16 {
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'curve', false, Endian.LITTLE_ENDIAN);
+    super(id || 'curve', true, Endian.LITTLE_ENDIAN);
+    this.description('Key curve id');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Curve';
+    info.hierarchy.push(info.name);
+    return info;
   }
   /**
    * Reads the pascal currency value from the given BC.
@@ -8083,16 +9045,91 @@ module.exports = Curve;
 
 /***/ }),
 
+/***/ "../common/src/Coding/Pascal/Keys/PrivateKey.js":
+/*!******************************************************!*\
+  !*** ../common/src/Coding/Pascal/Keys/PrivateKey.js ***!
+  \******************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Curve = __webpack_require__(/*! ./Curve */ "../common/src/Coding/Pascal/Keys/Curve.js");
+
+const BytesWithLength = __webpack_require__(/*! ../../Core/BytesWithLength */ "../common/src/Coding/Core/BytesWithLength.js");
+
+const CompositeType = __webpack_require__(/*! ../../CompositeType */ "../common/src/Coding/CompositeType.js");
+
+const PrivateKeyType = __webpack_require__(/*! ./../../../../src/Types/Keys/PrivateKey */ "../common/src/Types/Keys/PrivateKey.js");
+/**
+ * A Public Key value.
+ */
+
+
+class PrivateKey extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'pubkey');
+    this.addSubType(new Curve('curve'));
+    this.addSubType(new BytesWithLength('key', 2));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'PrivateKey';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin PublicKey instance.
+   *
+   * @param {BC} bc
+   * @returns {PrivateKeyType}
+   */
+
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    return new PrivateKeyType(decoded.key, decoded.curve);
+  }
+  /**
+   * Reads a value and returns a new PascalCoin PublicKey instance.
+   *
+   * @param {BC} bc
+   * @returns {PrivateKeyType}
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value);
+  }
+
+}
+
+module.exports = PrivateKey;
+
+/***/ }),
+
 /***/ "../common/src/Coding/Pascal/Keys/PublicKey.js":
 /*!*****************************************************!*\
   !*** ../common/src/Coding/Pascal/Keys/PublicKey.js ***!
   \*****************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Curve = __webpack_require__(/*! ./Curve */ "../common/src/Coding/Pascal/Keys/Curve.js");
 
-const VariableString = __webpack_require__(/*! ./../../Core/VariableString */ "../common/src/Coding/Core/VariableString.js");
+const BytesWithLength = __webpack_require__(/*! ../../Core/BytesWithLength */ "../common/src/Coding/Core/BytesWithLength.js");
 
 const CompositeType = __webpack_require__(/*! ../../CompositeType */ "../common/src/Coding/CompositeType.js");
 
@@ -8104,16 +9141,34 @@ const Base58 = __webpack_require__(/*! ../../../Base58 */ "../common/src/Base58.
 
 const PascalPublicKey = __webpack_require__(/*! ./../../../../src/Types/Keys/PublicKey */ "../common/src/Types/Keys/PublicKey.js");
 /**
- * A special Int32 type that can handle account number.
+ * A Public Key value.
  */
 
 
 class PublicKey extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
   constructor(id = null) {
     super(id || 'pubkey');
-    this.addField(new Curve('curve'));
-    this.addField(new VariableString('x'));
-    this.addField(new VariableString('y'));
+    this.addSubType(new Curve('curve'));
+    this.addSubType(new BytesWithLength('x', 2));
+    this.addSubType(new BytesWithLength('y', 2));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'PublicKey';
+    info.hierarchy.push(info.name);
+    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
@@ -8124,8 +9179,8 @@ class PublicKey extends CompositeType {
 
 
   decodeFromBytes(bc) {
-    const parsed = super.decodeFromBytes(bc);
-    return new PascalPublicKey(parsed.x, parsed.y, parsed.curve);
+    const decoded = super.decodeFromBytes(bc);
+    return new PascalPublicKey(decoded.x, decoded.y, decoded.curve);
   }
   /**
    * Gets the base58 representation of a public key.
@@ -8166,6 +9221,7 @@ module.exports = PublicKey;
   !*** ../common/src/Coding/Pascal/NOperation.js ***!
   \*************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
@@ -8184,6 +9240,52 @@ class NOperation extends Int32 {
    */
   constructor(id = null) {
     super(id || 'nOperation', true, Endian.LITTLE_ENDIAN);
+    this.description('Accounts n_operation value.');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'NOperation';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin AccountNumber instance.
+   *
+   * @param {BC} bc
+   * @returns {PascalAccountName}
+   */
+
+
+  decodeFromBytes(bc) {
+    return super.decodeFromBytes(bc);
+  }
+  /**
+   *
+   * Appends the given pascalcoin account number to the BC.
+   *
+   * @param {Number} value
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value);
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
   }
 
 }
@@ -8197,6 +9299,7 @@ module.exports = NOperation;
   !*** ../common/src/Coding/Pascal/OpType.js ***!
   \*********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
@@ -8209,7 +9312,7 @@ const Int16 = __webpack_require__(/*! ./../Core/Int16 */ "../common/src/Coding/C
 
 const Int32 = __webpack_require__(/*! ./../Core/Int32 */ "../common/src/Coding/Core/Int32.js");
 
-const P_CODER = Symbol('coder');
+const P_INT_TYPE = Symbol('int_type');
 /**
  * A special Int32 type that can handle account number.
  */
@@ -8220,37 +9323,88 @@ class OpType extends AbstractType {
    *
    * @param {Number} byteSize
    */
-  constructor(byteSize) {
-    super(`int${byteSize * 8}_optype`);
+  constructor(id, byteSize) {
+    super(id || `optype_int${byteSize * 8}`);
 
     switch (byteSize) {
       case 1:
-        this[P_CODER] = new Int8('optype', true);
+        this[P_INT_TYPE] = new Int8('OpType[Int8]', true);
         break;
 
       case 2:
-        this[P_CODER] = new Int16('optype', true, Endian.LITTLE_ENDIAN);
+        this[P_INT_TYPE] = new Int16('OpType[Int16]', true, Endian.LITTLE_ENDIAN);
         break;
 
       case 4:
-        this[P_CODER] = new Int32('optype', true, Endian.LITTLE_ENDIAN);
+        this[P_INT_TYPE] = new Int32('OpType[Int32]', true, Endian.LITTLE_ENDIAN);
         break;
 
       default:
         throw Error('Invalid byte size.');
     }
+
+    this.description(`Operation type in ${byteSize * 8} bits`);
   }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = this[P_INT_TYPE].typeInfo;
+    info.name = 'OpType';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_INT_TYPE].encodedSize;
+  }
+  /**
+   * Decodes and returns the optype.
+   *
+   * @param {BC} bc
+   * @return {Number}
+   */
+
 
   decodeFromBytes(bc) {
-    return this[P_CODER].decodeFromBytes(bc);
+    return this[P_INT_TYPE].decodeFromBytes(bc);
   }
+  /**
+   * Encodes the given optype to bytes.
+   *
+   * @param {Number} value
+   * @return {*}
+   */
+
 
   encodeToBytes(value) {
-    return this[P_CODER].encodeToBytes(value);
+    return this[P_INT_TYPE].encodeToBytes(value);
   }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
 
-  get size() {
-    return this[P_CODER].size();
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+    description.encodedSize = this.encodedSize;
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.encoded = this.encodeToBytes(value).toHex();
+    }
+
+    return description;
   }
 
 }
@@ -8259,34 +9413,274 @@ module.exports = OpType;
 
 /***/ }),
 
+/***/ "../common/src/Coding/Pascal/OperationHash.js":
+/*!****************************************************!*\
+  !*** ../common/src/Coding/Pascal/OperationHash.js ***!
+  \****************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
+
+const CompositeType = __webpack_require__(/*! ./../CompositeType */ "../common/src/Coding/CompositeType.js");
+
+const Int32 = __webpack_require__(/*! ./../Core/Int32 */ "../common/src/Coding/Core/Int32.js");
+
+const AccountNumber = __webpack_require__(/*! ./AccountNumber */ "../common/src/Coding/Pascal/AccountNumber.js");
+
+const BytesWithoutLength = __webpack_require__(/*! ./../Core/BytesWithoutLength */ "../common/src/Coding/Core/BytesWithoutLength.js");
+
+const NOperation = __webpack_require__(/*! ./NOperation */ "../common/src/Coding/Pascal/NOperation.js");
+
+const OperationHashType = __webpack_require__(/*! ./../../Types/OperationHash */ "../common/src/Types/OperationHash.js");
+/**
+ * Simple wrapper for an unsigned Int32 value (used for the n_operation value)
+ */
+
+
+class OperationHash extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'ophash');
+    this.description('A pascalCoin operation hash');
+    this.addSubType(new Int32('block', true, Endian.LITTLE_ENDIAN));
+    this.addSubType(new AccountNumber('account'));
+    this.addSubType(new NOperation('nOperation', 4));
+    this.addSubType(new BytesWithoutLength('md160'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'OperationHash';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin AccountNumber instance.
+   *
+   * @param {BC} bc
+   * @returns {OperationHash}
+   */
+
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    return new OperationHashType(decoded.block, decoded.account, decoded.nOperation, decoded.md160);
+  }
+  /**
+   *
+   * Appends the given pascalcoin account number to the BC.
+   *
+   * @param {OperationHash} value
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value);
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
+  }
+
+}
+
+module.exports = OperationHash;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Repeating.js":
+/*!*****************************************!*\
+  !*** ../common/src/Coding/Repeating.js ***!
+  \*****************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const BC = __webpack_require__(/*! ./../BC */ "../common/src/BC.js");
+
+const AbstractType = __webpack_require__(/*! ./AbstractType */ "../common/src/Coding/AbstractType.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_REPEAT_LIMIT = Symbol('repeat_limit');
+const P_TYPE = Symbol('type');
+/**
+ * A Type that itself is made up of multiple other types.
+ */
+
+class Repeating extends AbstractType {
+  /**
+   * Constructor
+   */
+  constructor(id, type, repeatLimit = -1) {
+    super(id || 'repeating');
+    super.description('A type that itself has one repeating type that will ' + 'be written / read until the limit is reached or data is empty.');
+    this[P_TYPE] = type;
+    this[P_REPEAT_LIMIT] = repeatLimit;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Repeating';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the given bytes into an object.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @return {Object}
+   */
+
+
+  decodeFromBytes(bc) {
+    let result = [];
+    let offset = 0;
+    bc = BC.from(bc);
+    let counter = 0;
+    let limitArrived = false;
+
+    do {
+      const decoded = this[P_TYPE].decodeFromBytes(bc.slice(offset));
+      result.push(decoded);
+      offset += this[P_TYPE].encodedSize;
+      counter++;
+      limitArrived = this[P_REPEAT_LIMIT] > -1 && this[P_REPEAT_LIMIT] === counter;
+    } while (offset < bc.length && !limitArrived);
+
+    return result;
+  }
+  /**
+   * Encodes the given object to a list of bytes.
+   *
+   * @param {Object|Array} objOrArray
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(arr) {
+    let bc = BC.empty();
+    arr.forEach((item, idx) => {
+      if (idx >= this[P_REPEAT_LIMIT] && this[P_REPEAT_LIMIT] > -1) {
+        return;
+      }
+
+      bc = bc.append(this[P_TYPE].encodeToBytes(item));
+    });
+    this[P_SIZE_ENCODED] = bc.length;
+    return bc;
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = description.encoded.length;
+    }
+
+    description.subTypes = [];
+    this.subTypes.forEach(subType => {
+      let subTypeValue;
+
+      if (subType.hasFixedValue) {
+        subTypeValue = subType.fixedValue;
+      } else {
+        subTypeValue = value[subType.id];
+      }
+
+      description.subTypes.push(subType.describe(subTypeValue));
+    });
+    return description;
+  }
+
+}
+
+module.exports = Repeating;
+
+/***/ }),
+
 /***/ "../common/src/Coding/index.js":
 /*!*************************************!*\
   !*** ../common/src/Coding/index.js ***!
   \*************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  CompositeType: __webpack_require__(/*! ./CompositeType */ "../common/src/Coding/CompositeType.js"),
   AbstractType: __webpack_require__(/*! ./AbstractType */ "../common/src/Coding/AbstractType.js"),
+  CompositeType: __webpack_require__(/*! ./CompositeType */ "../common/src/Coding/CompositeType.js"),
+  Repeating: __webpack_require__(/*! ./Repeating */ "../common/src/Coding/Repeating.js"),
+  Decissive: __webpack_require__(/*! ./Decissive */ "../common/src/Coding/Decissive.js"),
   Core: {
     AbstractInt: __webpack_require__(/*! ./Core/AbstractInt */ "../common/src/Coding/Core/AbstractInt.js"),
-    FixedString: __webpack_require__(/*! ./Core/FixedString */ "../common/src/Coding/Core/FixedString.js"),
     Int8: __webpack_require__(/*! ./Core/Int8 */ "../common/src/Coding/Core/Int8.js"),
     Int16: __webpack_require__(/*! ./Core/Int16 */ "../common/src/Coding/Core/Int16.js"),
     Int32: __webpack_require__(/*! ./Core/Int32 */ "../common/src/Coding/Core/Int32.js"),
     Int64: __webpack_require__(/*! ./Core/Int64 */ "../common/src/Coding/Core/Int64.js"),
-    VariableString: __webpack_require__(/*! ./Core/VariableString */ "../common/src/Coding/Core/VariableString.js")
+    StringWithLength: __webpack_require__(/*! ./Core/StringWithLength */ "../common/src/Coding/Core/StringWithLength.js"),
+    StringWithoutLength: __webpack_require__(/*! ./Core/StringWithoutLength */ "../common/src/Coding/Core/StringWithoutLength.js"),
+    BytesWithLength: __webpack_require__(/*! ./Core/BytesWithLength */ "../common/src/Coding/Core/BytesWithLength.js"),
+    BytesWithoutLength: __webpack_require__(/*! ./Core/BytesWithoutLength */ "../common/src/Coding/Core/BytesWithoutLength.js"),
+    BytesFixedLength: __webpack_require__(/*! ./Core/BytesFixedLength */ "../common/src/Coding/Core/BytesFixedLength.js")
   },
   Pascal: {
     Keys: {
       Curve: __webpack_require__(/*! ./Pascal/Keys/Curve */ "../common/src/Coding/Pascal/Keys/Curve.js"),
-      PublicKey: __webpack_require__(/*! ./Pascal/Keys/PublicKey */ "../common/src/Coding/Pascal/Keys/PublicKey.js")
+      PublicKey: __webpack_require__(/*! ./Pascal/Keys/PublicKey */ "../common/src/Coding/Pascal/Keys/PublicKey.js"),
+      PrivateKey: __webpack_require__(/*! ./Pascal/Keys/PrivateKey */ "../common/src/Coding/Pascal/Keys/PrivateKey.js")
     },
     AccountNumber: __webpack_require__(/*! ./Pascal/AccountNumber */ "../common/src/Coding/Pascal/AccountNumber.js"),
+    AccountName: __webpack_require__(/*! ./Pascal/AccountName */ "../common/src/Coding/Pascal/AccountName.js"),
     Currency: __webpack_require__(/*! ./Pascal/Currency */ "../common/src/Coding/Pascal/Currency.js"),
     NOperation: __webpack_require__(/*! ./Pascal/NOperation */ "../common/src/Coding/Pascal/NOperation.js"),
-    OpType: __webpack_require__(/*! ./Pascal/OpType */ "../common/src/Coding/Pascal/OpType.js")
+    OpType: __webpack_require__(/*! ./Pascal/OpType */ "../common/src/Coding/Pascal/OpType.js"),
+    OperationHash: __webpack_require__(/*! ./Pascal/OperationHash */ "../common/src/Coding/Pascal/OperationHash.js")
   }
 };
 
@@ -8297,6 +9691,7 @@ module.exports = {
   !*** ../common/src/Endian.js ***!
   \*******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -8385,6 +9780,7 @@ module.exports = Endian;
   !*** ../common/src/PascalCoinInfo.js ***!
   \***************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8523,6 +9919,7 @@ module.exports = PascalCoinInfo;
   !*** ../common/src/Sha.js ***!
   \****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8582,6 +9979,7 @@ module.exports = Sha;
   !*** ../common/src/Types/AccountName.js ***!
   \******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8686,6 +10084,7 @@ module.exports = AccountName;
   !*** ../common/src/Types/AccountNumber.js ***!
   \********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8830,6 +10229,7 @@ module.exports = AccountNumber;
   !*** ../common/src/Types/Currency.js ***!
   \***************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9123,6 +10523,7 @@ module.exports = Currency;
   !*** ../common/src/Types/Keys/Curve.js ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -9370,6 +10771,7 @@ module.exports = Curve;
   !*** ../common/src/Types/Keys/KeyPair.js ***!
   \*******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -9443,6 +10845,7 @@ module.exports = KeyPair;
   !*** ../common/src/Types/Keys/PrivateKey.js ***!
   \**********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9453,11 +10856,8 @@ module.exports = KeyPair;
  */
 const BC = __webpack_require__(/*! ../../BC */ "../common/src/BC.js");
 
-const Curve = __webpack_require__(/*! ./Curve */ "../common/src/Types/Keys/Curve.js");
-
 const P_KEY = Symbol('key');
 const P_CURVE = Symbol('curve');
-const P_LENGTH = Symbol('length');
 /**
  * Represents a public key in pascalcoin.
  */
@@ -9472,18 +10872,11 @@ class PrivateKey {
   constructor(key, curve) {
     this[P_KEY] = BC.from(key);
     this[P_CURVE] = curve;
-    this[P_LENGTH] = key.length;
     const privateKeyLength = curve.lPrivateKey();
 
-    if (this[P_LENGTH] > privateKeyLength) {
-      throw new Error(`Invalid length for curve ${curve.name} - ` + `expected <= ${privateKeyLength}, got ${this[P_LENGTH]}`);
+    if (this[P_KEY].length > privateKeyLength) {
+      throw new Error(`Invalid length for curve ${curve.name} - ` + `expected <= ${privateKeyLength}, got ${this[P_KEY].length}`);
     }
-    /*
-    if (this[P_LENGTH] < privateKeyLength) {
-      this[P_LENGTH] = privateKeyLength;
-      this[P_KEY] = key.prepend(BC.fromHex('00'.repeat(privateKeyLength - this[P_LENGTH])));
-    }*/
-
   }
   /**
      * Gets the key value.
@@ -9506,16 +10899,6 @@ class PrivateKey {
     return this.key;
   }
   /**
-     * Gets the y value of the key.
-     *
-     * @returns {Number}
-     */
-
-
-  get length() {
-    return this[P_LENGTH];
-  }
-  /**
      * Gets the used curve.
      *
      * @returns {Curve}
@@ -9524,33 +10907,6 @@ class PrivateKey {
 
   get curve() {
     return this[P_CURVE];
-  }
-  /**
-   * Encodes a private key to a BC defined by PascalCoin.
-   *
-   * @returns {BC}
-   */
-
-
-  encode() {
-    const curve = BC.fromInt(this.curve.id).switchEndian();
-    const length = BC.fromInt(this.length, 2).switchEndian();
-    return BC.concat(curve, length, this.key);
-  }
-  /**
-   * Decodes a PascalCoin private key string.
-   *
-   * @param {BC|Buffer|Uint8Array|String} encoded
-   * @returns {PrivateKey}
-   */
-
-
-  static decode(encoded) {
-    encoded = BC.from(encoded);
-    const curve = encoded.slice(0, 2).switchEndian().toInt();
-    const length = encoded.slice(2, 4).switchEndian().toInt();
-    const key = encoded.slice(4, 4 + length);
-    return new PrivateKey(key, new Curve(curve));
   }
 
 }
@@ -9564,6 +10920,7 @@ module.exports = PrivateKey;
   !*** ../common/src/Types/Keys/PublicKey.js ***!
   \*********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9698,6 +11055,7 @@ module.exports = PublicKey;
   !*** ../common/src/Types/Keys/index.js ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -9714,6 +11072,7 @@ module.exports = {
   !*** ../common/src/Types/OperationHash.js ***!
   \********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9749,44 +11108,9 @@ class OperationHash {
     this[P_N_OPERATION] = nOperation;
     this[P_MD160] = BC.from(md160);
 
-    if (md160.length !== 20) {
+    if (this[P_MD160].length !== 20) {
       throw new Error('Invalid operation hash - md160 size !== 20 bytes.');
     }
-  }
-  /**
-   * Decodes the given operation hash.
-   *
-   * @param {BC|Buffer|Uint8Array|String} opHash
-   */
-
-
-  static decode(opHash) {
-    opHash = BC.from(opHash);
-    const block = opHash.slice(0, 4).switchEndian().toInt();
-    const account = new AccountNumber(opHash.slice(4, 8).switchEndian().toInt());
-    const nOperation = opHash.slice(8, 12).switchEndian().toInt();
-    const md160 = opHash.slice(12);
-    return new OperationHash(block, account, nOperation, md160);
-  }
-  /**
-   * Creates the pascal encoding for an operation hash.
-   *
-   * @returns {BC}
-   */
-
-
-  encode() {
-    return BC.concat(BC.fromInt(this[P_BLOCK], 4).switchEndian(), BC.fromInt(this[P_ACCOUNT].account, 4).switchEndian(), BC.fromInt(this[P_N_OPERATION], 4).switchEndian(), this[P_MD160]);
-  }
-  /**
-   * Gets the operation hash as a pending operation.
-   *
-   * @returns {BC}
-   */
-
-
-  encodeAsPending() {
-    return new OperationHash(0, this[P_ACCOUNT], this[P_N_OPERATION], this[P_MD160]).encode();
   }
   /**
    * Gets the account that executed the operation.
@@ -9840,6 +11164,7 @@ module.exports = OperationHash;
   !*** ../common/src/Types/index.js ***!
   \************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -9857,30 +11182,21 @@ module.exports = {
   !*** ../common/src/Util.js ***!
   \*****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 class Util {
   /**
    * https://github.com/MauroJr/escape-regex/blob/master/index.js
+   * Tests are not performed.
    *
    * @param {String} string
    * @returns {string}
    */
+
+  /* istanbul ignore next */
   static escapeRegex(string) {
     return ('' + string).replace(/([?!${}*:()|=^[\]\/\\.+])/g, '\\$1');
-  }
-
-  static promiseWhile(data, condition, action) {
-    let whilst = data => {
-      return condition(data) ? action(data).then(whilst) : Promise.resolve(data);
-    };
-
-    return whilst(data);
-  }
-
-  // https://stackoverflow.com/questions/46479169/check-if-value-is-a-symbol-in-javascript
-  static isSymbol(x) {
-    return typeof x === 'symbol' || typeof x === 'object' && Object.prototype.toString.call(x) === '[object Symbol]';
   }
 
 }
@@ -9894,6 +11210,7 @@ module.exports = Util;
   !*** ./index.js ***!
   \******************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -9910,6 +11227,7 @@ module.exports = {
   !*** ./src/AbstractSpec.js ***!
   \*****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 class AbstractSpec {
@@ -9942,6 +11260,7 @@ module.exports = AbstractSpec;
   !*** ./src/Registry.js ***!
   \*************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 const P_ITEMS = [];
@@ -9982,6 +11301,7 @@ module.exports = Registry;
   !*** ./src/Serializer/CSV.js ***!
   \*******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Util = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Util;
@@ -10127,6 +11447,7 @@ module.exports = CSV;
   !*** ./src/Serializer/JSON.js ***!
   \********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 const P_PRETTY = Symbol('pretty');
@@ -10182,6 +11503,7 @@ module.exports = JSON_;
   !*** ./src/Serializer/index.js ***!
   \*********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -10196,6 +11518,7 @@ module.exports = {
   !*** ./src/Specs/Ruuvi.js ***!
   \****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
@@ -10228,6 +11551,7 @@ module.exports = Ruuvi;
   !*** ./src/Specs/index.js ***!
   \****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -10241,6 +11565,7 @@ module.exports = {
   !*** multi ./index.js ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitled/packages/data-spec/index.js */"./index.js");
@@ -10253,6 +11578,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** buffer (ignored) ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */

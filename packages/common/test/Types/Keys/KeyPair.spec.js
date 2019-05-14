@@ -2,11 +2,12 @@ const fs = require('fs');
 const path = require('path');
 
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 const PrivateKey = require('@pascalcoin-sbx/common').Types.Keys.PrivateKey;
+const PrivateKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PrivateKey;
 const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
 const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
 const BC = require('@pascalcoin-sbx/common').BC;
-const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 const coder = new PublicKeyCoder();
 
 const chai = require('chai');
@@ -27,13 +28,13 @@ describe('Core.Types.Keys.KeyPair', () => {
       const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/private-keys/curve_' + c + '.json')));
 
       keys.forEach((keyInfo) => {
-        let priv = PrivateKey.decode(BC.fromHex(keyInfo.enc_privkey));
+        let priv = new PrivateKeyCoder().decodeFromBytes(BC.fromHex(keyInfo.enc_privkey));
         let pub = coder.decodeFromBase58(keyInfo.b58_pubkey);
 
         const kp = new KeyPair(priv, pub);
 
         expect(coder.encodeToBase58(kp.publicKey)).to.be.equal(keyInfo.b58_pubkey);
-        expect(kp.privateKey.encode().toHex()).to.be.equal(keyInfo.enc_privkey);
+        expect(new PrivateKeyCoder().encodeToBytes(kp.privateKey).toHex()).to.be.equal(keyInfo.enc_privkey);
         expect(kp.curve.id).to.be.equal(c);
       });
     });
@@ -43,7 +44,7 @@ describe('Core.Types.Keys.KeyPair', () => {
       const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/private-keys/curve_' + c + '.json')));
 
       keys.forEach((keyInfo) => {
-        let priv = PrivateKey.decode(BC.fromHex(keyInfo.enc_privkey));
+        let priv = new PrivateKeyCoder().decodeFromBytes(BC.fromHex(keyInfo.enc_privkey));
 
         let b58wrong;
 

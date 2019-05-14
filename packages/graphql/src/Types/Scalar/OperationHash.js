@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const PascalOperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
+const OperationHashCoder = require('@pascalcoin-sbx/common').Coding.Pascal.OperationHash;
 
 /**
  * Operation Hash scalar type.
@@ -27,28 +27,28 @@ class OperationHash {
   /**
    * Gets the hex representation.
    *
-   * @param {OperationHash} value
+   * @param {OperationHashType} value
    * @returns {String}
    */
   serialize(value) {
-    return value.encode().toHex();
+    return new OperationHashCoder().encodeToBytes(value).toHex();
   }
 
   /**
    * Parses an operation hash value.
    *
    * @param value
-   * @returns {PascalOperationHash}
+   * @returns {OperationHashType}
    */
   parseValue(value) {
-    return PascalOperationHash.decode(value);
+    return new OperationHashCoder().decodeFromBytes(value);
   }
 
   /**
    * Tries to parse an ophash value.
    *
    * @param {Object} ast
-   * @returns {PascalOperationHash|null}
+   * @returns {OperationHashType|null}
    */
   parseLiteral(ast) {
     if (ast.kind === graphql.Kind.STRING) {

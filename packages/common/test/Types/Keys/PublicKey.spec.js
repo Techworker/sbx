@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
 const BC = require('@pascalcoin-sbx/common').BC;
 
@@ -18,10 +19,12 @@ const curves = [
 ];
 
 describe('Core.Types.Keys.PublicKey', () => {
-  xit('can be created as an empty key (used by pasc v2)', () => {
+  it('can be created as an empty key (used by pasc v2)', () => {
     const pubkey = PublicKey.empty();
 
-    expect(pubkey.encode().toHex()).to.be.equal('000000000000');
+    expect(pubkey.curve.id).to.be.equal(0);
+    expect(pubkey.x.length).to.be.equal(0);
+    expect(pubkey.y.length).to.be.equal(0);
   });
 
   it('cannot be created with wrong x/y values managed by the curve', () => {
@@ -53,64 +56,12 @@ describe('Core.Types.Keys.PublicKey', () => {
     });
   });
 
-  xit('can decode a pascalcoin pubkey', () => {
+  it('can return a value only containing x and y', () => {
     curves.forEach((c) => {
       const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
 
       keys.forEach((keyInfo) => {
-        let key = PublicKey.decode(BC.fromHex(keyInfo.enc_pubkey));
-
-        expect(key.x.toHex()).to.be.equal(keyInfo.x);
-        expect(key.y.toHex()).to.be.equal(keyInfo.y);
-        expect(key.curve.id).to.be.equal(keyInfo.ec_nid);
-      });
-    });
-  });
-
-  xit('can decode a pascalcoin pubkey from base58', () => {
-    curves.forEach((c) => {
-      const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
-
-      keys.forEach((keyInfo) => {
-        let key = PublicKey.fromBase58(keyInfo.b58_pubkey);
-
-        expect(key.x.toHex()).to.be.equal(keyInfo.x);
-        expect(key.y.toHex()).to.be.equal(keyInfo.y);
-        expect(key.curve.id).to.be.equal(keyInfo.ec_nid);
-      });
-    });
-  });
-
-  xit('can encode a pascalcoin pubkey', () => {
-    curves.forEach((c) => {
-      const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
-
-      keys.forEach((keyInfo) => {
-        let key = PublicKey.decode(BC.fromHex(keyInfo.enc_pubkey));
-
-        expect(key.encode().toHex()).to.be.equal(keyInfo.enc_pubkey);
-      });
-    });
-  });
-
-  xit('can encode a pascalcoin pubkey to base58', () => {
-    curves.forEach((c) => {
-      const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
-
-      keys.forEach((keyInfo) => {
-        let key = PublicKey.decode(BC.fromHex(keyInfo.enc_pubkey));
-
-        expect(key.toBase58()).to.be.equal(keyInfo.b58_pubkey);
-      });
-    });
-  });
-
-  xit('can return a value only containing x and y', () => {
-    curves.forEach((c) => {
-      const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
-
-      keys.forEach((keyInfo) => {
-        let key = PublicKey.decode(BC.fromHex(keyInfo.enc_pubkey));
+        let key = new PublicKeyCoder().decodeFromBytes(BC.fromHex(keyInfo.enc_pubkey));
 
         expect(key.ec.toHex()).to.be.equal(keyInfo.x + keyInfo.y);
       });

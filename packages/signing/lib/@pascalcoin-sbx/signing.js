@@ -101,6 +101,7 @@ return /******/ (function(modules) { // webpackBootstrap
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var asn1 = exports;
@@ -121,6 +122,7 @@ asn1.encoders = __webpack_require__(/*! ./asn1/encoders */ "../../node_modules/a
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/api.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var asn1 = __webpack_require__(/*! ../asn1 */ "../../node_modules/asn1.js/lib/asn1.js");
@@ -193,6 +195,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/base/buffer.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -320,6 +323,7 @@ EncoderBuffer.prototype.join = function join(out, offset) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/base/index.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var base = exports;
@@ -337,6 +341,7 @@ base.Node = __webpack_require__(/*! ./node */ "../../node_modules/asn1.js/lib/as
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/base/node.js ***!
   \********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Reporter = __webpack_require__(/*! ../base */ "../../node_modules/asn1.js/lib/asn1/base/index.js").Reporter;
@@ -982,6 +987,7 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/base/reporter.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1114,6 +1120,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/constants/der.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constants = __webpack_require__(/*! ../constants */ "../../node_modules/asn1.js/lib/asn1/constants/index.js");
@@ -1167,6 +1174,7 @@ exports.tagByName = constants._reverse(exports.tag);
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/constants/index.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constants = exports;
@@ -1197,6 +1205,7 @@ constants.der = __webpack_require__(/*! ./der */ "../../node_modules/asn1.js/lib
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/decoders/der.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1532,6 +1541,7 @@ function derDecodeLen(buf, primitive, fail) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/decoders/index.js ***!
   \*************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var decoders = exports;
@@ -1547,6 +1557,7 @@ decoders.pem = __webpack_require__(/*! ./pem */ "../../node_modules/asn1.js/lib/
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/decoders/pem.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1607,6 +1618,7 @@ PEMDecoder.prototype.decode = function decode(data, options) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/encoders/der.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1913,6 +1925,7 @@ function encodeTag(tag, primitive, cls, reporter) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/encoders/index.js ***!
   \*************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var encoders = exports;
@@ -1928,6 +1941,7 @@ encoders.pem = __webpack_require__(/*! ./pem */ "../../node_modules/asn1.js/lib/
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/asn1.js/lib/asn1/encoders/pem.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js");
@@ -1960,6 +1974,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/base-x/index.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 // base-x encoding / decoding
@@ -2121,6 +2136,7 @@ module.exports = function base (ALPHABET) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/base64-js/index.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2284,6 +2300,7 @@ function fromByteArray (uint8) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/bn.js/lib/bn.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -5723,6 +5740,7 @@ function fromByteArray (uint8) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/brorand/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var r;
@@ -5799,6 +5817,7 @@ if (typeof self === 'object') {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/aes.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 // based on the aes implimentation in triple sec
@@ -6038,6 +6057,7 @@ module.exports.AES = AES
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/authCipher.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var aes = __webpack_require__(/*! ./aes */ "../../node_modules/browserify-aes/aes.js")
@@ -6166,6 +6186,7 @@ module.exports = StreamCipher
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/browser.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ciphers = __webpack_require__(/*! ./encrypter */ "../../node_modules/browserify-aes/encrypter.js")
@@ -6190,6 +6211,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/decrypter.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var AuthCipher = __webpack_require__(/*! ./authCipher */ "../../node_modules/browserify-aes/authCipher.js")
@@ -6325,6 +6347,7 @@ exports.createDecipheriv = createDecipheriv
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/encrypter.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MODES = __webpack_require__(/*! ./modes */ "../../node_modules/browserify-aes/modes/index.js")
@@ -6450,6 +6473,7 @@ exports.createCipher = createCipher
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/ghash.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -6550,6 +6574,7 @@ module.exports = GHASH
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/incr32.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 function incr32 (iv) {
@@ -6576,6 +6601,7 @@ module.exports = incr32
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/cbc.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var xor = __webpack_require__(/*! buffer-xor */ "../../node_modules/buffer-xor/index.js")
@@ -6604,6 +6630,7 @@ exports.decrypt = function (self, block) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/cfb.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -6648,6 +6675,7 @@ exports.encrypt = function (self, data, decrypt) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/cfb1.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -6701,6 +6729,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/cfb8.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -6737,6 +6766,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/ctr.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var xor = __webpack_require__(/*! buffer-xor */ "../../node_modules/buffer-xor/index.js")
@@ -6778,6 +6808,7 @@ exports.encrypt = function (self, chunk) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/ecb.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 exports.encrypt = function (self, block) {
@@ -6796,6 +6827,7 @@ exports.decrypt = function (self, block) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/index.js ***!
   \********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var modeModules = {
@@ -6825,6 +6857,7 @@ module.exports = modes
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/list.json ***!
   \*********************************************************************************************/
 /*! exports provided: aes-128-ecb, aes-192-ecb, aes-256-ecb, aes-128-cbc, aes-192-cbc, aes-256-cbc, aes128, aes192, aes256, aes-128-cfb, aes-192-cfb, aes-256-cfb, aes-128-cfb8, aes-192-cfb8, aes-256-cfb8, aes-128-cfb1, aes-192-cfb1, aes-256-cfb1, aes-128-ofb, aes-192-ofb, aes-256-ofb, aes-128-ctr, aes-192-ctr, aes-256-ctr, aes-128-gcm, aes-192-gcm, aes-256-gcm, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"aes-128-ecb":{"cipher":"AES","key":128,"iv":0,"mode":"ECB","type":"block"},"aes-192-ecb":{"cipher":"AES","key":192,"iv":0,"mode":"ECB","type":"block"},"aes-256-ecb":{"cipher":"AES","key":256,"iv":0,"mode":"ECB","type":"block"},"aes-128-cbc":{"cipher":"AES","key":128,"iv":16,"mode":"CBC","type":"block"},"aes-192-cbc":{"cipher":"AES","key":192,"iv":16,"mode":"CBC","type":"block"},"aes-256-cbc":{"cipher":"AES","key":256,"iv":16,"mode":"CBC","type":"block"},"aes128":{"cipher":"AES","key":128,"iv":16,"mode":"CBC","type":"block"},"aes192":{"cipher":"AES","key":192,"iv":16,"mode":"CBC","type":"block"},"aes256":{"cipher":"AES","key":256,"iv":16,"mode":"CBC","type":"block"},"aes-128-cfb":{"cipher":"AES","key":128,"iv":16,"mode":"CFB","type":"stream"},"aes-192-cfb":{"cipher":"AES","key":192,"iv":16,"mode":"CFB","type":"stream"},"aes-256-cfb":{"cipher":"AES","key":256,"iv":16,"mode":"CFB","type":"stream"},"aes-128-cfb8":{"cipher":"AES","key":128,"iv":16,"mode":"CFB8","type":"stream"},"aes-192-cfb8":{"cipher":"AES","key":192,"iv":16,"mode":"CFB8","type":"stream"},"aes-256-cfb8":{"cipher":"AES","key":256,"iv":16,"mode":"CFB8","type":"stream"},"aes-128-cfb1":{"cipher":"AES","key":128,"iv":16,"mode":"CFB1","type":"stream"},"aes-192-cfb1":{"cipher":"AES","key":192,"iv":16,"mode":"CFB1","type":"stream"},"aes-256-cfb1":{"cipher":"AES","key":256,"iv":16,"mode":"CFB1","type":"stream"},"aes-128-ofb":{"cipher":"AES","key":128,"iv":16,"mode":"OFB","type":"stream"},"aes-192-ofb":{"cipher":"AES","key":192,"iv":16,"mode":"OFB","type":"stream"},"aes-256-ofb":{"cipher":"AES","key":256,"iv":16,"mode":"OFB","type":"stream"},"aes-128-ctr":{"cipher":"AES","key":128,"iv":16,"mode":"CTR","type":"stream"},"aes-192-ctr":{"cipher":"AES","key":192,"iv":16,"mode":"CTR","type":"stream"},"aes-256-ctr":{"cipher":"AES","key":256,"iv":16,"mode":"CTR","type":"stream"},"aes-128-gcm":{"cipher":"AES","key":128,"iv":12,"mode":"GCM","type":"auth"},"aes-192-gcm":{"cipher":"AES","key":192,"iv":12,"mode":"GCM","type":"auth"},"aes-256-gcm":{"cipher":"AES","key":256,"iv":12,"mode":"GCM","type":"auth"}};
@@ -6836,6 +6869,7 @@ module.exports = {"aes-128-ecb":{"cipher":"AES","key":128,"iv":0,"mode":"ECB","t
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/modes/ofb.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var xor = __webpack_require__(/*! buffer-xor */ "../../node_modules/buffer-xor/index.js")
@@ -6864,6 +6898,7 @@ exports.encrypt = function (self, chunk) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-aes/streamCipher.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var aes = __webpack_require__(/*! ./aes */ "../../node_modules/browserify-aes/aes.js")
@@ -6902,6 +6937,7 @@ module.exports = StreamCipher
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-cipher/browser.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DES = __webpack_require__(/*! browserify-des */ "../../node_modules/browserify-des/index.js")
@@ -6980,6 +7016,7 @@ exports.listCiphers = exports.getCiphers = getCiphers
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-des/index.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var CipherBase = __webpack_require__(/*! cipher-base */ "../../node_modules/cipher-base/index.js")
@@ -7041,6 +7078,7 @@ DES.prototype._final = function () {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-des/modes.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 exports['des-ecb'] = {
@@ -7076,6 +7114,7 @@ exports['des-ede'] = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-rsa/index.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var bn = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js");
@@ -7128,6 +7167,7 @@ function getr(priv) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/algos.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./browser/algorithms.json */ "../../node_modules/browserify-sign/browser/algorithms.json")
@@ -7140,6 +7180,7 @@ module.exports = __webpack_require__(/*! ./browser/algorithms.json */ "../../nod
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/algorithms.json ***!
   \******************************************************************************************************/
 /*! exports provided: sha224WithRSAEncryption, RSA-SHA224, sha256WithRSAEncryption, RSA-SHA256, sha384WithRSAEncryption, RSA-SHA384, sha512WithRSAEncryption, RSA-SHA512, RSA-SHA1, ecdsa-with-SHA1, sha256, sha224, sha384, sha512, DSA-SHA, DSA-SHA1, DSA, DSA-WITH-SHA224, DSA-SHA224, DSA-WITH-SHA256, DSA-SHA256, DSA-WITH-SHA384, DSA-SHA384, DSA-WITH-SHA512, DSA-SHA512, DSA-RIPEMD160, ripemd160WithRSA, RSA-RIPEMD160, md5WithRSAEncryption, RSA-MD5, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"sha224WithRSAEncryption":{"sign":"rsa","hash":"sha224","id":"302d300d06096086480165030402040500041c"},"RSA-SHA224":{"sign":"ecdsa/rsa","hash":"sha224","id":"302d300d06096086480165030402040500041c"},"sha256WithRSAEncryption":{"sign":"rsa","hash":"sha256","id":"3031300d060960864801650304020105000420"},"RSA-SHA256":{"sign":"ecdsa/rsa","hash":"sha256","id":"3031300d060960864801650304020105000420"},"sha384WithRSAEncryption":{"sign":"rsa","hash":"sha384","id":"3041300d060960864801650304020205000430"},"RSA-SHA384":{"sign":"ecdsa/rsa","hash":"sha384","id":"3041300d060960864801650304020205000430"},"sha512WithRSAEncryption":{"sign":"rsa","hash":"sha512","id":"3051300d060960864801650304020305000440"},"RSA-SHA512":{"sign":"ecdsa/rsa","hash":"sha512","id":"3051300d060960864801650304020305000440"},"RSA-SHA1":{"sign":"rsa","hash":"sha1","id":"3021300906052b0e03021a05000414"},"ecdsa-with-SHA1":{"sign":"ecdsa","hash":"sha1","id":""},"sha256":{"sign":"ecdsa","hash":"sha256","id":""},"sha224":{"sign":"ecdsa","hash":"sha224","id":""},"sha384":{"sign":"ecdsa","hash":"sha384","id":""},"sha512":{"sign":"ecdsa","hash":"sha512","id":""},"DSA-SHA":{"sign":"dsa","hash":"sha1","id":""},"DSA-SHA1":{"sign":"dsa","hash":"sha1","id":""},"DSA":{"sign":"dsa","hash":"sha1","id":""},"DSA-WITH-SHA224":{"sign":"dsa","hash":"sha224","id":""},"DSA-SHA224":{"sign":"dsa","hash":"sha224","id":""},"DSA-WITH-SHA256":{"sign":"dsa","hash":"sha256","id":""},"DSA-SHA256":{"sign":"dsa","hash":"sha256","id":""},"DSA-WITH-SHA384":{"sign":"dsa","hash":"sha384","id":""},"DSA-SHA384":{"sign":"dsa","hash":"sha384","id":""},"DSA-WITH-SHA512":{"sign":"dsa","hash":"sha512","id":""},"DSA-SHA512":{"sign":"dsa","hash":"sha512","id":""},"DSA-RIPEMD160":{"sign":"dsa","hash":"rmd160","id":""},"ripemd160WithRSA":{"sign":"rsa","hash":"rmd160","id":"3021300906052b2403020105000414"},"RSA-RIPEMD160":{"sign":"rsa","hash":"rmd160","id":"3021300906052b2403020105000414"},"md5WithRSAEncryption":{"sign":"rsa","hash":"md5","id":"3020300c06082a864886f70d020505000410"},"RSA-MD5":{"sign":"rsa","hash":"md5","id":"3020300c06082a864886f70d020505000410"}};
@@ -7151,6 +7192,7 @@ module.exports = {"sha224WithRSAEncryption":{"sign":"rsa","hash":"sha224","id":"
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/curves.json ***!
   \**************************************************************************************************/
 /*! exports provided: 1.3.132.0.10, 1.3.132.0.33, 1.2.840.10045.3.1.1, 1.2.840.10045.3.1.7, 1.3.132.0.34, 1.3.132.0.35, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"1.3.132.0.10":"secp256k1","1.3.132.0.33":"p224","1.2.840.10045.3.1.1":"p192","1.2.840.10045.3.1.7":"p256","1.3.132.0.34":"p384","1.3.132.0.35":"p521"};
@@ -7162,6 +7204,7 @@ module.exports = {"1.3.132.0.10":"secp256k1","1.3.132.0.33":"p224","1.2.840.1004
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/index.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(/*! create-hash */ "../../node_modules/create-hash/browser.js")
@@ -7265,6 +7308,7 @@ module.exports = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/sign.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -7422,6 +7466,7 @@ module.exports.makeKey = makeKey
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/browserify-sign/browser/verify.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
@@ -7517,6 +7562,7 @@ module.exports = verify
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/bs58/index.js ***!
   \****************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var basex = __webpack_require__(/*! base-x */ "../../node_modules/base-x/index.js")
@@ -7532,6 +7578,7 @@ module.exports = basex(ALPHABET)
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/buffer-xor/index.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {module.exports = function xor (a, b) {
@@ -7554,6 +7601,7 @@ module.exports = basex(ALPHABET)
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/buffer/index.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9356,6 +9404,7 @@ function isnan (val) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/cipher-base/index.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -9466,6 +9515,7 @@ module.exports = CipherBase
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/core-util-is/lib/util.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
@@ -9585,6 +9635,7 @@ function objectToString(o) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-ecdh/browser.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var elliptic = __webpack_require__(/*! elliptic */ "../../node_modules/elliptic/lib/elliptic.js")
@@ -9721,6 +9772,7 @@ function formatReturnValue (bn, enc, len) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-hash/browser.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9763,6 +9815,7 @@ module.exports = function createHash (alg) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-hash/md5.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var MD5 = __webpack_require__(/*! md5.js */ "../../node_modules/md5.js/index.js")
@@ -9779,6 +9832,7 @@ module.exports = function (buffer) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-hmac/browser.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9853,6 +9907,7 @@ module.exports = function createHmac (alg, key) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/create-hmac/legacy.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9911,6 +9966,7 @@ module.exports = Hmac
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/crypto-browserify/index.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10020,6 +10076,7 @@ exports.constants = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des.js ***!
   \********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10039,6 +10096,7 @@ exports.EDE = __webpack_require__(/*! ./des/ede */ "../../node_modules/des.js/li
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/cbc.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10116,6 +10174,7 @@ proto._update = function _update(inp, inOff, out, outOff) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/cipher.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10269,6 +10328,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/des.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10424,6 +10484,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/ede.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10491,6 +10552,7 @@ EDE.prototype._unpad = DES.prototype._unpad;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/des.js/lib/des/utils.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10759,6 +10821,7 @@ exports.padSplit = function padSplit(num, size, group) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/diffie-hellman/browser.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var generatePrime = __webpack_require__(/*! ./lib/generatePrime */ "../../node_modules/diffie-hellman/lib/generatePrime.js")
@@ -10813,6 +10876,7 @@ exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/diffie-hellman/lib/dh.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var BN = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js");
@@ -10989,6 +11053,7 @@ function formatReturnValue(bn, enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/diffie-hellman/lib/generatePrime.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var randomBytes = __webpack_require__(/*! randombytes */ "../../node_modules/randombytes/browser.js");
@@ -11105,6 +11170,7 @@ function findPrime(bits, gen) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/diffie-hellman/lib/primes.json ***!
   \*********************************************************************************************/
 /*! exports provided: modp1, modp2, modp5, modp14, modp15, modp16, modp17, modp18, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"modp1":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a63a3620ffffffffffffffff"},"modp2":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece65381ffffffffffffffff"},"modp5":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff"},"modp14":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aacaa68ffffffffffffffff"},"modp15":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a93ad2caffffffffffffffff"},"modp16":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c934063199ffffffffffffffff"},"modp17":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c93402849236c3fab4d27c7026c1d4dcb2602646dec9751e763dba37bdf8ff9406ad9e530ee5db382f413001aeb06a53ed9027d831179727b0865a8918da3edbebcf9b14ed44ce6cbaced4bb1bdb7f1447e6cc254b332051512bd7af426fb8f401378cd2bf5983ca01c64b92ecf032ea15d1721d03f482d7ce6e74fef6d55e702f46980c82b5a84031900b1c9e59e7c97fbec7e8f323a97a7e36cc88be0f1d45b7ff585ac54bd407b22b4154aacc8f6d7ebf48e1d814cc5ed20f8037e0a79715eef29be32806a1d58bb7c5da76f550aa3d8a1fbff0eb19ccb1a313d55cda56c9ec2ef29632387fe8d76e3c0468043e8f663f4860ee12bf2d5b0b7474d6e694f91e6dcc4024ffffffffffffffff"},"modp18":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c93402849236c3fab4d27c7026c1d4dcb2602646dec9751e763dba37bdf8ff9406ad9e530ee5db382f413001aeb06a53ed9027d831179727b0865a8918da3edbebcf9b14ed44ce6cbaced4bb1bdb7f1447e6cc254b332051512bd7af426fb8f401378cd2bf5983ca01c64b92ecf032ea15d1721d03f482d7ce6e74fef6d55e702f46980c82b5a84031900b1c9e59e7c97fbec7e8f323a97a7e36cc88be0f1d45b7ff585ac54bd407b22b4154aacc8f6d7ebf48e1d814cc5ed20f8037e0a79715eef29be32806a1d58bb7c5da76f550aa3d8a1fbff0eb19ccb1a313d55cda56c9ec2ef29632387fe8d76e3c0468043e8f663f4860ee12bf2d5b0b7474d6e694f91e6dbe115974a3926f12fee5e438777cb6a932df8cd8bec4d073b931ba3bc832b68d9dd300741fa7bf8afc47ed2576f6936ba424663aab639c5ae4f5683423b4742bf1c978238f16cbe39d652de3fdb8befc848ad922222e04a4037c0713eb57a81a23f0c73473fc646cea306b4bcbc8862f8385ddfa9d4b7fa2c087e879683303ed5bdd3a062b3cf5b3a278a66d2a13f83f44f82ddf310ee074ab6a364597e899a0255dc164f31cc50846851df9ab48195ded7ea1b1d510bd7ee74d73faf36bc31ecfa268359046f4eb879f924009438b481c6cd7889a002ed5ee382bc9190da6fc026e479558e4475677e9aa9e3050e2765694dfc81f56e880b96e7160c980dd98edd3dfffffffffffffffff"}};
@@ -11116,6 +11182,7 @@ module.exports = {"modp1":{"gen":"02","prime":"ffffffffffffffffc90fdaa22168c234c
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11141,6 +11208,7 @@ elliptic.eddsa = __webpack_require__(/*! ./elliptic/eddsa */ "../../node_modules
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/base.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11528,6 +11596,7 @@ BasePoint.prototype.dblp = function dblp(k) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/edwards.js ***!
   \*****************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11973,6 +12042,7 @@ Point.prototype.mixedAdd = Point.prototype.add;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/index.js ***!
   \***************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11993,6 +12063,7 @@ curve.edwards = __webpack_require__(/*! ./edwards */ "../../node_modules/ellipti
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/mont.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12185,6 +12256,7 @@ Point.prototype.getX = function getX() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curve/short.js ***!
   \***************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13134,6 +13206,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/curves.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13351,6 +13424,7 @@ defineCurve('secp256k1', {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/ec/index.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13603,6 +13677,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/ec/key.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13734,6 +13809,7 @@ KeyPair.prototype.inspect = function inspect() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/ec/signature.js ***!
   \****************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13881,6 +13957,7 @@ Signature.prototype.toDER = function toDER(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/eddsa/index.js ***!
   \***************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14011,6 +14088,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/eddsa/key.js ***!
   \*************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14119,6 +14197,7 @@ module.exports = KeyPair;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/eddsa/signature.js ***!
   \*******************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14197,6 +14276,7 @@ module.exports = Signature;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/precomputed/secp256k1.js ***!
   \*************************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -14988,6 +15068,7 @@ module.exports = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/lib/elliptic/utils.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15120,6 +15201,7 @@ utils.intFromLE = intFromLE;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/elliptic/package.json ***!
   \************************************************************************************/
 /*! exports provided: name, version, description, main, files, scripts, repository, keywords, author, license, bugs, homepage, devDependencies, dependencies, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"name":"elliptic","version":"6.4.1","description":"EC cryptography","main":"lib/elliptic.js","files":["lib"],"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","unit":"istanbul test _mocha --reporter=spec test/index.js","test":"npm run lint && npm run unit","version":"grunt dist && git add dist/"},"repository":{"type":"git","url":"git@github.com:indutny/elliptic"},"keywords":["EC","Elliptic","curve","Cryptography"],"author":"Fedor Indutny <fedor@indutny.com>","license":"MIT","bugs":{"url":"https://github.com/indutny/elliptic/issues"},"homepage":"https://github.com/indutny/elliptic","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"}};
@@ -15131,6 +15213,7 @@ module.exports = {"name":"elliptic","version":"6.4.1","description":"EC cryptogr
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/events/events.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15591,6 +15674,7 @@ function unwrapListeners(arr) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/evp_bytestokey/index.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -15647,6 +15731,7 @@ module.exports = EVP_BytesToKey
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash-base/index.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15754,6 +15839,7 @@ module.exports = HashBase
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hash = exports;
@@ -15780,6 +15866,7 @@ hash.ripemd160 = hash.ripemd.ripemd160;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/common.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15884,6 +15971,7 @@ BlockHash.prototype._pad = function pad() {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/hmac.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15943,6 +16031,7 @@ Hmac.prototype.digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/ripemd.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16101,6 +16190,7 @@ var sh = [
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16120,6 +16210,7 @@ exports.sha512 = __webpack_require__(/*! ./sha/512 */ "../../node_modules/hash.j
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/1.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16206,6 +16297,7 @@ SHA1.prototype._digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/224.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16248,6 +16340,7 @@ SHA224.prototype._digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/256.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16365,6 +16458,7 @@ SHA256.prototype._digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/384.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16412,6 +16506,7 @@ SHA384.prototype._digest = function digest(enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/512.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16754,6 +16849,7 @@ function g1_512_lo(xh, xl) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/sha/common.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16815,6 +16911,7 @@ exports.g1_256 = g1_256;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash/utils.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17105,6 +17202,7 @@ exports.shr64_lo = shr64_lo;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hmac-drbg/lib/hmac-drbg.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17230,6 +17328,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/ieee754/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -17325,6 +17424,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/indexof/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 
@@ -17345,6 +17445,7 @@ module.exports = function(arr, obj){
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/inherits/inherits_browser.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 if (typeof Object.create === 'function') {
@@ -17379,6 +17480,7 @@ if (typeof Object.create === 'function') {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/isarray/index.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -17395,6 +17497,7 @@ module.exports = Array.isArray || function (arr) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/md5.js/index.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17553,6 +17656,7 @@ module.exports = MD5
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/miller-rabin/lib/mr.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var bn = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js");
@@ -17679,6 +17783,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/minimalistic-assert/index.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = assert;
@@ -17701,6 +17806,7 @@ assert.equal = function assertEqual(l, r, msg) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/minimalistic-crypto-utils/lib/utils.js ***!
   \*****************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17771,6 +17877,7 @@ utils.encode = function encode(arr, enc) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/aes.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18380,6 +18487,7 @@ exports.AES_CTR_PKCS7 = AES_CTR_PKCS7;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/base.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18753,6 +18861,7 @@ var Util;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/blockmode.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18935,6 +19044,7 @@ exports.CTR = CTR;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/hmac.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19100,6 +19210,7 @@ exports.HMAC_SHA512 = HMAC_SHA512;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/padding.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19225,6 +19336,7 @@ exports.ZeroPadding = ZeroPadding;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/random.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19634,6 +19746,7 @@ exports.Random = Random;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/sha1.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19840,6 +19953,7 @@ exports.SHA1 = SHA1;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/sha256.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20052,6 +20166,7 @@ exports.SHA256 = SHA256;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/sha512.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20353,6 +20468,7 @@ exports.SHA512 = SHA512;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/aesid.json ***!
   \************************************************************************************/
 /*! exports provided: 2.16.840.1.101.3.4.1.1, 2.16.840.1.101.3.4.1.2, 2.16.840.1.101.3.4.1.3, 2.16.840.1.101.3.4.1.4, 2.16.840.1.101.3.4.1.21, 2.16.840.1.101.3.4.1.22, 2.16.840.1.101.3.4.1.23, 2.16.840.1.101.3.4.1.24, 2.16.840.1.101.3.4.1.41, 2.16.840.1.101.3.4.1.42, 2.16.840.1.101.3.4.1.43, 2.16.840.1.101.3.4.1.44, default */
+/*! all exports used */
 /***/ (function(module) {
 
 module.exports = {"2.16.840.1.101.3.4.1.1":"aes-128-ecb","2.16.840.1.101.3.4.1.2":"aes-128-cbc","2.16.840.1.101.3.4.1.3":"aes-128-ofb","2.16.840.1.101.3.4.1.4":"aes-128-cfb","2.16.840.1.101.3.4.1.21":"aes-192-ecb","2.16.840.1.101.3.4.1.22":"aes-192-cbc","2.16.840.1.101.3.4.1.23":"aes-192-ofb","2.16.840.1.101.3.4.1.24":"aes-192-cfb","2.16.840.1.101.3.4.1.41":"aes-256-ecb","2.16.840.1.101.3.4.1.42":"aes-256-cbc","2.16.840.1.101.3.4.1.43":"aes-256-ofb","2.16.840.1.101.3.4.1.44":"aes-256-cfb"};
@@ -20364,6 +20480,7 @@ module.exports = {"2.16.840.1.101.3.4.1.1":"aes-128-ecb","2.16.840.1.101.3.4.1.2
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/asn1.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20498,6 +20615,7 @@ exports.signature = asn1.define('signature', function () {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/certificate.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20599,6 +20717,7 @@ module.exports = X509Certificate
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/fixProc.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 // adapted from https://github.com/apatil/pemstrip
@@ -20641,6 +20760,7 @@ module.exports = function (okey, password) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/parse-asn1/index.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var asn1 = __webpack_require__(/*! ./asn1 */ "../../node_modules/parse-asn1/asn1.js")
@@ -20759,6 +20879,7 @@ function decrypt (data, password) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/browser.js ***!
   \********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports.pbkdf2 = __webpack_require__(/*! ./lib/async */ "../../node_modules/pbkdf2/lib/async.js")
@@ -20772,6 +20893,7 @@ exports.pbkdf2Sync = __webpack_require__(/*! ./lib/sync */ "../../node_modules/p
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/lib/async.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {var checkParameters = __webpack_require__(/*! ./precondition */ "../../node_modules/pbkdf2/lib/precondition.js")
@@ -20884,6 +21006,7 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/lib/default-encoding.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {var defaultEncoding
@@ -20906,6 +21029,7 @@ module.exports = defaultEncoding
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/lib/precondition.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
@@ -20946,6 +21070,7 @@ module.exports = function (password, salt, iterations, keylen) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/pbkdf2/lib/sync-browser.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var md5 = __webpack_require__(/*! create-hash/md5 */ "../../node_modules/create-hash/md5.js")
@@ -21061,6 +21186,7 @@ module.exports = pbkdf2
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/process-nextick-args/index.js ***!
   \********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21118,6 +21244,7 @@ function nextTick(fn, arg1, arg2, arg3) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/process/browser.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -21313,6 +21440,7 @@ process.umask = function() { return 0; };
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/browser.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports.publicEncrypt = __webpack_require__(/*! ./publicEncrypt */ "../../node_modules/public-encrypt/publicEncrypt.js")
@@ -21334,6 +21462,7 @@ exports.publicDecrypt = function publicDecrypt (key, buf) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/mgf.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var createHash = __webpack_require__(/*! create-hash */ "../../node_modules/create-hash/browser.js")
@@ -21364,6 +21493,7 @@ function i2ops (c) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/privateDecrypt.js ***!
   \***********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parseKeys = __webpack_require__(/*! parse-asn1 */ "../../node_modules/parse-asn1/index.js")
@@ -21480,6 +21610,7 @@ function compare (a, b) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/publicEncrypt.js ***!
   \**********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parseKeys = __webpack_require__(/*! parse-asn1 */ "../../node_modules/parse-asn1/index.js")
@@ -21579,6 +21710,7 @@ function nonZero (len) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/withPublic.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var BN = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js")
@@ -21602,6 +21734,7 @@ module.exports = withPublic
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/public-encrypt/xor.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = function xor (a, b) {
@@ -21621,6 +21754,7 @@ module.exports = function xor (a, b) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/randombytes/browser.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21684,6 +21818,7 @@ function randomBytes (size, cb) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/randomfill/browser.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21805,6 +21940,7 @@ function randomFillSync (buf, offset, size) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/duplex-browser.js ***!
   \************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./lib/_stream_duplex.js */ "../../node_modules/readable-stream/lib/_stream_duplex.js");
@@ -21817,6 +21953,7 @@ module.exports = __webpack_require__(/*! ./lib/_stream_duplex.js */ "../../node_
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_duplex.js ***!
   \****************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21959,6 +22096,7 @@ Duplex.prototype._destroy = function (err, cb) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_passthrough.js ***!
   \*********************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22017,6 +22155,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_readable.js ***!
   \******************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23048,6 +23187,7 @@ function indexOf(xs, x) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_transform.js ***!
   \*******************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23273,6 +23413,7 @@ function done(stream, er, data) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/_stream_writable.js ***!
   \******************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23972,6 +24113,7 @@ Writable.prototype._destroy = function (err, cb) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/internal/streams/BufferList.js ***!
   \*****************************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24062,6 +24204,7 @@ if (util && util.inspect && util.inspect.custom) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/internal/streams/destroy.js ***!
   \**************************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24147,6 +24290,7 @@ module.exports = {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/lib/internal/streams/stream-browser.js ***!
   \*********************************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! events */ "../../node_modules/events/events.js").EventEmitter;
@@ -24159,6 +24303,7 @@ module.exports = __webpack_require__(/*! events */ "../../node_modules/events/ev
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/passthrough.js ***!
   \*********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./readable */ "../../node_modules/readable-stream/readable-browser.js").PassThrough
@@ -24171,6 +24316,7 @@ module.exports = __webpack_require__(/*! ./readable */ "../../node_modules/reada
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/readable-browser.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(/*! ./lib/_stream_readable.js */ "../../node_modules/readable-stream/lib/_stream_readable.js");
@@ -24189,6 +24335,7 @@ exports.PassThrough = __webpack_require__(/*! ./lib/_stream_passthrough.js */ ".
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/transform.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./readable */ "../../node_modules/readable-stream/readable-browser.js").Transform
@@ -24201,6 +24348,7 @@ module.exports = __webpack_require__(/*! ./readable */ "../../node_modules/reada
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/readable-stream/writable-browser.js ***!
   \**************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./lib/_stream_writable.js */ "../../node_modules/readable-stream/lib/_stream_writable.js");
@@ -24213,6 +24361,7 @@ module.exports = __webpack_require__(/*! ./lib/_stream_writable.js */ "../../nod
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/ripemd160/index.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24388,6 +24537,7 @@ module.exports = RIPEMD160
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/safe-buffer/index.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* eslint-disable node/no-deprecated-api */
@@ -24461,6 +24611,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/setimmediate/setImmediate.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -24659,6 +24810,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/hash.js ***!
   \*****************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
@@ -24751,6 +24903,7 @@ module.exports = Hash
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/index.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var exports = module.exports = function SHA (algorithm) {
@@ -24777,6 +24930,7 @@ exports.sha512 = __webpack_require__(/*! ./sha512 */ "../../node_modules/sha.js/
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha.js ***!
   \****************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -24882,6 +25036,7 @@ module.exports = Sha
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha1.js ***!
   \*****************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -24992,6 +25147,7 @@ module.exports = Sha1
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha224.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -25056,6 +25212,7 @@ module.exports = Sha224
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha256.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -25202,6 +25359,7 @@ module.exports = Sha256
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha384.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js")
@@ -25270,6 +25428,7 @@ module.exports = Sha384
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/sha.js/sha512.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits_browser.js")
@@ -25541,6 +25700,7 @@ module.exports = Sha512
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/stream-browserify/index.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -25679,6 +25839,7 @@ Stream.prototype.pipe = function(dest, options) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/string_decoder/lib/string_decoder.js ***!
   \***************************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25986,6 +26147,7 @@ function simpleEnd(buf) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/timers-browserify/main.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -26061,6 +26223,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/util-deprecate/browser.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -26140,6 +26303,7 @@ function config (name) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/vm-browserify/index.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var indexOf = __webpack_require__(/*! indexof */ "../../node_modules/indexof/index.js");
@@ -26289,6 +26453,7 @@ exports.createContext = Script.createContext = function (context) {
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 var g;
@@ -26320,6 +26485,7 @@ module.exports = g;
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -26353,6 +26519,7 @@ module.exports = function(module) {
   !*** ../common/index.js ***!
   \**************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -26373,6 +26540,7 @@ module.exports = {
   !*** ../common/src/BC.js ***!
   \***************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/**
@@ -26420,7 +26588,11 @@ class BC {
     }
 
     if (stringType === 'hex') {
-      return BC.fromHex(data);
+      try {
+        return BC.fromHex(data);
+      } catch (e) {
+        return BC.fromString(data);
+      }
     }
 
     return BC.fromString(data);
@@ -26477,7 +26649,7 @@ class BC {
     } // TODO: UTF8?
 
 
-    return new BC(Buffer.from(str));
+    return new BC(Buffer.from(str, 'utf8'));
   }
   /**
      * Gets a new BC from an integer.
@@ -26706,20 +26878,6 @@ class BC {
     return this[P_BUFFER][method](offset);
   }
   /**
-   * Reads a 64 bit integer value from the bc from the given offset.
-   *
-   * @param {Number} offset
-   * @param {Boolean} unsigned
-   * @param {String} endian
-   * @returns {Number}
-   */
-
-
-  readInt64(offset, unsigned = true, endian = Endian.detect()) {
-    const method = `read${unsigned ? 'U' : ''}Int${endian}`;
-    return this[P_BUFFER][method](offset, 5);
-  }
-  /**
    * Creates an 8 bit integer BC.
    *
    * @param {Number} value
@@ -26766,22 +26924,6 @@ class BC {
     buf[method](value);
     return new BC(buf);
   }
-  /**
-   * Creates a 64 bit integer BC.
-   *
-   * @param {Number} value
-   * @param {Boolean} unsigned
-   * @param {String} endian
-   * @returns {BC}
-   */
-
-
-  static fromInt64(value, unsigned = true, endian = Endian.detect()) {
-    const method = `write${unsigned ? 'U' : ''}Int${endian}`;
-    const buf = Buffer.allocUnsafe(8);
-    buf[method](value, 0, 5);
-    return new BC(buf);
-  }
 
 }
 
@@ -26795,6 +26937,7 @@ module.exports = BC;
   !*** ../common/src/Base58.js ***!
   \*******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26847,42 +26990,27 @@ module.exports = Base58;
   !*** ../common/src/Coding/AbstractType.js ***!
   \********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 const P_ID = Symbol('id');
 const P_FIXED_VALUE = Symbol('fixed_value');
+const P_HAS_FIXED_VALUE = Symbol('has_fixed_value');
+const P_DESCRIPTION = Symbol('description');
 /**
- * Abstract field type.
+ * Abstract field type to encode and decode values. Abstracts encodeToBytes and decodeFromBytes as
+ * basic implementations but in fact it can be anything.
  */
 
 class AbstractType {
   /**
    * Constructor.
    *
-   * @param {string} id
+   * @param {string|null} id
    */
   constructor(id = null) {
     this[P_ID] = id;
-  }
-  /**
-   * Read a value using the rules defined in the method from the given BC.
-   *
-   * @param {BC} bc
-   */
-
-
-  decodeFromBytes(bc) {
-    throw new Error('Missing implementation for decodeFromBytes.');
-  }
-  /**
-   * Appends the given value to the given BC.
-   *
-   * @param {*} value
-   */
-
-
-  encodeToBytes(value) {
-    throw new Error('Missing implementation for encodeToBytes.');
+    this[P_HAS_FIXED_VALUE] = false;
   }
   /**
    * Gets the field ident.
@@ -26895,6 +27023,92 @@ class AbstractType {
     return this[P_ID];
   }
   /**
+   * Gets a value indicating whether the field type has a fixed value.
+   *
+   * @returns {Boolean}
+   */
+
+
+  get hasFixedValue() {
+    return this[P_HAS_FIXED_VALUE];
+  }
+  /**
+   * Gets the fixed value.
+   *
+   * @returns {*}
+   */
+
+
+  get fixedValue() {
+    return this[P_FIXED_VALUE];
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    return {
+      name: 'AbstractType',
+      description: this.description(),
+      extra: {},
+      hierarchy: ['AbstractType']
+    };
+  }
+  /**
+   * Gets the encoded size of the type.
+   *
+   * @return {Number}
+   */
+
+
+  get encodedSize() {
+    throw new Error('Encoded size getter not implemented');
+  }
+  /**
+   * Decodes a value using the rules defined in the method from the given bytes.
+   *
+   * @param {BC} bc
+   */
+
+
+  decodeFromBytes(bc) {
+    throw new Error('Missing implementation for decodeFromBytes.');
+  }
+  /**
+   * Returns the encoded bytes for the given value.
+   *
+   * @param {*} value
+   */
+
+
+  encodeToBytes(value) {
+    throw new Error('Missing implementation for encodeToBytes.');
+  }
+  /**
+   * Describes the type.
+   *
+   * @param {*} value
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = {
+      id: this.id,
+      type: this.typeInfo
+    };
+
+    if (this.hasFixedValue) {
+      description.fixed = this.fixedValue;
+    }
+
+    return description;
+  }
+  /**
    * Sets a fixed value.
    *
    * @param {*} value
@@ -26902,17 +27116,26 @@ class AbstractType {
    */
 
 
-  setFixedValue(value) {
+  withFixedValue(value) {
     this[P_FIXED_VALUE] = value;
+    this[P_HAS_FIXED_VALUE] = true;
     return this;
   }
+  /**
+   * Sets the description and returns the type or gets the description itself.
+   *
+   * @param {String} description
+   * @returns {AbstractType|String}
+   */
 
-  get hasFixedValue() {
-    return this.hasOwnProperty(P_FIXED_VALUE);
-  }
 
-  get fixedValue() {
-    return this[P_FIXED_VALUE];
+  description(description = null) {
+    if (description === null) {
+      return this[P_DESCRIPTION];
+    }
+
+    this[P_DESCRIPTION] = description;
+    return this;
   }
 
 }
@@ -26926,6 +27149,7 @@ module.exports = AbstractType;
   !*** ../common/src/Coding/CompositeType.js ***!
   \*********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -26938,9 +27162,10 @@ const BC = __webpack_require__(/*! ./../BC */ "../common/src/BC.js");
 
 const AbstractType = __webpack_require__(/*! ./AbstractType */ "../common/src/Coding/AbstractType.js");
 
-const P_FIELDS = Symbol('fields');
+const P_SUBTYPES = Symbol('subtypes');
+const P_SIZE_ENCODED = Symbol('size_encoded');
 /**
- * A BC reader and writer for binary data.
+ * A Type that itself is made up of multiple other (sub-)types.
  */
 
 class CompositeType extends AbstractType {
@@ -26948,83 +27173,129 @@ class CompositeType extends AbstractType {
    * Constructor
    */
   constructor(id) {
-    super(id);
-    this[P_FIELDS] = [];
+    super(id || 'composite_type');
+    super.description('A type that itself is made up of multiple other types.');
+    this[P_SUBTYPES] = [];
   }
   /**
-   * Adds a field config.
+   * Gets all subtypes.
+   *
+   * @returns {Array}
+   */
+
+
+  get subTypes() {
+    return this[P_SUBTYPES];
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'CompositeType';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Adds a new field (type) definition.
    *
    * @param {AbstractType} field
    */
 
 
-  addField(field) {
-    this[P_FIELDS].push(field);
+  addSubType(field) {
+    this[P_SUBTYPES].push(field);
+    return this;
+  }
+
+  clearSubTypes() {
+    this[P_SUBTYPES] = [];
   }
   /**
-   * Gets the config for all fields.
-   *
-   * @returns {*}
-   */
-
-
-  get fields() {
-    return this[P_FIELDS];
-  }
-  /**
-   * Reads the given byte collection into an object.
+   * Decodes the given bytes into an object.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Boolean} toArray
+   * @return {Object}
    */
 
 
-  decodeFromBytes(bc) {
+  decodeFromBytes(bc, toArray = false) {
     const obj = {};
     let offset = 0;
     bc = BC.from(bc);
-    this.fields.forEach(fieldType => {
-      obj[fieldType.id] = fieldType.decodeFromBytes(bc.slice(offset));
-      offset += fieldType.size;
+    this.subTypes.forEach(subType => {
+      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), toArray, obj);
+      offset += subType.encodedSize;
     });
-    return obj;
+    return toArray ? Object.values(obj) : obj;
   }
   /**
-   * Writes the given object to a BC.
+   * Encodes the given object to a list of bytes.
    *
-   * @param {Object} obj
+   * @param {Object|Array} objOrArray
    * @returns {BC}
    */
 
 
-  encodeToBytes(obj, returnExplanation = false) {
+  encodeToBytes(objOrArray) {
     let bc = BC.empty();
-    let explain = {};
-    this.fields.forEach(field => {
-      let fieldValue;
+    this.subTypes.forEach((subType, idx) => {
+      let subTypeValue;
 
-      if (field.hasFixedValue) {
-        fieldValue = field.fixedValue;
+      if (subType.hasFixedValue) {
+        subTypeValue = subType.fixedValue;
       } else {
-        if (field.isStatic) {
-          fieldValue = obj.constructor[field.id];
-        } else {
-          fieldValue = obj[field.id];
-        }
-      }
+        subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[subType.id];
+      } // we will use the first available
 
-      if (returnExplanation) {
-        explain[field.id] = field.encodeToBytes(fieldValue).toHex();
-      } else {
-        // we will use the first available
-        bc = bc.append(field.encodeToBytes(fieldValue));
-      }
+
+      bc = bc.append(subType.encodeToBytes(subTypeValue, objOrArray));
     });
+    this[P_SIZE_ENCODED] = bc.length;
+    return bc;
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
 
-    if (returnExplanation) {
-      return explain;
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = description.encoded.length;
     }
 
-    return bc;
+    description.subTypes = [];
+    this.subTypes.forEach(subType => {
+      let subTypeValue;
+
+      if (subType.hasFixedValue) {
+        subTypeValue = subType.fixedValue;
+      } else {
+        subTypeValue = value[subType.id];
+      }
+
+      description.subTypes.push(subType.describe(subTypeValue));
+    });
+    return description;
   }
 
 }
@@ -27038,6 +27309,7 @@ module.exports = CompositeType;
   !*** ../common/src/Coding/Core/AbstractInt.js ***!
   \************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
@@ -27062,6 +27334,23 @@ class AbstractInt extends AbstractType {
     this[P_ENDIAN] = endian;
   }
   /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'AbstractInt';
+    info.extra = {
+      unsigned: this.unsigned,
+      endian: this.endian
+    };
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
    * Gets the endianness.
    *
    * @returns {String}
@@ -27081,6 +27370,24 @@ class AbstractInt extends AbstractType {
   get unsigned() {
     return this[P_UNSIGNED];
   }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+    description.encodedSize = this.encodedSize;
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.encoded = this.encodeToBytes(value).toHex();
+    }
+
+    return description;
+  }
 
 }
 
@@ -27088,11 +27395,12 @@ module.exports = AbstractInt;
 
 /***/ }),
 
-/***/ "../common/src/Coding/Core/FixedString.js":
-/*!************************************************!*\
-  !*** ../common/src/Coding/Core/FixedString.js ***!
-  \************************************************/
+/***/ "../common/src/Coding/Core/BytesFixedLength.js":
+/*!*****************************************************!*\
+  !*** ../common/src/Coding/Core/BytesFixedLength.js ***!
+  \*****************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
@@ -27100,29 +27408,44 @@ const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 
 const P_SIZE = Symbol('size');
-const P_APPEND = Symbol('append');
-const P_PREPEND = Symbol('prepend');
 /**
- * Field types for string with an exact length.
+ * A field type to write bytes without prepending the length.
  */
 
-class FixedString extends AbstractType {
+class BytesFixedLength extends AbstractType {
   /**
-   * Constructor.
+   * Constructor
    *
    * @param {String} id
-   * @param {Number} size
-   * @param {BC|null} append
-   * @param {BC|null} prepend
    */
-  constructor(id, size, append = null, prepend = null) {
-    super(id);
-    this[P_SIZE] = size;
-    this[P_APPEND] = append;
-    this[P_PREPEND] = prepend;
+  constructor(id, length) {
+    super(id || 'bytes_fixed_length');
+    this.description('Btes without length prepended.');
+    this[P_SIZE] = length;
   }
   /**
-   * Reads the string.
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'BytesFixedLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE];
+  }
+  /**
+   * In fact this does nothing other than updating the internal size.
    *
    * @param {BC} bc
    * @returns {BC}
@@ -27133,40 +27456,273 @@ class FixedString extends AbstractType {
     return bc.slice(0, this[P_SIZE]);
   }
   /**
-   * Appends the given string to the given BC.
+   * Encodes the given value to a collection of bytes.
    *
-   * @param {String} value
+   * @param {Buffer|Uint8Array|BC|String} value
    * @returns {BC}
    */
 
 
   encodeToBytes(value) {
-    let v = BC.from(value);
-
-    if (v.length < this[P_SIZE]) {
-      if (this[P_APPEND] !== null) {
-        v = v.append(BC.fromHex(this[P_APPEND].toHex().repeat(this[P_SIZE] - v.length())));
-      } else {
-        v = v.prepend(BC.fromHex(this[P_PREPEND].toHex().repeat(this[P_SIZE] - v.length())));
-      }
-    }
-
-    return v;
+    value = BC.from(value);
+    return value.slice(0, this[P_SIZE]);
   }
   /**
-   * Gets the size in bytes.
-   *
-   * @returns {Number}
+   * @inheritDoc AbstractType#describe
    */
 
+  /* istanbul ignore next */
 
-  get size() {
-    return this[P_SIZE];
+
+  describe(value) {
+    let description = {
+      id: this.id,
+      type: this.typeInfo
+    };
+    description.encodedSize = this[P_SIZE];
+
+    if (arguments.length > 0) {
+      description.value = value;
+      description.encoded = this.encodeToBytes(value);
+    }
+
+    return description;
   }
 
 }
 
-module.exports = FixedString;
+module.exports = BytesFixedLength;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Core/BytesWithLength.js":
+/*!****************************************************!*\
+  !*** ../common/src/Coding/Core/BytesWithLength.js ***!
+  \****************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
+
+const Int8 = __webpack_require__(/*! ./Int8 */ "../common/src/Coding/Core/Int8.js");
+
+const Int16 = __webpack_require__(/*! ./Int16 */ "../common/src/Coding/Core/Int16.js");
+
+const Int32 = __webpack_require__(/*! ./Int32 */ "../common/src/Coding/Core/Int32.js");
+
+const BytesWithoutLength = __webpack_require__(/*! ./BytesWithoutLength */ "../common/src/Coding/Core/BytesWithoutLength.js");
+
+const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
+
+const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_LENGTH_FIELD = Symbol('length_field');
+const P_BYTES_FIELD = Symbol('bytes_field');
+/**
+ * A field type to write dynamic content in form of bytes (prepends the length).
+ */
+
+class BytesWithLength extends AbstractType {
+  /**
+   * Constructor
+   *
+   * @param {string} id
+   */
+  constructor(id, byteSize = 1) {
+    super(id || `bytes_size${byteSize * 8}`);
+    this.description('Bytes with variable size prepended');
+    this[P_BYTES_FIELD] = new BytesWithoutLength('value');
+
+    switch (byteSize) {
+      case 1:
+        this[P_LENGTH_FIELD] = new Int8('length', true);
+        break;
+
+      case 2:
+        this[P_LENGTH_FIELD] = new Int16('length', true, Endian.LITTLE_ENDIAN);
+        break;
+
+      case 4:
+        this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
+        break;
+
+      default:
+        throw new Error('IntSize must be either 8, 16 or 32');
+    }
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'BytesWithLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * Decodes the string value from the given bytes
+   *
+   * @param {BC} bc
+   * @returns {BC}
+   */
+
+
+  decodeFromBytes(bc) {
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(bc) + this[P_LENGTH_FIELD].encodedSize;
+    return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_SIZE_ENCODED]));
+  }
+  /**
+   * Encodes the given value.
+   *
+   * @param {Buffer|Uint8Array|BC|String} value
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(value) {
+    value = BC.from(value);
+    this[P_SIZE_ENCODED] = value.length + this[P_LENGTH_FIELD].encodedSize;
+    let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED] - this[P_LENGTH_FIELD].encodedSize);
+    return bc.append(this[P_BYTES_FIELD].encodeToBytes(value));
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.decodedSimple = value.toHex();
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = this.encodedSize;
+    }
+
+    return description;
+  }
+
+}
+
+module.exports = BytesWithLength;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Core/BytesWithoutLength.js":
+/*!*******************************************************!*\
+  !*** ../common/src/Coding/Core/BytesWithoutLength.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
+
+const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+/**
+ * A field type to write bytes without prepending the length.
+ */
+
+class BytesWithoutLength extends AbstractType {
+  /**
+   * Constructor
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'bytes_without_length');
+    this.description('Btes without length prepended.');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'BytesWithoutLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * In fact this does nothing other than updating the internal size.
+   *
+   * @param {BC} bc
+   * @returns {BC}
+   */
+
+
+  decodeFromBytes(bc) {
+    this[P_SIZE_ENCODED] = bc.length;
+    return bc;
+  }
+  /**
+   * Encodes the given value to a collection of bytes.
+   *
+   * @param {Buffer|Uint8Array|BC|String} value
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(value) {
+    let encoded = BC.from(value);
+    this[P_SIZE_ENCODED] = encoded.length;
+    return encoded;
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = {
+      id: this.id,
+      type: this.typeInfo
+    };
+
+    if (arguments.length > 0) {
+      description.value = value;
+      description.encoded = this.encodeToBytes(value);
+      description.encodedSize = this.encodedSize;
+    }
+
+    return description;
+  }
+
+}
+
+module.exports = BytesWithoutLength;
 
 /***/ }),
 
@@ -27175,28 +27731,63 @@ module.exports = FixedString;
   !*** ../common/src/Coding/Core/Int16.js ***!
   \******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 /**
- * Field type for 16bit ints.
+ * Field type for a 16bit int value.
  */
 
 
 class Int16 extends AbstractInt {
   /**
-   * Reads the int16 value.
+   * Constructor.
+   *
+   * @param {String} id
+   * @param {Boolean} unsigned
+   * @param {String} endian
+   */
+  constructor(id, unsigned, endian) {
+    super(id || 'int16', unsigned, endian);
+    this.description('2byte 16bit int value');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Int16';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return 2;
+  }
+  /**
+   * Decodes the int16 value from the given bytes.
    *
    * @param {BC} bc
    * @returns {Number}
    */
+
+
   decodeFromBytes(bc) {
     return bc.readInt16(0, this.unsigned, this.endian);
   }
   /**
-   * Appends the given Int16 value.
+   * Encodes the given Int16 value to a byte sequence.
    *
    * @param {Number} value
    * @returns {BC}
@@ -27205,16 +27796,6 @@ class Int16 extends AbstractInt {
 
   encodeToBytes(value) {
     return BC.fromInt16(value, this.unsigned, this.endian);
-  }
-  /**
-   * Gets the size in bytes.
-   *
-   * @returns {number}
-   */
-
-
-  get size() {
-    return 2;
   }
 
 }
@@ -27228,6 +27809,7 @@ module.exports = Int16;
   !*** ../common/src/Coding/Core/Int32.js ***!
   \******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
@@ -27240,11 +27822,45 @@ const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 
 class Int32 extends AbstractInt {
   /**
+   * Constructor
+   *
+   * @param {String} id
+   * @param {Boolean} unsigned
+   * @param {String} endian
+   */
+  constructor(id, unsigned, endian) {
+    super(id || 'int32', unsigned, endian);
+    this.description('4byte 32bit int value');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Int32';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return 4;
+  }
+  /**
    * Reads the given int32 value.
    *
    * @param {BC} bc
    * @returns {Number}
    */
+
+
   decodeFromBytes(bc) {
     return bc.readInt32(0, this.unsigned, this.endian);
   }
@@ -27259,16 +27875,6 @@ class Int32 extends AbstractInt {
   encodeToBytes(value) {
     return BC.fromInt32(value, this.unsigned, this.endian);
   }
-  /**
-   * Gets the number of bytes.
-   *
-   * @returns {Number}
-   */
-
-
-  get size() {
-    return 4;
-  }
 
 }
 
@@ -27281,46 +27887,121 @@ module.exports = Int32;
   !*** ../common/src/Coding/Core/Int64.js ***!
   \******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+
+const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
+
+const BN = __webpack_require__(/*! bn.js */ "../../node_modules/bn.js/lib/bn.js");
+
+function validate64Bit(isUnsigned, value) {
+  if (isUnsigned) {
+    if (value.isNeg()) {
+      throw new Error('64bit value is negative. Only signed allowed.');
+    } else if (value.gt(new BN('18446744073709551615'))) {
+      throw new Error('Invalid unsigned 64 bit value.');
+    }
+  } else if (!isUnsigned) {
+    if (value.gt(new BN('9223372036854775807')) || value.lt(new BN('-9223372036854775808'))) {
+      throw new Error('Invalid signed 64 bit value.');
+    }
+  }
+
+  return value;
+}
 /**
- * Field type for 64bit int values.
+ * Field type for 64bit int values using BN.js.
  */
 
 
 class Int64 extends AbstractInt {
   /**
-   * Reads the given int64 value.
+   * Constructor
    *
-   * @param {BC} bc
-   * @returns {Number}
+   * @param {String} id
+   * @param {Boolean} unsigned
+   * @param {String} endian
    */
-  decodeFromBytes(bc) {
-    return bc.readInt64(0, this.unsigned, this.endian);
+  constructor(id, unsigned = true, endian = Endian.LITTLE_ENDIAN) {
+    super(id || 'int64', unsigned, endian);
+    this.description('8byte 64bit int value');
   }
   /**
-   * Appends the given Int64 value.
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Int64';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return 8;
+  }
+  /**
+   * Reads the pascal currency value from the given BC.
    *
-   * @param {string} value
-   * @returns {BC}
+   * @param {BC} bc
+   * @returns {BN}
+   */
+
+
+  decodeFromBytes(bc) {
+    let value = new BN(bc.buffer, 10, this.endian.toLowerCase());
+
+    if (!this.unsigned) {
+      value = value.fromTwos(64);
+    }
+
+    return validate64Bit(this.unsigned, value);
+  }
+  /**
+   * Appends the given currency value to the given BC.
+   *
+   * @param {BN} value
    */
 
 
   encodeToBytes(value) {
-    return BC.fromInt64(value, this.unsigned, this.endian);
+    value = validate64Bit(this.unsigned, value);
+
+    if (!this.unsigned) {
+      value = value.toTwos(64);
+    }
+
+    return BC.from(value.toBuffer(this.endian.toLowerCase(), this.encodedSize));
   }
   /**
-   * Gets the number of bytes.
-   *
-   * @returns {Number}
+   * @inheritDoc AbstractType#describe
    */
 
+  /* istanbul ignore next */
 
-  get size() {
-    return 8;
+
+  describe(value) {
+    let description = super.describe(value);
+    description.encodedSize = this.encodedSize;
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.decodedSimple = value.toString(10, this.encodedSize);
+      description.encoded = this.encodeToBytes(value).toHex();
+    }
+
+    return description;
   }
 
 }
@@ -27334,6 +28015,7 @@ module.exports = Int64;
   !*** ../common/src/Coding/Core/Int8.js ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractInt = __webpack_require__(/*! ./AbstractInt */ "../common/src/Coding/Core/AbstractInt.js");
@@ -27342,7 +28024,7 @@ const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.j
 
 const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 /**
- * Fields type for an 8 Bit value.
+ * Fields type for an 8Bit int value.
  */
 
 
@@ -27354,10 +28036,33 @@ class Int8 extends AbstractInt {
    * @param {Boolean} unsigned
    */
   constructor(id, unsigned) {
-    super(id, unsigned, Endian.LITTLE_ENDIAN);
+    super(id || 'int8', unsigned, Endian.LITTLE_ENDIAN);
+    this.description('1byte 8bit int value');
   }
   /**
-   * Reads the int8 value.
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Int8';
+    info.hierarchy.push(info.name);
+    delete info.extra.endian;
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return 1;
+  }
+  /**
+   * Reads the int8 value from the given bytes.
    *
    * @param {BC} bc
    * @returns {Number}
@@ -27378,16 +28083,6 @@ class Int8 extends AbstractInt {
   encodeToBytes(value) {
     return BC.fromInt8(value, this.unsigned, this.endian);
   }
-  /**
-   * Gets the size in bytes.
-   *
-   * @returns {number}
-   */
-
-
-  get size() {
-    return 1;
-  }
 
 }
 
@@ -27395,40 +28090,188 @@ module.exports = Int8;
 
 /***/ }),
 
-/***/ "../common/src/Coding/Core/VariableString.js":
-/*!***************************************************!*\
-  !*** ../common/src/Coding/Core/VariableString.js ***!
-  \***************************************************/
+/***/ "../common/src/Coding/Core/StringWithLength.js":
+/*!*****************************************************!*\
+  !*** ../common/src/Coding/Core/StringWithLength.js ***!
+  \*****************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
 
+const Int8 = __webpack_require__(/*! ./Int8 */ "../common/src/Coding/Core/Int8.js");
+
 const Int16 = __webpack_require__(/*! ./Int16 */ "../common/src/Coding/Core/Int16.js");
 
-const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+const Int32 = __webpack_require__(/*! ./Int32 */ "../common/src/Coding/Core/Int32.js");
+
+const StringWithoutLength = __webpack_require__(/*! ./StringWithoutLength */ "../common/src/Coding/Core/StringWithoutLength.js");
 
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
 
-const P_SIZE = Symbol('size');
-const lengthField = new Int16('length', true, Endian.LITTLE_ENDIAN);
+const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_LENGTH_FIELD = Symbol('length_field');
+const P_BYTES_FIELD = Symbol('bytes_field');
 /**
  * A field type to write dynamic strings (prepends the length).
  */
 
-class VariableString extends AbstractType {
+class StringWithLength extends AbstractType {
+  constructor(id, byteSize = 1) {
+    super(id || `bytes_size${byteSize * 8}`);
+    this.description('String with size prepended');
+    this[P_BYTES_FIELD] = new StringWithoutLength('value');
+
+    switch (byteSize) {
+      case 1:
+        this[P_LENGTH_FIELD] = new Int8('length', true);
+        break;
+
+      case 2:
+        this[P_LENGTH_FIELD] = new Int16('length', true, Endian.LITTLE_ENDIAN);
+        break;
+
+      case 4:
+        this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
+        break;
+
+      default:
+        throw new Error('ByteSize must be either 1, 2 or 4');
+    }
+  }
   /**
-   * Reads the string from the BC.
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'StringWithLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * Decodes the string value from the given bytes
    *
    * @param {BC} bc
    * @returns {BC}
    */
+
+
   decodeFromBytes(bc) {
-    this[P_SIZE] = lengthField.decodeFromBytes(bc) + lengthField.size;
-    return bc.slice(lengthField.size, this[P_SIZE]);
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(bc);
+    return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_LENGTH_FIELD].encodedSize + this[P_SIZE_ENCODED]));
   }
   /**
-   * Appends the string to the BC.
+   * Encodes the given value.
+   *
+   * @param {BC} value
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(value) {
+    this[P_SIZE_ENCODED] = value.length;
+    let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED]);
+    return bc.append(this[P_BYTES_FIELD].encodeToBytes(value));
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.encoded = this.encodeToBytes(value);
+      description.encodedSize = this.encodedSize;
+    }
+
+    return description;
+  }
+
+}
+
+module.exports = StringWithLength;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Core/StringWithoutLength.js":
+/*!********************************************************!*\
+  !*** ../common/src/Coding/Core/StringWithoutLength.js ***!
+  \********************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
+
+const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+/**
+ * A field type to write dynamic strings without prepending the length.
+ */
+
+class StringWithoutLength extends AbstractType {
+  /**
+   * Constructor
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'string_without_length');
+    this.description('Single string value without length prepended.');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'StringWithoutLength';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * Decodes the string value from the given bytes
+   *
+   * @param {BC} bc
+   * @returns {BC}
+   */
+
+
+  decodeFromBytes(bc) {
+    return bc.toString();
+  }
+  /**
+   * Encodes the given value.
    *
    * @param {String} value
    * @returns {BC}
@@ -27436,24 +28279,232 @@ class VariableString extends AbstractType {
 
 
   encodeToBytes(value) {
-    let v = BC.from(value);
-    v = v.prepend(lengthField.encodeToBytes(v.length));
-    return v;
+    let encoded = BC.from(value, 'string');
+    this[P_SIZE_ENCODED] = encoded.length;
+    return encoded;
   }
   /**
-   * Gets the size in bytes.
-   *
-   * @returns {Number}
+   * @inheritDoc AbstractType#describe
    */
 
+  /* istanbul ignore next */
 
-  get size() {
-    return this[P_SIZE];
+
+  describe(value) {
+    let description = {
+      id: this.id,
+      type: this.typeInfo
+    };
+
+    if (arguments.length > 0) {
+      description.value = value;
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = this.encodedSize;
+    }
+
+    return description;
   }
 
 }
 
-module.exports = VariableString;
+module.exports = StringWithoutLength;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Decissive.js":
+/*!*****************************************!*\
+  !*** ../common/src/Coding/Decissive.js ***!
+  \*****************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const CompositeType = __webpack_require__(/*! ./CompositeType */ "../common/src/Coding/CompositeType.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_SUBTYPE_RESOLVER = Symbol('subtype_resolver');
+const P_MARKER_FIELD = Symbol('marker_field');
+/**
+ * A Type that itself is made up of multiple other types. The types are selected dynamically
+ * depending on the given resolver.
+ */
+
+class Decissive extends CompositeType {
+  /**
+   * Constructor
+   */
+  constructor(id, markerField, subTypeResolver) {
+    super(id || 'decissive');
+    super.description('A type that itself has many sub types but only some are triggere based on a marker.');
+    this[P_SUBTYPE_RESOLVER] = subTypeResolver;
+    this[P_MARKER_FIELD] = markerField;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Decissive';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the given bytes into an object.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Boolean} toArray
+   * @return {Object}
+   */
+
+
+  decodeFromBytes(bc, toArray = false, all = {}) {
+    let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
+    return subType.decodeFromBytes(bc, toArray);
+  }
+  /**
+   * Encodes the given object to a list of bytes.
+   *
+   * @param {Object|Array} objOrArray
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(objOrArray, all) {
+    let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
+    let bc = subType.encodeToBytes(objOrArray);
+    this[P_SIZE_ENCODED] = bc.length;
+    return bc;
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = description.encoded.length;
+    }
+
+    description.subTypes = [];
+    this.subTypes.forEach(subType => {
+      let subTypeValue;
+
+      if (subType.hasFixedValue) {
+        subTypeValue = subType.fixedValue;
+      } else {
+        subTypeValue = value[subType.id];
+      }
+
+      description.subTypes.push(subType.describe(subTypeValue));
+    });
+    return description;
+  }
+
+}
+
+module.exports = Decissive;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Pascal/AccountName.js":
+/*!**************************************************!*\
+  !*** ../common/src/Coding/Pascal/AccountName.js ***!
+  \**************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const PascalAccountName = __webpack_require__(/*! ./../../Types/AccountName */ "../common/src/Types/AccountName.js");
+
+const StringWithLength = __webpack_require__(/*! ../Core/StringWithLength */ "../common/src/Coding/Core/StringWithLength.js");
+/**
+ * A pascal related type that can de/encode an account name.
+ */
+
+
+class AccountName extends StringWithLength {
+  /**
+   * Constructor
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'account_name');
+    this.description('An account name');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'AccountName';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin AccountNumber instance.
+   *
+   * @param {BC} bc
+   * @returns {PascalAccountName}
+   */
+
+
+  decodeFromBytes(bc) {
+    return new PascalAccountName(super.decodeFromBytes(bc));
+  }
+  /**
+   *
+   * Appends the given pascalcoin account number to the BC.
+   *
+   * @param {PascalAccountName} value
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value.toString());
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
+  }
+
+}
+
+module.exports = AccountName;
 
 /***/ }),
 
@@ -27462,6 +28513,7 @@ module.exports = VariableString;
   !*** ../common/src/Coding/Pascal/AccountNumber.js ***!
   \****************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const PascalAccountNumber = __webpack_require__(/*! ./../../Types/AccountNumber */ "../common/src/Types/AccountNumber.js");
@@ -27481,7 +28533,21 @@ class AccountNumber extends Int32 {
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'account', false, Endian.LITTLE_ENDIAN);
+    super(id || 'account', true, Endian.LITTLE_ENDIAN);
+    this.description('An account number');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'AccountNumber';
+    info.hierarchy.push(info.name);
+    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
@@ -27505,6 +28571,16 @@ class AccountNumber extends Int32 {
   encodeToBytes(value) {
     return super.encodeToBytes(value.account);
   }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
+  }
 
 }
 
@@ -27517,9 +28593,10 @@ module.exports = AccountNumber;
   !*** ../common/src/Coding/Pascal/Currency.js ***!
   \***********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {const AbstractType = __webpack_require__(/*! ./../AbstractType */ "../common/src/Coding/AbstractType.js");
+const Int64 = __webpack_require__(/*! ./../Core/Int64 */ "../common/src/Coding/Core/Int64.js");
 
 const PascalCurrency = __webpack_require__(/*! ./../../Types/Currency */ "../common/src/Types/Currency.js");
 
@@ -27529,14 +28606,28 @@ const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.j
  */
 
 
-class Currency extends AbstractType {
+class Currency extends Int64 {
   /**
    * Constructor.
    *
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'currency');
+    super(id || 'currency', false, Endian.LITTLE_ENDIAN);
+    this.description('A type for currency values.');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Currency';
+    info.hierarchy.push(info.name);
+    return info;
   }
   /**
    * Reads the pascal currency value from the given BC.
@@ -27557,13 +28648,22 @@ class Currency extends AbstractType {
 
 
   encodeToBytes(value) {
-    return value.bn.toArrayLike(Buffer, Endian.LITTLE_ENDIAN.toLowerCase(), 8);
+    return super.encodeToBytes(value.bn);
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
   }
 
 }
 
 module.exports = Currency;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../node_modules/buffer/index.js */ "../../node_modules/buffer/index.js").Buffer))
 
 /***/ }),
 
@@ -27572,6 +28672,7 @@ module.exports = Currency;
   !*** ../common/src/Coding/Pascal/Keys/Curve.js ***!
   \*************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const PascalCurve = __webpack_require__(/*! ./../../../Types/Keys/Curve */ "../common/src/Types/Keys/Curve.js");
@@ -27591,7 +28692,21 @@ class Curve extends Int16 {
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'curve', false, Endian.LITTLE_ENDIAN);
+    super(id || 'curve', true, Endian.LITTLE_ENDIAN);
+    this.description('Key curve id');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Curve';
+    info.hierarchy.push(info.name);
+    return info;
   }
   /**
    * Reads the pascal currency value from the given BC.
@@ -27621,16 +28736,91 @@ module.exports = Curve;
 
 /***/ }),
 
+/***/ "../common/src/Coding/Pascal/Keys/PrivateKey.js":
+/*!******************************************************!*\
+  !*** ../common/src/Coding/Pascal/Keys/PrivateKey.js ***!
+  \******************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Curve = __webpack_require__(/*! ./Curve */ "../common/src/Coding/Pascal/Keys/Curve.js");
+
+const BytesWithLength = __webpack_require__(/*! ../../Core/BytesWithLength */ "../common/src/Coding/Core/BytesWithLength.js");
+
+const CompositeType = __webpack_require__(/*! ../../CompositeType */ "../common/src/Coding/CompositeType.js");
+
+const PrivateKeyType = __webpack_require__(/*! ./../../../../src/Types/Keys/PrivateKey */ "../common/src/Types/Keys/PrivateKey.js");
+/**
+ * A Public Key value.
+ */
+
+
+class PrivateKey extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'pubkey');
+    this.addSubType(new Curve('curve'));
+    this.addSubType(new BytesWithLength('key', 2));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'PrivateKey';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin PublicKey instance.
+   *
+   * @param {BC} bc
+   * @returns {PrivateKeyType}
+   */
+
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    return new PrivateKeyType(decoded.key, decoded.curve);
+  }
+  /**
+   * Reads a value and returns a new PascalCoin PublicKey instance.
+   *
+   * @param {BC} bc
+   * @returns {PrivateKeyType}
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value);
+  }
+
+}
+
+module.exports = PrivateKey;
+
+/***/ }),
+
 /***/ "../common/src/Coding/Pascal/Keys/PublicKey.js":
 /*!*****************************************************!*\
   !*** ../common/src/Coding/Pascal/Keys/PublicKey.js ***!
   \*****************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Curve = __webpack_require__(/*! ./Curve */ "../common/src/Coding/Pascal/Keys/Curve.js");
 
-const VariableString = __webpack_require__(/*! ./../../Core/VariableString */ "../common/src/Coding/Core/VariableString.js");
+const BytesWithLength = __webpack_require__(/*! ../../Core/BytesWithLength */ "../common/src/Coding/Core/BytesWithLength.js");
 
 const CompositeType = __webpack_require__(/*! ../../CompositeType */ "../common/src/Coding/CompositeType.js");
 
@@ -27642,16 +28832,34 @@ const Base58 = __webpack_require__(/*! ../../../Base58 */ "../common/src/Base58.
 
 const PascalPublicKey = __webpack_require__(/*! ./../../../../src/Types/Keys/PublicKey */ "../common/src/Types/Keys/PublicKey.js");
 /**
- * A special Int32 type that can handle account number.
+ * A Public Key value.
  */
 
 
 class PublicKey extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
   constructor(id = null) {
     super(id || 'pubkey');
-    this.addField(new Curve('curve'));
-    this.addField(new VariableString('x'));
-    this.addField(new VariableString('y'));
+    this.addSubType(new Curve('curve'));
+    this.addSubType(new BytesWithLength('x', 2));
+    this.addSubType(new BytesWithLength('y', 2));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'PublicKey';
+    info.hierarchy.push(info.name);
+    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
@@ -27662,8 +28870,8 @@ class PublicKey extends CompositeType {
 
 
   decodeFromBytes(bc) {
-    const parsed = super.decodeFromBytes(bc);
-    return new PascalPublicKey(parsed.x, parsed.y, parsed.curve);
+    const decoded = super.decodeFromBytes(bc);
+    return new PascalPublicKey(decoded.x, decoded.y, decoded.curve);
   }
   /**
    * Gets the base58 representation of a public key.
@@ -27704,6 +28912,7 @@ module.exports = PublicKey;
   !*** ../common/src/Coding/Pascal/NOperation.js ***!
   \*************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
@@ -27722,6 +28931,52 @@ class NOperation extends Int32 {
    */
   constructor(id = null) {
     super(id || 'nOperation', true, Endian.LITTLE_ENDIAN);
+    this.description('Accounts n_operation value.');
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'NOperation';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin AccountNumber instance.
+   *
+   * @param {BC} bc
+   * @returns {PascalAccountName}
+   */
+
+
+  decodeFromBytes(bc) {
+    return super.decodeFromBytes(bc);
+  }
+  /**
+   *
+   * Appends the given pascalcoin account number to the BC.
+   *
+   * @param {Number} value
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value);
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
   }
 
 }
@@ -27735,6 +28990,7 @@ module.exports = NOperation;
   !*** ../common/src/Coding/Pascal/OpType.js ***!
   \*********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
@@ -27747,7 +29003,7 @@ const Int16 = __webpack_require__(/*! ./../Core/Int16 */ "../common/src/Coding/C
 
 const Int32 = __webpack_require__(/*! ./../Core/Int32 */ "../common/src/Coding/Core/Int32.js");
 
-const P_CODER = Symbol('coder');
+const P_INT_TYPE = Symbol('int_type');
 /**
  * A special Int32 type that can handle account number.
  */
@@ -27758,37 +29014,88 @@ class OpType extends AbstractType {
    *
    * @param {Number} byteSize
    */
-  constructor(byteSize) {
-    super(`int${byteSize * 8}_optype`);
+  constructor(id, byteSize) {
+    super(id || `optype_int${byteSize * 8}`);
 
     switch (byteSize) {
       case 1:
-        this[P_CODER] = new Int8('optype', true);
+        this[P_INT_TYPE] = new Int8('OpType[Int8]', true);
         break;
 
       case 2:
-        this[P_CODER] = new Int16('optype', true, Endian.LITTLE_ENDIAN);
+        this[P_INT_TYPE] = new Int16('OpType[Int16]', true, Endian.LITTLE_ENDIAN);
         break;
 
       case 4:
-        this[P_CODER] = new Int32('optype', true, Endian.LITTLE_ENDIAN);
+        this[P_INT_TYPE] = new Int32('OpType[Int32]', true, Endian.LITTLE_ENDIAN);
         break;
 
       default:
         throw Error('Invalid byte size.');
     }
+
+    this.description(`Operation type in ${byteSize * 8} bits`);
   }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = this[P_INT_TYPE].typeInfo;
+    info.name = 'OpType';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_INT_TYPE].encodedSize;
+  }
+  /**
+   * Decodes and returns the optype.
+   *
+   * @param {BC} bc
+   * @return {Number}
+   */
+
 
   decodeFromBytes(bc) {
-    return this[P_CODER].decodeFromBytes(bc);
+    return this[P_INT_TYPE].decodeFromBytes(bc);
   }
+  /**
+   * Encodes the given optype to bytes.
+   *
+   * @param {Number} value
+   * @return {*}
+   */
+
 
   encodeToBytes(value) {
-    return this[P_CODER].encodeToBytes(value);
+    return this[P_INT_TYPE].encodeToBytes(value);
   }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
 
-  get size() {
-    return this[P_CODER].size();
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+    description.encodedSize = this.encodedSize;
+
+    if (arguments.length > 0) {
+      description.decoded = value;
+      description.encoded = this.encodeToBytes(value).toHex();
+    }
+
+    return description;
   }
 
 }
@@ -27797,34 +29104,274 @@ module.exports = OpType;
 
 /***/ }),
 
+/***/ "../common/src/Coding/Pascal/OperationHash.js":
+/*!****************************************************!*\
+  !*** ../common/src/Coding/Pascal/OperationHash.js ***!
+  \****************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
+
+const CompositeType = __webpack_require__(/*! ./../CompositeType */ "../common/src/Coding/CompositeType.js");
+
+const Int32 = __webpack_require__(/*! ./../Core/Int32 */ "../common/src/Coding/Core/Int32.js");
+
+const AccountNumber = __webpack_require__(/*! ./AccountNumber */ "../common/src/Coding/Pascal/AccountNumber.js");
+
+const BytesWithoutLength = __webpack_require__(/*! ./../Core/BytesWithoutLength */ "../common/src/Coding/Core/BytesWithoutLength.js");
+
+const NOperation = __webpack_require__(/*! ./NOperation */ "../common/src/Coding/Pascal/NOperation.js");
+
+const OperationHashType = __webpack_require__(/*! ./../../Types/OperationHash */ "../common/src/Types/OperationHash.js");
+/**
+ * Simple wrapper for an unsigned Int32 value (used for the n_operation value)
+ */
+
+
+class OperationHash extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'ophash');
+    this.description('A pascalCoin operation hash');
+    this.addSubType(new Int32('block', true, Endian.LITTLE_ENDIAN));
+    this.addSubType(new AccountNumber('account'));
+    this.addSubType(new NOperation('nOperation', 4));
+    this.addSubType(new BytesWithoutLength('md160'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'OperationHash';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin AccountNumber instance.
+   *
+   * @param {BC} bc
+   * @returns {OperationHash}
+   */
+
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    return new OperationHashType(decoded.block, decoded.account, decoded.nOperation, decoded.md160);
+  }
+  /**
+   *
+   * Appends the given pascalcoin account number to the BC.
+   *
+   * @param {OperationHash} value
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value);
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
+  }
+
+}
+
+module.exports = OperationHash;
+
+/***/ }),
+
+/***/ "../common/src/Coding/Repeating.js":
+/*!*****************************************!*\
+  !*** ../common/src/Coding/Repeating.js ***!
+  \*****************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const BC = __webpack_require__(/*! ./../BC */ "../common/src/BC.js");
+
+const AbstractType = __webpack_require__(/*! ./AbstractType */ "../common/src/Coding/AbstractType.js");
+
+const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_REPEAT_LIMIT = Symbol('repeat_limit');
+const P_TYPE = Symbol('type');
+/**
+ * A Type that itself is made up of multiple other types.
+ */
+
+class Repeating extends AbstractType {
+  /**
+   * Constructor
+   */
+  constructor(id, type, repeatLimit = -1) {
+    super(id || 'repeating');
+    super.description('A type that itself has one repeating type that will ' + 'be written / read until the limit is reached or data is empty.');
+    this[P_TYPE] = type;
+    this[P_REPEAT_LIMIT] = repeatLimit;
+  }
+  /**
+   * @inheritDoc AbstractType#encodedSize
+   */
+
+
+  get encodedSize() {
+    return this[P_SIZE_ENCODED];
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Repeating';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Decodes the given bytes into an object.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @return {Object}
+   */
+
+
+  decodeFromBytes(bc) {
+    let result = [];
+    let offset = 0;
+    bc = BC.from(bc);
+    let counter = 0;
+    let limitArrived = false;
+
+    do {
+      const decoded = this[P_TYPE].decodeFromBytes(bc.slice(offset));
+      result.push(decoded);
+      offset += this[P_TYPE].encodedSize;
+      counter++;
+      limitArrived = this[P_REPEAT_LIMIT] > -1 && this[P_REPEAT_LIMIT] === counter;
+    } while (offset < bc.length && !limitArrived);
+
+    return result;
+  }
+  /**
+   * Encodes the given object to a list of bytes.
+   *
+   * @param {Object|Array} objOrArray
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(arr) {
+    let bc = BC.empty();
+    arr.forEach((item, idx) => {
+      if (idx >= this[P_REPEAT_LIMIT] && this[P_REPEAT_LIMIT] > -1) {
+        return;
+      }
+
+      bc = bc.append(this[P_TYPE].encodeToBytes(item));
+    });
+    this[P_SIZE_ENCODED] = bc.length;
+    return bc;
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    let description = super.describe(value);
+
+    if (arguments.length > 0) {
+      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
+      description.encoded = this.encodeToBytes(value).toHex();
+      description.encodedSize = description.encoded.length;
+    }
+
+    description.subTypes = [];
+    this.subTypes.forEach(subType => {
+      let subTypeValue;
+
+      if (subType.hasFixedValue) {
+        subTypeValue = subType.fixedValue;
+      } else {
+        subTypeValue = value[subType.id];
+      }
+
+      description.subTypes.push(subType.describe(subTypeValue));
+    });
+    return description;
+  }
+
+}
+
+module.exports = Repeating;
+
+/***/ }),
+
 /***/ "../common/src/Coding/index.js":
 /*!*************************************!*\
   !*** ../common/src/Coding/index.js ***!
   \*************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  CompositeType: __webpack_require__(/*! ./CompositeType */ "../common/src/Coding/CompositeType.js"),
   AbstractType: __webpack_require__(/*! ./AbstractType */ "../common/src/Coding/AbstractType.js"),
+  CompositeType: __webpack_require__(/*! ./CompositeType */ "../common/src/Coding/CompositeType.js"),
+  Repeating: __webpack_require__(/*! ./Repeating */ "../common/src/Coding/Repeating.js"),
+  Decissive: __webpack_require__(/*! ./Decissive */ "../common/src/Coding/Decissive.js"),
   Core: {
     AbstractInt: __webpack_require__(/*! ./Core/AbstractInt */ "../common/src/Coding/Core/AbstractInt.js"),
-    FixedString: __webpack_require__(/*! ./Core/FixedString */ "../common/src/Coding/Core/FixedString.js"),
     Int8: __webpack_require__(/*! ./Core/Int8 */ "../common/src/Coding/Core/Int8.js"),
     Int16: __webpack_require__(/*! ./Core/Int16 */ "../common/src/Coding/Core/Int16.js"),
     Int32: __webpack_require__(/*! ./Core/Int32 */ "../common/src/Coding/Core/Int32.js"),
     Int64: __webpack_require__(/*! ./Core/Int64 */ "../common/src/Coding/Core/Int64.js"),
-    VariableString: __webpack_require__(/*! ./Core/VariableString */ "../common/src/Coding/Core/VariableString.js")
+    StringWithLength: __webpack_require__(/*! ./Core/StringWithLength */ "../common/src/Coding/Core/StringWithLength.js"),
+    StringWithoutLength: __webpack_require__(/*! ./Core/StringWithoutLength */ "../common/src/Coding/Core/StringWithoutLength.js"),
+    BytesWithLength: __webpack_require__(/*! ./Core/BytesWithLength */ "../common/src/Coding/Core/BytesWithLength.js"),
+    BytesWithoutLength: __webpack_require__(/*! ./Core/BytesWithoutLength */ "../common/src/Coding/Core/BytesWithoutLength.js"),
+    BytesFixedLength: __webpack_require__(/*! ./Core/BytesFixedLength */ "../common/src/Coding/Core/BytesFixedLength.js")
   },
   Pascal: {
     Keys: {
       Curve: __webpack_require__(/*! ./Pascal/Keys/Curve */ "../common/src/Coding/Pascal/Keys/Curve.js"),
-      PublicKey: __webpack_require__(/*! ./Pascal/Keys/PublicKey */ "../common/src/Coding/Pascal/Keys/PublicKey.js")
+      PublicKey: __webpack_require__(/*! ./Pascal/Keys/PublicKey */ "../common/src/Coding/Pascal/Keys/PublicKey.js"),
+      PrivateKey: __webpack_require__(/*! ./Pascal/Keys/PrivateKey */ "../common/src/Coding/Pascal/Keys/PrivateKey.js")
     },
     AccountNumber: __webpack_require__(/*! ./Pascal/AccountNumber */ "../common/src/Coding/Pascal/AccountNumber.js"),
+    AccountName: __webpack_require__(/*! ./Pascal/AccountName */ "../common/src/Coding/Pascal/AccountName.js"),
     Currency: __webpack_require__(/*! ./Pascal/Currency */ "../common/src/Coding/Pascal/Currency.js"),
     NOperation: __webpack_require__(/*! ./Pascal/NOperation */ "../common/src/Coding/Pascal/NOperation.js"),
-    OpType: __webpack_require__(/*! ./Pascal/OpType */ "../common/src/Coding/Pascal/OpType.js")
+    OpType: __webpack_require__(/*! ./Pascal/OpType */ "../common/src/Coding/Pascal/OpType.js"),
+    OperationHash: __webpack_require__(/*! ./Pascal/OperationHash */ "../common/src/Coding/Pascal/OperationHash.js")
   }
 };
 
@@ -27835,6 +29382,7 @@ module.exports = {
   !*** ../common/src/Endian.js ***!
   \*******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -27923,6 +29471,7 @@ module.exports = Endian;
   !*** ../common/src/PascalCoinInfo.js ***!
   \***************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -28061,6 +29610,7 @@ module.exports = PascalCoinInfo;
   !*** ../common/src/Sha.js ***!
   \****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28120,6 +29670,7 @@ module.exports = Sha;
   !*** ../common/src/Types/AccountName.js ***!
   \******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -28224,6 +29775,7 @@ module.exports = AccountName;
   !*** ../common/src/Types/AccountNumber.js ***!
   \********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -28368,6 +29920,7 @@ module.exports = AccountNumber;
   !*** ../common/src/Types/Currency.js ***!
   \***************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -28661,6 +30214,7 @@ module.exports = Currency;
   !*** ../common/src/Types/Keys/Curve.js ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -28908,6 +30462,7 @@ module.exports = Curve;
   !*** ../common/src/Types/Keys/KeyPair.js ***!
   \*******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -28981,6 +30536,7 @@ module.exports = KeyPair;
   !*** ../common/src/Types/Keys/PrivateKey.js ***!
   \**********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -28991,11 +30547,8 @@ module.exports = KeyPair;
  */
 const BC = __webpack_require__(/*! ../../BC */ "../common/src/BC.js");
 
-const Curve = __webpack_require__(/*! ./Curve */ "../common/src/Types/Keys/Curve.js");
-
 const P_KEY = Symbol('key');
 const P_CURVE = Symbol('curve');
-const P_LENGTH = Symbol('length');
 /**
  * Represents a public key in pascalcoin.
  */
@@ -29010,18 +30563,11 @@ class PrivateKey {
   constructor(key, curve) {
     this[P_KEY] = BC.from(key);
     this[P_CURVE] = curve;
-    this[P_LENGTH] = key.length;
     const privateKeyLength = curve.lPrivateKey();
 
-    if (this[P_LENGTH] > privateKeyLength) {
-      throw new Error(`Invalid length for curve ${curve.name} - ` + `expected <= ${privateKeyLength}, got ${this[P_LENGTH]}`);
+    if (this[P_KEY].length > privateKeyLength) {
+      throw new Error(`Invalid length for curve ${curve.name} - ` + `expected <= ${privateKeyLength}, got ${this[P_KEY].length}`);
     }
-    /*
-    if (this[P_LENGTH] < privateKeyLength) {
-      this[P_LENGTH] = privateKeyLength;
-      this[P_KEY] = key.prepend(BC.fromHex('00'.repeat(privateKeyLength - this[P_LENGTH])));
-    }*/
-
   }
   /**
      * Gets the key value.
@@ -29044,16 +30590,6 @@ class PrivateKey {
     return this.key;
   }
   /**
-     * Gets the y value of the key.
-     *
-     * @returns {Number}
-     */
-
-
-  get length() {
-    return this[P_LENGTH];
-  }
-  /**
      * Gets the used curve.
      *
      * @returns {Curve}
@@ -29062,33 +30598,6 @@ class PrivateKey {
 
   get curve() {
     return this[P_CURVE];
-  }
-  /**
-   * Encodes a private key to a BC defined by PascalCoin.
-   *
-   * @returns {BC}
-   */
-
-
-  encode() {
-    const curve = BC.fromInt(this.curve.id).switchEndian();
-    const length = BC.fromInt(this.length, 2).switchEndian();
-    return BC.concat(curve, length, this.key);
-  }
-  /**
-   * Decodes a PascalCoin private key string.
-   *
-   * @param {BC|Buffer|Uint8Array|String} encoded
-   * @returns {PrivateKey}
-   */
-
-
-  static decode(encoded) {
-    encoded = BC.from(encoded);
-    const curve = encoded.slice(0, 2).switchEndian().toInt();
-    const length = encoded.slice(2, 4).switchEndian().toInt();
-    const key = encoded.slice(4, 4 + length);
-    return new PrivateKey(key, new Curve(curve));
   }
 
 }
@@ -29102,6 +30611,7 @@ module.exports = PrivateKey;
   !*** ../common/src/Types/Keys/PublicKey.js ***!
   \*********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -29236,6 +30746,7 @@ module.exports = PublicKey;
   !*** ../common/src/Types/Keys/index.js ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -29252,6 +30763,7 @@ module.exports = {
   !*** ../common/src/Types/OperationHash.js ***!
   \********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -29287,44 +30799,9 @@ class OperationHash {
     this[P_N_OPERATION] = nOperation;
     this[P_MD160] = BC.from(md160);
 
-    if (md160.length !== 20) {
+    if (this[P_MD160].length !== 20) {
       throw new Error('Invalid operation hash - md160 size !== 20 bytes.');
     }
-  }
-  /**
-   * Decodes the given operation hash.
-   *
-   * @param {BC|Buffer|Uint8Array|String} opHash
-   */
-
-
-  static decode(opHash) {
-    opHash = BC.from(opHash);
-    const block = opHash.slice(0, 4).switchEndian().toInt();
-    const account = new AccountNumber(opHash.slice(4, 8).switchEndian().toInt());
-    const nOperation = opHash.slice(8, 12).switchEndian().toInt();
-    const md160 = opHash.slice(12);
-    return new OperationHash(block, account, nOperation, md160);
-  }
-  /**
-   * Creates the pascal encoding for an operation hash.
-   *
-   * @returns {BC}
-   */
-
-
-  encode() {
-    return BC.concat(BC.fromInt(this[P_BLOCK], 4).switchEndian(), BC.fromInt(this[P_ACCOUNT].account, 4).switchEndian(), BC.fromInt(this[P_N_OPERATION], 4).switchEndian(), this[P_MD160]);
-  }
-  /**
-   * Gets the operation hash as a pending operation.
-   *
-   * @returns {BC}
-   */
-
-
-  encodeAsPending() {
-    return new OperationHash(0, this[P_ACCOUNT], this[P_N_OPERATION], this[P_MD160]).encode();
   }
   /**
    * Gets the account that executed the operation.
@@ -29378,6 +30855,7 @@ module.exports = OperationHash;
   !*** ../common/src/Types/index.js ***!
   \************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -29395,30 +30873,21 @@ module.exports = {
   !*** ../common/src/Util.js ***!
   \*****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 class Util {
   /**
    * https://github.com/MauroJr/escape-regex/blob/master/index.js
+   * Tests are not performed.
    *
    * @param {String} string
    * @returns {string}
    */
+
+  /* istanbul ignore next */
   static escapeRegex(string) {
     return ('' + string).replace(/([?!${}*:()|=^[\]\/\\.+])/g, '\\$1');
-  }
-
-  static promiseWhile(data, condition, action) {
-    let whilst = data => {
-      return condition(data) ? action(data).then(whilst) : Promise.resolve(data);
-    };
-
-    return whilst(data);
-  }
-
-  // https://stackoverflow.com/questions/46479169/check-if-value-is-a-symbol-in-javascript
-  static isSymbol(x) {
-    return typeof x === 'symbol' || typeof x === 'object' && Object.prototype.toString.call(x) === '[object Symbol]';
   }
 
 }
@@ -29432,6 +30901,7 @@ module.exports = Util;
   !*** ../crypto/index.js ***!
   \**************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -29454,6 +30924,7 @@ module.exports = {
   !*** ../crypto/src/AES.js ***!
   \****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29538,6 +31009,7 @@ module.exports = AES;
   !*** ../crypto/src/ECDH.js ***!
   \*****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29621,6 +31093,7 @@ module.exports = ECDH;
   !*** ../crypto/src/KDF.js ***!
   \****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29679,6 +31152,7 @@ module.exports = KDF;
   !*** ../crypto/src/Keys.js ***!
   \*****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29702,15 +31176,18 @@ const Curve = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index
 
 const PrivateKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PrivateKey;
 
+const PrivateKeyCoder = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding.Pascal.Keys.PrivateKey;
+
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
 const KeyPair = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.KeyPair;
 
 const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
+
+const privKeyCoder = new PrivateKeyCoder();
 /**
  * Handles cryptographic keys.
  */
-
 
 class Keys {
   /**
@@ -29775,7 +31252,7 @@ class Keys {
 
     const encData = encryptedPrivateKey.slice(16);
     const privateKeyDecryptedAndEncoded = AES.decrypt(key.key, encData, key.iv);
-    return Keys.fromPrivateKey(PrivateKey.decode(privateKeyDecryptedAndEncoded));
+    return Keys.fromPrivateKey(privKeyCoder.decodeFromBytes(privateKeyDecryptedAndEncoded));
   }
   /**
    * Creates a new keypair from the given private key.
@@ -29788,7 +31265,7 @@ class Keys {
 
   static encrypt(privateKey, password) {
     password = BC.from(password, 'string');
-    const privateKeyEncoded = privateKey.encode();
+    const privateKeyEncoded = privKeyCoder.encodeToBytes(privateKey);
     const randomGenerator = new Random.Random();
     const salt = new BC(Buffer.from(randomGenerator.get(8))); // mocha sees an open setinterval and won't exit without this change
 
@@ -29809,8 +31286,13 @@ class Keys {
     // create an ecpair
     const ecPair = elliptic(keyPair.curve.name).keyFromPrivate(keyPair.privateKey.key.buffer);
     const signature = ecPair.sign(digest.buffer, ecPair.getPrivate('hex'), 'hex', {
-      canonical: true
-    });
+      canonical: false
+    }); // Verify signature
+
+    if (ecPair.verify(digest.buffer, signature.toDER()) === false) {
+      throw Error('Unable to verify the sign result.');
+    }
+
     return {
       s: new BC(Buffer.from(signature.s.toArray())),
       r: new BC(Buffer.from(signature.r.toArray()))
@@ -29829,6 +31311,7 @@ module.exports = Keys;
   !*** ../crypto/src/Payload.js ***!
   \********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29847,6 +31330,8 @@ const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules
 const mipherRandom = __webpack_require__(/*! mipher/dist/random */ "../../node_modules/mipher/dist/random.js");
 
 const KDF = __webpack_require__(/*! ./KDF */ "../crypto/src/KDF.js");
+
+const ECDH = __webpack_require__(/*! ./ECDH */ "../crypto/src/ECDH.js");
 /**
  * A class that can en-/decrypt payloads.
  */
@@ -29906,7 +31391,33 @@ class Payload {
    */
 
 
-  static decryptUsingPrivateKey() {
+  static decryptUsingPrivateKey(payload, keyPair) {
+    payload = BC.from(payload); // extract data
+
+    const publicKeyLength = payload.slice(0, 1).toInt();
+    const macLength = payload.slice(1, 2).toInt();
+    const origMsgLength = payload.slice(2, 4).switchEndian().toInt();
+    const messageLength = payload.slice(4, 6).switchEndian().toInt();
+    let start = 6;
+    let end = start + publicKeyLength;
+    const ecdhPubKey = payload.slice(start, end);
+    start = end + macLength;
+    end = start + messageLength + 1; // const ecdhMessage = payload.slice(6 + publicKeyLength + macLength,
+    // 6 + publicKeyLength + macLength + messageLength + 1).buffer;
+
+    const ecdhMessage = payload.slice(start, end);
+    const encryptedMessage = payload.slice(payload.length - messageLength, payload.length);
+    const macMessage = payload.slice(6 + publicKeyLength, 6 + publicKeyLength + macLength);
+    const dec = ECDH.decrypt(keyPair.privateKey, ecdhPubKey, ecdhMessage, origMsgLength);
+
+    const hmac = __webpack_require__(/*! crypto */ "../../node_modules/crypto-browserify/index.js").createHmac('md5', dec.key.buffer);
+
+    const m2 = BC.fromHex(hmac.update(encryptedMessage.buffer).digest('hex'));
+
+    if (new BC(macMessage).equals(new BC(m2))) {
+      return dec.data;
+    }
+
     return false;
   }
   /**
@@ -29917,7 +31428,22 @@ class Payload {
    */
 
 
-  static encryptUsingPublicKey() {}
+  static encryptUsingPublicKey(payload, publicKey) {
+    payload = BC.from(payload, 'string');
+    const enc = ECDH.encrypt(publicKey, payload);
+
+    const hmac = __webpack_require__(/*! crypto */ "../../node_modules/crypto-browserify/index.js").createHmac('md5', enc.key.buffer);
+
+    const m2 = BC.fromHex(hmac.update(enc.data.buffer).digest('hex'));
+    const messageToEncryptSize = payload.length;
+    const messageToEncryptPadSize = messageToEncryptSize % 16 === 0 ? 0 : 16 - messageToEncryptSize % 16;
+    return BC.concat(BC.fromInt(enc.publicKey.length), // key
+    BC.fromInt(m2.length), // mac
+    BC.fromInt(messageToEncryptSize, 2).switchEndian(), // orig
+    BC.fromInt(messageToEncryptSize + messageToEncryptPadSize, 2).switchEndian(), // body
+    enc.publicKey, // key itself
+    m2, enc.data);
+  }
 
 }
 
@@ -29931,6 +31457,7 @@ module.exports = Payload;
   !*** ../crypto/src/mipher/AES_CBC_ZeroPadding.js ***!
   \***************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const mipherAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
@@ -29987,6 +31514,7 @@ module.exports = AES_CBC_ZeroPadding;
   !*** ../crypto/src/mipher/HMAC_MD5.js ***!
   \****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const MipherHMAC = __webpack_require__(/*! mipher/dist/hmac */ "../../node_modules/mipher/dist/hmac.js").HMAC;
@@ -30013,6 +31541,7 @@ module.exports = HMAC_MD5;
   !*** ../crypto/src/mipher/MD5Mipher.js ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {const MD5 = __webpack_require__(/*! md5.js */ "../../node_modules/md5.js/index.js");
@@ -30098,14 +31627,15 @@ module.exports = MD5Mipher;
   !*** ./index.js ***!
   \******************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  OperationsBuilder: __webpack_require__(/*! ./src/OperationsBuilder */ "./src/OperationsBuilder.js"),
   Signer: __webpack_require__(/*! ./src/Signer */ "./src/Signer.js"),
+  RawOperations: __webpack_require__(/*! ./src/RawOperations */ "./src/RawOperations.js"),
+  RawOperationsCoder: __webpack_require__(/*! ./src/RawOperationsCoder */ "./src/RawOperationsCoder.js"),
   Coding: {
-    PublicKeyWithLength: __webpack_require__(/*! ./src/Coding/PublicKeyWithLength */ "./src/Coding/PublicKeyWithLength.js"),
-    StringWithoutLength: __webpack_require__(/*! ./src/Coding/StringWithoutLength */ "./src/Coding/StringWithoutLength.js")
+    PublicKeyWithLength: __webpack_require__(/*! ./src/Coding/PublicKeyWithLength */ "./src/Coding/PublicKeyWithLength.js")
   },
   Operations: __webpack_require__(/*! ./src/Operations */ "./src/Operations/index.js")
 };
@@ -30117,6 +31647,7 @@ module.exports = {
   !*** ./src/Abstract.js ***!
   \*************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30126,8 +31657,6 @@ module.exports = {
  * file that was distributed with this source code.
  */
 // const Payload = require('../Crypto/Payload');
-const Signer = __webpack_require__(/*! ./Signer */ "./src/Signer.js");
-
 const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
 const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
@@ -30139,8 +31668,6 @@ const P_S = Symbol('s');
 const P_R = Symbol('r');
 const P_FEE = Symbol('fee');
 const P_N_OPERATION = Symbol('nOperation');
-const P_RAW_CODER = Symbol('raw_coder');
-const P_DIGEST_CODER = Symbol('digest_coder');
 /**
  * Abstract class for RPC response objects.
  */
@@ -30148,25 +31675,20 @@ const P_DIGEST_CODER = Symbol('digest_coder');
 class Abstract {
   /**
    * Constructor.
-   *
-   * @param {CompositeType} digestCoder
-   * @param {CompositeType} rawCoder
    */
-  constructor(digestCoder, rawCoder) {
+  constructor() {
     this[P_PAYLOAD] = BC.fromString('');
     this[P_S] = null;
     this[P_R] = null;
     this[P_FEE] = new Currency(0);
-    this[P_DIGEST_CODER] = digestCoder;
-    this[P_RAW_CODER] = rawCoder;
   }
   /**
-     * Sets the payload of the transaction instance.
-     *
-     * @param {BC} payload
-     *
-     * @returns {Abstract}
-     */
+   * Sets the payload of the transaction instance.
+   *
+   * @param {BC} payload
+   *
+   * @returns {Abstract}
+   */
 
 
   withPayload(payload) {
@@ -30196,199 +31718,61 @@ class Abstract {
     this[P_FEE] = PascalCoinInfo.MIN_FEE(lastKnownBlock);
     return this;
   }
-  /**
-     * Returns a BC with the digest that needs to be hashed.
-     *
-     * @return {BC}
-     */
 
-
-  digest() {
-    return this[P_DIGEST_CODER].encodeToBytes(this);
-  }
-  /**
-   * Signs the given operation and returns a new rawoperations string.
-   *
-   * @param {KeyPair} keyPair
-   * @param {Number} nOperation
-   * @param {Boolean} useDigest
-   * @returns {Abstract}
-   */
-
-
-  sign(keyPair, nOperation, useDigest = false) {
+  withNOperation(nOperation) {
     this[P_N_OPERATION] = nOperation;
-    const digest = this.digest();
-    let signResult;
-
-    if (useDigest === true) {
-      signResult = Signer.signWithDigest(keyPair, digest);
-    } else {
-      signResult = Signer.signWithHash(keyPair, digest);
-    } // save results
-
-
-    this[P_R] = signResult.r;
-    this[P_S] = signResult.s;
     return this;
   }
+
+  withSign(r, s) {
+    this[P_R] = r;
+    this[P_S] = s;
+  }
   /**
-   * Returns the BC for a rawoperations info.
+   * Gets the prepared payload.
    *
-   * @return {BC}
-   */
-
-
-  toRaw() {
-    // eslint-disable-line class-methods-use-this
-    const raw = this[P_RAW_CODER].encodeToBytes(this);
-    return raw;
-  }
-  /**
-   * Returns the BC for a rawoperations info.
-   *
-   * @return {BC}
-   */
-
-
-  toRawDebug() {
-    // eslint-disable-line class-methods-use-this
-    return this[P_RAW_CODER].encodeToBytes(this, true);
-  }
-  /**
-     * Returns a new instance of the derived class based on the given raw
-     * string.
-     *
-     * @return {Abstract}
-     */
-  // eslint-disable-next-line class-methods-use-this
-
-
-  static fromRaw() {
-    throw new Error('Not implemented');
-  }
-  /**
-     * Gets a BC from the given int value.
-     *
-     * @param {Number} value
-     * @param {Number|undefined} size
-     * @returns {BC}
-     */
-  // eslint-disable-next-line class-methods-use-this
-
-
-  bcFromInt(value, size = null) {
-    return (size === null ? BC.fromInt(value) : BC.fromInt(value, size)).switchEndian();
-  }
-  /**
-     * Gets the given string as a byte collection with the size of the string
-     * prepended.
-     *
-     * @param {String} value
-     * @returns {BC}
-     */
-
-
-  bcFromStringWithSize(value) {
-    return BC.concat(this.bcFromInt(value.length, 2), this.bcFromString(value));
-  }
-  /**
-   * Gets the given BC as a byte collection with the size of
-   * the BC prepended.
-   *
-   * @param {BC} value
    * @returns {BC}
    */
-
-
-  bcFromBcWithSize(value) {
-    return BC.concat(this.bcFromInt(value.length, 2), value);
-  }
-  /**
-   * Extracts a BC with size from the given BC.
-   *
-   * @param {BC} value
-   * @param {Number} offset
-   * @returns {BC}
-   */
-
-
-  static readBCWithSize(value, offset) {
-    const data = {
-      size: value.slice(offset, offset + 2).switchEndian().toInt()
-    };
-    data.value = value.slice(offset + 2, offset + 2 + data.size);
-    return data;
-  }
-  /**
-     * Gets the BC from the given string.
-     *
-     * @param {String} value
-     * @returns {BC}
-     */
-
-
-  bcFromString(value) {
-    // eslint-disable-line class-methods-use-this
-    return BC.fromString(value);
-  }
-  /**
-     * Returns the BC for an r and s signing result.
-     *
-     * @param {BC} r
-     * @param {BC} s
-     * @returns {BC}
-     */
-
-
-  bcFromSign(r, s) {
-    return BC.concat(this.bcFromBcWithSize(r), this.bcFromBcWithSize(s));
-  }
-  /**
-     * Gets the prepared payload.
-     *
-     * @returns {BC}
-     */
 
 
   get payload() {
     return this[P_PAYLOAD];
   }
   /**
-     * Gets the r value of the sign result.
-     *
-     * @returns {BC|null}
-     */
+   * Gets the r value of the sign result.
+   *
+   * @returns {BC|null}
+   */
 
 
   get r() {
     return this[P_R];
   }
   /**
-     * Gets the s value of the sign result.
-     *
-     * @returns {BC|null}
-     */
+   * Gets the s value of the sign result.
+   *
+   * @returns {BC|null}
+   */
 
 
   get s() {
     return this[P_S];
   }
   /**
-     * Gets the fee.
-     *
-     * @returns {Currency}
-     */
+   * Gets the fee.
+   *
+   * @returns {Currency}
+   */
 
 
   get fee() {
     return this[P_FEE];
   }
   /**
-     * Gets the n operation.
-     *
-     * @returns {Number}
-     */
+   * Gets the n operation.
+   *
+   * @returns {Number}
+   */
 
 
   get nOperation() {
@@ -30405,6 +31789,10 @@ class Abstract {
     return this[P_S] !== null && this[P_R] !== null;
   }
 
+  usesDigestToSign() {
+    return false;
+  }
+
 }
 
 module.exports = Abstract;
@@ -30416,11 +31804,12 @@ module.exports = Abstract;
   !*** ./src/Coding/PublicKeyWithLength.js ***!
   \*******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding.Pascal.Keys.PublicKey;
 
-const VariableString = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding.Core.VariableString;
+const BytesWithLength = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding.Core.BytesWithLength;
 
 const PascalPublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
@@ -30429,9 +31818,9 @@ const publicKeyCoding = new PublicKey();
  * A special Int32 type that can handle account number.
  */
 
-class PublicKeyWithLength extends VariableString {
+class PublicKeyWithLength extends BytesWithLength {
   constructor(id = null) {
-    super(id || 'pubkey');
+    super(id || 'pubkey', 16);
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
@@ -30464,66 +31853,12 @@ module.exports = PublicKeyWithLength;
 
 /***/ }),
 
-/***/ "./src/Coding/StringWithoutLength.js":
-/*!*******************************************!*\
-  !*** ./src/Coding/StringWithoutLength.js ***!
-  \*******************************************/
+/***/ "./src/Operations/BuyAccount/DigestCoder.js":
+/*!**************************************************!*\
+  !*** ./src/Operations/BuyAccount/DigestCoder.js ***!
+  \**************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const AbstractType = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding.AbstractType;
-
-const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
-
-const P_SIZE = Symbol('size');
-/**
- * A field type to write dynamic strings (prepends the length).
- */
-
-class StringWithoutLength extends AbstractType {
-  /**
-   * Reads the string from the BC.
-   *
-   * @param {BC} bc
-   * @returns {BC}
-   */
-  decodeFromBytes(bc) {
-    return bc;
-  }
-  /**
-   * Appends the string to the BC.
-   *
-   * @param {String} value
-   * @returns {BC}
-   */
-
-
-  encodeToBytes(value) {
-    this[P_SIZE] = BC.from(value).length;
-    return BC.from(value);
-  }
-  /**
-   * Gets the size in bytes.
-   *
-   * @returns {Number}
-   */
-
-
-  get size() {
-    return this[P_SIZE];
-  }
-
-}
-
-module.exports = StringWithoutLength;
-
-/***/ }),
-
-/***/ "./src/Operations/BuyAccount.js":
-/*!**************************************!*\
-  !*** ./src/Operations/BuyAccount.js ***!
-  \**************************************/
-/*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30532,11 +31867,54 @@ module.exports = StringWithoutLength;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const Abstract = __webpack_require__(/*! ./../Abstract */ "./src/Abstract.js");
-
-const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
 
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+
+const CompositeType = Coding.CompositeType;
+/**
+ * A DATA operation object that can be signed.
+ */
+
+class DigestCoder extends CompositeType {
+  constructor(opType) {
+    super('buy_operation_digest');
+    super.description('Digest for buy account operation'); // config for digest creation
+
+    this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The buyer account.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account to buy'));
+    this.addSubType(new Coding.Pascal.Currency('amount').description('The amount paid for the account.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee paid for the operation.'));
+    this.addSubType(new Coding.Core.BytesWithoutLength('payload').description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').description('Curve ID 0 - previously active in <= v2.').withFixedValue(PublicKey.empty().curve));
+    this.addSubType(new Coding.Pascal.Currency('price').description('The price of the account to buy'));
+    this.addSubType(new Coding.Pascal.AccountNumber('seller').description('The account number of the seller'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the account.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The buy account optype as 8 bit int8'));
+  }
+
+}
+
+module.exports = DigestCoder;
+
+/***/ }),
+
+/***/ "./src/Operations/BuyAccount/Operation.js":
+/*!************************************************!*\
+  !*** ./src/Operations/BuyAccount/Operation.js ***!
+  \************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Abstract = __webpack_require__(/*! ./../../Abstract */ "./src/Abstract.js");
 
 const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
@@ -30558,7 +31936,7 @@ class BuyAccount extends Abstract {
    *
    * @returns {number}
    */
-  static get OPTYPE() {
+  get opType() {
     return 6;
   }
   /**
@@ -30582,54 +31960,29 @@ class BuyAccount extends Abstract {
     this[P_SELLER_ACCOUNT] = new AccountNumber(seller);
     this[P_NEW_PUBLIC_KEY] = newPublicKey;
   }
-  /**
-   * Gets the digest of the operation.
-   *
-   * @returns {BC}
-   */
 
-
-  digest() {
-    return BC.concat(this.bcFromInt(this[P_SENDER].account, 4), this.bcFromInt(this.nOperation, 4), this.bcFromInt(this[P_TARGET].account, 4), this.bcFromInt(this[P_AMOUNT].toMolina(), 8), this.bcFromInt(this.fee.toMolina(), 8), this.payload, this.bcFromInt(PublicKey.empty().curve.id, 2), // just zero as curve id
-    this.bcFromInt(this[P_ACCOUNT_PRICE].toMolina(), 8), this.bcFromInt(this[P_SELLER_ACCOUNT].account, 4), this[P_NEW_PUBLIC_KEY].encode(), BC.fromInt(BuyAccount.OPTYPE));
+  get sender() {
+    return this[P_SENDER];
   }
-  /**
-   * Gets the signed raw operations.
-   *
-   * @returns {BC}
-   */
 
-
-  toRaw() {
-    return BC.concat(this.bcFromInt(BuyAccount.OPTYPE, 4), this.bcFromInt(this[P_SENDER].account, 4), this.bcFromInt(this.nOperation, 4), this.bcFromInt(this[P_TARGET].account, 4), this.bcFromInt(this[P_AMOUNT].toMolina(), 8), this.bcFromInt(this.fee.toMolina(), 8), this.bcFromBcWithSize(this.payload), PublicKey.empty().encode(), // v2
-    this.bcFromInt(2, 1), // buy account
-    this.bcFromInt(this[P_ACCOUNT_PRICE].toMolina(), 8), this.bcFromInt(this[P_SELLER_ACCOUNT].account, 4), this[P_NEW_PUBLIC_KEY].encode(), this.bcFromSign(this.r, this.s));
+  get target() {
+    return this[P_TARGET];
   }
-  /**
-   * Gets a new Operation object from the given signed operation.
-   *
-   * @param {BC|Buffer|String|Uint8Array} raw
-   * @returns {BC}
-   */
 
+  get amount() {
+    return this[P_AMOUNT];
+  }
 
-  static fromRaw(raw) {
-    /*
-    raw = BC.from(raw);
-    const sender = raw.slice(4, 8).switchEndian().toInt();
-    const target = raw.slice(12, 16).switchEndian().toInt();
-    const amount = raw.slice(16, 24).switchEndian().toInt();
-    const fee = raw.slice(24, 32).switchEndian().toInt();
-    const payload = Abstract.readBCWithSize(raw, 32).value;
-    const publicKey = Abstract.readBCWithSize(raw, 34 + payload.length).value;
-    const price = raw.slice(36 + payload.length + publicKey.length, 8).switchEndian().toInt();
-    const seller = raw.slice(44 + payload.length + publicKey.length, 4).switchEndian().toInt();
-    const newPublicKey = Abstract.readBCWithSize(raw, 48 + payload.length + publicKey.length).value;
-     const op = new BuyAccount(sender, target, amount, price, seller, newPublicKey);
-     //op.withFee(dataType, dataSequence, amount);
-    //op.withFee(fee);
-    //op.withPayload(payload);
-     return op;*/
+  get price() {
+    return this[P_ACCOUNT_PRICE];
+  }
+
+  get seller() {
+    return this[P_SELLER_ACCOUNT];
+  }
+
+  get newPublicKey() {
+    return this[P_NEW_PUBLIC_KEY];
   }
 
 }
@@ -30638,11 +31991,12 @@ module.exports = BuyAccount;
 
 /***/ }),
 
-/***/ "./src/Operations/ChangeAccountInfo.js":
-/*!*********************************************!*\
-  !*** ./src/Operations/ChangeAccountInfo.js ***!
-  \*********************************************/
+/***/ "./src/Operations/BuyAccount/RawCoder.js":
+/*!***********************************************!*\
+  !*** ./src/Operations/BuyAccount/RawCoder.js ***!
+  \***********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30651,7 +32005,123 @@ module.exports = BuyAccount;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const Abstract = __webpack_require__(/*! ./../Abstract */ "./src/Abstract.js");
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
+
+const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Endian;
+
+const CompositeType = Coding.CompositeType;
+
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+
+const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/BuyAccount/Operation.js");
+/**
+ * A DATA operation object that can be signed.
+ */
+
+
+class RawCoder extends CompositeType {
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'Buy Account Operation (RAW)';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+
+  constructor(opType) {
+    super('buy_operation_raw');
+    this.description('The coder for the raw representation of a BuyAccount operation');
+    this.description('Encoded BuyAccount Operation');
+    this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The buyer account.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account to buy.'));
+    this.addSubType(new Coding.Pascal.Currency('amount').description('The amount to pay for the account.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee paid for the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('v2_public_key').description('Empty pubkey (6 zero bytes) - previously active in <= v2.').withFixedValue(PublicKey.empty()));
+    this.addSubType(new Coding.Core.Int8('type', true, Endian.LITTLE_ENDIAN).description('Fixed type for a "Buy account" transaction.').withFixedValue(2));
+    this.addSubType(new Coding.Pascal.Currency('price').description('The price of the account.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('seller').description('The account number of the seller.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key that will own the account.'));
+    this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the sign operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the sign operation.'));
+  }
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    const op = new Operation(decoded.sender, decoded.target, decoded.amount, decoded.price, decoded.seller, decoded.newPublicKey);
+    op.withFee(decoded.fee);
+    op.withPayload(decoded.payload);
+    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    return op;
+  }
+
+}
+
+module.exports = RawCoder;
+
+/***/ }),
+
+/***/ "./src/Operations/ChangeAccountInfo/DigestCoder.js":
+/*!*********************************************************!*\
+  !*** ./src/Operations/ChangeAccountInfo/DigestCoder.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
+
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+
+const CompositeType = Coding.CompositeType;
+/**
+ * A DATA operation object that can be signed.
+ */
+
+class DigestCoder extends CompositeType {
+  constructor(opType) {
+    super('change_info_operation_digest'); // config for digest creation
+
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The signer of the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The target account to change info of.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee paid for the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('v2_public_key').description('Empty pubkey (6 zero bytes) - previously active in <= v2.').withFixedValue(PublicKey.empty()));
+    this.addSubType(new Coding.Core.Int8('changeType').description('The change type.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the account.'));
+    this.addSubType(new Coding.Pascal.AccountName('newName').description('The new name of the account.'));
+    this.addSubType(new Coding.Core.Int16('newType').description('The new type of the account.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The buy account optype as 8 bit int8'));
+  }
+
+}
+
+module.exports = DigestCoder;
+
+/***/ }),
+
+/***/ "./src/Operations/ChangeAccountInfo/Operation.js":
+/*!*******************************************************!*\
+  !*** ./src/Operations/ChangeAccountInfo/Operation.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Abstract = __webpack_require__(/*! ./../../Abstract */ "./src/Abstract.js");
 
 const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
 
@@ -30670,33 +32140,8 @@ const P_WITH_NEW_PUBKEY = Symbol('with_new_pubkey');
 const P_WITH_NEW_NAME = Symbol('with_new_name');
 const P_WITH_NEW_TYPE = Symbol('with_new_type');
 /**
- * Gets the change type of the op.
- *
- * @param {ChangeAccountInfo} op
- * @returns {number}
- */
-
-function getChangeType(op) {
-  let changeType = 0;
-
-  if (op[P_WITH_NEW_PUBKEY] === true) {
-    changeType |= 1;
-  }
-
-  if (op[P_WITH_NEW_NAME] === true) {
-    changeType |= 2;
-  }
-
-  if (op[P_WITH_NEW_TYPE] === true) {
-    changeType |= 4;
-  }
-
-  return changeType;
-}
-/**
  * A transaction object that can be signed.
  */
-
 
 class ChangeAccountInfo extends Abstract {
   /**
@@ -30704,7 +32149,7 @@ class ChangeAccountInfo extends Abstract {
      *
      * @returns {number}
      */
-  static get OPTYPE() {
+  get opType() {
     return 8;
   }
   /**
@@ -30726,6 +32171,50 @@ class ChangeAccountInfo extends Abstract {
     this[P_WITH_NEW_PUBKEY] = false;
     this[P_WITH_NEW_NAME] = false;
     this[P_WITH_NEW_TYPE] = false;
+  }
+
+  get signer() {
+    return this[P_ACCOUNT_SIGNER];
+  }
+
+  get target() {
+    return this[P_ACCOUNT_TARGET];
+  }
+
+  get newPublicKey() {
+    return this[P_NEW_PUBLIC_KEY];
+  }
+
+  get newName() {
+    return this[P_NEW_NAME];
+  }
+
+  get newType() {
+    return this[P_NEW_TYPE];
+  }
+  /**
+   * Gets the change type of the op.
+   *
+   * @returns {number}
+   */
+
+
+  get changeType() {
+    let changeType = 0;
+
+    if (this[P_WITH_NEW_PUBKEY] === true) {
+      changeType |= 1;
+    }
+
+    if (this[P_WITH_NEW_NAME] === true) {
+      changeType |= 2;
+    }
+
+    if (this[P_WITH_NEW_TYPE] === true) {
+      changeType |= 4;
+    }
+
+    return changeType;
   }
   /**
      * Will set the new public key.
@@ -30766,32 +32255,72 @@ class ChangeAccountInfo extends Abstract {
     this[P_WITH_NEW_TYPE] = true;
     return this;
   }
-  /**
-     * Gets the digest of the operation.
-     *
-     * @returns {BC}
-     */
-
-
-  digest() {
-    return BC.concat(this.bcFromInt(this[P_ACCOUNT_SIGNER].account, 4), this.bcFromInt(this[P_ACCOUNT_TARGET].account, 4), this.bcFromInt(this.nOperation, 4), this.bcFromInt(this.fee.toMolina(), 8), this.bcFromBcWithSize(this.payload), PublicKey.empty().encode(), // v2
-    this.bcFromInt(getChangeType(this)), this[P_NEW_PUBLIC_KEY].encode(), this.bcFromBcWithSize(BC.fromString(this[P_NEW_NAME].toString())), this.bcFromInt(this[P_NEW_TYPE], 2), this.bcFromInt(ChangeAccountInfo.OPTYPE));
-  }
-  /**
-     * Gets the raw implementation.
-     *
-     * @returns {BC}
-     */
-
-
-  toRaw() {
-    return BC.concat(this.bcFromInt(ChangeAccountInfo.OPTYPE, 4), this.bcFromInt(this[P_ACCOUNT_SIGNER].account, 4), this.bcFromInt(this[P_ACCOUNT_TARGET].account, 4), this.bcFromInt(this.nOperation, 4), this.bcFromInt(this.fee.toMolina(), 8), this.bcFromBcWithSize(this.payload), PublicKey.empty().encode(), // v2
-    this.bcFromInt(getChangeType(this)), this[P_NEW_PUBLIC_KEY].encode(), this.bcFromBcWithSize(BC.fromString(this[P_NEW_NAME].toString())), this.bcFromInt(this[P_NEW_TYPE], 2), this.bcFromSign(this.r, this.s));
-  }
 
 }
 
 module.exports = ChangeAccountInfo;
+
+/***/ }),
+
+/***/ "./src/Operations/ChangeAccountInfo/RawCoder.js":
+/*!******************************************************!*\
+  !*** ./src/Operations/ChangeAccountInfo/RawCoder.js ***!
+  \******************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
+
+const CompositeType = Coding.CompositeType;
+
+const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
+
+const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/ChangeAccountInfo/Operation.js");
+/**
+ * A DATA operation object that can be signed.
+ */
+
+
+class RawCoder extends CompositeType {
+  constructor(opType) {
+    super('buy_operation_raw');
+    this.description('Encoded BuyAccount Operation');
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The signer of the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The target account to change info of.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation value of the buyer.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee paid for the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('v2_public_key').description('Empty pubkey (6 zero bytes) - previously active in <= v2.').withFixedValue(PublicKey.empty()));
+    this.addSubType(new Coding.Core.Int8('changeType').description('The change type.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the account.'));
+    this.addSubType(new Coding.Pascal.AccountName('newName').description('The new name of the account.'));
+    this.addSubType(new Coding.Core.Int16('newType').description('The new type of the account.'));
+    this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the sign operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the sign operation.'));
+  }
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    const op = new Operation(decoded.signer, decoded.target);
+    op.withNewType(decoded.type);
+    op.withNewName(decoded.name);
+    op.withNewPublicKey(decoded.newPublicKey);
+    op.withFee(decoded.fee);
+    op.withPayload(decoded.payload);
+    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    return op;
+  }
+
+}
+
+module.exports = RawCoder;
 
 /***/ }),
 
@@ -30800,6 +32329,7 @@ module.exports = ChangeAccountInfo;
   !*** ./src/Operations/ChangeKey.js ***!
   \*************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30876,6 +32406,7 @@ module.exports = ChangeKey;
   !*** ./src/Operations/ChangeKeySigned.js ***!
   \*******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30954,6 +32485,7 @@ module.exports = ChangeKeySigned;
   !*** ./src/Operations/Data/DigestCoder.js ***!
   \********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30975,16 +32507,16 @@ class DigestCoder extends CompositeType {
   constructor(opType) {
     super('data_operation_digest'); // config for digest creation
 
-    this.addField(new Coding.Pascal.AccountNumber('signer'));
-    this.addField(new Coding.Pascal.AccountNumber('sender'));
-    this.addField(new Coding.Pascal.AccountNumber('target'));
-    this.addField(new Coding.Pascal.NOperation());
-    this.addField(new Coding.Core.Int16('dataType', true, Endian.LITTLE_ENDIAN));
-    this.addField(new Coding.Core.Int16('dataSequence', true, Endian.LITTLE_ENDIAN));
-    this.addField(new Coding.Pascal.Currency('amount'));
-    this.addField(new Coding.Pascal.Currency('fee'));
-    this.addField(new Coding.Core.VariableString('payload'));
-    this.addField(new Coding.Pascal.OpType(1).setFixedValue(opType));
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The account that sends the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will receive the operation.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
+    this.addSubType(new Coding.Core.Int16('dataType', true, Endian.LITTLE_ENDIAN).description('The data type of the operation.'));
+    this.addSubType(new Coding.Core.Int16('dataSequence', true, Endian.LITTLE_ENDIAN).description('The data sequence of the operation.'));
+    this.addSubType(new Coding.Pascal.Currency('amount').description('The amount associated with the operation.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated with the operation'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The optype as 8bit int.'));
   }
 
 }
@@ -30998,6 +32530,7 @@ module.exports = DigestCoder;
   !*** ./src/Operations/Data/Operation.js ***!
   \******************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31012,10 +32545,6 @@ const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../comm
 
 const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
-const RawCoder = __webpack_require__(/*! ./RawCoder */ "./src/Operations/Data/RawCoder.js");
-
-const DigestCoder = __webpack_require__(/*! ./DigestCoder */ "./src/Operations/Data/DigestCoder.js");
-
 const P_ACCOUNT_SIGNER = Symbol('account_signer');
 const P_ACCOUNT_SENDER = Symbol('account_sender');
 const P_ACCOUNT_TARGET = Symbol('account_target');
@@ -31026,13 +32555,13 @@ const P_AMOUNT = Symbol('amount');
  * A DATA operation object that can be signed.
  */
 
-class Operation extends Abstract {
+class Data extends Abstract {
   /**
    * Gets the optype.
    *
    * @returns {number}
    */
-  static get OPTYPE() {
+  get opType() {
     return 10;
   }
   /**
@@ -31045,7 +32574,7 @@ class Operation extends Abstract {
 
 
   constructor(signer, sender, target) {
-    super(new DigestCoder(Operation.OPTYPE), new RawCoder(Operation.OPTYPE));
+    super();
     this[P_ACCOUNT_SIGNER] = new AccountNumber(signer);
     this[P_ACCOUNT_SENDER] = new AccountNumber(sender);
     this[P_ACCOUNT_TARGET] = new AccountNumber(target);
@@ -31149,21 +32678,14 @@ class Operation extends Abstract {
   get amount() {
     return this[P_AMOUNT];
   }
-  /**
-   * Data ops are signed with the digest, not the hash of the digest.
-   *
-   * @param {KeyPair} keyPair
-   * @param {Number} nOperation
-   */
 
-
-  sign(keyPair, nOperation) {
-    super.sign(keyPair, nOperation, true);
+  usesDigestToSign() {
+    return true;
   }
 
 }
 
-module.exports = Operation;
+module.exports = Data;
 
 /***/ }),
 
@@ -31172,6 +32694,7 @@ module.exports = Operation;
   !*** ./src/Operations/Data/RawCoder.js ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31185,25 +32708,39 @@ const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/inde
 const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Endian;
 
 const CompositeType = Coding.CompositeType;
+
+const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/Data/Operation.js");
 /**
  * A DATA operation object that can be signed.
  */
 
+
 class RawCoder extends CompositeType {
   constructor(opType) {
     super('data_operation_raw');
-    this.addField(new Coding.Pascal.OpType(4).setFixedValue(opType));
-    this.addField(new Coding.Pascal.AccountNumber('signer'));
-    this.addField(new Coding.Pascal.AccountNumber('sender'));
-    this.addField(new Coding.Pascal.AccountNumber('target'));
-    this.addField(new Coding.Pascal.NOperation());
-    this.addField(new Coding.Core.Int16('dataType', true, Endian.LITTLE_ENDIAN));
-    this.addField(new Coding.Core.Int16('dataSequence', true, Endian.LITTLE_ENDIAN));
-    this.addField(new Coding.Pascal.Currency('amount'));
-    this.addField(new Coding.Pascal.Currency('fee'));
-    this.addField(new Coding.Core.VariableString('payload'));
-    this.addField(new Coding.Core.VariableString('r'));
-    this.addField(new Coding.Core.VariableString('s'));
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The account that sends the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will receive the operation.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
+    this.addSubType(new Coding.Core.Int16('dataType', true, Endian.LITTLE_ENDIAN).description('The data type of the operation.'));
+    this.addSubType(new Coding.Core.Int16('dataSequence', true, Endian.LITTLE_ENDIAN).description('The data sequence of the operation.'));
+    this.addSubType(new Coding.Pascal.Currency('amount').description('The amount associated the operation.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the signed operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('R value of the signed operation.'));
+  }
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    const op = new Operation(decoded.signer, decoded.sender, decoded.target);
+    op.withDataType(decoded.dataType);
+    op.withDataSequence(decoded.dataSequence);
+    op.withAmount(decoded.amount);
+    op.withFee(decoded.fee);
+    op.withPayload(decoded.payload);
+    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    return op;
   }
 
 }
@@ -31217,6 +32754,7 @@ module.exports = RawCoder;
   !*** ./src/Operations/DeListAccountForSale/DigestCoder.js ***!
   \************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31230,28 +32768,25 @@ const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/inde
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
 const CompositeType = Coding.CompositeType;
-
-const StringWithoutLength = __webpack_require__(/*! ./../../Coding/StringWithoutLength */ "./src/Coding/StringWithoutLength.js");
 /**
  * A DATA operation object that can be signed.
  */
-
 
 class DigestCoder extends CompositeType {
   constructor(opType) {
     super('delist_operation_digest'); // config for digest creation
 
-    this.addField(new Coding.Pascal.AccountNumber('signer'));
-    this.addField(new Coding.Pascal.AccountNumber('target'));
-    this.addField(new Coding.Pascal.NOperation());
-    this.addField(new Coding.Pascal.Currency('price'));
-    this.addField(new Coding.Pascal.AccountNumber('accountToPay'));
-    this.addField(new Coding.Pascal.Currency('fee'));
-    this.addField(new StringWithoutLength('payload'));
-    this.addField(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').setFixedValue(PublicKey.empty().curve));
-    this.addField(new Coding.Pascal.Keys.PublicKey('newPublicKey'));
-    this.addField(new Coding.Core.Int32('lockedUntilBlock'));
-    this.addField(new Coding.Pascal.OpType(1).setFixedValue(opType));
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will be de-listed.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
+    this.addSubType(new Coding.Pascal.Currency('price').description('The price of the target account.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('accountToPay').description('The account where the amount goes to when the target is sold.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated with the operation'));
+    this.addSubType(new Coding.Core.BytesWithoutLength('payload').description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').withFixedValue(PublicKey.empty().curve).description('Curve ID 0 - previously active in <= v2.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the buyer (private sale).'));
+    this.addSubType(new Coding.Core.Int32('lockedUntilBlock').description('The block number until the account is locked.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The optype as 8bit int.'));
   }
 
 }
@@ -31265,6 +32800,7 @@ module.exports = DigestCoder;
   !*** ./src/Operations/DeListAccountForSale/Operation.js ***!
   \**********************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31281,10 +32817,6 @@ const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../comm
 
 const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
 
-const RawCoder = __webpack_require__(/*! ./RawCoder */ "./src/Operations/DeListAccountForSale/RawCoder.js");
-
-const DigestCoder = __webpack_require__(/*! ./DigestCoder */ "./src/Operations/DeListAccountForSale/DigestCoder.js");
-
 const P_ACCOUNT_SIGNER = Symbol('account_signer');
 const P_ACCOUNT_TARGET = Symbol('account_target');
 const P_PRICE = Symbol('price');
@@ -31295,13 +32827,13 @@ const P_LOCKED_UNTIL_BLOCK = Symbol('locked_until_block');
  * A transaction object that can be signed.
  */
 
-class Operation extends Abstract {
+class DeListAccountForSale extends Abstract {
   /**
    * Gets the optype.
    *
    * @returns {number}
    */
-  static get OPTYPE() {
+  get opType() {
     return 5;
   }
   /**
@@ -31312,7 +32844,7 @@ class Operation extends Abstract {
 
 
   constructor(accountSigner, accountTarget) {
-    super(new DigestCoder(Operation.OPTYPE), new RawCoder(Operation.OPTYPE));
+    super();
     this[P_ACCOUNT_SIGNER] = new AccountNumber(accountSigner);
     this[P_ACCOUNT_TARGET] = new AccountNumber(accountTarget);
     this[P_PRICE] = new Currency(0);
@@ -31347,7 +32879,7 @@ class Operation extends Abstract {
 
 }
 
-module.exports = Operation;
+module.exports = DeListAccountForSale;
 
 /***/ }),
 
@@ -31356,6 +32888,7 @@ module.exports = Operation;
   !*** ./src/Operations/DeListAccountForSale/RawCoder.js ***!
   \*********************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31367,22 +32900,33 @@ module.exports = Operation;
 const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
 
 const CompositeType = Coding.CompositeType;
+
+const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/DeListAccountForSale/Operation.js");
 /**
  * A DATA operation object that can be signed.
  */
 
+
 class RawCoder extends CompositeType {
   constructor(opType) {
     super('delist_operation_raw');
-    this.addField(new Coding.Pascal.OpType(4).setFixedValue(opType));
-    this.addField(new Coding.Pascal.AccountNumber('signer'));
-    this.addField(new Coding.Pascal.AccountNumber('target'));
-    this.addField(new Coding.Pascal.OpType(2).setFixedValue(opType));
-    this.addField(new Coding.Pascal.NOperation());
-    this.addField(new Coding.Pascal.Currency('fee'));
-    this.addField(new Coding.Core.VariableString('payload'));
-    this.addField(new Coding.Core.VariableString('r'));
-    this.addField(new Coding.Core.VariableString('s'));
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will be listed.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 2).withFixedValue(opType).description(`The optype of the operation (${opType})`));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated with the operation'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the signed operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('R value of the signed operation.'));
+  }
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    const op = new Operation(decoded.signer, decoded.target);
+    op.withFee(decoded.fee);
+    op.withPayload(decoded.payload);
+    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    return op;
   }
 
 }
@@ -31396,6 +32940,7 @@ module.exports = RawCoder;
   !*** ./src/Operations/ListAccountForSale/DigestCoder.js ***!
   \**********************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31408,29 +32953,28 @@ const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/inde
 
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
-const CompositeType = Coding.CompositeType;
+const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Endian;
 
-const StringWithoutLength = __webpack_require__(/*! ./../../Coding/StringWithoutLength */ "./src/Coding/StringWithoutLength.js");
+const CompositeType = Coding.CompositeType;
 /**
  * A DATA operation object that can be signed.
  */
-
 
 class DigestCoder extends CompositeType {
   constructor(opType) {
     super('data_operation_digest'); // config for digest creation
 
-    this.addField(new Coding.Pascal.AccountNumber('signer'));
-    this.addField(new Coding.Pascal.AccountNumber('target'));
-    this.addField(new Coding.Pascal.NOperation());
-    this.addField(new Coding.Pascal.Currency('price'));
-    this.addField(new Coding.Pascal.AccountNumber('accountToPay'));
-    this.addField(new Coding.Pascal.Currency('fee'));
-    this.addField(new StringWithoutLength('payload'));
-    this.addField(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').setFixedValue(PublicKey.empty().curve));
-    this.addField(new Coding.Pascal.Keys.PublicKey('newPublicKey'));
-    this.addField(new Coding.Core.Int32('lockedUntilBlock'));
-    this.addField(new Coding.Pascal.OpType(1).setFixedValue(opType));
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will be listed.'));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
+    this.addSubType(new Coding.Pascal.Currency('price').description('The price of the target account.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('accountToPay').description('The account where the amount goes to when the target is sold.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated with the operation'));
+    this.addSubType(new Coding.Core.StringWithoutLength('payload').description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').withFixedValue(PublicKey.empty().curve).description('Curve ID 0 - previously active in <= v2.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('newPublicKey').description('The new public key of the buyer (private sale).'));
+    this.addSubType(new Coding.Core.Int32('lockedUntilBlock', true, Endian.LITTLE_ENDIAN).description('The block number until the account is locked.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).withFixedValue(opType).description('The optype as 8bit int.'));
   }
 
 }
@@ -31444,6 +32988,7 @@ module.exports = DigestCoder;
   !*** ./src/Operations/ListAccountForSale/Operation.js ***!
   \********************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31454,17 +32999,11 @@ module.exports = DigestCoder;
  */
 const Abstract = __webpack_require__(/*! ./../../Abstract */ "./src/Abstract.js");
 
-const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
-
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
 const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
 const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Currency;
-
-const RawCoder = __webpack_require__(/*! ./RawCoder */ "./src/Operations/ListAccountForSale/RawCoder.js");
-
-const DigestCoder = __webpack_require__(/*! ./DigestCoder */ "./src/Operations/ListAccountForSale/DigestCoder.js");
 
 const P_ACCOUNT_SIGNER = Symbol('account_signer');
 const P_ACCOUNT_TARGET = Symbol('account_target');
@@ -31476,13 +33015,13 @@ const P_LOCKED_UNTIL_BLOCK = Symbol('locked_until_block');
  * A transaction object that can be signed.
  */
 
-class Operation extends Abstract {
+class ListAccountForSale extends Abstract {
   /**
      * Gets the optype.
      *
      * @returns {number}
      */
-  static get OPTYPE() {
+  get opType() {
     return 4;
   }
   /**
@@ -31495,7 +33034,7 @@ class Operation extends Abstract {
 
 
   constructor(accountSigner, accountTarget, price, accountToPay) {
-    super(new DigestCoder(Operation.OPTYPE), new RawCoder(Operation.OPTYPE));
+    super();
     this[P_ACCOUNT_SIGNER] = new AccountNumber(accountSigner);
     this[P_ACCOUNT_TARGET] = new AccountNumber(accountTarget);
     this[P_PRICE] = new Currency(price);
@@ -31539,36 +33078,10 @@ class Operation extends Abstract {
     this[P_NEW_PUBLIC_KEY] = newPublicKey;
     this[P_LOCKED_UNTIL_BLOCK] = parseInt(lockedUntilBlock, 10);
   }
-  /**
-     * Gets the digest of the operation.
-     *
-     * @returns {BC}
-     */
-
-
-  digest2() {
-    return BC.concat(this.bcFromInt(this[P_ACCOUNT_SIGNER].account, 4), this.bcFromInt(this[P_ACCOUNT_TARGET].account, 4), this.bcFromInt(this.nOperation, 4), this.bcFromInt(this[P_PRICE].toMolina(), 8), this.bcFromInt(this[P_ACCOUNT_TO_PAY].account, 4), this.bcFromInt(this.fee.toMolina(), 8), this.payload, this.bcFromInt(PublicKey.empty().curve.id, 2), // just zero as curve id
-    // this[P_NEW_PUBLIC_KEY].encode(),
-    this.bcFromInt(this[P_LOCKED_UNTIL_BLOCK], 4), this.bcFromInt(Operation.OPTYPE));
-  }
-  /**
-     * Gets the raw implementation.
-     *
-     * @returns {BC}
-     */
-
-
-  toRaw2() {
-    return BC.concat(this.bcFromInt(Operation.OPTYPE, 4), this.bcFromInt(this[P_ACCOUNT_SIGNER].account, 4), this.bcFromInt(this[P_ACCOUNT_TARGET].account, 4), this.bcFromInt(4, 2), // list account for sale
-    this.bcFromInt(this.nOperation, 4), this.bcFromInt(this[P_PRICE].toMolina(), 8), this.bcFromInt(this[P_ACCOUNT_TO_PAY].account, 4), this.bcFromInt(PublicKey.empty().curve.id, 2), // just zero as curve id
-    this.bcFromInt(0, 2), // x length
-    this.bcFromInt(0, 2), // y length
-    this.bcFromInt(this[P_NEW_PUBLIC_KEY].encode().length, 2), this[P_NEW_PUBLIC_KEY].encode(), this.bcFromInt(this[P_LOCKED_UNTIL_BLOCK], 4), this.bcFromInt(this.fee.toMolina(), 8), this.bcFromBcWithSize(this.payload), this.bcFromSign(this.r, this.s));
-  }
 
 }
 
-module.exports = Operation;
+module.exports = ListAccountForSale;
 
 /***/ }),
 
@@ -31577,6 +33090,7 @@ module.exports = Operation;
   !*** ./src/Operations/ListAccountForSale/RawCoder.js ***!
   \*******************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31594,27 +33108,39 @@ const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/inde
 const PublicKeyWithLength = __webpack_require__(/*! ./../../Coding/PublicKeyWithLength */ "./src/Coding/PublicKeyWithLength.js");
 
 const CompositeType = Coding.CompositeType;
+
+const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/ListAccountForSale/Operation.js");
 /**
  * A DATA operation object that can be signed.
  */
 
+
 class RawCoder extends CompositeType {
   constructor(opType) {
     super('list_operation_raw');
-    this.addField(new Coding.Pascal.OpType(4).setFixedValue(opType));
-    this.addField(new Coding.Pascal.AccountNumber('signer'));
-    this.addField(new Coding.Pascal.AccountNumber('target'));
-    this.addField(new Coding.Pascal.OpType(2).setFixedValue(opType));
-    this.addField(new Coding.Pascal.NOperation());
-    this.addField(new Coding.Pascal.Currency('price'));
-    this.addField(new Coding.Pascal.AccountNumber('accountToPay'));
-    this.addField(new Coding.Pascal.Keys.PublicKey('v2_pubkey').setFixedValue(PublicKey.empty()));
-    this.addField(new PublicKeyWithLength('newPublicKey'));
-    this.addField(new Coding.Core.Int32('lockedUntilBlock', true, Endian.LITTLE_ENDIAN));
-    this.addField(new Coding.Pascal.Currency('fee'));
-    this.addField(new Coding.Core.VariableString('payload'));
-    this.addField(new Coding.Core.VariableString('r'));
-    this.addField(new Coding.Core.VariableString('s'));
+    this.addSubType(new Coding.Pascal.AccountNumber('signer').description('The account that executes the operation.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The account that will be listed.'));
+    this.addSubType(new Coding.Pascal.OpType('optype', 2).withFixedValue(opType).description(`The optype of the operation (${opType})`));
+    this.addSubType(new Coding.Pascal.NOperation().description('The next n_operation of the signer.'));
+    this.addSubType(new Coding.Pascal.Currency('price').description('The price of the target account.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('accountToPay').description('The account where the amount goes to when the target is sold.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('v2_pubkey').description('Empty pubkey (6 zero bytes) - previously active in <= v2.').withFixedValue(PublicKey.empty()));
+    this.addSubType(new PublicKeyWithLength('newPublicKey').description('The new public key of the buyer (private sale).'));
+    this.addSubType(new Coding.Core.Int32('lockedUntilBlock', true, Endian.LITTLE_ENDIAN).description('The block number until the account is locked.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee associated with the operation'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the signed operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the signed operation.'));
+  }
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    const op = new Operation(decoded.signer, decoded.target, decoded.price, decoded.accountToPay);
+    op.asPrivateSale(decoded.newPublicKey, decoded.lockedUntilBlock);
+    op.withFee(decoded.fee);
+    op.withPayload(decoded.payload);
+    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    return op;
   }
 
 }
@@ -31628,6 +33154,7 @@ module.exports = RawCoder;
   !*** ./src/Operations/Transaction/DigestCoder.js ***!
   \***************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31641,25 +33168,22 @@ const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/inde
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
 const CompositeType = Coding.CompositeType;
-
-const StringWithoutLength = __webpack_require__(/*! ./../../Coding/StringWithoutLength */ "./src/Coding/StringWithoutLength.js");
 /**
  * A DATA operation object that can be signed.
  */
-
 
 class DigestCoder extends CompositeType {
   constructor(opType) {
     super('tx_operation_digest'); // config for digest creation
 
-    this.addField(new Coding.Pascal.AccountNumber('sender'));
-    this.addField(new Coding.Pascal.NOperation('nOperation'));
-    this.addField(new Coding.Pascal.AccountNumber('target'));
-    this.addField(new Coding.Pascal.Currency('amount'));
-    this.addField(new Coding.Pascal.Currency('fee'));
-    this.addField(new StringWithoutLength('payload'));
-    this.addField(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').setFixedValue(PublicKey.empty().curve));
-    this.addField(new Coding.Pascal.OpType(1).setFixedValue(opType));
+    this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The sender account.'));
+    this.addSubType(new Coding.Pascal.NOperation('nOperation').description('The next n_operation value of the sender.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The receiving account.'));
+    this.addSubType(new Coding.Pascal.Currency('amount').description('The amount that is sent from sender to receiver.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee included in the operation.'));
+    this.addSubType(new Coding.Core.BytesWithoutLength('payload').description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.Curve('v2_pubkey_curve').description('Curve ID 0 - previously active in <= v2.').withFixedValue(PublicKey.empty().curve));
+    this.addSubType(new Coding.Pascal.OpType('optype', 1).description('Operation type.').withFixedValue(opType));
   }
 
 }
@@ -31673,6 +33197,7 @@ module.exports = DigestCoder;
   !*** ./src/Operations/Transaction/Operation.js ***!
   \*************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31687,10 +33212,6 @@ const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/in
 
 const AccountNumber = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.AccountNumber;
 
-const RawCoder = __webpack_require__(/*! ./RawCoder */ "./src/Operations/Transaction/RawCoder.js");
-
-const DigestCoder = __webpack_require__(/*! ./DigestCoder */ "./src/Operations/Transaction/DigestCoder.js");
-
 const P_ACCOUNT_SENDER = Symbol('sender');
 const P_ACCOUNT_TARGET = Symbol('target');
 const P_AMOUNT = Symbol('amount');
@@ -31698,13 +33219,13 @@ const P_AMOUNT = Symbol('amount');
  * A transaction object that can be signed.
  */
 
-class Operation extends Abstract {
+class Transaction extends Abstract {
   /**
      * Gets the optype.
      *
      * @returns {number}
      */
-  static get OPTYPE() {
+  get opType() {
     return 1;
   }
   /**
@@ -31745,7 +33266,7 @@ class Operation extends Abstract {
 
 
   constructor(sender, target, amount) {
-    super(new DigestCoder(Operation.OPTYPE), new RawCoder(Operation.OPTYPE));
+    super();
     this[P_ACCOUNT_SENDER] = new AccountNumber(sender);
     this[P_ACCOUNT_TARGET] = new AccountNumber(target);
     this[P_AMOUNT] = new Currency(amount);
@@ -31753,7 +33274,7 @@ class Operation extends Abstract {
 
 }
 
-module.exports = Operation;
+module.exports = Transaction;
 
 /***/ }),
 
@@ -31762,6 +33283,7 @@ module.exports = Operation;
   !*** ./src/Operations/Transaction/RawCoder.js ***!
   \************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31775,23 +33297,34 @@ const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/inde
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.PublicKey;
 
 const CompositeType = Coding.CompositeType;
+
+const Operation = __webpack_require__(/*! ./Operation */ "./src/Operations/Transaction/Operation.js");
 /**
  * A DATA operation object that can be signed.
  */
 
+
 class RawCoder extends CompositeType {
-  constructor(opType) {
+  constructor() {
     super('data_operation_raw');
-    this.addField(new Coding.Pascal.OpType(4).setFixedValue(opType));
-    this.addField(new Coding.Pascal.AccountNumber('sender'));
-    this.addField(new Coding.Pascal.NOperation('nOperation'));
-    this.addField(new Coding.Pascal.AccountNumber('target'));
-    this.addField(new Coding.Pascal.Currency('amount'));
-    this.addField(new Coding.Pascal.Currency('fee'));
-    this.addField(new Coding.Core.VariableString('payload'));
-    this.addField(new Coding.Pascal.Keys.PublicKey('v2_pubkey').setFixedValue(PublicKey.empty()));
-    this.addField(new Coding.Core.VariableString('r'));
-    this.addField(new Coding.Core.VariableString('s'));
+    this.addSubType(new Coding.Pascal.AccountNumber('sender').description('The sender account.'));
+    this.addSubType(new Coding.Pascal.NOperation('nOperation').description('The next n_operation value of the sender.'));
+    this.addSubType(new Coding.Pascal.AccountNumber('target').description('The receiving account.'));
+    this.addSubType(new Coding.Pascal.Currency('amount').description('The amount that is sent from sender to receiver.'));
+    this.addSubType(new Coding.Pascal.Currency('fee').description('The fee included in the operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('payload', 2).description('The payload of the operation.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('v2_pubkey').description('Empty pubkey (6 zero bytes) - previously active in <= v2.').withFixedValue(PublicKey.empty()));
+    this.addSubType(new Coding.Core.BytesWithLength('r', 2).description('R value of the signed operation.'));
+    this.addSubType(new Coding.Core.BytesWithLength('s', 2).description('S value of the signed operation.'));
+  }
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    const op = new Operation(decoded.sender, decoded.target, decoded.amount);
+    op.withFee(decoded.fee);
+    op.withPayload(decoded.payload);
+    op.signFromDecoded(decoded.nOperation, decoded.r, decoded.s);
+    return op;
   }
 
 }
@@ -31805,13 +33338,17 @@ module.exports = RawCoder;
   !*** ./src/Operations/index.js ***!
   \*********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {
-  BuyAccount: __webpack_require__(/*! ./BuyAccount */ "./src/Operations/BuyAccount.js"),
-  ChangeAccountInfo: __webpack_require__(/*! ./ChangeAccountInfo */ "./src/Operations/ChangeAccountInfo.js"),
+let Items = {
   ChangeKey: __webpack_require__(/*! ./ChangeKey */ "./src/Operations/ChangeKey.js"),
   ChangeKeySigned: __webpack_require__(/*! ./ChangeKeySigned */ "./src/Operations/ChangeKeySigned.js"),
+  ChangeAccountInfo: {
+    Operation: __webpack_require__(/*! ./ChangeAccountInfo/Operation */ "./src/Operations/ChangeAccountInfo/Operation.js"),
+    RawCoder: __webpack_require__(/*! ./ChangeAccountInfo/RawCoder */ "./src/Operations/ChangeAccountInfo/RawCoder.js"),
+    DigestCoder: __webpack_require__(/*! ./ChangeAccountInfo/DigestCoder */ "./src/Operations/ChangeAccountInfo/DigestCoder.js")
+  },
   Data: {
     Operation: __webpack_require__(/*! ./Data/Operation */ "./src/Operations/Data/Operation.js"),
     RawCoder: __webpack_require__(/*! ./Data/RawCoder */ "./src/Operations/Data/RawCoder.js"),
@@ -31831,16 +33368,32 @@ module.exports = {
     Operation: __webpack_require__(/*! ./DeListAccountForSale/Operation */ "./src/Operations/DeListAccountForSale/Operation.js"),
     RawCoder: __webpack_require__(/*! ./DeListAccountForSale/RawCoder */ "./src/Operations/DeListAccountForSale/RawCoder.js"),
     DigestCoder: __webpack_require__(/*! ./DeListAccountForSale/DigestCoder */ "./src/Operations/DeListAccountForSale/DigestCoder.js")
+  },
+  BuyAccount: {
+    Operation: __webpack_require__(/*! ./BuyAccount/Operation */ "./src/Operations/BuyAccount/Operation.js"),
+    RawCoder: __webpack_require__(/*! ./BuyAccount/RawCoder */ "./src/Operations/BuyAccount/RawCoder.js"),
+    DigestCoder: __webpack_require__(/*! ./BuyAccount/DigestCoder */ "./src/Operations/BuyAccount/DigestCoder.js")
   }
 };
 
+Items.digestCoderFor = operation => {
+  return Items[operation.constructor.name].DigestCoder;
+};
+
+Items.rawCoderFor = operation => {
+  return Items[operation.constructor.name].RawCoder;
+};
+
+module.exports = Items;
+
 /***/ }),
 
-/***/ "./src/OperationsBuilder.js":
-/*!**********************************!*\
-  !*** ./src/OperationsBuilder.js ***!
-  \**********************************/
+/***/ "./src/RawOperations.js":
+/*!******************************!*\
+  !*** ./src/RawOperations.js ***!
+  \******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31849,64 +33402,130 @@ module.exports = {
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
+const Signer = __webpack_require__(/*! ./Signer */ "./src/Signer.js");
+
+const OperationListCoder = __webpack_require__(/*! ./RawOperationsCoder */ "./src/RawOperationsCoder.js");
 
 const P_OPERATIONS = Symbol('operations');
+const P_CODER = Symbol('coder');
+const P_SIGNER = Symbol('signer');
 /**
  * This class combines multiple signed operations to a string that
  * can be executed by the node.
  */
 
-class OperationsBuilder {
+class RawOperations {
   /**
    * Constructor
    */
   constructor() {
     this[P_OPERATIONS] = [];
+    this[P_CODER] = new OperationListCoder();
+    this[P_SIGNER] = new Signer();
   }
   /**
    * Adds a single operation to the list of Operations.
    *
    * @param operation
-   * @returns {OperationsBuilder}
+   * @returns {RawOperations}
    */
 
 
-  addOperation(operation) {
-    if (!operation.isSigned) {
-      throw new Error('Operation needs to be signed.');
+  addOperation(keyPair, operation) {
+    if (operation.isSigned) {
+      throw new Error('Operation should not be signed.');
     }
 
-    this[P_OPERATIONS].push(operation);
+    let sign = this[P_SIGNER].sign(keyPair, operation);
+    operation.withSign(sign.r, sign.s);
+    this[P_OPERATIONS].push({
+      optype: operation.opType,
+      operation: operation
+    });
     return this;
   }
-  /**
-   * Builds the operations.
-   *
-   * @returns {BC}
-   */
 
-
-  build() {
-    let bc = BC.fromInt(this[P_OPERATIONS].length, 4).switchEndian();
-    this[P_OPERATIONS].forEach(op => {
-      bc = BC.concat(bc, op.toRaw());
-    });
-    return bc;
+  get operations() {
+    return this[P_OPERATIONS];
   }
 
-  parse(raw) {
-    // let numOperations = raw.slice(0, 3);
-    let bc = BC.fromInt(this[P_OPERATIONS].length, 4).switchEndian();
-    this[P_OPERATIONS].forEach(op => {
-      bc = BC.concat(bc, op.toRaw());
-    });
-    return bc;
+  get count() {
+    return this[P_OPERATIONS].length;
   }
 
 }
 
-module.exports = OperationsBuilder;
+module.exports = RawOperations;
+
+/***/ }),
+
+/***/ "./src/RawOperationsCoder.js":
+/*!***********************************!*\
+  !*** ./src/RawOperationsCoder.js ***!
+  \***********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
+
+const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Endian;
+
+const TransactionRawCoder = __webpack_require__(/*! ./Operations/Transaction/RawCoder */ "./src/Operations/Transaction/RawCoder.js");
+
+const DataRawCoder = __webpack_require__(/*! ./Operations/Data/RawCoder */ "./src/Operations/Data/RawCoder.js");
+
+const ListRawCoder = __webpack_require__(/*! ./Operations/ListAccountForSale/RawCoder */ "./src/Operations/ListAccountForSale/RawCoder.js");
+
+const DeListRawCoder = __webpack_require__(/*! ./Operations/DeListAccountForSale/RawCoder */ "./src/Operations/DeListAccountForSale/RawCoder.js");
+
+const ChangeAccountInfoRawCoder = __webpack_require__(/*! ./Operations/ChangeAccountInfo/RawCoder */ "./src/Operations/ChangeAccountInfo/RawCoder.js");
+
+const CompositeType = Coding.CompositeType;
+/**
+ * A DATA operation object that can be signed.
+ */
+
+class RawOperationsCoder extends CompositeType {
+  constructor() {
+    super('combined signed operations');
+    super.description('Coder to combine multiple operations');
+    this.addSubType(new Coding.Core.Int32('count', true, Endian.LITTLE_ENDIAN));
+    const operationType = new CompositeType('operation');
+    operationType.addSubType(new Coding.Pascal.OpType('optype', 4));
+    operationType.addSubType(new Coding.Decissive('operation', 'optype', markerValue => {
+      switch (markerValue) {
+        case 1:
+          return new TransactionRawCoder(1);
+
+        case 4:
+          return new ListRawCoder(4);
+
+        case 5:
+          return new DeListRawCoder(5);
+
+        case 8:
+          return new ChangeAccountInfoRawCoder(8);
+
+        case 10:
+          return new DataRawCoder(10);
+
+        default:
+          throw new Error('Unable to map marker to a coder.');
+      }
+    }));
+    this.addSubType(new Coding.Repeating('operations', operationType));
+  }
+
+}
+
+module.exports = RawOperationsCoder;
 
 /***/ }),
 
@@ -31915,36 +33534,54 @@ module.exports = OperationsBuilder;
   !*** ./src/Signer.js ***!
   \***********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) Benjamin Ansbach - all rights reserved.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 
 const Sha = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Sha;
 
 const Keys = __webpack_require__(/*! @pascalcoin-sbx/crypto */ "../crypto/index.js").Keys;
 
+const Operations = __webpack_require__(/*! ./Operations */ "./src/Operations/index.js");
+/**
+ * Signs the given digest with the given keypair and returns the r and s
+ * values (because thats all that is needed).
+ *
+ * @param {KeyPair} keyPair
+ * @param {BC} digest
+ */
+
+
+function signWithHash(keyPair, digest) {
+  const hash = Sha.sha256(digest);
+  return Keys.sign(keyPair, hash);
+}
+
+function signWithDigest(keyPair, digest) {
+  return Keys.sign(keyPair, digest);
+}
+
 class Signer {
   /**
-   * Signs the given digest with the given keypair and returns the r and s
-   * values (because thats all that is needed).
+   * Signs the given operation and returns a new rawoperations string.
    *
    * @param {KeyPair} keyPair
-   * @param {BC} digest
+   * @param {Number} nOperation
+   * @param {Boolean} useDigest
+   * @returns {Abstract}
    */
-  static signWithHash(keyPair, digest) {
-    const hash = Sha.sha256(digest);
-    return Keys.sign(keyPair, hash);
-  }
+  sign(keyPair, operation) {
+    const DigestCoder = Operations.digestCoderFor(operation);
+    const digest = new DigestCoder(operation.opType).encodeToBytes(operation);
+    let signResult; // TODO: check DATA operation
 
-  static signWithDigest(keyPair, digest) {
-    return Keys.sign(keyPair, digest);
+    if (operation.usesDigestToSign() === true) {
+      signResult = signWithDigest(keyPair, digest);
+    } else {
+      signResult = signWithHash(keyPair, digest);
+    } // save results
+
+
+    return signResult;
   }
 
 }
@@ -31958,6 +33595,7 @@ module.exports = Signer;
   !*** multi ./index.js ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitled/packages/signing/index.js */"./index.js");
@@ -31970,6 +33608,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** buffer (ignored) ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -31981,6 +33620,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** crypto (ignored) ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -31992,6 +33632,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** util (ignored) ***!
   \**********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -32003,6 +33644,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** util (ignored) ***!
   \**********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */

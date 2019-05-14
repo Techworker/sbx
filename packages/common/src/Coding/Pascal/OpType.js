@@ -79,6 +79,7 @@ class OpType extends AbstractType {
   /* istanbul ignore next */
   describe(value) {
     let description = super.describe(value);
+
     description.encodedSize = this.encodedSize;
 
     if (arguments.length > 0) {

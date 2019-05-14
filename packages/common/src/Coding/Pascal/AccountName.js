@@ -1,5 +1,4 @@
 const PascalAccountName = require('./../../Types/AccountName');
-const BC = require('./../../BC');
 const StringWithLength = require('../Core/StringWithLength');
 
 /**

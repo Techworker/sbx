@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
+const OperationHashCoder = require('@pascalcoin-sbx/common').Coding.Pascal.OperationHash;
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const Operation = require('@pascalcoin-sbx/json-rpc').Types.Operation;
 const Sender = require('@pascalcoin-sbx/json-rpc').Types.Sender;
@@ -115,7 +116,7 @@ describe('Core.Types.Operation', () => {
         expect(operation.opType).to.be.equal(op.optype);
         if (operation.opType !== Operation.BLOCKCHAIN_REWARD) {
           expect(operation.opHash).to.be.instanceof(OperationHash);
-          expect(operation.opHash.encode().toHex()).to.be.equal(op.ophash);
+          expect(new OperationHashCoder().encodeToBytes(operation.opHash).toHex()).to.be.equal(op.ophash);
         } else {
           expect(operation.opHash).to.be.instanceof(BC);
           expect(operation.opHash.toHex()).to.be.equal(op.ophash);

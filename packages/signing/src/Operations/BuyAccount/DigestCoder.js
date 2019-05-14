@@ -7,7 +7,6 @@
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const CompositeType = Coding.CompositeType;
-const Operation = require('./Operation');
 
 /**
  * A DATA operation object that can be signed.

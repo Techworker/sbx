@@ -1,5 +1,6 @@
 const graphql = require('graphql');
-const PascalPublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const BC = require('@pascalcoin-sbx/common').BC;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 
 /**
  * A public key scalar type.
@@ -29,20 +30,20 @@ class PublicKey {
    * @returns {String}
    */
   serialize(value) {
-    return value.encode().toBase58();
+    return new PublicKeyCoder().encodeToBase58(value);
   }
 
   /**
    * Tries to parse the value.
    *
    * @param {String} value
-   * @returns {PascalPublicKey}
+   * @returns {PublicKeyType}
    */
   parseValue(value) {
     try {
-      return PascalPublicKey.fromBase58(value);
+      return new PublicKeyCoder().decodeFromBase58(value);
     } catch (e) {
-      return PascalPublicKey.decode(value);
+      return new PublicKeyCoder().decodeFromBytes(BC.from(value));
     }
   }
 
@@ -50,7 +51,7 @@ class PublicKey {
    * Tries to parse the value.
    *
    * @param {Object} ast
-   * @returns {null|PascalPublicKey}
+   * @returns {null|PublicKeyType}
    */
   parseLiteral(ast) {
     if (ast.kind === graphql.Kind.STRING) {

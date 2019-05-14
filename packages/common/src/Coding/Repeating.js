@@ -21,7 +21,8 @@ class Repeating extends AbstractType {
    */
   constructor(id, type, repeatLimit = -1) {
     super(id || 'repeating');
-    super.description('A type that itself has one repeating type that will be written / read until the limit is reached or data is empty.');
+    super.description('A type that itself has one repeating type that will ' +
+      'be written / read until the limit is reached or data is empty.');
     this[P_TYPE] = type;
     this[P_REPEAT_LIMIT] = repeatLimit;
   }

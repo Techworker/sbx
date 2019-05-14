@@ -8,7 +8,7 @@
 const Abstract = require('./Abstract');
 const BC = require('@pascalcoin-sbx/common').BC;
 const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
-const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 
 const P_NAME = Symbol('block');
 const P_ENC_PUBKEY = Symbol('publicKey');
@@ -30,7 +30,7 @@ class WalletPublicKey extends Abstract {
   constructor(data) {
     super(data);
     this[P_NAME] = data.name;
-    this[P_ENC_PUBKEY] = PublicKey.decode(BC.fromHex(data.publicKey));
+    this[P_ENC_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.publicKey));
     this[P_CAN_USE] = !!data.can_use;
 
     this[P_B58_PUBKEY] = null;

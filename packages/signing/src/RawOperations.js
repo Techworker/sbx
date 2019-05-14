@@ -5,7 +5,6 @@
  * file that was distributed with this source code.
  */
 
-const BC = require('@pascalcoin-sbx/common').BC;
 const Signer = require('./Signer');
 const OperationListCoder = require('./RawOperationsCoder');
 

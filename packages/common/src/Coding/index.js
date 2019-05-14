@@ -18,12 +18,14 @@ module.exports = {
   Pascal: {
     Keys: {
       Curve: require('./Pascal/Keys/Curve'),
-      PublicKey: require('./Pascal/Keys/PublicKey')
+      PublicKey: require('./Pascal/Keys/PublicKey'),
+      PrivateKey: require('./Pascal/Keys/PrivateKey')
     },
     AccountNumber: require('./Pascal/AccountNumber'),
     AccountName: require('./Pascal/AccountName'),
     Currency: require('./Pascal/Currency'),
     NOperation: require('./Pascal/NOperation'),
-    OpType: require('./Pascal/OpType')
+    OpType: require('./Pascal/OpType'),
+    OperationHash: require('./Pascal/OperationHash')
   }
 };

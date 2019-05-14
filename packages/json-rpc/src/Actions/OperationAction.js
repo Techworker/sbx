@@ -59,7 +59,6 @@ class OperationAction extends BaseAction {
     return this;
   }
 
-
   /**
    * Sets the fee to the minimum.
    *

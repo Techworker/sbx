@@ -14,9 +14,12 @@ const KDF = require('./KDF');
 const Random = require('mipher/dist/random');
 const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
 const PrivateKey = require('@pascalcoin-sbx/common').Types.Keys.PrivateKey;
+const PrivateKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PrivateKey;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
 const BC = require('@pascalcoin-sbx/common').BC;
+
+const privKeyCoder = new PrivateKeyCoder();
 
 /**
  * Handles cryptographic keys.
@@ -104,7 +107,7 @@ class Keys {
     const privateKeyDecryptedAndEncoded = AES.decrypt(key.key, encData, key.iv);
 
     return Keys.fromPrivateKey(
-      PrivateKey.decode(privateKeyDecryptedAndEncoded)
+      privKeyCoder.decodeFromBytes(privateKeyDecryptedAndEncoded)
     );
   }
 
@@ -117,7 +120,7 @@ class Keys {
    */
   static encrypt(privateKey, password) {
     password = BC.from(password, 'string');
-    const privateKeyEncoded = privateKey.encode();
+    const privateKeyEncoded = privKeyCoder.encodeToBytes(privateKey);
 
     const randomGenerator = new Random.Random();
     const salt = new BC(Buffer.from(randomGenerator.get(8)));

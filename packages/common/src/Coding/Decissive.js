@@ -5,7 +5,6 @@
  * file that was distributed with this source code.
  */
 
-const BC = require('./../BC');
 const CompositeType = require('./CompositeType');
 
 const P_SIZE_ENCODED = Symbol('size_encoded');

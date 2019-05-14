@@ -28,7 +28,6 @@ class NOperation extends Int32 {
     return info;
   }
 
-
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *

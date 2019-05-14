@@ -74,7 +74,7 @@ class Abstract {
     this[P_S] = s;
   }
 
-    /**
+  /**
    * Gets the prepared payload.
    *
    * @returns {BC}

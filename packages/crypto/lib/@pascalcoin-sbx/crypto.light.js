@@ -26616,15 +26616,18 @@ const Curve = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx
 
 const PrivateKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PrivateKey;
 
+const PrivateKeyCoder = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding.Pascal.Keys.PrivateKey;
+
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
 
 const KeyPair = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.KeyPair;
 
 const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
+
+const privKeyCoder = new PrivateKeyCoder();
 /**
  * Handles cryptographic keys.
  */
-
 
 class Keys {
   /**
@@ -26689,7 +26692,7 @@ class Keys {
 
     const encData = encryptedPrivateKey.slice(16);
     const privateKeyDecryptedAndEncoded = AES.decrypt(key.key, encData, key.iv);
-    return Keys.fromPrivateKey(PrivateKey.decode(privateKeyDecryptedAndEncoded));
+    return Keys.fromPrivateKey(privKeyCoder.decodeFromBytes(privateKeyDecryptedAndEncoded));
   }
   /**
    * Creates a new keypair from the given private key.
@@ -26702,7 +26705,7 @@ class Keys {
 
   static encrypt(privateKey, password) {
     password = BC.from(password, 'string');
-    const privateKeyEncoded = privateKey.encode();
+    const privateKeyEncoded = privKeyCoder.encodeToBytes(privateKey);
     const randomGenerator = new Random.Random();
     const salt = new BC(Buffer.from(randomGenerator.get(8))); // mocha sees an open setinterval and won't exit without this change
 
@@ -26723,8 +26726,13 @@ class Keys {
     // create an ecpair
     const ecPair = elliptic(keyPair.curve.name).keyFromPrivate(keyPair.privateKey.key.buffer);
     const signature = ecPair.sign(digest.buffer, ecPair.getPrivate('hex'), 'hex', {
-      canonical: true
-    });
+      canonical: false
+    }); // Verify signature
+
+    if (ecPair.verify(digest.buffer, signature.toDER()) === false) {
+      throw Error('Unable to verify the sign result.');
+    }
+
     return {
       s: new BC(Buffer.from(signature.s.toArray())),
       r: new BC(Buffer.from(signature.r.toArray()))

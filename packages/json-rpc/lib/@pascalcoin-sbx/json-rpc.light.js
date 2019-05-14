@@ -101,6 +101,7 @@ return /******/ (function(modules) { // webpackBootstrap
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/bn.js/lib/bn.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -3540,6 +3541,7 @@ return /******/ (function(modules) { // webpackBootstrap
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/jayson/lib/client/browser.js ***!
   \*******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3709,6 +3711,7 @@ ClientBrowser.prototype._parseResponse = function(err, responseText, callback) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/jayson/lib/generateRequest.js ***!
   \********************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3778,6 +3781,7 @@ module.exports = function(method, params, id, options) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_Symbol.js ***!
   \********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(/*! ./_root */ "../../node_modules/lodash/_root.js");
@@ -3795,6 +3799,7 @@ module.exports = Symbol;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_apply.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -3827,6 +3832,7 @@ module.exports = apply;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_arrayLikeKeys.js ***!
   \***************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseTimes = __webpack_require__(/*! ./_baseTimes */ "../../node_modules/lodash/_baseTimes.js"),
@@ -3887,6 +3893,7 @@ module.exports = arrayLikeKeys;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_assignValue.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseAssignValue = __webpack_require__(/*! ./_baseAssignValue */ "../../node_modules/lodash/_baseAssignValue.js"),
@@ -3926,6 +3933,7 @@ module.exports = assignValue;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseAssignValue.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var defineProperty = __webpack_require__(/*! ./_defineProperty */ "../../node_modules/lodash/_defineProperty.js");
@@ -3962,6 +3970,7 @@ module.exports = baseAssignValue;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseGetTag.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(/*! ./_Symbol */ "../../node_modules/lodash/_Symbol.js"),
@@ -4001,6 +4010,7 @@ module.exports = baseGetTag;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseIsArguments.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "../../node_modules/lodash/_baseGetTag.js"),
@@ -4030,6 +4040,7 @@ module.exports = baseIsArguments;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseIsNative.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(/*! ./isFunction */ "../../node_modules/lodash/isFunction.js"),
@@ -4088,6 +4099,7 @@ module.exports = baseIsNative;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseIsTypedArray.js ***!
   \******************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "../../node_modules/lodash/_baseGetTag.js"),
@@ -4159,6 +4171,7 @@ module.exports = baseIsTypedArray;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseKeysIn.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(/*! ./isObject */ "../../node_modules/lodash/isObject.js"),
@@ -4203,6 +4216,7 @@ module.exports = baseKeysIn;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseRest.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var identity = __webpack_require__(/*! ./identity */ "../../node_modules/lodash/identity.js"),
@@ -4231,6 +4245,7 @@ module.exports = baseRest;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseSetToString.js ***!
   \*****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var constant = __webpack_require__(/*! ./constant */ "../../node_modules/lodash/constant.js"),
@@ -4264,6 +4279,7 @@ module.exports = baseSetToString;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseTimes.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -4295,6 +4311,7 @@ module.exports = baseTimes;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_baseUnary.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -4320,6 +4337,7 @@ module.exports = baseUnary;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_copyObject.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assignValue = __webpack_require__(/*! ./_assignValue */ "../../node_modules/lodash/_assignValue.js"),
@@ -4371,6 +4389,7 @@ module.exports = copyObject;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_coreJsData.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(/*! ./_root */ "../../node_modules/lodash/_root.js");
@@ -4388,6 +4407,7 @@ module.exports = coreJsData;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_createAssigner.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseRest = __webpack_require__(/*! ./_baseRest */ "../../node_modules/lodash/_baseRest.js"),
@@ -4436,6 +4456,7 @@ module.exports = createAssigner;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_defineProperty.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(/*! ./_getNative */ "../../node_modules/lodash/_getNative.js");
@@ -4458,6 +4479,7 @@ module.exports = defineProperty;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_freeGlobal.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -4474,6 +4496,7 @@ module.exports = freeGlobal;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_getNative.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsNative = __webpack_require__(/*! ./_baseIsNative */ "../../node_modules/lodash/_baseIsNative.js"),
@@ -4502,6 +4525,7 @@ module.exports = getNative;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_getRawTag.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(/*! ./_Symbol */ "../../node_modules/lodash/_Symbol.js");
@@ -4559,6 +4583,7 @@ module.exports = getRawTag;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_getValue.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -4583,6 +4608,7 @@ module.exports = getValue;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_isIndex.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -4619,6 +4645,7 @@ module.exports = isIndex;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_isIterateeCall.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var eq = __webpack_require__(/*! ./eq */ "../../node_modules/lodash/eq.js"),
@@ -4660,6 +4687,7 @@ module.exports = isIterateeCall;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_isMasked.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var coreJsData = __webpack_require__(/*! ./_coreJsData */ "../../node_modules/lodash/_coreJsData.js");
@@ -4691,6 +4719,7 @@ module.exports = isMasked;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_isPrototype.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -4720,6 +4749,7 @@ module.exports = isPrototype;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_nativeKeysIn.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -4751,6 +4781,7 @@ module.exports = nativeKeysIn;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_nodeUtil.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(/*! ./_freeGlobal */ "../../node_modules/lodash/_freeGlobal.js");
@@ -4793,6 +4824,7 @@ module.exports = nodeUtil;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_objectToString.js ***!
   \****************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -4826,6 +4858,7 @@ module.exports = objectToString;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_overRest.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = __webpack_require__(/*! ./_apply */ "../../node_modules/lodash/_apply.js");
@@ -4873,6 +4906,7 @@ module.exports = overRest;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_root.js ***!
   \******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var freeGlobal = __webpack_require__(/*! ./_freeGlobal */ "../../node_modules/lodash/_freeGlobal.js");
@@ -4893,6 +4927,7 @@ module.exports = root;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_setToString.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSetToString = __webpack_require__(/*! ./_baseSetToString */ "../../node_modules/lodash/_baseSetToString.js"),
@@ -4918,6 +4953,7 @@ module.exports = setToString;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_shortOut.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /** Used to detect hot functions by number of calls within a span of milliseconds. */
@@ -4966,6 +5002,7 @@ module.exports = shortOut;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/_toSource.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -5003,6 +5040,7 @@ module.exports = toSource;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/assignIn.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(/*! ./_copyObject */ "../../node_modules/lodash/_copyObject.js"),
@@ -5054,6 +5092,7 @@ module.exports = assignIn;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/constant.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -5091,6 +5130,7 @@ module.exports = constant;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/eq.js ***!
   \***************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -5139,6 +5179,7 @@ module.exports = eq;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/extend.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./assignIn */ "../../node_modules/lodash/assignIn.js");
@@ -5151,6 +5192,7 @@ module.exports = __webpack_require__(/*! ./assignIn */ "../../node_modules/lodas
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/identity.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -5183,6 +5225,7 @@ module.exports = identity;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isArguments.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsArguments = __webpack_require__(/*! ./_baseIsArguments */ "../../node_modules/lodash/_baseIsArguments.js"),
@@ -5230,6 +5273,7 @@ module.exports = isArguments;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isArray.js ***!
   \********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -5267,6 +5311,7 @@ module.exports = isArray;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isArrayLike.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(/*! ./isFunction */ "../../node_modules/lodash/isFunction.js"),
@@ -5311,6 +5356,7 @@ module.exports = isArrayLike;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isBuffer.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(/*! ./_root */ "../../node_modules/lodash/_root.js"),
@@ -5361,6 +5407,7 @@ module.exports = isBuffer;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isFunction.js ***!
   \***********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "../../node_modules/lodash/_baseGetTag.js"),
@@ -5409,6 +5456,7 @@ module.exports = isFunction;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isLength.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -5455,6 +5503,7 @@ module.exports = isLength;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isObject.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -5497,6 +5546,7 @@ module.exports = isObject;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isObjectLike.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -5537,6 +5587,7 @@ module.exports = isObjectLike;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isString.js ***!
   \*********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "../../node_modules/lodash/_baseGetTag.js"),
@@ -5578,6 +5629,7 @@ module.exports = isString;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isTypedArray.js ***!
   \*************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsTypedArray = __webpack_require__(/*! ./_baseIsTypedArray */ "../../node_modules/lodash/_baseIsTypedArray.js"),
@@ -5616,6 +5668,7 @@ module.exports = isTypedArray;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/isUndefined.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -5649,6 +5702,7 @@ module.exports = isUndefined;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/keysIn.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayLikeKeys = __webpack_require__(/*! ./_arrayLikeKeys */ "../../node_modules/lodash/_arrayLikeKeys.js"),
@@ -5692,6 +5746,7 @@ module.exports = keysIn;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/negate.js ***!
   \*******************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /** Error message constants. */
@@ -5743,6 +5798,7 @@ module.exports = negate;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/lodash/stubFalse.js ***!
   \**********************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -5772,6 +5828,7 @@ module.exports = stubFalse;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/node-fetch/browser.js ***!
   \************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5806,6 +5863,7 @@ exports.Response = global.Response;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/uuid/lib/bytesToUuid.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -5841,6 +5899,7 @@ module.exports = bytesToUuid;
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/uuid/lib/rng-browser.js ***!
   \**************************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 // Unique ID creation requires a high quality random # generator.  In the
@@ -5886,6 +5945,7 @@ if (getRandomValues) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/uuid/v4.js ***!
   \*************************************************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 var rng = __webpack_require__(/*! ./lib/rng */ "../../node_modules/uuid/lib/rng-browser.js");
@@ -5926,6 +5986,7 @@ module.exports = v4;
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 var g;
@@ -5957,6 +6018,7 @@ module.exports = g;
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -5990,6 +6052,7 @@ module.exports = function(module) {
   !*** ./index.js ***!
   \******************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -6008,6 +6071,7 @@ module.exports = {
   !*** ./src/Actions/BaseAction.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -6135,6 +6199,7 @@ module.exports = BaseAction;
   !*** ./src/Actions/OperationAction.js ***!
   \****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -6144,6 +6209,8 @@ module.exports = BaseAction;
  * file that was distributed with this source code.
  */
 const BaseAction = __webpack_require__(/*! ./BaseAction */ "./src/Actions/BaseAction.js");
+
+const PascalCoinInfo = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").PascalCoinInfo;
 
 const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Currency;
 /**
@@ -6197,7 +6264,18 @@ class OperationAction extends BaseAction {
 
 
   withFee(fee) {
-    this.fee = new Currency(fee);
+    this.params.fee = new Currency(fee);
+    return this;
+  }
+  /**
+   * Sets the fee to the minimum.
+   *
+   * @returns {OperationAction}
+   */
+
+
+  withMinFee(lastKnownBlock = null) {
+    this.params.fee = PascalCoinInfo.MIN_FEE(lastKnownBlock);
     return this;
   }
   /**
@@ -6222,6 +6300,7 @@ module.exports = OperationAction;
   !*** ./src/Actions/PagedAction.js ***!
   \************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -6341,6 +6420,7 @@ module.exports = PagedAction;
   !*** ./src/Actions/SignOperationAction.js ***!
   \********************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -6349,9 +6429,9 @@ module.exports = PagedAction;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const RawOperations = __webpack_require__(/*! ../Types/RawOperations */ "./src/Types/RawOperations.js");
-
 const OperationAction = __webpack_require__(/*! ./OperationAction */ "./src/Actions/OperationAction.js");
+
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 /**
  * This object derives from an operation action and extends the functionality
  * by methods shared by cold wallet signing operations.
@@ -6388,13 +6468,13 @@ class SignOperationAction extends OperationAction {
   /**
      * Sets the raw operations instance of a previous result.
      *
-     * @param {RawOperations|BC|String} rawoperations
+     * @param {BC|String} rawoperations
      * @return {SignOperationAction}
      */
 
 
   withRawOperations(rawoperations) {
-    this.params.rawoperations = new RawOperations(rawoperations);
+    this.params.rawoperations = BC.from(rawoperations);
   }
 
   isValid() {
@@ -6412,6 +6492,7 @@ module.exports = SignOperationAction;
   !*** ./src/Actions/index.js ***!
   \******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -6428,6 +6509,7 @@ module.exports = {
   !*** ./src/Caller.js ***!
   \***********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -6488,7 +6570,11 @@ class Caller {
             return reject(new ConnectionError(err));
           }
 
-          return reject(new ResultError(error.code, error.message));
+          if (result !== undefined) {
+            return reject(new ResultError(error.code, error.message));
+          }
+
+          return resolve(result);
         }
 
         return resolve(result);
@@ -6507,6 +6593,7 @@ module.exports = Caller;
   !*** ./src/Client.js ***!
   \***********************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -6532,8 +6619,6 @@ const Account = __webpack_require__(/*! ./Types/Account */ "./src/Types/Account.
 const Block = __webpack_require__(/*! ./Types/Block */ "./src/Types/Block.js");
 
 const SignedMessage = __webpack_require__(/*! ./Types/SignedMessage */ "./src/Types/SignedMessage.js");
-
-const RawOperations = __webpack_require__(/*! ./Types/RawOperations */ "./src/Types/RawOperations.js");
 
 const NodeStatus = __webpack_require__(/*! ./Types/NodeStatus */ "./src/Types/NodeStatus.js");
 
@@ -7212,18 +7297,22 @@ class Client {
 
 
   signBuyAccount({
-    signerPubkey,
     buyerAccount,
     accountToPurchase,
     price,
-    sellerAccount
+    sellerAccount,
+    newPubkey,
+    amount,
+    signerPubkey
   }) {
     return new SignOperationAction('signbuyaccount', {
-      signer_pubkey: signerPubkey,
       buyer_account: new AccountNumber(buyerAccount),
       account_to_purchase: new AccountNumber(accountToPurchase),
       price: new Currency(price),
-      seller_account: new AccountNumber(sellerAccount)
+      seller_account: new AccountNumber(sellerAccount),
+      new_pubkey: newPubkey,
+      amount: amount,
+      signer_pubkey: signerPubkey
     }, this[P_EXECUTOR], Operation, false);
   }
   /**
@@ -7329,7 +7418,7 @@ class Client {
   /**
    * Removes an operation from the given rawoperations.
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    * @param {Number} index
    *
    * @returns {BaseAction}
@@ -7343,12 +7432,12 @@ class Client {
     return new BaseAction('operationsdelete', {
       rawoperations,
       index: index !== null ? parseInt(index, 10) : index
-    }, this[P_EXECUTOR], RawOperations, false);
+    }, this[P_EXECUTOR], BC, false);
   }
   /**
    * Gets the information about the given operation
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    *
    * @returns {BaseAction}
    */
@@ -7364,7 +7453,7 @@ class Client {
   /**
    * Executes the given operations
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    *
    * @returns {BaseAction}
    */
@@ -7580,7 +7669,7 @@ class Client {
   /**
    * Adds an operation to a multioperation
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    * @param {Boolean} autoNOperation
    * @param {Object[]|Sender[]} senders
    * @param {Object[]|Receiver[]} receivers
@@ -7603,12 +7692,12 @@ class Client {
       senders: senders.map(sen => new Sender(sen)),
       receivers: receivers.map(rec => new Receiver(rec)),
       changesinfo: changesinfo.map(chng => new Changer(chng))
-    }, this[P_EXECUTOR], RawOperations, true);
+    }, this[P_EXECUTOR], BC, true);
   }
   /**
    * Signs the given rawoperations
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    * @param {Object} accountsAndKeys
    *
    * @returns {BaseAction}
@@ -7627,7 +7716,7 @@ class Client {
   /**
    * Signs the given rawoperations online
    *
-   * @param {RawOperations} rawoperations
+   * @param {BC} rawoperations
    *
    * @returns {BaseAction}
    */
@@ -7652,6 +7741,7 @@ module.exports = Client;
   !*** ./src/Errors/ConnectionError.js ***!
   \***************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 const P_ORIGINAL = Symbol('original');
@@ -7682,6 +7772,7 @@ module.exports = ConnectionError;
   !*** ./src/Errors/ResultError.js ***!
   \***********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 const P_CODE = Symbol('code');
@@ -7712,6 +7803,7 @@ module.exports = ResultError;
   !*** ./src/Errors/index.js ***!
   \*****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -7726,6 +7818,7 @@ module.exports = {
   !*** ./src/Executor.js ***!
   \*************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -7742,6 +7835,8 @@ const AccountName = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalco
 
 const OperationHash = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.OperationHash;
 
+const OperationHashCoder = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding.Pascal.OperationHash;
+
 const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
 
 const KeyPair = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.KeyPair;
@@ -7750,11 +7845,16 @@ const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-
 
 const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 
+const PublicKeyCoder = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding.Pascal.Keys.PublicKey;
+
 const Block = __webpack_require__(/*! ./Types/Block */ "./src/Types/Block.js");
 
 const WalletPublicKey = __webpack_require__(/*! ./Types/WalletPublicKey */ "./src/Types/WalletPublicKey.js");
 
 const Account = __webpack_require__(/*! ./Types/Account */ "./src/Types/Account.js");
+
+const publicKeyCoder = new PublicKeyCoder();
+const opHashCoder = new OperationHashCoder();
 /**
  * Simple function that transforms the values of an object to make them usable
  * in rpc calls.
@@ -7762,7 +7862,6 @@ const Account = __webpack_require__(/*! ./Types/Account */ "./src/Types/Account.
  * @param {Object} params
  * @returns {Object}
  */
-
 
 function transformRpcParams(params) {
   const newParams = {};
@@ -7776,11 +7875,11 @@ function transformRpcParams(params) {
       if (item instanceof BC) {
         newParams[newField] = item.toHex();
       } else if (item instanceof PublicKey) {
-        newParams[newField] = item.encode().toHex();
+        newParams[newField] = publicKeyCoder.encodeToBytes(item).toHex();
       } else if (item instanceof WalletPublicKey) {
-        newParams[newField] = item.publicKey.encode().toHex();
+        newParams[newField] = publicKeyCoder.encodeToBytes(item.publicKey).toHex();
       } else if (item instanceof KeyPair) {
-        newParams[newField] = item.publicKey.encode().toHex();
+        newParams[newField] = publicKeyCoder.encodeToBytes(item.publicKey).toHex();
       } else {
         newField = newField.replace('enc_pubkey', 'b58_pubkey');
         newParams[newField] = item.toString();
@@ -7806,7 +7905,7 @@ function transformRpcParams(params) {
     } else if (item instanceof BC) {
       newParams[field] = item.toHex();
     } else if (item instanceof OperationHash) {
-      newParams[field] = item.encode().toHex();
+      newParams[field] = opHashCoder.encodeToBytes(item).toHex();
     } else if (item instanceof Account) {
       newParams[field] = item.account.account; // NICE!!!!! :-D
     } else if (item instanceof AccountNumber) {
@@ -7915,6 +8014,7 @@ module.exports = Executor;
   !*** ./src/Types/Abstract.js ***!
   \*******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /**
@@ -7965,6 +8065,7 @@ module.exports = Abstract;
   !*** ./src/Types/Account.js ***!
   \******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8220,6 +8321,7 @@ module.exports = Account;
   !*** ./src/Types/Block.js ***!
   \****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8472,6 +8574,7 @@ module.exports = Block;
   !*** ./src/Types/Changer.js ***!
   \******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8665,6 +8768,7 @@ module.exports = Changer;
   !*** ./src/Types/Connection.js ***!
   \*********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8819,6 +8923,7 @@ module.exports = Connection;
   !*** ./src/Types/NetProtocol.js ***!
   \**********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8878,6 +8983,7 @@ module.exports = NetProtocol;
   !*** ./src/Types/NetStats.js ***!
   \*******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9021,6 +9127,7 @@ module.exports = NetStats;
   !*** ./src/Types/NodeServer.js ***!
   \*********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9104,6 +9211,7 @@ module.exports = NodeServer;
   !*** ./src/Types/NodeStatus.js ***!
   \*********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9307,6 +9415,7 @@ module.exports = NodeStatus;
   !*** ./src/Types/Operation.js ***!
   \********************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9323,7 +9432,9 @@ const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/co
 
 const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Currency;
 
-const OperationHash = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.OperationHash;
+const OperationHashCoder = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding.Pascal.OperationHash;
+
+const opHashCoder = new OperationHashCoder();
 
 const Sender = __webpack_require__(/*! ./Sender */ "./src/Types/Sender.js");
 
@@ -9551,7 +9662,7 @@ class Operation extends Abstract {
       this[P_OPHASH] = BC.fromHex(data.ophash);
 
       if (this[P_OPTYPE] !== Operation.BLOCKCHAIN_REWARD) {
-        this[P_OPHASH] = OperationHash.decode(BC.fromHex(data.ophash));
+        this[P_OPHASH] = opHashCoder.decodeFromBytes(this[P_OPHASH]);
       }
     }
 
@@ -9915,90 +10026,12 @@ module.exports = Operation;
 
 /***/ }),
 
-/***/ "./src/Types/RawOperations.js":
-/*!************************************!*\
-  !*** ./src/Types/RawOperations.js ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) Benjamin Ansbach - all rights reserved.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-const Currency = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Currency;
-
-const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
-
-const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
-
-const P_OPERATIONS = Symbol('operations');
-const P_AMOUNT = Symbol('amount');
-const P_FEE = Symbol('fee');
-const P_RAWOPERATIONS = Symbol('rawoperations');
-
-class RawOperations extends Abstract {
-  constructor(data) {
-    super(data);
-    this[P_OPERATIONS] = parseInt(data.operations, 10);
-    this[P_AMOUNT] = new Currency(data.amount);
-    this[P_FEE] = new Currency(data.fee);
-    this[P_RAWOPERATIONS] = BC.fromHex(data.rawoperations);
-  }
-  /**
-     * Gets the number of operations in this object.
-     *
-     * @returns {Number}
-     */
-
-
-  get operations() {
-    return this[P_OPERATIONS];
-  }
-  /**
-     * Gets the accumulated amount of all operations.
-     *
-     * @returns {Currency}
-     */
-
-
-  get amount() {
-    return this[P_AMOUNT];
-  }
-  /**
-     * Gets the accumulated amount of all operations.
-     *
-     * @returns {Currency}
-     */
-
-
-  get fee() {
-    return this[P_FEE];
-  }
-  /**
-     * Gets the raw operations info.
-     *
-     * @returns {BC}
-     */
-
-
-  get rawoperations() {
-    return this[P_RAWOPERATIONS];
-  }
-
-}
-
-module.exports = RawOperations;
-
-/***/ }),
-
 /***/ "./src/Types/Receiver.js":
 /*!*******************************!*\
   !*** ./src/Types/Receiver.js ***!
   \*******************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -10076,6 +10109,7 @@ module.exports = Receiver;
   !*** ./src/Types/Sender.js ***!
   \*****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -10165,6 +10199,7 @@ module.exports = Sender;
   !*** ./src/Types/SignedMessage.js ***!
   \************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -10175,7 +10210,7 @@ module.exports = Sender;
  */
 const Abstract = __webpack_require__(/*! ./Abstract */ "./src/Types/Abstract.js");
 
-const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
+const PublicKeyCoder = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding.Pascal.Keys.PublicKey;
 
 const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").BC;
 
@@ -10197,9 +10232,9 @@ class SignedMessage extends Abstract {
     this[P_DIGEST] = BC.fromHex(data.digest);
 
     if (data.enc_pubkey !== undefined) {
-      this[P_PUBKEY] = PublicKey.decode(BC.fromHex(data.enc_pubkey));
+      this[P_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.enc_pubkey));
     } else {
-      this[P_PUBKEY] = PublicKey.fromBase58(data.b58_pubkey);
+      this[P_PUBKEY] = new PublicKeyCoder().decodeFromBase58(data.b58_pubkey);
     }
 
     this[P_SIGNATURE] = BC.fromHex(data.signature);
@@ -10246,6 +10281,7 @@ module.exports = SignedMessage;
   !*** ./src/Types/WalletPublicKey.js ***!
   \**************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -10260,7 +10296,7 @@ const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/co
 
 const Curve = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.Curve;
 
-const PublicKey = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Types.Keys.PublicKey;
+const PublicKeyCoder = __webpack_require__(/*! @pascalcoin-sbx/common */ "@pascalcoin-sbx/common").Coding.Pascal.Keys.PublicKey;
 
 const P_NAME = Symbol('block');
 const P_ENC_PUBKEY = Symbol('publicKey');
@@ -10282,7 +10318,7 @@ class WalletPublicKey extends Abstract {
   constructor(data) {
     super(data);
     this[P_NAME] = data.name;
-    this[P_ENC_PUBKEY] = PublicKey.decode(BC.fromHex(data.publicKey));
+    this[P_ENC_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.publicKey));
     this[P_CAN_USE] = !!data.can_use;
     this[P_B58_PUBKEY] = null;
     this[P_EC_NID] = null;
@@ -10387,6 +10423,7 @@ module.exports = WalletPublicKey;
   !*** ./src/Types/index.js ***!
   \****************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -10400,7 +10437,6 @@ module.exports = {
   Changer: __webpack_require__(/*! ./Changer */ "./src/Types/Changer.js"),
   Receiver: __webpack_require__(/*! ./Receiver */ "./src/Types/Receiver.js"),
   Sender: __webpack_require__(/*! ./Sender */ "./src/Types/Sender.js"),
-  RawOperations: __webpack_require__(/*! ./RawOperations */ "./src/Types/RawOperations.js"),
   WalletPublicKey: __webpack_require__(/*! ./WalletPublicKey */ "./src/Types/WalletPublicKey.js")
 };
 
@@ -10411,6 +10447,7 @@ module.exports = {
   !*** multi ./index.js ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitled/packages/json-rpc/index.js */"./index.js");
@@ -10423,6 +10460,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** buffer (ignored) ***!
   \************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -10434,6 +10472,7 @@ module.exports = __webpack_require__(/*! /home/ben/Code/crypto/pascalcoin/untitl
   !*** external "@pascalcoin-sbx/common" ***!
   \*****************************************/
 /*! no static exports found */
+/*! all exports used */
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__pascalcoin_sbx_common__;

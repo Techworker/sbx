@@ -10,6 +10,7 @@ const P_CALLER = Symbol('caller');
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
 const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
+const OperationHashCoder = require('@pascalcoin-sbx/common').Coding.Pascal.OperationHash;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
@@ -21,6 +22,7 @@ const WalletPublicKey = require('./Types/WalletPublicKey');
 const Account = require('./Types/Account');
 
 const publicKeyCoder = new PublicKeyCoder();
+const opHashCoder = new OperationHashCoder();
 
 /**
  * Simple function that transforms the values of an object to make them usable
@@ -78,7 +80,7 @@ function transformRpcParams(params) {
     } else if (item instanceof BC) {
       newParams[field] = item.toHex();
     } else if (item instanceof OperationHash) {
-      newParams[field] = item.encode().toHex();
+      newParams[field] = opHashCoder.encodeToBytes(item).toHex();
     } else if (item instanceof Account) {
       newParams[field] = item.account.account; // NICE!!!!! :-D
     } else if (item instanceof AccountNumber) {

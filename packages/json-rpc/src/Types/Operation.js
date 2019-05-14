@@ -9,7 +9,9 @@ const Abstract = require('./Abstract');
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const BC = require('@pascalcoin-sbx/common').BC;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
-const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
+const OperationHashCoder = require('@pascalcoin-sbx/common').Coding.Pascal.OperationHash;
+
+const opHashCoder = new OperationHashCoder();
 
 const Sender = require('./Sender');
 const Receiver = require('./Receiver');
@@ -206,7 +208,7 @@ class Operation extends Abstract {
     if (data.ophash !== undefined) {
       this[P_OPHASH] = BC.fromHex(data.ophash);
       if (this[P_OPTYPE] !== Operation.BLOCKCHAIN_REWARD) {
-        this[P_OPHASH] = OperationHash.decode(BC.fromHex(data.ophash));
+        this[P_OPHASH] = opHashCoder.decodeFromBytes(this[P_OPHASH]);
       }
     }
 

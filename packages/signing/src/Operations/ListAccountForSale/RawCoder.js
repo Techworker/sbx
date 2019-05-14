@@ -74,7 +74,6 @@ class RawCoder extends CompositeType {
     );
   }
 
-
   decodeFromBytes(bc) {
     const decoded = super.decodeFromBytes(bc);
     const op = new Operation(

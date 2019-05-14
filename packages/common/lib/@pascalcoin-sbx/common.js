@@ -8634,8 +8634,6 @@ module.exports = StringWithoutLength;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-const BC = __webpack_require__(/*! ./../BC */ "./src/BC.js");
-
 const CompositeType = __webpack_require__(/*! ./CompositeType */ "./src/Coding/CompositeType.js");
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
@@ -8750,8 +8748,6 @@ module.exports = Decissive;
 /***/ (function(module, exports, __webpack_require__) {
 
 const PascalAccountName = __webpack_require__(/*! ./../../Types/AccountName */ "./src/Types/AccountName.js");
-
-const BC = __webpack_require__(/*! ./../../BC */ "./src/BC.js");
 
 const StringWithLength = __webpack_require__(/*! ../Core/StringWithLength */ "./src/Coding/Core/StringWithLength.js");
 /**
@@ -9049,6 +9045,80 @@ module.exports = Curve;
 
 /***/ }),
 
+/***/ "./src/Coding/Pascal/Keys/PrivateKey.js":
+/*!**********************************************!*\
+  !*** ./src/Coding/Pascal/Keys/PrivateKey.js ***!
+  \**********************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Curve = __webpack_require__(/*! ./Curve */ "./src/Coding/Pascal/Keys/Curve.js");
+
+const BytesWithLength = __webpack_require__(/*! ../../Core/BytesWithLength */ "./src/Coding/Core/BytesWithLength.js");
+
+const CompositeType = __webpack_require__(/*! ../../CompositeType */ "./src/Coding/CompositeType.js");
+
+const PrivateKeyType = __webpack_require__(/*! ./../../../../src/Types/Keys/PrivateKey */ "./src/Types/Keys/PrivateKey.js");
+/**
+ * A Public Key value.
+ */
+
+
+class PrivateKey extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'pubkey');
+    this.addSubType(new Curve('curve'));
+    this.addSubType(new BytesWithLength('key', 2));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'PrivateKey';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin PublicKey instance.
+   *
+   * @param {BC} bc
+   * @returns {PrivateKeyType}
+   */
+
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    return new PrivateKeyType(decoded.key, decoded.curve);
+  }
+  /**
+   * Reads a value and returns a new PascalCoin PublicKey instance.
+   *
+   * @param {BC} bc
+   * @returns {PrivateKeyType}
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value);
+  }
+
+}
+
+module.exports = PrivateKey;
+
+/***/ }),
+
 /***/ "./src/Coding/Pascal/Keys/PublicKey.js":
 /*!*********************************************!*\
   !*** ./src/Coding/Pascal/Keys/PublicKey.js ***!
@@ -9343,6 +9413,99 @@ module.exports = OpType;
 
 /***/ }),
 
+/***/ "./src/Coding/Pascal/OperationHash.js":
+/*!********************************************!*\
+  !*** ./src/Coding/Pascal/OperationHash.js ***!
+  \********************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Endian = __webpack_require__(/*! ./../../Endian */ "./src/Endian.js");
+
+const CompositeType = __webpack_require__(/*! ./../CompositeType */ "./src/Coding/CompositeType.js");
+
+const Int32 = __webpack_require__(/*! ./../Core/Int32 */ "./src/Coding/Core/Int32.js");
+
+const AccountNumber = __webpack_require__(/*! ./AccountNumber */ "./src/Coding/Pascal/AccountNumber.js");
+
+const BytesWithoutLength = __webpack_require__(/*! ./../Core/BytesWithoutLength */ "./src/Coding/Core/BytesWithoutLength.js");
+
+const NOperation = __webpack_require__(/*! ./NOperation */ "./src/Coding/Pascal/NOperation.js");
+
+const OperationHashType = __webpack_require__(/*! ./../../Types/OperationHash */ "./src/Types/OperationHash.js");
+/**
+ * Simple wrapper for an unsigned Int32 value (used for the n_operation value)
+ */
+
+
+class OperationHash extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'ophash');
+    this.description('A pascalCoin operation hash');
+    this.addSubType(new Int32('block', true, Endian.LITTLE_ENDIAN));
+    this.addSubType(new AccountNumber('account'));
+    this.addSubType(new NOperation('nOperation', 4));
+    this.addSubType(new BytesWithoutLength('md160'));
+  }
+  /**
+   * @inheritDoc AbstractType#typeInfo
+   */
+
+  /* istanbul ignore next */
+
+
+  get typeInfo() {
+    let info = super.typeInfo;
+    info.name = 'OperationHash';
+    info.hierarchy.push(info.name);
+    return info;
+  }
+  /**
+   * Reads a value and returns a new PascalCoin AccountNumber instance.
+   *
+   * @param {BC} bc
+   * @returns {OperationHash}
+   */
+
+
+  decodeFromBytes(bc) {
+    const decoded = super.decodeFromBytes(bc);
+    return new OperationHashType(decoded.block, decoded.account, decoded.nOperation, decoded.md160);
+  }
+  /**
+   *
+   * Appends the given pascalcoin account number to the BC.
+   *
+   * @param {OperationHash} value
+   */
+
+
+  encodeToBytes(value) {
+    return super.encodeToBytes(value);
+  }
+  /**
+   * @inheritDoc AbstractType#describe
+   */
+
+  /* istanbul ignore next */
+
+
+  describe(value) {
+    return super.describe(value);
+  }
+
+}
+
+module.exports = OperationHash;
+
+/***/ }),
+
 /***/ "./src/Coding/Repeating.js":
 /*!*********************************!*\
   !*** ./src/Coding/Repeating.js ***!
@@ -9374,7 +9537,7 @@ class Repeating extends AbstractType {
    */
   constructor(id, type, repeatLimit = -1) {
     super(id || 'repeating');
-    super.description('A type that itself has one repeating type that will be written / read until the limit is reached or data is empty.');
+    super.description('A type that itself has one repeating type that will ' + 'be written / read until the limit is reached or data is empty.');
     this[P_TYPE] = type;
     this[P_REPEAT_LIMIT] = repeatLimit;
   }
@@ -9509,13 +9672,15 @@ module.exports = {
   Pascal: {
     Keys: {
       Curve: __webpack_require__(/*! ./Pascal/Keys/Curve */ "./src/Coding/Pascal/Keys/Curve.js"),
-      PublicKey: __webpack_require__(/*! ./Pascal/Keys/PublicKey */ "./src/Coding/Pascal/Keys/PublicKey.js")
+      PublicKey: __webpack_require__(/*! ./Pascal/Keys/PublicKey */ "./src/Coding/Pascal/Keys/PublicKey.js"),
+      PrivateKey: __webpack_require__(/*! ./Pascal/Keys/PrivateKey */ "./src/Coding/Pascal/Keys/PrivateKey.js")
     },
     AccountNumber: __webpack_require__(/*! ./Pascal/AccountNumber */ "./src/Coding/Pascal/AccountNumber.js"),
     AccountName: __webpack_require__(/*! ./Pascal/AccountName */ "./src/Coding/Pascal/AccountName.js"),
     Currency: __webpack_require__(/*! ./Pascal/Currency */ "./src/Coding/Pascal/Currency.js"),
     NOperation: __webpack_require__(/*! ./Pascal/NOperation */ "./src/Coding/Pascal/NOperation.js"),
-    OpType: __webpack_require__(/*! ./Pascal/OpType */ "./src/Coding/Pascal/OpType.js")
+    OpType: __webpack_require__(/*! ./Pascal/OpType */ "./src/Coding/Pascal/OpType.js"),
+    OperationHash: __webpack_require__(/*! ./Pascal/OperationHash */ "./src/Coding/Pascal/OperationHash.js")
   }
 };
 
@@ -10691,11 +10856,8 @@ module.exports = KeyPair;
  */
 const BC = __webpack_require__(/*! ../../BC */ "./src/BC.js");
 
-const Curve = __webpack_require__(/*! ./Curve */ "./src/Types/Keys/Curve.js");
-
 const P_KEY = Symbol('key');
 const P_CURVE = Symbol('curve');
-const P_LENGTH = Symbol('length');
 /**
  * Represents a public key in pascalcoin.
  */
@@ -10710,18 +10872,11 @@ class PrivateKey {
   constructor(key, curve) {
     this[P_KEY] = BC.from(key);
     this[P_CURVE] = curve;
-    this[P_LENGTH] = key.length;
     const privateKeyLength = curve.lPrivateKey();
 
-    if (this[P_LENGTH] > privateKeyLength) {
-      throw new Error(`Invalid length for curve ${curve.name} - ` + `expected <= ${privateKeyLength}, got ${this[P_LENGTH]}`);
+    if (this[P_KEY].length > privateKeyLength) {
+      throw new Error(`Invalid length for curve ${curve.name} - ` + `expected <= ${privateKeyLength}, got ${this[P_KEY].length}`);
     }
-    /*
-    if (this[P_LENGTH] < privateKeyLength) {
-      this[P_LENGTH] = privateKeyLength;
-      this[P_KEY] = key.prepend(BC.fromHex('00'.repeat(privateKeyLength - this[P_LENGTH])));
-    }*/
-
   }
   /**
      * Gets the key value.
@@ -10744,16 +10899,6 @@ class PrivateKey {
     return this.key;
   }
   /**
-     * Gets the y value of the key.
-     *
-     * @returns {Number}
-     */
-
-
-  get length() {
-    return this[P_LENGTH];
-  }
-  /**
      * Gets the used curve.
      *
      * @returns {Curve}
@@ -10762,33 +10907,6 @@ class PrivateKey {
 
   get curve() {
     return this[P_CURVE];
-  }
-  /**
-   * Encodes a private key to a BC defined by PascalCoin.
-   *
-   * @returns {BC}
-   */
-
-
-  encode() {
-    const curve = BC.fromInt(this.curve.id).switchEndian();
-    const length = BC.fromInt(this.length, 2).switchEndian();
-    return BC.concat(curve, length, this.key);
-  }
-  /**
-   * Decodes a PascalCoin private key string.
-   *
-   * @param {BC|Buffer|Uint8Array|String} encoded
-   * @returns {PrivateKey}
-   */
-
-
-  static decode(encoded) {
-    encoded = BC.from(encoded);
-    const curve = encoded.slice(0, 2).switchEndian().toInt();
-    const length = encoded.slice(2, 4).switchEndian().toInt();
-    const key = encoded.slice(4, 4 + length);
-    return new PrivateKey(key, new Curve(curve));
   }
 
 }
@@ -10990,44 +11108,9 @@ class OperationHash {
     this[P_N_OPERATION] = nOperation;
     this[P_MD160] = BC.from(md160);
 
-    if (md160.length !== 20) {
+    if (this[P_MD160].length !== 20) {
       throw new Error('Invalid operation hash - md160 size !== 20 bytes.');
     }
-  }
-  /**
-   * Decodes the given operation hash.
-   *
-   * @param {BC|Buffer|Uint8Array|String} opHash
-   */
-
-
-  static decode(opHash) {
-    opHash = BC.from(opHash);
-    const block = opHash.slice(0, 4).switchEndian().toInt();
-    const account = new AccountNumber(opHash.slice(4, 8).switchEndian().toInt());
-    const nOperation = opHash.slice(8, 12).switchEndian().toInt();
-    const md160 = opHash.slice(12);
-    return new OperationHash(block, account, nOperation, md160);
-  }
-  /**
-   * Creates the pascal encoding for an operation hash.
-   *
-   * @returns {BC}
-   */
-
-
-  encode() {
-    return BC.concat(BC.fromInt(this[P_BLOCK], 4).switchEndian(), BC.fromInt(this[P_ACCOUNT].account, 4).switchEndian(), BC.fromInt(this[P_N_OPERATION], 4).switchEndian(), this[P_MD160]);
-  }
-  /**
-   * Gets the operation hash as a pending operation.
-   *
-   * @returns {BC}
-   */
-
-
-  encodeAsPending() {
-    return new OperationHash(0, this[P_ACCOUNT], this[P_N_OPERATION], this[P_MD160]).encode();
   }
   /**
    * Gets the account that executed the operation.
@@ -11105,17 +11188,15 @@ module.exports = {
 class Util {
   /**
    * https://github.com/MauroJr/escape-regex/blob/master/index.js
+   * Tests are not performed.
    *
    * @param {String} string
    * @returns {string}
    */
+
+  /* istanbul ignore next */
   static escapeRegex(string) {
     return ('' + string).replace(/([?!${}*:()|=^[\]\/\\.+])/g, '\\$1');
-  } // https://stackoverflow.com/questions/46479169/check-if-value-is-a-symbol-in-javascript
-
-
-  static isSymbol(x) {
-    return typeof x === 'symbol' || typeof x === 'object' && Object.prototype.toString.call(x) === '[object Symbol]';
   }
 
 }

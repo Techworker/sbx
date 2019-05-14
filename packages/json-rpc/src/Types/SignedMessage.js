@@ -6,7 +6,7 @@
  */
 
 const Abstract = require('./Abstract');
-const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
+const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 const BC = require('@pascalcoin-sbx/common').BC;
 
 const P_DIGEST = Symbol('digest');
@@ -27,9 +27,9 @@ class SignedMessage extends Abstract {
 
     this[P_DIGEST] = BC.fromHex(data.digest);
     if (data.enc_pubkey !== undefined) {
-      this[P_PUBKEY] = PublicKey.decode(BC.fromHex(data.enc_pubkey));
+      this[P_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.enc_pubkey));
     } else {
-      this[P_PUBKEY] = PublicKey.fromBase58(data.b58_pubkey);
+      this[P_PUBKEY] = new PublicKeyCoder().decodeFromBase58(data.b58_pubkey);
     }
     this[P_SIGNATURE] = BC.fromHex(data.signature);
   }

@@ -667,7 +667,7 @@ class Client {
       seller_account: new AccountNumber(sellerAccount),
       new_pubkey: newPubkey,
       amount: amount,
-      signer_pubkey: signerPubkey,
+      signer_pubkey: signerPubkey
     }, this[P_EXECUTOR], Operation, false);
   }
 

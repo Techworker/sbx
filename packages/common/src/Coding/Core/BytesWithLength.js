@@ -10,7 +10,6 @@ const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_LENGTH_FIELD = Symbol('length_field');
 const P_BYTES_FIELD = Symbol('bytes_field');
 
-
 /**
  * A field type to write dynamic content in form of bytes (prepends the length).
  */

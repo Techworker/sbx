@@ -25,8 +25,6 @@ class RawOperationsCoder extends CompositeType {
 
     operationType.addSubType(new Coding.Pascal.OpType('optype', 4));
     operationType.addSubType(new Coding.Decissive('operation', 'optype', (markerValue) => {
-      let a = 'b';
-
       switch (markerValue) {
         case 1:
           return new TransactionRawCoder(1);
@@ -38,6 +36,8 @@ class RawOperationsCoder extends CompositeType {
           return new ChangeAccountInfoRawCoder(8);
         case 10:
           return new DataRawCoder(10);
+        default:
+          throw new Error('Unable to map marker to a coder.');
       }
     }));
     this.addSubType(new Coding.Repeating('operations', operationType));
