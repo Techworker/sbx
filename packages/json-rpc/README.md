@@ -20,7 +20,7 @@ full featured objects you can use to better work with the responses.
 To start requesting a node you need to create a new client instance.
 
 ```js
-const sbxRpc = require('@sbx/json-rpc');
+const sbxRpc = require('@pascalcoin-sbx/json-rpc');
 
 // create an rpc client for a local wallet
 const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
@@ -31,2240 +31,290 @@ the node.
 
 ## Actions
 
-### addNode
+Each rpc method in the client object returns a specific action type that 
+itself has functionality to finetune the call before it gets send to the node 
+and returns data.
 
-Adds nodes the remote node should connect to.
+The execution will return a promise, the successful callback will have a 
+single parameter which is an array.
 
-```
-addNode({
-  String[] nodes
-}) : BaseAction -> Number
-```
+The array consists of 2 values:
+ - Index 0: The raw returned result.
+ - Index 1: A method to transform the raw result in a rich object. It is not
+   not always necessary to work with rich objects as transformation takes some time, 
+   so you can choose when to do the transformation.
 
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|nodes|String[]|yes|The list of nodes (will be transformed to a semicolon separated list)|
+There are 4 different action types returned by the client calls.
+
+### BaseAction
+
+A simple action type that has no finetuning, since you already provided all 
+tunable parameters in the call to the method itself.
+ 
+For example the `getAccount` method returns a `BaseAction`. `getAccount` 
+expects a single parameter (the account number), nothing else. So there is
+nothing else to finetune.
+
+A `BaseAction` only has one method to execute a call: `execute`. This method 
+will return a promise.
+
 **Example:**
 
 ```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
+const sbxRpc = require('@pascalcoin-sbx/json-rpc');
 const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
 
-// create action instance
-const action = rpcClient.addNode({
-  nodes: ['123.123.123.123:4004', '7.7.7.7:4005']
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
+rpcClient.getAccount({account: 123, depth: 1000000})
+  .execute()
+  .then(([accountObj, transform]) => {
+    console.log(accountObj); // raw
+    console.log(transform(accountObj)); // rich object
+  });
 ```
 
-### getAccount
+### PagedAction
 
-Gets an account with the given account number.
+A `PagedAction` is returned whenever there is a possibility to page results.
 
+It has the following options to finetune a call:
+
+ - `action.start` - sets the start offset
+ - `action.max` - sets the maximum number of results that are returned.
+
+A `PagedAction` has 3 methods to execute the call to the API: 
+
+#### execute 
+
+This method will execute the action based on the given parameters.
+
+**Example**
+```js
+// ...
+let action = rpcClient.getAccountOperations({account: 123, depth: 1000000});
+action.start = 50; // offset
+action.max = 10; // limit
+
+action.execute()
+  .then(([operations, transform]) => {
+    console.log(operations); // raw
+    console.log(operations.map(op => transform(op)));
+  });
 ```
-getAccount({
-  AccountNumber|Number|String account
-}) : BaseAction -> Account
+ 
+#### executeAll
+
+This method will try to fetch all data and dynamically increments the 
+`action.start` value. This method can be useful, but with a lot of data
+it will take some time and eat a lot of resources. The result is an 
+array with all found data.
+
+**Example**
+```js
+// ...
+let action = rpcClient.getAccountOperations({account: 123, depth: 1000000});
+
+// fine tune paging and startpoint (optional)
+action.start = 50; // offset
+action.max = 10; // limit
+
+action.executeAll()
+  .then(([operations, transform]) => {
+    // ALL operations for account
+    console.log(operations); // raw
+    console.log(operations.map(op => transform(op)));
+  });
 ```
 
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|account|AccountNumber\|Number\|String|yes||
-**Example:**
+#### executeAllReport
+
+This method will try to fetch all data and dynamically increments the 
+`action.start` value. Executing this method lets you be a bit more reactive,
+as you can set a callback function that gets called, whenever a chunk of data
+was loaded in a single call.
+
+**Example**
 
 ```js
-const sbxRpc = require('@sbx/json-rpc');
+// ...
+let action = rpcClient.getAccountOperations({account: 123, depth: 1000000});
 
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
+// fine tune paging and startpoint (optional)
+action.start = 50; // offset
+action.max = 10; // limit
 
-// create action instance
-const action = rpcClient.getAccount({
-  account: 34500
+let countAll = [];
+action.executeAllReport(([chunkedOperations, transform]) => {
+  // raw array
+  console.log(chunkedOperations); 
+  // array of rich objects
+  console.log(chunkedOperations.map(op => transform(op)));
+  // example, increment a counter to report progress for example
+  countAll += chunkedOperations.length;
+}).then(() => {
+  console.log(`${countAll} operations found and reported, finished`);
 });
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
 ```
 
-### findAccounts
+Executing `PagedAction`s that will try to return all data can burn down
+the node when there are too many requests executed without letting the
+node rest a bit.
 
-Searches for accounts.
+There are several parameters to the `executeAll` and `executeAllReport`
+methods to control this behaviour:
 
-```
-findAccounts({
-  [AccountName|String name], 
-  [Number type], 
-  [Boolean onlyAccountsForSale], 
-  [Boolean exact], 
-  [Currency minBalance], 
-  [Currency maxBalance], 
-  [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair pubkey]
-}) : PagedAction -> Account[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|name|AccountName\|String|no||
-|type|Number|no||
-|onlyAccountsForSale|Boolean|no||
-|exact|Boolean|no||
-|minBalance|Currency|no||
-|maxBalance|Currency|no||
-|pubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|no||
-**Example to fetch all data:**
+1. `restEach` If this parameter is given, it will rest after it executed
+   a remote call equaling the value.
+2. `restSeconds` In combination with `restEach`, this value determines the
+   number of seconds to rest.
+2. `restCallback` In combination with `restEach`, this callback is called
+   whenever the action rests.
 
 ```js
-const sbxRpc = require('@sbx/json-rpc');
+// ...
+let action = rpcClient.getAccountOperations({account: 123, depth: 1000000});
 
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
+// fine tune paging and startpoint (optional)
+action.start = 50; // offset
+action.max = 10; // limit
 
-// // create action instance of type PagedAction
-const action = rpcClient.findAccounts({
-  name: techworker, 
-  type: 123, 
-  onlyAccountsForSale: true, 
-  exact: true, 
-  minBalance: new Currency('1.2345'), 
-  maxBalance: new Currency('1.2345'), 
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.executeAll();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
+let countAll = [];
+// start execution and let it rest for 30 seconds after number of 
+// calls % 10 === 0. Report to console. 
+action.executeAllReport(([chunkedOperations, transform]) => {
+  // raw array
+  console.log(chunkedOperations); 
+  // array of rich objects
+  console.log(chunkedOperations.map(op => transform(op)));
+  // example, increment a counter to report progress for example
+  countAll += chunkedOperations.length;
+}, 10, 30, () => console.log('resting..')).then(() => {
+  console.log(`${countAll} operations found and reported, finished`);
 });
 ```
 
-**Example for custom paging:**
+It is also possible to implement your own method to fence the concurrency,
+e.g. with PQueue. Have a look at the factory method `sbxRpc.Client.factory` 
+and factory your own functionality.
 
-```js
-const sbxRpc = require('@sbx/json-rpc');
+### OperationAction
 
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
+This action will give you some finetuning about common tasks when remotely
+executing operations.
 
-// create action instance of type PagedAction
-const action = rpcClient.findAccounts({
-  name: techworker, 
-  type: 123, 
-  onlyAccountsForSale: true, 
-  exact: true, 
-  minBalance: new Currency('1.2345'), 
-  maxBalance: new Currency('1.2345'), 
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
+An `OperationAction` only has one method to execute a call: `execute`. This method 
+will return a promise.
 
-// change start and max if you need control
-action.start = 0;
-action.max = 10;
+The action has the following options to finetune a call:
 
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
+`action.withPayload()`
 
-**Example to fetch all data but getting paged data reported.:**
+Sets the payload, the payload method and either the password to encrypt 
+the payload or the public key. This call is optional, the default payload 
+will be empty.
+
+`action.withFee()`
+
+Sets the fee used for the operation. Default is no fee. This call is 
+optional, the default fee is 0.
+
+`action.withMinFee`
+
+Sets the fee to the available minimum fee. This call is optional, the 
+default fee is 0.
 
 ```js
-const sbxRpc = require('@sbx/json-rpc');
+// ...
+let action = rpcClient.sendTo({sender: 123, target: 456, amount: 0.00015});
+action.withFee(0.0001); // 1 molina fee
+// or..
+action.withMinFee(); // 1 molina fee
 
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
+// no encryption
+action.withPayload('techworker');
+// payload with password encryption
+action.withPayload('techworker', 'pwd', 'test123'); 
+// payload with public key encryption (@pascalcoin-sbx/common.Types.Keys.PublicKey)
+action.withPayload('techworker', 'pubkey', null, publicKey);
 
-// create action instance of type PagedAction
-const action = rpcClient.findAccounts({
-  name: techworker, 
-  type: 123, 
-  onlyAccountsForSale: true, 
-  exact: true, 
-  minBalance: new Currency('1.2345'), 
-  maxBalance: new Currency('1.2345'), 
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.executeAllReport(([data, transform]) => {
-  // gets called whenever a chunk was loaded
-  console.log(data); // raw
-  console.log(transform(data)); // mapped
-});
-
-promise.then(() => {
-  console.log('finished');
-}).catch((err) => {
-  console.log(err); // something went wrong
+// execute
+action.execute(([operation, transform]) => {
+  // validate if operation is good
+  let richOperation = transform(operation);
+  if(richOperation.valid) {
+    console.log('All fine..');
+  } else {
+    console.log('Something went wrong.');
+  }
 });
 ```
 
-### getWalletAccounts
+### SignOperationAction
 
-Returns all accounts of a wallet with the given public key
+This action will be returned whenever the call is a signing operation.
 
-```
-getWalletAccounts({
-  [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair pubkey]
-}) : PagedAction -> Account[]
-```
+An `SignOperationAction` only has one method to execute a call: `execute`. This 
+method will return a promise.
 
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|pubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|no||
-**Example to fetch all data:**
+The action has the following options to finetune a call:
 
-```js
-const sbxRpc = require('@sbx/json-rpc');
+`action.withLastNOperation()`
 
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
+This call is mandatory. It sets the last NOperation of the account.  
 
-// // create action instance of type PagedAction
-const action = rpcClient.getWalletAccounts({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
+`action.withRawOperations()`
 
-// execute and handle promise
-const promise = action.executeAll();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
+This call is optional. When signing multiple operations, you can set
+the previous sign result and the new one will be appended.
 
-**Example for custom paging:**
+**Example**
 
 ```js
-const sbxRpc = require('@sbx/json-rpc');
+// ...
+let action = rpcClient.signSendTo({sender: 123, target: 456, senderPubkey: X, targetPubkey: y, amount: 0.0001});
+action.withFee(0.0001); // 1 molina fee
+// or..
+action.withMinFee(); // 1 molina fee
 
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
+// no encryption
+action.withPayload('techworker');
+// payload with password encryption
+action.withPayload('techworker', 'pwd', 'test123'); 
+// payload with public key encryption (@pascalcoin-sbx/common.Types.Keys.PublicKey)
+action.withPayload('techworker', 'pubkey', null, publicKey);
 
-// create action instance of type PagedAction
-const action = rpcClient.getWalletAccounts({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
+// set last n_operation
+action.withLastNOperation(1);
 
-// change start and max if you need control
-action.start = 0;
-action.max = 10;
+// set raw ops from previous call results
+action.withRawOperations('');
 
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example to fetch all data but getting paged data reported.:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.getWalletAccounts({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.executeAllReport(([data, transform]) => {
-  // gets called whenever a chunk was loaded
-  console.log(data); // raw
-  console.log(transform(data)); // mapped
-});
-
-promise.then(() => {
-  console.log('finished');
-}).catch((err) => {
-  console.log(err); // something went wrong
+// execute
+action.execute(([operation, transform]) => {
+  // validate if operation is good
+  let richOperation = transform(operation);
+  if(richOperation.valid) {
+    console.log('All fine..');
+  } else {
+    console.log('Something went wrong.');
+  }
 });
 ```
 
-### getWalletAccountsCount
+## CookBook
 
-Returns the number of accounts in a wallet
-
-```
-getWalletAccountsCount({
-  [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair pubkey]
-}) : BaseAction -> Number
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|pubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|no||
-**Example:**
+You can use `Promise.all` to wait for multiple calls:
 
 ```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.getWalletAccountsCount({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getWalletCoins
-
-Gets the accumulated balance of accounts in a wallet
-
-```
-getWalletCoins({
-  [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair pubkey]
-}) : BaseAction -> Number
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|pubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|no||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.getWalletCoins({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getWalletPubKeys
-
-Gets the list of public keys managed in a wallet
-
-```
-getWalletPubKeys({
-  [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair pubkey]
-}) : PagedAction -> WalletPublicKey[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|pubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|no||
-**Example to fetch all data:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// // create action instance of type PagedAction
-const action = rpcClient.getWalletPubKeys({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.executeAll();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example for custom paging:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.getWalletPubKeys({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// change start and max if you need control
-action.start = 0;
-action.max = 10;
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example to fetch all data but getting paged data reported.:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.getWalletPubKeys({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.executeAllReport(([data, transform]) => {
-  // gets called whenever a chunk was loaded
-  console.log(data); // raw
-  console.log(transform(data)); // mapped
-});
-
-promise.then(() => {
-  console.log('finished');
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getWalletPubKey
-
-Gets the info of a public key in the wallet.
-
-```
-getWalletPubKey({
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair pubkey
-}) : BaseAction -> WalletPublicKey[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|pubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.getWalletPubKey({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### inportPubKey
-
-Imports a public key in the wallet.
-
-```
-inportPubKey({
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair pubkey, 
-  [String name]
-}) : BaseAction -> WalletPublicKey
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|pubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|name|String|no||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.inportPubKey({
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF'), 
-  name: various
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getBlock
-
-Gets the information of a block
-
-```
-getBlock({
-  Number block
-}) : BaseAction -> Block
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|block|Number|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.getBlock({
-  block: 123
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getBlocks
-
-Gets a list of blocks
-
-```
-getBlocks({
-  [Number last], 
-  [Number start], 
-  [Number end]
-}) : BaseAction -> Block[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|last|Number|no||
-|start|Number|no||
-|end|Number|no||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.getBlocks({
-  last: 123, 
-  start: 0, 
-  end: 0
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getBlockCount
-
-Gets the list of all blocks.
-
-```
-getBlockCount() : BaseAction -> Number
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.getBlockCount();
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getBlockOperation
-
-Gets an operation in a block
-
-```
-getBlockOperation({
-  Number block, 
-  Number opblock
-}) : BaseAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|block|Number|yes||
-|opblock|Number|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.getBlockOperation({
-  block: 123, 
-  opblock: 123
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getBlockOperations
-
-Get all operations in a block
-
-```
-getBlockOperations({
-  Number block
-}) : PagedAction -> Operation[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|block|Number|yes||
-**Example to fetch all data:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// // create action instance of type PagedAction
-const action = rpcClient.getBlockOperations({
-  block: 123
-});
-
-// execute and handle promise
-const promise = action.executeAll();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example for custom paging:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.getBlockOperations({
-  block: 123
-});
-
-// change start and max if you need control
-action.start = 0;
-action.max = 10;
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example to fetch all data but getting paged data reported.:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.getBlockOperations({
-  block: 123
-});
-
-// execute and handle promise
-const promise = action.executeAllReport(([data, transform]) => {
-  // gets called whenever a chunk was loaded
-  console.log(data); // raw
-  console.log(transform(data)); // mapped
-});
-
-promise.then(() => {
-  console.log('finished');
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getAccountOperations
-
-Get all operations of an account
-
-```
-getAccountOperations({
-  AccountNumber|Number|String account, 
-  [Number depth], 
-  [Number startblock]
-}) : PagedAction -> Operation[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|account|AccountNumber\|Number\|String|yes||
-|depth|Number|no||
-|startblock|Number|no||
-**Example to fetch all data:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// // create action instance of type PagedAction
-const action = rpcClient.getAccountOperations({
-  account: 34500, 
-  depth: 100, 
-  startblock: 123
-});
-
-// execute and handle promise
-const promise = action.executeAll();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example for custom paging:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.getAccountOperations({
-  account: 34500, 
-  depth: 100, 
-  startblock: 123
-});
-
-// change start and max if you need control
-action.start = 0;
-action.max = 10;
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example to fetch all data but getting paged data reported.:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.getAccountOperations({
-  account: 34500, 
-  depth: 100, 
-  startblock: 123
-});
-
-// execute and handle promise
-const promise = action.executeAllReport(([data, transform]) => {
-  // gets called whenever a chunk was loaded
-  console.log(data); // raw
-  console.log(transform(data)); // mapped
-});
-
-promise.then(() => {
-  console.log('finished');
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getPendings
-
-Gets all pending operations
-
-```
-getPendings() : PagedAction -> Operation[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example to fetch all data:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// // create action instance of type PagedAction
-const action = rpcClient.getPendings();
-
-// execute and handle promise
-const promise = action.executeAll();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example for custom paging:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.getPendings();
-
-// change start and max if you need control
-action.start = 0;
-action.max = 10;
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example to fetch all data but getting paged data reported.:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.getPendings();
-
-// execute and handle promise
-const promise = action.executeAllReport(([data, transform]) => {
-  // gets called whenever a chunk was loaded
-  console.log(data); // raw
-  console.log(transform(data)); // mapped
-});
-
-promise.then(() => {
-  console.log('finished');
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getPendingsCount
-
-Gets the number of pending operations
-
-```
-getPendingsCount() : BaseAction -> Number
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.getPendingsCount();
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### decodeOpHash
-
-Decodes the given operation hash
-
-```
-decodeOpHash({
-  OperationHash ophash
-}) : BaseAction -> OperationHash
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|ophash|OperationHash|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.decodeOpHash({
-  ophash: BC.from('B822000081AB0000010000003032333646444430344246334637414434413042')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### findOperation
-
-Searches for an operation
-
-```
-findOperation({
-  [OperationHash ophash]
-}) : BaseAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|ophash|OperationHash|no||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.findOperation({
-  ophash: BC.from('B822000081AB0000010000003032333646444430344246334637414434413042')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### findNOperation
-
-Search for an operation signed by account and with n_operation, start searching block (0=all)
-
-```
-findNOperation({
-  AccountNumber|Number|String account, 
-  Number nOperation, 
-  [Number block]
-}) : BaseAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|account|AccountNumber\|Number\|String|yes||
-|nOperation|Number|yes||
-|block|Number|no||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.findNOperation({
-  account: 34500, 
-  nOperation: 123, 
-  block: 123
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### findNOperations
-
-Search for operations signed by account within an n_operation range, start searching block (0=all)
-
-```
-findNOperations({
-  AccountNumber|Number|String account, 
-  Number nOperationMin, 
-  Number nOperationMax
-}) : PagedAction -> Operation[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|account|AccountNumber\|Number\|String|yes||
-|nOperationMin|Number|yes||
-|nOperationMax|Number|yes||
-**Example to fetch all data:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// // create action instance of type PagedAction
-const action = rpcClient.findNOperations({
-  account: 34500, 
-  nOperationMin: 123, 
-  nOperationMax: 123
-});
-
-// execute and handle promise
-const promise = action.executeAll();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example for custom paging:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.findNOperations({
-  account: 34500, 
-  nOperationMin: 123, 
-  nOperationMax: 123
-});
-
-// change start and max if you need control
-action.start = 0;
-action.max = 10;
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-**Example to fetch all data but getting paged data reported.:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance of type PagedAction
-const action = rpcClient.findNOperations({
-  account: 34500, 
-  nOperationMin: 123, 
-  nOperationMax: 123
-});
-
-// execute and handle promise
-const promise = action.executeAllReport(([data, transform]) => {
-  // gets called whenever a chunk was loaded
-  console.log(data); // raw
-  console.log(transform(data)); // mapped
-});
-
-promise.then(() => {
-  console.log('finished');
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### sendTo
-
-Executes a transaction operation
-
-```
-sendTo({
-  AccountNumber|Number|String sender, 
-  AccountNumber|Number|String target, 
-  Currency amount
-}) : OperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|sender|AccountNumber\|Number\|String|yes||
-|target|AccountNumber\|Number\|String|yes||
-|amount|Currency|yes||
-### signSendTo
-
-Executes a transaction operation
-
-```
-signSendTo({
-  AccountNumber|Number|String sender, 
-  AccountNumber|Number|String target, 
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair senderPubkey, 
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair targetPubkey, 
-  Currency amount
-}) : SignOperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|sender|AccountNumber\|Number\|String|yes||
-|target|AccountNumber\|Number\|String|yes||
-|senderPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|targetPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|amount|Currency|yes||
-### changeKey
-
-Changes the key of an account
-
-```
-changeKey({
-  AccountNumber|Number|String account, 
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey, 
-  [AccountNumber|Number|String accountSigner]
-}) : OperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|account|AccountNumber\|Number\|String|yes||
-|newPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|accountSigner|AccountNumber\|Number\|String|no||
-### changeKeys
-
-Changes the key of multiple accounts
-
-```
-changeKeys({
-  AccountNumber[]|Number[]|String[] accounts, 
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey
-}) : OperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|accounts|AccountNumber[]\|Number[]\|String[]|yes||
-|newPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-### signChangeKey
-
-Signs a change key operation
-
-```
-signChangeKey({
-  AccountNumber|Number|String account, 
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair oldPubkey, 
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey, 
-  [AccountNumber|Number|String accountSigner]
-}) : SignOperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|account|AccountNumber\|Number\|String|yes||
-|oldPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|newPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|accountSigner|AccountNumber\|Number\|String|no||
-### listAccountForSale
-
-Lists an account for sale
-
-```
-listAccountForSale({
-  AccountNumber|Number|String accountSigner, 
-  AccountNumber|Number|String accountTarget, 
-  AccountNumber|Number|String sellerAccount, 
-  Number lockedUntilBlock, 
-  Currency price, 
-  [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey]
-}) : OperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|accountSigner|AccountNumber\|Number\|String|yes||
-|accountTarget|AccountNumber\|Number\|String|yes||
-|sellerAccount|AccountNumber\|Number\|String|yes||
-|lockedUntilBlock|Number|yes||
-|price|Currency|yes||
-|newPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|no||
-### signListAccountForSale
-
-Signs a list operation
-
-```
-signListAccountForSale({
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair signerPubkey, 
-  AccountNumber|Number|String accountSigner, 
-  AccountNumber|Number|String accountTarget, 
-  AccountNumber|Number|String sellerAccount, 
-  Number lockedUntilBlock, 
-  Currency price, 
-  [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey]
-}) : SignOperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|signerPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|accountSigner|AccountNumber\|Number\|String|yes||
-|accountTarget|AccountNumber\|Number\|String|yes||
-|sellerAccount|AccountNumber\|Number\|String|yes||
-|lockedUntilBlock|Number|yes||
-|price|Currency|yes||
-|newPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|no||
-### DelistAccountForSale
-
-Delists an account
-
-```
-DelistAccountForSale({
-  AccountNumber|Number|String accountSigner, 
-  AccountNumber|Number|String accountTarget
-}) : OperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|accountSigner|AccountNumber\|Number\|String|yes||
-|accountTarget|AccountNumber\|Number\|String|yes||
-### signDelistAccountForSale
-
-Signs a delist operation
-
-```
-signDelistAccountForSale({
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair signerPubkey, 
-  AccountNumber|Number|String accountSigner, 
-  AccountNumber|Number|String accountTarget
-}) : SignOperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|signerPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|accountSigner|AccountNumber\|Number\|String|yes||
-|accountTarget|AccountNumber\|Number\|String|yes||
-### buyAccount
-
-Buys an account
-
-```
-buyAccount({
-  AccountNumber|Number|String buyerAccount, 
-  AccountNumber|Number|String accountToPurchase, 
-  [Currency price], 
-  [AccountNumber|Number|String sellerAccount]
-}) : OperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|buyerAccount|AccountNumber\|Number\|String|yes||
-|accountToPurchase|AccountNumber\|Number\|String|yes||
-|price|Currency|no||
-|sellerAccount|AccountNumber\|Number\|String|no||
-### signBuyAccount
-
-Signs a buy account operation
-
-```
-signBuyAccount({
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair signerPubkey, 
-  AccountNumber|Number|String buyerAccount, 
-  AccountNumber|Number|String accountToPurchase, 
-  Currency price, 
-  AccountNumber|Number|String sellerAccount
-}) : SignOperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|signerPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|buyerAccount|AccountNumber\|Number\|String|yes||
-|accountToPurchase|AccountNumber\|Number\|String|yes||
-|price|Currency|yes||
-|sellerAccount|AccountNumber\|Number\|String|yes||
-### changeAccountInfo
-
-Changes account infos
-
-```
-changeAccountInfo({
-  AccountNumber|Number|String accountSigner, 
-  AccountNumber|Number|String accountTarget, 
-  [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey], 
-  [AccountName|String newName], 
-  [Number newType]
-}) : OperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|accountSigner|AccountNumber\|Number\|String|yes||
-|accountTarget|AccountNumber\|Number\|String|yes||
-|newPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|no||
-|newName|AccountName\|String|no||
-|newType|Number|no||
-### signChangeAccountInfo
-
-Signs a change account info operation
-
-```
-signChangeAccountInfo({
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair signerPubkey, 
-  AccountNumber|Number|String accountSigner, 
-  AccountNumber|Number|String accountTarget, 
-  [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey], 
-  [AccountName|String newName], 
-  [Number newType]
-}) : SignOperationAction -> Operation
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|signerPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-|accountSigner|AccountNumber\|Number\|String|yes||
-|accountTarget|AccountNumber\|Number\|String|yes||
-|newPubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|no||
-|newName|AccountName\|String|no||
-|newType|Number|no||
-### signMessage
-
-Signs a message using the given public key
-
-```
-signMessage({
-  BC digest, 
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair pubkey
-}) : BaseAction -> SignedMessage
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|digest|BC|yes||
-|pubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.signMessage({
-  digest: , 
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### verifySign
-
-Verifies a signature
-
-```
-verifySign({
-  BC signature, 
-  BC digest, 
-  String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair pubkey
-}) : BaseAction -> SignedMessage
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|signature|BC|yes||
-|digest|BC|yes||
-|pubkey|String\|BC\|PublicKey\|WalletPublicKey\|PrivateKey\|KeyPair|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.verifySign({
-  signature: , 
-  digest: , 
-  pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### operationsDelete
-
-Removes an operation from the given rawoperations.
-
-```
-operationsDelete({
-  RawOperations rawoperations, 
-  Number index
-}) : BaseAction -> RawOperations
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|rawoperations|RawOperations|yes||
-|index|Number|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.operationsDelete({
-  rawoperations: BC.from('ABCD'), 
-  index: 123
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### operationsInfo
-
-Gets the information about the given operation
-
-```
-operationsInfo({
-  RawOperations rawoperations
-}) : BaseAction -> Operation[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|rawoperations|RawOperations|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.operationsInfo({
-  rawoperations: BC.from('ABCD')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### executeOperations
-
-Executes the given operations
-
-```
-executeOperations({
-  RawOperations rawoperations
-}) : BaseAction -> Operation[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|rawoperations|RawOperations|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.executeOperations({
-  rawoperations: BC.from('ABCD')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### nodeStatus
-
-Returns the current node status
-
-```
-nodeStatus() : BaseAction -> NodeStatus
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.nodeStatus();
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### encodePubKey
-
-Encodes a public key to a pascalcoin public key
-
-```
-encodePubKey({
-  BC x, 
-  BC y, 
-  Number ecNid
-}) : BaseAction -> BC
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|x|BC|yes||
-|y|BC|yes||
-|ecNid|Number|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.encodePubKey({
-  x: , 
-  y: , 
-  ecNid: 123
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### decodePubKey
-
-Decodes an encoded public key.
-
-```
-decodePubKey({
-  BC pubkey
-}) : BaseAction -> Object
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|pubkey|BC|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.decodePubKey({
-  pubkey: 
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### payloadEncrypt
-
-Encrypts a payload
-
-```
-payloadEncrypt({
-  BC payload, 
-  String payloadMethod, 
-  [String pwd]
-}) : BaseAction -> BC
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|payload|BC|yes||
-|payloadMethod|String|yes||
-|pwd|String|no||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.payloadEncrypt({
-  payload: , 
-  payloadMethod: various, 
-  pwd: various
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### payloadDecrypt
-
-Decrypts a payload
-
-```
-payloadDecrypt({
-  BC payload, 
-  String[] pwds
-}) : BaseAction -> BC
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|payload|BC|yes||
-|pwds|String[]|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.payloadDecrypt({
-  payload: , 
-  pwds: 
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### getConnections
-
-Gets the connections of a node.
-
-```
-getConnections() : BaseAction -> Connection[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.getConnections();
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### addNewKey
-
-Generates a new key and adds it to the nodes wallet.
-
-```
-addNewKey({
-  Number ecNid, 
-  String name
-}) : BaseAction -> WalletPublicKey
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|ecNid|Number|yes||
-|name|String|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.addNewKey({
-  ecNid: 123, 
-  name: various
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### lock
-
-Locks the wallet.
-
-```
-lock() : BaseAction -> Boolean
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.lock();
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### unlock
-
-Unlocks the wallet.
-
-```
-unlock({
-  String pwd
-}) : BaseAction -> Boolean
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|pwd|String|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.unlock({
-  pwd: various
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### setWalletPassword
-
-Sets the wallet password.
-
-```
-setWalletPassword({
-  String pwd
-}) : BaseAction -> Boolean
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|pwd|String|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.setWalletPassword({
-  pwd: various
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### stopNode
-
-Stops the node.
-
-```
-stopNode() : BaseAction -> Boolean
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.stopNode();
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### startNode
-
-Starts the node.
-
-```
-startNode() : BaseAction -> Boolean
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.startNode();
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### cleanBlackList
-
-Cleans the BlackList.
-
-```
-cleanBlackList() : BaseAction -> Number
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.cleanBlackList();
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### nodeIPStats
-
-Gets IP stats
-
-```
-nodeIPStats() : BaseAction -> Object[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.nodeIPStats();
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### multiOperationAddOperation
-
-Adds an operation to a multioperation
-
-```
-multiOperationAddOperation({
-  RawOperations rawoperations, 
-  Boolean autoNOperation, 
-  Object[]|Sender[] senders, 
-  Object[]|Receiver[] receivers, 
-  Object[]|Changer[] changesinfo
-}) : BaseAction -> RawOperations[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|rawoperations|RawOperations|yes||
-|autoNOperation|Boolean|yes||
-|senders|Object[]\|Sender[]|yes||
-|receivers|Object[]\|Receiver[]|yes||
-|changesinfo|Object[]\|Changer[]|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.multiOperationAddOperation({
-  rawoperations: BC.from('ABCD'), 
-  autoNOperation: true, 
-  senders: , 
-  receivers: , 
-  changesinfo: 
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### multiOperationSignOffline
-
-Signs the given rawoperations
-
-```
-multiOperationSignOffline({
-  RawOperations rawoperations, 
-  Object accountsAndKeys
-}) : BaseAction -> Operation[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|rawoperations|RawOperations|yes||
-|accountsAndKeys|Object|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.multiOperationSignOffline({
-  rawoperations: BC.from('ABCD'), 
-  accountsAndKeys: 
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
-});
-```
-
-### multiOperationSignOnline
-
-Signs the given rawoperations online
-
-```
-multiOperationSignOnline({
-  RawOperations rawoperations
-}) : BaseAction -> Operation[]
-```
-
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-|rawoperations|RawOperations|yes||
-**Example:**
-
-```js
-const sbxRpc = require('@sbx/json-rpc');
-
-// create an rpc client for a local wallet
-const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
-
-// create action instance
-const action = rpcClient.multiOperationSignOnline({
-  rawoperations: BC.from('ABCD')
-});
-
-// execute and handle promise
-const promise = action.execute();
-promise.then(([data, transform]) => {
-  console.log(data); // raw
-  console.log(transform(data)); // mapped to rich object
-}).catch((err) => {
-  console.log(err); // something went wrong
+// ...
+let actions = [];
+for(let account = 1; account < 5; account++) {
+  let action = rpcClient.getAccount({account});
+  actions.push(action.execute());
+}
+Promise.all(actions).then(([...result]) => {
+  result.forEach(([accountObj, transform]) => {
+    console.log(accountObj);
+    console.log(transform(accountObj));
+  });
 });
 ```

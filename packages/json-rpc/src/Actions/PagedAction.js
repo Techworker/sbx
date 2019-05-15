@@ -42,7 +42,7 @@ class PagedAction extends BaseAction {
    *
    * @returns {Promise}
    */
-  async executeAll() {
+  async executeAll(restEach = -1, restSeconds = -1, restCallback = null) {
     let all = [];
     let transformCallback = null;
 
@@ -51,7 +51,7 @@ class PagedAction extends BaseAction {
         transformCallback = transform;
       }
       data.forEach(item => all.push(item));
-    });
+    }, restEach, restSeconds, restCallback);
     return [all, transformCallback];
   }
 

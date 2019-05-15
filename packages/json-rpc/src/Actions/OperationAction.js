@@ -35,14 +35,18 @@ class OperationAction extends BaseAction {
      *
      * @param {String|BC} payload
      * @param {String} payloadMethod
-     * @param {String} password
+   * @param {String} password
+   * @param {PublicKey} pubkey
      * @returns {OperationAction}
      */
-  withPayload(payload, payloadMethod = 'none', password = null) {
+  withPayload(payload, payloadMethod = 'none', password = null, pubkey = null) {
     this.params.payload = payload;
     this.params.payload_method = payloadMethod;
     if (password !== null) {
       this.params.pwd = password;
+    }
+    if (pubkey !== null) {
+      this.params.pubkey = pubkey;
     }
 
     return this;

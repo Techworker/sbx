@@ -283,7 +283,4 @@ Object.keys(data.methods).forEach((m) => {
 
 });
 
-console.log(gen);
-
-// tpl = tpl.toString().replace('__CONTENT__', gen);
-// fs.writeFileSync(__dirname + '/Client.js', tpl);
+fs.writeFileSync(__dirname + '/../docs/rpc.md', gen);

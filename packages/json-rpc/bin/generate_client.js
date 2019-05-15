@@ -180,4 +180,4 @@ Object.keys(data.methods).forEach((m) => {
 let tpl = fs.readFileSync(__dirname + '/Client.js.tpl');
 
 tpl = tpl.toString().replace('__CONTENT__', gen);
-fs.writeFileSync(__dirname + '/Client.js', tpl);
+fs.writeFileSync(__dirname + '/../src/Client.js', tpl);
