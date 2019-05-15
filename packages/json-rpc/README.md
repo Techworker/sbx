@@ -15,6 +15,8 @@ BlockChain project.
 This library implements all JSON-RPC functionalities of PascalCoin. It provides
 full featured objects you can use to better work with the responses.
 
+See [the RPC docs](docs/rpc.md) for more info.
+
 ### Creating a Client instance
 
 To start requesting a node you need to create a new client instance.
