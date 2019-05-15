@@ -49,12 +49,14 @@ class Decissive extends CompositeType {
    * Decodes the given bytes into an object.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
+   * @param {Object} options
+   * @param {*} all
    * @return {Object}
    */
   decodeFromBytes(bc, options = {}, all = null) {
     let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
 
+    this[P_SIZE_ENCODED] = subType.encodedSize;
     return subType.decodeFromBytes(bc, options, all);
   }
 

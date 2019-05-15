@@ -1,5 +1,6 @@
 const fs = require('fs');
 const sbxRpc = require('@pascalcoin-sbx/json-rpc');
+const sbxCommon = require('@pascalcoin-sbx/common');
 
 const prompt = require('prompt');
 
@@ -186,7 +187,7 @@ prompt.get(['account', 'year_from', 'month_from', 'day_from', 'year_to', 'month_
           line += `"${formatDate(txDate)}",`;
           line += `"${operation.opTxt}",`;
           line += `"${operation.payload.toString().replace(/"/g, '\\\"')}",`;
-          line += `"${operation.opHash.encode().toHex()}"`;
+          line += `"${new sbxCommon.Coding.Pascal.OperationHash().encodeToBytes(operation.opHash).toHex()}"`;
 
           csv += `${line}\n`;
           counts.txCollected++;

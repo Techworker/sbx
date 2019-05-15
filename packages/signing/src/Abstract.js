@@ -39,7 +39,7 @@ class Abstract {
    * @returns {Abstract}
    */
   withPayload(payload) {
-    this[P_PAYLOAD] = payload;
+    this[P_PAYLOAD] = BC.from(payload);
     return this;
   }
 

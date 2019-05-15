@@ -138,7 +138,7 @@ class BC {
      * // TODO: UTF8?
      */
   toString() {
-    return this[P_BUFFER].toString();
+    return this[P_BUFFER].toString('utf8');
   }
 
   /**
@@ -188,30 +188,6 @@ class BC {
      */
   get buffer() {
     return Buffer.from(this[P_BUFFER].toString('hex'), 'hex');
-  }
-
-  /**
-   * Switches the endianness of the BC.
-   *
-   * @returns {BC}
-   */
-  switchEndian() {
-    return BC.fromHex(
-      this[P_BUFFER].toString('hex').match(/../g).reverse().join(''),
-    );
-  }
-
-  /**
-   * Switches the endianness of the BC.
-   *
-   * @returns {BC}
-   */
-  switchEndianIf(targetEndian) {
-    if (Endian.detect() !== targetEndian) {
-      return this.switchEndian();
-    }
-
-    return this;
   }
 
   /**

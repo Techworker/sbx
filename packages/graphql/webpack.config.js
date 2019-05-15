@@ -2,12 +2,7 @@
 
 const webpackBaseConfig = require('./../../webpack.config');
 
-const configLight = webpackBaseConfig(__dirname, '.light');
+const configNode = webpackBaseConfig(__dirname, '.node', 'node');
+const configWeb = webpackBaseConfig(__dirname, '', 'web');
 
-configLight.externals = {
-    '@pascalcoin-sbx/json-rpc': '@pascalcoin-sbx/json-rpc'
-};
-
-const configFull = webpackBaseConfig(__dirname, '');
-
-module.exports = [configLight, configFull];
+module.exports = [configNode, configWeb];

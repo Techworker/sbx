@@ -9,17 +9,11 @@
 
 const elliptic = require('elliptic/lib/elliptic/ec/index');
 
-const AES = require('./AES');
-const KDF = require('./KDF');
-const Random = require('mipher/dist/random');
 const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
 const PrivateKey = require('@pascalcoin-sbx/common').Types.Keys.PrivateKey;
-const PrivateKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PrivateKey;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const KeyPair = require('@pascalcoin-sbx/common').Types.Keys.KeyPair;
 const BC = require('@pascalcoin-sbx/common').BC;
-
-const privKeyCoder = new PrivateKeyCoder();
 
 /**
  * Handles cryptographic keys.
@@ -85,54 +79,6 @@ class Keys {
         new BC(kp.getPublic().getY().toArray()),
         privateKey.curve)
     );
-  }
-
-  /**
-   * Creates a new keypair from the given private key.
-   *
-   * @param {Buffer|Uint8Array|BC|String} encryptedPrivateKey
-   * @param {Buffer|Uint8Array|BC|String} password
-   * @returns {KeyPair}
-   */
-  static decrypt(encryptedPrivateKey, password) {
-
-    encryptedPrivateKey = BC.from(encryptedPrivateKey);
-    password = BC.from(password, 'string');
-    let salt = encryptedPrivateKey.slice(8, 16);
-    let key = KDF.PascalCoin(password, salt);
-
-    // decrypt
-    const encData = encryptedPrivateKey.slice(16);
-
-    const privateKeyDecryptedAndEncoded = AES.decrypt(key.key, encData, key.iv);
-
-    return Keys.fromPrivateKey(
-      privKeyCoder.decodeFromBytes(privateKeyDecryptedAndEncoded)
-    );
-  }
-
-  /**
-   * Creates a new keypair from the given private key.
-   *
-   * @param {PrivateKey} privateKey
-   * @param {Buffer|Uint8Array|BC|String} password
-   * @returns {BC}
-   */
-  static encrypt(privateKey, password) {
-    password = BC.from(password, 'string');
-    const privateKeyEncoded = privKeyCoder.encodeToBytes(privateKey);
-
-    const randomGenerator = new Random.Random();
-    const salt = new BC(Buffer.from(randomGenerator.get(8)));
-
-    // mocha sees an open setinterval and won't exit without this change
-    randomGenerator.stop();
-
-    const keyInfo = KDF.PascalCoin(password, salt);
-
-    const privateKeyEncrypted = AES.encryptPKCS7(keyInfo.key, privateKeyEncoded, keyInfo.iv);
-
-    return BC.concat(BC.fromString('Salted__'), salt, privateKeyEncrypted);
   }
 
   /**

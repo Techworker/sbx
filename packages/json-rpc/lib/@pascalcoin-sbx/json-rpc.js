@@ -9443,7 +9443,7 @@ class BC {
 
 
   toString() {
-    return this[P_BUFFER].toString();
+    return this[P_BUFFER].toString('utf8');
   }
   /**
    * Gets the BC as hex.
@@ -10004,7 +10004,9 @@ class CompositeType extends AbstractType {
    */
 
 
-  decodeFromBytes(bc, options = {}, all = null) {
+  decodeFromBytes(bc, options = {
+    toArray: false
+  }, all = null) {
     if (this.canDecode === false) {
       throw new Error('This type cannot be decoded.');
     }
@@ -11228,13 +11230,15 @@ class Decissive extends CompositeType {
    * Decodes the given bytes into an object.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Boolean} toArray
+   * @param {Object} options
+   * @param {*} all
    * @return {Object}
    */
 
 
   decodeFromBytes(bc, options = {}, all = null) {
     let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
+    this[P_SIZE_ENCODED] = subType.encodedSize;
     return subType.decodeFromBytes(bc, options, all);
   }
   /**
@@ -14357,7 +14361,7 @@ class Caller {
             return reject(new ConnectionError(err));
           }
 
-          if (error !== null && err.constructor.name !== 'FetchError') {
+          if (error !== null && error !== undefined && err.constructor.name !== 'FetchError') {
             return reject(new ResultError(error.code, error.message));
           }
 
@@ -15088,22 +15092,18 @@ class Client {
 
 
   signBuyAccount({
+    signerPubkey,
     buyerAccount,
     accountToPurchase,
     price,
-    sellerAccount,
-    newPubkey,
-    amount,
-    signerPubkey
+    sellerAccount
   }) {
     return new SignOperationAction('signbuyaccount', {
+      signer_pubkey: signerPubkey,
       buyer_account: new AccountNumber(buyerAccount),
       account_to_purchase: new AccountNumber(accountToPurchase),
       price: new Currency(price),
-      seller_account: new AccountNumber(sellerAccount),
-      new_pubkey: newPubkey,
-      amount: amount,
-      signer_pubkey: signerPubkey
+      seller_account: new AccountNumber(sellerAccount)
     }, this[P_EXECUTOR], Operation, false);
   }
   /**
@@ -15311,6 +15311,7 @@ class Client {
    * @param {BC} payload
    * @param {String} payloadMethod
    * @param {String|null} pwd
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} pubkey
    *
    * @returns {BaseAction}
    */
@@ -15319,12 +15320,14 @@ class Client {
   payloadEncrypt({
     payload,
     payloadMethod,
-    pwd = null
+    pwd = null,
+    pubkey = null
   }) {
     return new BaseAction('payloadencrypt', {
       payload,
       payload_method: payloadMethod,
-      pwd
+      pwd,
+      pubkey
     }, this[P_EXECUTOR], BC, false);
   }
   /**

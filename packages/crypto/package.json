@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@pascalcoin-sbx/common": "^0.0.10",
-    "blueimp-md5": "^2.10.0",
+    "crypto-js": "^3.1.9-1",
     "elliptic": "^6.4.1",
     "mipher": "^1.1.5"
   },

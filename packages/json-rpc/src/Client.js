@@ -652,22 +652,18 @@ class Client {
    * @returns {SignOperationAction}
    */
   signBuyAccount({
+    signerPubkey,
     buyerAccount,
     accountToPurchase,
     price,
-    sellerAccount,
-    newPubkey,
-    amount,
-    signerPubkey
+    sellerAccount
   }) {
     return new SignOperationAction('signbuyaccount', {
+      signer_pubkey: signerPubkey,
       buyer_account: new AccountNumber(buyerAccount),
       account_to_purchase: new AccountNumber(accountToPurchase),
       price: new Currency(price),
-      seller_account: new AccountNumber(sellerAccount),
-      new_pubkey: newPubkey,
-      amount: amount,
-      signer_pubkey: signerPubkey
+      seller_account: new AccountNumber(sellerAccount)
     }, this[P_EXECUTOR], Operation, false);
   }
 
@@ -866,18 +862,21 @@ class Client {
    * @param {BC} payload
    * @param {String} payloadMethod
    * @param {String|null} pwd
+   * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} pubkey
    *
    * @returns {BaseAction}
    */
   payloadEncrypt({
     payload,
     payloadMethod,
-    pwd = null
+    pwd = null,
+    pubkey = null
   }) {
     return new BaseAction('payloadencrypt', {
       payload,
       payload_method: payloadMethod,
-      pwd
+      pwd,
+      pubkey
     }, this[P_EXECUTOR], BC, false);
   }
 

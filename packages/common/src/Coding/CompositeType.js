@@ -70,7 +70,7 @@ class CompositeType extends AbstractType {
    * @param {*} all
    * @return {*}
    */
-  decodeFromBytes(bc, options = {}, all = null) {
+  decodeFromBytes(bc, options = { toArray: false }, all = null) {
     if (this.canDecode === false) {
       throw new Error('This type cannot be decoded.');
     }

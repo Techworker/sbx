@@ -7,6 +7,8 @@
 
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
+const Endian = require('@pascalcoin-sbx/common').Endian;
+const Int16 = require('@pascalcoin-sbx/common').Coding.Core.Int16;
 const MurmurHash3 = require('murmur-hash').v3;
 const Ascii = require('./Types/Ascii');
 const Base58 = require('./Types/Base58');
@@ -529,9 +531,9 @@ class EPasa {
    * @returns {string}
    */
   static calculateChecksum(ePasaString) {
-    return BC.fromInt(MurmurHash3.x86.hash32(ePasaString) % 65536)
-      .switchEndian()
-      .toHex(true);
+    return new Int16('checksum', true, Endian.LITTLE_ENDIAN)
+      .encodeToBytes(MurmurHash3.x86.hash32(ePasaString) % 65536)
+      .toHex();
   }
 }
 

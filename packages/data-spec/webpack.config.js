@@ -2,4 +2,7 @@
 
 const webpackBaseConfig = require('./../../webpack.config');
 
-module.exports = webpackBaseConfig(__dirname, '');
+const configNode = webpackBaseConfig(__dirname, '.node', 'node');
+const configWeb = webpackBaseConfig(__dirname, '', 'web');
+
+module.exports = [configNode, configWeb];

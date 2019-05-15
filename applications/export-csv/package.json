@@ -16,6 +16,7 @@
   "scripts": {},
   "dependencies": {
     "@pascalcoin-sbx/json-rpc": "^0.0.10",
+    "@pascalcoin-sbx/common": "^0.0.10",
     "md5": "^2.2.1",
     "prompt": "^1.0.0"
   },

@@ -14,7 +14,6 @@ const SignOperationAction = require('./Actions/SignOperationAction');
 const Account = require('./Types/Account');
 const Block = require('./Types/Block');
 const SignedMessage = require('./Types/SignedMessage');
-const RawOperations = require('./Types/RawOperations');
 const NodeStatus = require('./Types/NodeStatus');
 const Operation = require('./Types/Operation');
 const Sender = require('./Types/Sender');
@@ -22,11 +21,11 @@ const Receiver = require('./Types/Receiver');
 const Changer = require('./Types/Changer');
 const Connection = require('./Types/Connection');
 const WalletPublicKey = require('./Types/WalletPublicKey');
-const AccountName = require('@sbx/common').Types.AccountName;
-const AccountNumber = require('@sbx/common').Types.AccountNumber;
-const OperationHash = require('@sbx/common').Types.OperationHash;
-const Currency = require('@sbx/common').Types.Currency;
-const BC = require('@sbx/common').BC;
+const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
+const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
+const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const BC = require('@pascalcoin-sbx/common').BC;
 
 const P_EXECUTOR = Symbol('executor');
 

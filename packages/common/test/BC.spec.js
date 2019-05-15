@@ -35,12 +35,6 @@ describe('Core.BC', () => {
 
     expect(BC.fromHex(hexString).hexLength).to.be.equal(10);
   });
-  it('can switch endianness', () => {
-    const hexString = 'CA20';
-
-    expect(BC.fromHex(hexString).switchEndian().toHex()).to.be.equal('20CA');
-    expect(BC.fromHex(hexString).switchEndian().switchEndian().toHex()).to.be.equal(hexString);
-  });
   it('can concat one or more hexastrings', () => {
     const hexas = ['ABCD', '0020', 'FFFFFFDD'].map(hex => BC.fromHex(hex));
 

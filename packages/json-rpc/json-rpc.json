@@ -801,12 +801,12 @@
       "description": "Removes an operation from the given rawoperations.",
       "camel": "operationsDelete",
       "action": "BaseAction",
-      "return_type": "RawOperations",
+      "return_type": "BC",
       "return_array": false,
       "params": [
         {
           "name": "rawoperations",
-          "type": "RawOperations",
+          "type": "BC",
           "required": true
         },
         {
@@ -825,7 +825,7 @@
       "params": [
         {
           "name": "rawoperations",
-          "type": "RawOperations",
+          "type": "BC",
           "required": true
         }
       ]
@@ -839,7 +839,7 @@
       "params": [
         {
           "name": "rawoperations",
-          "type": "RawOperations",
+          "type": "BC",
           "required": true
         }
       ]
@@ -911,6 +911,11 @@
         {
           "name": "pwd",
           "type": "String",
+          "required": false
+        },
+        {
+          "name": "pubkey",
+          "type": "PublicKey",
           "required": false
         }
       ]
@@ -1039,7 +1044,7 @@
       "description": "Adds an operation to a multioperation",
       "camel": "multiOperationAddOperation",
       "action": "BaseAction",
-      "return_type": "RawOperations",
+      "return_type": "BC",
       "return_array": true,
       "params": [
         {
@@ -1078,7 +1083,7 @@
       "params": [
         {
           "name": "rawoperations",
-          "type": "RawOperations",
+          "type": "BC",
           "required": true
         },
         {
@@ -1097,7 +1102,7 @@
       "params": [
         {
           "name": "rawoperations",
-          "type": "RawOperations",
+          "type": "BC",
           "required": true
         }
       ]

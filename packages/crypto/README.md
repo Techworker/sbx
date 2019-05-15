@@ -12,7 +12,7 @@ This library provides basic crypto functionalities used in PascalCoin.
 
 This library depends on the following SBX dependencies:
 
- - `@sbx/common`
+ - `@pascalcoin-sbx/common`
  
 For all code examples in this documentation expect the import of the SBX 
 libraries to be named: `sbxPackage`.
@@ -20,7 +20,7 @@ libraries to be named: `sbxPackage`.
 **Example**
 
 ```js
-const sbxCommon = require('@sbx/common');
+const sbxCommon = require('@pascalcoin-sbx/common');
 const sbxCrypto = require('@sbx/crypto');
 // ...and so on
 ```
