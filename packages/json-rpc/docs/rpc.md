@@ -109,12 +109,12 @@ const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
 
 // // create action instance of type PagedAction
 const action = rpcClient.findAccounts({
-  name: techworker, 
+  name: 'techworker', 
   type: 123, 
   onlyAccountsForSale: true, 
   exact: true, 
-  minBalance: new Currency('1.2345'), 
-  maxBalance: new Currency('1.2345'), 
+  minBalance: new Currency(1.2345), 
+  maxBalance: new Currency(1.2345), 
   pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
 });
 
@@ -138,12 +138,12 @@ const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
 
 // create action instance of type PagedAction
 const action = rpcClient.findAccounts({
-  name: techworker, 
+  name: 'techworker', 
   type: 123, 
   onlyAccountsForSale: true, 
   exact: true, 
-  minBalance: new Currency('1.2345'), 
-  maxBalance: new Currency('1.2345'), 
+  minBalance: new Currency(1.2345), 
+  maxBalance: new Currency(1.2345), 
   pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
 });
 
@@ -171,12 +171,12 @@ const rpcClient = sbxRpc.Client.factory('http://127.0.0.1:4003');
 
 // create action instance of type PagedAction
 const action = rpcClient.findAccounts({
-  name: techworker, 
+  name: 'techworker', 
   type: 123, 
   onlyAccountsForSale: true, 
   exact: true, 
-  minBalance: new Currency('1.2345'), 
-  maxBalance: new Currency('1.2345'), 
+  minBalance: new Currency(1.2345), 
+  maxBalance: new Currency(1.2345), 
   pubkey: PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')
 });
 

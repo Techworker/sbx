@@ -11,10 +11,10 @@
     "n_operation_max": 10,
     "OperationHash": "BC.from('B822000081AB0000010000003032333646444430344246334637414434413042')",
     "AccountNumber": 34500,
-    "AccountName": "techworker",
+    "AccountName": "'techworker'",
     "Number": 123,
     "Boolean": true,
-    "Currency": "new Currency('1.2345')",
+    "Currency": "new Currency(1.2345)",
     "PublicKey": "PublicKey.fromBase58('3GhhbokDBvBQUZJUK7W29Pk3gEFcAFCAuAXuwLiaYoT5VKb4K3dea7YZ6AipbQ3nBgoyC9N95cyns18Nt2vKnmaMsU3PpqXkUMcVtF')",
     "String": "various",
     "Block": 123
