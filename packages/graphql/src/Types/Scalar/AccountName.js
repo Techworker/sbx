@@ -6,7 +6,7 @@
  */
 
 const graphql = require('graphql');
-const PascalAccountName = require('@pascalcoin-sbx/common').Types.AccountName;
+const AccountNameType = require('@pascalcoin-sbx/common').Types.AccountName;
 
 /**
  * The scalar type for an account name.
@@ -47,17 +47,17 @@ class AccountName {
    * Parses an account name and returns a new AccountName instance.
    *
    * @param {String} value
-   * @returns {PascalAccountName}
+   * @returns {AccountNameType}
    */
   parseValue(value) {
-    return new PascalAccountName(value);
+    return new AccountNameType(value);
   }
 
   /**
    * Parses an account name.
    *
    * @param {Object} ast
-   * @returns {null|PascalAccountName}
+   * @returns {null|AccountNameType}
    */
   parseLiteral(ast) {
     if (ast.kind === graphql.Kind.STRING) {

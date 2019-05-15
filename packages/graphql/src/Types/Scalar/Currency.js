@@ -6,7 +6,7 @@
  */
 
 const graphql = require('graphql');
-const PascalCurrency = require('@pascalcoin-sbx/common').Types.Currency;
+const CurrencyType = require('@pascalcoin-sbx/common').Types.Currency;
 
 /**
  * Currency scalar.
@@ -34,7 +34,7 @@ class Currency {
   /**
    * Gets the optimized string representation of the value.
    *
-   * @param {PascalCurrency} value
+   * @param {CurrencyType} value
    * @returns {string}
    */
   serialize(value) {
@@ -45,17 +45,17 @@ class Currency {
    * Parses a currency value.
    *
    * @param {String|Number} value
-   * @returns {PascalCurrency}
+   * @returns {CurrencyType}
    */
   parseValue(value) {
-    return new PascalCurrency(value);
+    return new CurrencyType(value);
   }
 
   /**
    * Tries to parse a currency from the given value.
    *
    * @param {Object} ast
-   * @returns {PascalCurrency}
+   * @returns {CurrencyType}
    */
   parseLiteral(ast) {
     if (ast.kind === graphql.Kind.INT || ast.kind === graphql.Kind.STRING || ast.kind === graphql.Kind.FLOAT) {

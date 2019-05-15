@@ -6,7 +6,7 @@
  */
 
 const graphql = require('graphql');
-const PascalAccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const AccountNumberType = require('@pascalcoin-sbx/common').Types.AccountNumber;
 
 /**
  * A AccountNumber Scalar.
@@ -34,7 +34,7 @@ class AccountNumber {
   /**
    * Gets the account number.
    *
-   * @param {PascalAccountNumber} value
+   * @param {AccountNumberType} value
    * @returns {Number}
    */
   serialize(value) {
@@ -45,17 +45,17 @@ class AccountNumber {
    * Parses the given account number value.
    *
    * @param {Number} value
-   * @returns {PascalAccountNumber}
+   * @returns {AccountNumberType}
    */
   parseValue(value) {
-    return new PascalAccountNumber(value);
+    return new AccountNumberType(value);
   }
 
   /**
    * Tries to parse an account number value.
    *
    * @param {Object} ast
-   * @returns {null|PascalAccountNumber}
+   * @returns {null|AccountNumberType}
    */
   parseLiteral(ast) {
     if (ast.kind === graphql.Kind.INT || ast.kind === graphql.Kind.STRING) {
