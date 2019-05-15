@@ -8,7 +8,7 @@ BlockChain project.
 
 ## Installation
 
-`npm install @sbx/json-rpc`
+`npm install @pascalcoin-sbx/json-rpc`
 
 ## Usage
 
