@@ -14,7 +14,7 @@ const BuyRawCoder = require('./Operations/BuyAccount/RawCoder');
 const ChangeKeyRawCoder = require('./Operations/ChangeKey/RawCoder');
 const ChangeKeySignedRawCoder = require('./Operations/ChangeKeySigned/RawCoder');
 const ChangeAccountInfoRawCoder = require('./Operations/ChangeAccountInfo/RawCoder');
-const MultiOperationRawCoder = require('./Operations/MultiOperation/RawAndDigestCoder');
+const MultiOperationRawCoder = require('./Operations/MultiOperation/RawCoder');
 const CompositeType = Coding.CompositeType;
 
 /**
@@ -52,7 +52,7 @@ class RawOperationsCoder extends CompositeType {
           throw new Error('Unable to map marker to a coder.');
       }
     }));
-    this.addSubType(new Coding.Repeating('operations', operationType));
+    this.addSubType(new Coding.Repeating('operations', operationType, -1, 'count'));
   }
 }
 

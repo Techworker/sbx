@@ -28,23 +28,6 @@ class AbstractInt extends AbstractType {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'AbstractInt';
-    info.extra = {
-      unsigned: this.unsigned,
-      endian: this.endian
-    };
-
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  /**
    * Gets the endianness.
    *
    * @returns {String}
@@ -60,23 +43,6 @@ class AbstractInt extends AbstractType {
    */
   get unsigned() {
     return this[P_UNSIGNED];
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = super.describe(value);
-
-    description.encodedSize = this.encodedSize;
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.encoded = this.encodeToBytes(value).toHex();
-    }
-
-    return description;
   }
 }
 

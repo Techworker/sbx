@@ -32,14 +32,30 @@ class RawOperations {
    * @param operation
    * @returns {RawOperations}
    */
-  addOperation(keyPair, operation) {
-    if (operation.isSigned) {
-      throw new Error('Operation should not be signed.');
+  addMultiOperation(operation, keyPairs = null) {
+    if (keyPairs !== null) {
+      this[P_SIGNER].signMultiOperation(operation, keyPairs);
     }
+    this[P_OPERATIONS].push({
+      optype: operation.opType,
+      operation: operation
+    });
 
-    let sign = this[P_SIGNER].sign(keyPair, operation);
+    return this;
+  }
 
-    operation.withSign(sign.r, sign.s);
+  /**
+   * Adds a single operation to the list of Operations.
+   *
+   * @param operation
+   * @returns {RawOperations}
+   */
+  addOperation(keyPair, operation) {
+    if (!operation.isSigned) {
+      let sign = this[P_SIGNER].sign(keyPair, operation);
+
+      operation.withSign(sign.r, sign.s);
+    }
     this[P_OPERATIONS].push({
       optype: operation.opType,
       operation: operation

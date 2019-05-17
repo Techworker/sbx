@@ -1213,7 +1213,7 @@ signSendTo({
   String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair senderPubkey, 
   String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair targetPubkey, 
   Currency amount
-}) : SignOperationAction -> Operation
+}) : SignOperationAction -> Object
 ```
 
 | Parameter | Type | Required | Description |
@@ -1265,7 +1265,7 @@ signChangeKey({
   String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair oldPubkey, 
   String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey, 
   [AccountNumber|Number|String accountSigner]
-}) : SignOperationAction -> Operation
+}) : SignOperationAction -> Object
 ```
 
 | Parameter | Type | Required | Description |
@@ -1310,7 +1310,7 @@ signListAccountForSale({
   Number lockedUntilBlock, 
   Currency price, 
   [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey]
-}) : SignOperationAction -> Operation
+}) : SignOperationAction -> Object
 ```
 
 | Parameter | Type | Required | Description |
@@ -1346,7 +1346,7 @@ signDelistAccountForSale({
   String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair signerPubkey, 
   AccountNumber|Number|String accountSigner, 
   AccountNumber|Number|String accountTarget
-}) : SignOperationAction -> Operation
+}) : SignOperationAction -> Object
 ```
 
 | Parameter | Type | Required | Description |
@@ -1384,7 +1384,7 @@ signBuyAccount({
   AccountNumber|Number|String accountToPurchase, 
   Currency price, 
   AccountNumber|Number|String sellerAccount
-}) : SignOperationAction -> Operation
+}) : SignOperationAction -> Object
 ```
 
 | Parameter | Type | Required | Description |
@@ -1427,7 +1427,7 @@ signChangeAccountInfo({
   [String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair newPubkey], 
   [AccountName|String newName], 
   [Number newType]
-}) : SignOperationAction -> Operation
+}) : SignOperationAction -> Object
 ```
 
 | Parameter | Type | Required | Description |

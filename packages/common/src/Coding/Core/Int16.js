@@ -26,19 +26,6 @@ class Int16 extends AbstractInt {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'Int16';
-    info.hierarchy.push(info.name);
-
-    return info;
-  }
-
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {

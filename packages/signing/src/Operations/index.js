@@ -48,8 +48,11 @@ let Items = {
   },
   MultiOperation: {
     Operation: require('./MultiOperation/Operation'),
-    RawCoder: require('./MultiOperation/RawAndDigestCoder'),
-    DigestCoder: require('./MultiOperation/RawAndDigestCoder')
+    RawCoder: require('./MultiOperation/RawCoder'),
+    DigestCoder: require('./MultiOperation/DigestCoder'),
+    Changer: require('./MultiOperation/Changer/Changer'),
+    Sender: require('./MultiOperation/Sender/Sender'),
+    Receiver: require('./MultiOperation/Receiver/Receiver')
   }
 };
 

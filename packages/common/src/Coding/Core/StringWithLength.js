@@ -44,19 +44,6 @@ class StringWithLength extends AbstractType {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'StringWithLength';
-    info.hierarchy.push(info.name);
-
-    return info;
-  }
-
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
@@ -72,11 +59,11 @@ class StringWithLength extends AbstractType {
    * @returns {String}
    */
   decodeFromBytes(bc, options = {}, all = null) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc));
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc));
     return this[P_STRING_FIELD].decodeFromBytes(
       bc.slice(
         this[P_LENGTH_FIELD].encodedSize,
-        this[P_LENGTH_FIELD].encodedSize + this[P_SIZE_ENCODED]
+        this[P_SIZE_ENCODED]
       )
     );
   }
@@ -92,22 +79,6 @@ class StringWithLength extends AbstractType {
     let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED]);
 
     return bc.append(this[P_STRING_FIELD].encodeToBytes(value));
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.encoded = this.encodeToBytes(value);
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
   }
 }
 

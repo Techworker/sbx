@@ -20,20 +20,8 @@ class Currency extends Int64 {
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'currency', false, Endian.LITTLE_ENDIAN);
+    super(id || 'currency', true, Endian.LITTLE_ENDIAN);
     this.description('A type for currency values.');
-  }
-
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'Currency';
-    info.hierarchy.push(info.name);
-    return info;
   }
 
   /**
@@ -57,15 +45,6 @@ class Currency extends Int64 {
   encodeToBytes(value) {
     return super.encodeToBytes(value.bn);
   }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    return super.describe(value);
-  }
-
 }
 
 module.exports = Currency;

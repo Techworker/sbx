@@ -9049,114 +9049,6 @@ module.exports = {"name":"elliptic","version":"6.4.1","description":"EC cryptogr
 
 /***/ }),
 
-/***/ "../../node_modules/hash-base/index.js":
-/*!*********************************************************************************!*\
-  !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash-base/index.js ***!
-  \*********************************************************************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
-var Transform = __webpack_require__(/*! stream */ "stream").Transform
-var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits.js")
-
-function throwIfNotStringOrBuffer (val, prefix) {
-  if (!Buffer.isBuffer(val) && typeof val !== 'string') {
-    throw new TypeError(prefix + ' must be a string or a buffer')
-  }
-}
-
-function HashBase (blockSize) {
-  Transform.call(this)
-
-  this._block = Buffer.allocUnsafe(blockSize)
-  this._blockSize = blockSize
-  this._blockOffset = 0
-  this._length = [0, 0, 0, 0]
-
-  this._finalized = false
-}
-
-inherits(HashBase, Transform)
-
-HashBase.prototype._transform = function (chunk, encoding, callback) {
-  var error = null
-  try {
-    this.update(chunk, encoding)
-  } catch (err) {
-    error = err
-  }
-
-  callback(error)
-}
-
-HashBase.prototype._flush = function (callback) {
-  var error = null
-  try {
-    this.push(this.digest())
-  } catch (err) {
-    error = err
-  }
-
-  callback(error)
-}
-
-HashBase.prototype.update = function (data, encoding) {
-  throwIfNotStringOrBuffer(data, 'Data')
-  if (this._finalized) throw new Error('Digest already called')
-  if (!Buffer.isBuffer(data)) data = Buffer.from(data, encoding)
-
-  // consume data
-  var block = this._block
-  var offset = 0
-  while (this._blockOffset + data.length - offset >= this._blockSize) {
-    for (var i = this._blockOffset; i < this._blockSize;) block[i++] = data[offset++]
-    this._update()
-    this._blockOffset = 0
-  }
-  while (offset < data.length) block[this._blockOffset++] = data[offset++]
-
-  // update length
-  for (var j = 0, carry = data.length * 8; carry > 0; ++j) {
-    this._length[j] += carry
-    carry = (this._length[j] / 0x0100000000) | 0
-    if (carry > 0) this._length[j] -= 0x0100000000 * carry
-  }
-
-  return this
-}
-
-HashBase.prototype._update = function () {
-  throw new Error('_update is not implemented')
-}
-
-HashBase.prototype.digest = function (encoding) {
-  if (this._finalized) throw new Error('Digest already called')
-  this._finalized = true
-
-  var digest = this._digest()
-  if (encoding !== undefined) digest = digest.toString(encoding)
-
-  // reset state
-  this._block.fill(0)
-  this._blockOffset = 0
-  for (var i = 0; i < 4; ++i) this._length[i] = 0
-
-  return digest
-}
-
-HashBase.prototype._digest = function () {
-  throw new Error('_digest is not implemented')
-}
-
-module.exports = HashBase
-
-
-/***/ }),
-
 /***/ "../../node_modules/hash.js/lib/hash.js":
 /*!**********************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/hash.js/lib/hash.js ***!
@@ -10700,165 +10592,6 @@ if (typeof Object.create === 'function') {
 
 /***/ }),
 
-/***/ "../../node_modules/md5.js/index.js":
-/*!******************************************************************************!*\
-  !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/md5.js/index.js ***!
-  \******************************************************************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var inherits = __webpack_require__(/*! inherits */ "../../node_modules/inherits/inherits.js")
-var HashBase = __webpack_require__(/*! hash-base */ "../../node_modules/hash-base/index.js")
-var Buffer = __webpack_require__(/*! safe-buffer */ "../../node_modules/safe-buffer/index.js").Buffer
-
-var ARRAY16 = new Array(16)
-
-function MD5 () {
-  HashBase.call(this, 64)
-
-  // state
-  this._a = 0x67452301
-  this._b = 0xefcdab89
-  this._c = 0x98badcfe
-  this._d = 0x10325476
-}
-
-inherits(MD5, HashBase)
-
-MD5.prototype._update = function () {
-  var M = ARRAY16
-  for (var i = 0; i < 16; ++i) M[i] = this._block.readInt32LE(i * 4)
-
-  var a = this._a
-  var b = this._b
-  var c = this._c
-  var d = this._d
-
-  a = fnF(a, b, c, d, M[0], 0xd76aa478, 7)
-  d = fnF(d, a, b, c, M[1], 0xe8c7b756, 12)
-  c = fnF(c, d, a, b, M[2], 0x242070db, 17)
-  b = fnF(b, c, d, a, M[3], 0xc1bdceee, 22)
-  a = fnF(a, b, c, d, M[4], 0xf57c0faf, 7)
-  d = fnF(d, a, b, c, M[5], 0x4787c62a, 12)
-  c = fnF(c, d, a, b, M[6], 0xa8304613, 17)
-  b = fnF(b, c, d, a, M[7], 0xfd469501, 22)
-  a = fnF(a, b, c, d, M[8], 0x698098d8, 7)
-  d = fnF(d, a, b, c, M[9], 0x8b44f7af, 12)
-  c = fnF(c, d, a, b, M[10], 0xffff5bb1, 17)
-  b = fnF(b, c, d, a, M[11], 0x895cd7be, 22)
-  a = fnF(a, b, c, d, M[12], 0x6b901122, 7)
-  d = fnF(d, a, b, c, M[13], 0xfd987193, 12)
-  c = fnF(c, d, a, b, M[14], 0xa679438e, 17)
-  b = fnF(b, c, d, a, M[15], 0x49b40821, 22)
-
-  a = fnG(a, b, c, d, M[1], 0xf61e2562, 5)
-  d = fnG(d, a, b, c, M[6], 0xc040b340, 9)
-  c = fnG(c, d, a, b, M[11], 0x265e5a51, 14)
-  b = fnG(b, c, d, a, M[0], 0xe9b6c7aa, 20)
-  a = fnG(a, b, c, d, M[5], 0xd62f105d, 5)
-  d = fnG(d, a, b, c, M[10], 0x02441453, 9)
-  c = fnG(c, d, a, b, M[15], 0xd8a1e681, 14)
-  b = fnG(b, c, d, a, M[4], 0xe7d3fbc8, 20)
-  a = fnG(a, b, c, d, M[9], 0x21e1cde6, 5)
-  d = fnG(d, a, b, c, M[14], 0xc33707d6, 9)
-  c = fnG(c, d, a, b, M[3], 0xf4d50d87, 14)
-  b = fnG(b, c, d, a, M[8], 0x455a14ed, 20)
-  a = fnG(a, b, c, d, M[13], 0xa9e3e905, 5)
-  d = fnG(d, a, b, c, M[2], 0xfcefa3f8, 9)
-  c = fnG(c, d, a, b, M[7], 0x676f02d9, 14)
-  b = fnG(b, c, d, a, M[12], 0x8d2a4c8a, 20)
-
-  a = fnH(a, b, c, d, M[5], 0xfffa3942, 4)
-  d = fnH(d, a, b, c, M[8], 0x8771f681, 11)
-  c = fnH(c, d, a, b, M[11], 0x6d9d6122, 16)
-  b = fnH(b, c, d, a, M[14], 0xfde5380c, 23)
-  a = fnH(a, b, c, d, M[1], 0xa4beea44, 4)
-  d = fnH(d, a, b, c, M[4], 0x4bdecfa9, 11)
-  c = fnH(c, d, a, b, M[7], 0xf6bb4b60, 16)
-  b = fnH(b, c, d, a, M[10], 0xbebfbc70, 23)
-  a = fnH(a, b, c, d, M[13], 0x289b7ec6, 4)
-  d = fnH(d, a, b, c, M[0], 0xeaa127fa, 11)
-  c = fnH(c, d, a, b, M[3], 0xd4ef3085, 16)
-  b = fnH(b, c, d, a, M[6], 0x04881d05, 23)
-  a = fnH(a, b, c, d, M[9], 0xd9d4d039, 4)
-  d = fnH(d, a, b, c, M[12], 0xe6db99e5, 11)
-  c = fnH(c, d, a, b, M[15], 0x1fa27cf8, 16)
-  b = fnH(b, c, d, a, M[2], 0xc4ac5665, 23)
-
-  a = fnI(a, b, c, d, M[0], 0xf4292244, 6)
-  d = fnI(d, a, b, c, M[7], 0x432aff97, 10)
-  c = fnI(c, d, a, b, M[14], 0xab9423a7, 15)
-  b = fnI(b, c, d, a, M[5], 0xfc93a039, 21)
-  a = fnI(a, b, c, d, M[12], 0x655b59c3, 6)
-  d = fnI(d, a, b, c, M[3], 0x8f0ccc92, 10)
-  c = fnI(c, d, a, b, M[10], 0xffeff47d, 15)
-  b = fnI(b, c, d, a, M[1], 0x85845dd1, 21)
-  a = fnI(a, b, c, d, M[8], 0x6fa87e4f, 6)
-  d = fnI(d, a, b, c, M[15], 0xfe2ce6e0, 10)
-  c = fnI(c, d, a, b, M[6], 0xa3014314, 15)
-  b = fnI(b, c, d, a, M[13], 0x4e0811a1, 21)
-  a = fnI(a, b, c, d, M[4], 0xf7537e82, 6)
-  d = fnI(d, a, b, c, M[11], 0xbd3af235, 10)
-  c = fnI(c, d, a, b, M[2], 0x2ad7d2bb, 15)
-  b = fnI(b, c, d, a, M[9], 0xeb86d391, 21)
-
-  this._a = (this._a + a) | 0
-  this._b = (this._b + b) | 0
-  this._c = (this._c + c) | 0
-  this._d = (this._d + d) | 0
-}
-
-MD5.prototype._digest = function () {
-  // create padding and handle blocks
-  this._block[this._blockOffset++] = 0x80
-  if (this._blockOffset > 56) {
-    this._block.fill(0, this._blockOffset, 64)
-    this._update()
-    this._blockOffset = 0
-  }
-
-  this._block.fill(0, this._blockOffset, 56)
-  this._block.writeUInt32LE(this._length[0], 56)
-  this._block.writeUInt32LE(this._length[1], 60)
-  this._update()
-
-  // produce result
-  var buffer = Buffer.allocUnsafe(16)
-  buffer.writeInt32LE(this._a, 0)
-  buffer.writeInt32LE(this._b, 4)
-  buffer.writeInt32LE(this._c, 8)
-  buffer.writeInt32LE(this._d, 12)
-  return buffer
-}
-
-function rotl (x, n) {
-  return (x << n) | (x >>> (32 - n))
-}
-
-function fnF (a, b, c, d, m, k, s) {
-  return (rotl((a + ((b & c) | ((~b) & d)) + m + k) | 0, s) + b) | 0
-}
-
-function fnG (a, b, c, d, m, k, s) {
-  return (rotl((a + ((b & d) | (c & (~d))) + m + k) | 0, s) + b) | 0
-}
-
-function fnH (a, b, c, d, m, k, s) {
-  return (rotl((a + (b ^ c ^ d) + m + k) | 0, s) + b) | 0
-}
-
-function fnI (a, b, c, d, m, k, s) {
-  return (rotl((a + ((c ^ (b | (~d)))) + m + k) | 0, s) + b) | 0
-}
-
-module.exports = MD5
-
-
-/***/ }),
-
 /***/ "../../node_modules/minimalistic-assert/index.js":
 /*!*******************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/minimalistic-assert/index.js ***!
@@ -12120,172 +11853,6 @@ exports.CTR = CTR;
 
 /***/ }),
 
-/***/ "../../node_modules/mipher/dist/hmac.js":
-/*!**********************************************************************************!*\
-  !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/hmac.js ***!
-  \**********************************************************************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-///////////////////////////////////////////////////////////////////////////////
-// \author (c) Marco Paland (marco@paland.com)
-//             2015, PALANDesign Hannover, Germany
-//
-// \license The MIT License (MIT)
-//
-// This file is part of the mipher crypto library.
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//
-// \brief HMAC implementation
-//        Generates a HMAC value
-//
-///////////////////////////////////////////////////////////////////////////////
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var base_1 = __webpack_require__(/*! ./base */ "../../node_modules/mipher/dist/base.js");
-var padding_1 = __webpack_require__(/*! ./padding */ "../../node_modules/mipher/dist/padding.js");
-var sha1_1 = __webpack_require__(/*! ./sha1 */ "../../node_modules/mipher/dist/sha1.js");
-var sha256_1 = __webpack_require__(/*! ./sha256 */ "../../node_modules/mipher/dist/sha256.js");
-var sha512_1 = __webpack_require__(/*! ./sha512 */ "../../node_modules/mipher/dist/sha512.js");
-/**
- * HMAC class
- */
-var HMAC = /** @class */ (function () {
-    /**
-     * ctor
-     * @param {Hash} hasher Hashing function
-     */
-    function HMAC(hasher) {
-        this.hasher = hasher;
-        this.hashSize = hasher.hashSize;
-        this.B = this.hashSize <= 32 ? 64 : 128; // according to RFC4868
-        this.iPad = 0x36;
-        this.oPad = 0x5c;
-    }
-    /**
-     * Init the HMAC
-     * @param {Uint8Array} key The key
-     */
-    HMAC.prototype.init = function (key) {
-        // process the key
-        var _key = new Uint8Array(key);
-        if (_key.length > this.B) {
-            // keys longer than blocksize are shortened
-            this.hasher.init();
-            _key = this.hasher.digest(key);
-        }
-        _key = (new padding_1.ZeroPadding()).pad(_key, this.B);
-        // setup the key pads
-        this.iKeyPad = new Uint8Array(this.B);
-        this.oKeyPad = new Uint8Array(this.B);
-        for (var i = 0; i < this.B; ++i) {
-            this.iKeyPad[i] = this.iPad ^ _key[i];
-            this.oKeyPad[i] = this.oPad ^ _key[i];
-        }
-        // security: delete the key
-        base_1.Util.clear(_key);
-        // initial hash
-        this.hasher.init();
-        this.hasher.update(this.iKeyPad);
-        return this;
-    };
-    /**
-     * Update the HMAC with additional message data
-     * @param {Uint8Array} msg Additional message data
-     * @return {HMAC} this object
-     */
-    HMAC.prototype.update = function (msg) {
-        msg = msg || new Uint8Array(0);
-        this.hasher.update(msg);
-        return this;
-    };
-    /**
-     * Finalize the HMAC with additional message data
-     * @param {Uint8Array} msg Additional message data
-     * @return {Uint8Array} HMAC (Hash-based Message Authentication Code)
-     */
-    HMAC.prototype.digest = function (msg) {
-        msg = msg || new Uint8Array(0);
-        var sum1 = this.hasher.digest(msg); // get sum 1
-        this.hasher.init();
-        return this.hasher.update(this.oKeyPad).digest(sum1);
-    };
-    /**
-     * All in one step
-     * @param {Uint8Array} key Key
-     * @param {Uint8Array} msg Message data
-     * @return {Uint8Array} Hash as byte array
-     */
-    HMAC.prototype.hash = function (key, msg) {
-        return this.init(key).digest(msg);
-    };
-    /**
-     * Performs a quick selftest
-     * @return {Boolean} True if successful
-     */
-    HMAC.prototype.selftest = function () {
-        return false;
-    };
-    return HMAC;
-}());
-exports.HMAC = HMAC;
-///////////////////////////////////////////////////////////////////////////////
-var HMAC_SHA1 = /** @class */ (function (_super) {
-    __extends(HMAC_SHA1, _super);
-    function HMAC_SHA1() {
-        return _super.call(this, new sha1_1.SHA1()) || this;
-    }
-    return HMAC_SHA1;
-}(HMAC));
-exports.HMAC_SHA1 = HMAC_SHA1;
-var HMAC_SHA256 = /** @class */ (function (_super) {
-    __extends(HMAC_SHA256, _super);
-    function HMAC_SHA256() {
-        return _super.call(this, new sha256_1.SHA256()) || this;
-    }
-    return HMAC_SHA256;
-}(HMAC));
-exports.HMAC_SHA256 = HMAC_SHA256;
-var HMAC_SHA512 = /** @class */ (function (_super) {
-    __extends(HMAC_SHA512, _super);
-    function HMAC_SHA512() {
-        return _super.call(this, new sha512_1.SHA512()) || this;
-    }
-    return HMAC_SHA512;
-}(HMAC));
-exports.HMAC_SHA512 = HMAC_SHA512;
-
-
-/***/ }),
-
 /***/ "../../node_modules/mipher/dist/padding.js":
 /*!*************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/padding.js ***!
@@ -12817,213 +12384,6 @@ var Random = /** @class */ (function () {
     return Random;
 }());
 exports.Random = Random;
-
-
-/***/ }),
-
-/***/ "../../node_modules/mipher/dist/sha1.js":
-/*!**********************************************************************************!*\
-  !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/mipher/dist/sha1.js ***!
-  \**********************************************************************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-///////////////////////////////////////////////////////////////////////////////
-// \author (c) Marco Paland (marco@paland.com)
-//             2015-2016, PALANDesign Hannover, Germany
-//
-// \license The MIT License (MIT)
-//
-// This file is part of the mipher crypto library.
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//
-// \brief SHA1 implementation
-//        Generates a 20 byte (160 bit) hash value
-//        CAUTION: SHA1 is meant to be broken, consider using a more secure hash
-//                 like SHA512 or better SHA3
-//
-///////////////////////////////////////////////////////////////////////////////
-Object.defineProperty(exports, "__esModule", { value: true });
-var base_1 = __webpack_require__(/*! ./base */ "../../node_modules/mipher/dist/base.js");
-/**
- * SHA1 class
- */
-var SHA1 = /** @class */ (function () {
-    /**
-     * SHA1 ctor
-     */
-    function SHA1() {
-        this.hashSize = 20;
-        this.buffer = new Uint8Array(64);
-        this.K = new Uint32Array([0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6]);
-        // circular left-shift operator
-        this.S = function (n, x) { return (x << n) | (x >>> 32 - n); };
-        this.F = function (t, b, c, d) {
-            if (t <= 19) {
-                return (b & c) | (~b & d);
-            }
-            else if (t <= 39) {
-                return b ^ c ^ d;
-            }
-            else if (t <= 59) {
-                return (b & c) | (b & d) | (c & d);
-            }
-            else if (t <= 79) {
-                return b ^ c ^ d;
-            }
-        };
-        this.init();
-    }
-    /**
-     * Init the hash
-     * @return {SHA1} this
-     */
-    SHA1.prototype.init = function () {
-        this.H = new Uint32Array([0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0]);
-        this.bufferIndex = 0;
-        this.count = new Uint32Array(2);
-        base_1.Util.clear(this.buffer);
-        return this;
-    };
-    /**
-     * Perform one transformation cycle
-     */
-    SHA1.prototype.transform = function () {
-        var h = this.H, a = h[0], b = h[1], c = h[2], d = h[3], e = h[4];
-        // convert byte buffer to words
-        var w = new Uint32Array(80);
-        for (var i = 0; i < 16; i++) {
-            w[i] = (this.buffer[(i << 2) + 3]) | (this.buffer[(i << 2) + 2] << 8) | (this.buffer[(i << 2) + 1] << 16) | (this.buffer[i << 2] << 24);
-        }
-        for (var t = 0; t < 80; t++) {
-            if (t >= 16) {
-                w[t] = this.S(1, w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16]);
-            }
-            var tmp = (this.S(5, a) + this.F(t, b, c, d) + e + w[t] + this.K[Math.floor(t / 20)]) | 0;
-            e = d;
-            d = c;
-            c = this.S(30, b);
-            b = a;
-            a = tmp;
-        }
-        h[0] = (h[0] + a) | 0;
-        h[1] = (h[1] + b) | 0;
-        h[2] = (h[2] + c) | 0;
-        h[3] = (h[3] + d) | 0;
-        h[4] = (h[4] + e) | 0;
-    };
-    /**
-     * Update the hash with additional message data
-     * @param {Uint8Array} msg Additional message data as byte array
-     * @return {SHA1} this
-     */
-    SHA1.prototype.update = function (msg) {
-        msg = msg || new Uint8Array(0);
-        // process the msg as many times as possible, the rest is stored in the buffer
-        // message is processed in 512 bit (64 byte chunks)
-        for (var i = 0; i < msg.length; i++) {
-            this.buffer[this.bufferIndex++] = msg[i];
-            if (this.bufferIndex === 64) {
-                this.transform();
-                this.bufferIndex = 0;
-            }
-        }
-        // counter update (number of message bits)
-        var c = this.count;
-        if ((c[0] += (msg.length << 3)) < (msg.length << 3)) {
-            c[1]++;
-        }
-        c[1] += (msg.length >>> 29);
-        return this;
-    };
-    /**
-     * Finalize the hash with additional message data
-     * @param {Uint8Array} msg Additional message data as byte array
-     * @return {Uint8Array} Hash as 20 byte array
-     */
-    SHA1.prototype.digest = function (msg) {
-        this.update(msg);
-        // append '1'
-        var b = this.buffer, idx = this.bufferIndex;
-        b[idx++] = 0x80;
-        // zeropad up to byte pos 56
-        while (idx !== 56) {
-            if (idx === 64) {
-                this.transform();
-                idx = 0;
-            }
-            b[idx++] = 0;
-        }
-        // append length in bits
-        var c = this.count;
-        b[56] = (c[1] >>> 24) & 0xff;
-        b[57] = (c[1] >>> 16) & 0xff;
-        b[58] = (c[1] >>> 8) & 0xff;
-        b[59] = (c[1] >>> 0) & 0xff;
-        b[60] = (c[0] >>> 24) & 0xff;
-        b[61] = (c[0] >>> 16) & 0xff;
-        b[62] = (c[0] >>> 8) & 0xff;
-        b[63] = (c[0] >>> 0) & 0xff;
-        this.transform();
-        // return the hash as byte array (20 bytes)
-        var hash = new Uint8Array(20);
-        for (var i = 0; i < 5; i++) {
-            hash[(i << 2) + 0] = (this.H[i] >>> 24) & 0xff;
-            hash[(i << 2) + 1] = (this.H[i] >>> 16) & 0xff;
-            hash[(i << 2) + 2] = (this.H[i] >>> 8) & 0xff;
-            hash[(i << 2) + 3] = (this.H[i] >>> 0) & 0xff;
-        }
-        // clear internal states and prepare for new hash
-        this.init();
-        return hash;
-    };
-    /**
-     * All in one step
-     * @param {Uint8Array} msg Additional message data
-     * @return {Uint8Array} Hash as 20 byte array
-     */
-    SHA1.prototype.hash = function (msg) {
-        return this.init().digest(msg);
-    };
-    /**
-     * Performs a quick selftest
-     * @return {Boolean} True if successful
-     */
-    SHA1.prototype.selftest = function () {
-        var cumulative = new SHA1(), sha = new SHA1();
-        var toBeHashed = '', hash;
-        for (var i = 0; i < 10; i++) {
-            for (var n = 100 * i; n < 100 * (i + 1); n++) {
-                hash = base_1.Convert.bin2hex(sha.hash(base_1.Convert.str2bin(toBeHashed)));
-                cumulative.update(base_1.Convert.str2bin(hash));
-                toBeHashed = (hash.substring(0, 2) + toBeHashed).substring(0, n + 1);
-            }
-        }
-        hash = base_1.Convert.bin2hex(cumulative.digest());
-        return hash === '00665a042bac62281f2f3666c3565dd005d364dc';
-    };
-    return SHA1;
-}());
-exports.SHA1 = SHA1;
 
 
 /***/ }),
@@ -13883,30 +13243,6 @@ class BC {
     return Buffer.from(this[P_BUFFER].toString('hex'), 'hex');
   }
   /**
-   * Switches the endianness of the BC.
-   *
-   * @returns {BC}
-   */
-
-
-  switchEndian() {
-    return BC.fromHex(this[P_BUFFER].toString('hex').match(/../g).reverse().join(''));
-  }
-  /**
-   * Switches the endianness of the BC.
-   *
-   * @returns {BC}
-   */
-
-
-  switchEndianIf(targetEndian) {
-    if (Endian.detect() !== targetEndian) {
-      return this.switchEndian();
-    }
-
-    return this;
-  }
-  /**
      * Returns a sub-BC defined by the start and end position.
      *
      * @param {Number}start
@@ -14185,21 +13521,6 @@ class AbstractType {
     return this[P_FIXED_VALUE];
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    return {
-      name: 'AbstractType',
-      description: this.description(),
-      extra: {},
-      hierarchy: ['AbstractType']
-    };
-  }
-  /**
    * Gets the encoded size of the type.
    *
    * @return {Number}
@@ -14234,27 +13555,6 @@ class AbstractType {
     throw new Error('Missing implementation for encodeToBytes.');
   }
   /**
-   * Describes the type.
-   *
-   * @param {*} value
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-
-    if (this.hasFixedValue) {
-      description.fixed = this.fixedValue;
-    }
-
-    return description;
-  }
-  /**
    * Sets a fixed value.
    *
    * @param {*} value
@@ -14280,7 +13580,11 @@ class AbstractType {
       return this[P_DESCRIPTION];
     }
 
-    this[P_DESCRIPTION] = description;
+    if (this[P_DESCRIPTION] === undefined) {
+      this[P_DESCRIPTION] = [];
+    }
+
+    this[P_DESCRIPTION].push(description);
     return this;
   }
   /**
@@ -14353,19 +13657,6 @@ class CompositeType extends AbstractType {
     return this[P_SIZE_ENCODED];
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'CompositeType';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Adds a new field (type) definition.
    *
    * @param {AbstractType} field
@@ -14400,6 +13691,7 @@ class CompositeType extends AbstractType {
       obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), options, obj);
       offset += subType.encodedSize;
     });
+    this[P_SIZE_ENCODED] = offset;
     return options.toArray ? Object.values(obj) : obj;
   }
   /**
@@ -14426,36 +13718,6 @@ class CompositeType extends AbstractType {
     });
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = description.encoded.length;
-    }
-
-    description.subTypes = [];
-    this.subTypes.forEach(subType => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = value[subType.id];
-      }
-
-      description.subTypes.push(subType.describe(subTypeValue));
-    });
-    return description;
   }
 
 }
@@ -14500,23 +13762,6 @@ class AbstractInt extends AbstractType {
     this[P_ENDIAN] = endian;
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'AbstractInt';
-    info.extra = {
-      unsigned: this.unsigned,
-      endian: this.endian
-    };
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Gets the endianness.
    *
    * @returns {String}
@@ -14535,24 +13780,6 @@ class AbstractInt extends AbstractType {
 
   get unsigned() {
     return this[P_UNSIGNED];
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-    description.encodedSize = this.encodedSize;
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.encoded = this.encodeToBytes(value).toHex();
-    }
-
-    return description;
   }
 
 }
@@ -14597,19 +13824,6 @@ class BytesFixedLength extends AbstractType {
     this[P_SIZE] = length;
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'BytesFixedLength';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -14641,27 +13855,6 @@ class BytesFixedLength extends AbstractType {
   encodeToBytes(value) {
     value = BC.from(value);
     return value.slice(0, this[P_SIZE]);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-    description.encodedSize = this[P_SIZE];
-
-    if (arguments.length > 0) {
-      description.value = value;
-      description.encoded = this.encodeToBytes(value);
-    }
-
-    return description;
   }
 
 }
@@ -14712,40 +13905,31 @@ class BytesWithLength extends AbstractType {
    * @param {string} id
    * @param {Number} byteSize
    */
-  constructor(id, byteSize = 1) {
+  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null) {
     super(id || `bytes_with_length_${byteSize * 8}`);
     this.description('Bytes with variable size prepended');
     this[P_BYTES_FIELD] = new BytesWithoutLength('value');
 
     switch (byteSize) {
       case 1:
-        this[P_LENGTH_FIELD] = new Int8('length', true);
+        this[P_LENGTH_FIELD] = new Int8(lengthId, true);
         break;
 
       case 2:
-        this[P_LENGTH_FIELD] = new Int16('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int16(lengthId, true, Endian.LITTLE_ENDIAN);
         break;
 
       case 4:
-        this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int32(lengthId, true, Endian.LITTLE_ENDIAN);
         break;
 
       default:
-        throw new Error('InByteSize must be either 8, 16 or 32');
+        throw new Error('ByteSize must be either 1, 2 or 4');
     }
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
 
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'BytesWithLength';
-    info.hierarchy.push(info.name);
-    return info;
+    if (lengthDesc !== null) {
+      this[P_LENGTH_FIELD].description(lengthDesc);
+    }
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -14783,24 +13967,9 @@ class BytesWithLength extends AbstractType {
     let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED] - this[P_LENGTH_FIELD].encodedSize);
     return bc.append(this[P_BYTES_FIELD].encodeToBytes(value));
   }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
 
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.decodedSimple = value.toHex();
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
+  get lengthField() {
+    return this[P_LENGTH_FIELD];
   }
 
 }
@@ -14843,19 +14012,6 @@ class BytesWithoutLength extends AbstractType {
     this.description('Bytes without length prepended.');
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'BytesWithoutLength';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -14889,27 +14045,6 @@ class BytesWithoutLength extends AbstractType {
     let encoded = BC.from(value);
     this[P_SIZE_ENCODED] = encoded.length;
     return encoded;
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-
-    if (arguments.length > 0) {
-      description.value = value;
-      description.encoded = this.encodeToBytes(value);
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
   }
 
 }
@@ -14951,19 +14086,6 @@ class Int16 extends AbstractInt {
   constructor(id, unsigned, endian) {
     super(id || 'int16', unsigned, endian);
     this.description('2byte 16bit int value');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Int16';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -15037,19 +14159,6 @@ class Int32 extends AbstractInt {
   constructor(id, unsigned, endian) {
     super(id || 'int32', unsigned, endian);
     this.description('4byte 32bit int value');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Int32';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -15145,19 +14254,6 @@ class Int64 extends AbstractInt {
     this.description('8byte 64bit int value');
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Int64';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -15176,7 +14272,7 @@ class Int64 extends AbstractInt {
 
 
   decodeFromBytes(bc, options = {}, all = null) {
-    let value = new BN(BC.from(bc).buffer, 10, this.endian.toLowerCase());
+    let value = new BN(BC.from(bc).slice(0, this.encodedSize).buffer, 10, this.endian.toLowerCase());
 
     if (!this.unsigned) {
       value = value.fromTwos(64);
@@ -15199,25 +14295,6 @@ class Int64 extends AbstractInt {
     }
 
     return BC.from(value.toBuffer(this.endian.toLowerCase(), this.encodedSize));
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-    description.encodedSize = this.encodedSize;
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.decodedSimple = value.toString(10, this.encodedSize);
-      description.encoded = this.encodeToBytes(value).toHex();
-    }
-
-    return description;
   }
 
 }
@@ -15260,20 +14337,6 @@ class Int8 extends AbstractInt {
   constructor(id, unsigned) {
     super(id || 'int8', unsigned, Endian.LITTLE_ENDIAN);
     this.description('1byte 8bit int value');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Int8';
-    info.hierarchy.push(info.name);
-    delete info.extra.endian;
-    return info;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -15373,19 +14436,6 @@ class StringWithLength extends AbstractType {
     }
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'StringWithLength';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -15404,8 +14454,8 @@ class StringWithLength extends AbstractType {
 
 
   decodeFromBytes(bc, options = {}, all = null) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc));
-    return this[P_STRING_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_LENGTH_FIELD].encodedSize + this[P_SIZE_ENCODED]));
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc));
+    return this[P_STRING_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_SIZE_ENCODED]));
   }
   /**
    * Encodes the given value.
@@ -15419,24 +14469,6 @@ class StringWithLength extends AbstractType {
     this[P_SIZE_ENCODED] = value.length;
     let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED]);
     return bc.append(this[P_STRING_FIELD].encodeToBytes(value));
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.encoded = this.encodeToBytes(value);
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
   }
 
 }
@@ -15479,19 +14511,6 @@ class StringWithoutLength extends AbstractType {
     this.description('Single string value without length prepended.');
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'StringWithoutLength';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -15524,27 +14543,6 @@ class StringWithoutLength extends AbstractType {
     let encoded = BC.from(value, 'string');
     this[P_SIZE_ENCODED] = encoded.length;
     return encoded;
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-
-    if (arguments.length > 0) {
-      description.value = value;
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
   }
 
 }
@@ -15596,19 +14594,6 @@ class Decissive extends CompositeType {
     return this[P_SIZE_ENCODED];
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Decissive';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Decodes the given bytes into an object.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
@@ -15636,36 +14621,6 @@ class Decissive extends CompositeType {
     let bc = subType.encodeToBytes(objOrArray);
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = description.encoded.length;
-    }
-
-    description.subTypes = [];
-    this.subTypes.forEach(subType => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = value[subType.id];
-      }
-
-      description.subTypes.push(subType.describe(subTypeValue));
-    });
-    return description;
   }
 
 }
@@ -15702,22 +14657,9 @@ class AccountName extends StringWithLength {
    *
    * @param {String} id
    */
-  constructor(id = null) {
-    super(id || 'account_name');
+  constructor(id = null, byteSize = 2) {
+    super(id || 'account_name', byteSize);
     this.description('An account name');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'AccountName';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
@@ -15742,16 +14684,6 @@ class AccountName extends StringWithLength {
 
   encodeToBytes(value) {
     return super.encodeToBytes(value.toString());
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    return super.describe(value);
   }
 
 }
@@ -15795,19 +14727,6 @@ class AccountNumber extends Int32 {
     this.description('An account number');
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'AccountNumber';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
@@ -15831,16 +14750,6 @@ class AccountNumber extends Int32 {
 
   encodeToBytes(value) {
     return super.encodeToBytes(value.account);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    return super.describe(value);
   }
 
 }
@@ -15880,21 +14789,8 @@ class Currency extends Int64 {
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'currency', false, Endian.LITTLE_ENDIAN);
+    super(id || 'currency', true, Endian.LITTLE_ENDIAN);
     this.description('A type for currency values.');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Currency';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads the pascal currency value from the given BC.
@@ -15919,16 +14815,6 @@ class Currency extends Int64 {
 
   encodeToBytes(value) {
     return super.encodeToBytes(value.bn);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    return super.describe(value);
   }
 
 }
@@ -15970,19 +14856,6 @@ class Curve extends Int16 {
   constructor(id = null) {
     super(id || 'curve', true, Endian.LITTLE_ENDIAN);
     this.description('Key curve id');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Curve';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads the pascal currency value from the given BC.
@@ -16051,19 +14924,6 @@ class PrivateKey extends CompositeType {
     super(id || 'private_key');
     this.addSubType(new Curve('curve'));
     this.addSubType(new BytesWithLength('key', 2));
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'PrivateKey';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
@@ -16143,25 +15003,12 @@ class PublicKey extends CompositeType {
     this.addSubType(new Curve('curve')); // oh come on..
 
     if (omitXYLenghts) {
-      this.addSubType(new BytesWithoutLength('x'));
+      this.addSubType(new BytesWithoutLength('x').description('The X value of the public key.'));
       this.addSubType(new BytesWithoutLength('y'));
     } else {
-      this.addSubType(new BytesWithLength('x', 2));
-      this.addSubType(new BytesWithLength('y', 2));
+      this.addSubType(new BytesWithLength('x', 2, 'x_length', 'Length of X value').description('The X value of the public key.'));
+      this.addSubType(new BytesWithLength('y', 2, 'y_length', 'Length of Y value').description('The X value of the public key.'));
     }
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'PublicKey';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
@@ -16243,19 +15090,6 @@ class NOperation extends Int32 {
     super(id || 'nOperation', true, Endian.LITTLE_ENDIAN);
     this.description('Accounts n_operation value.');
   }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'NOperation';
-    info.hierarchy.push(info.name);
-    return info;
-  }
 
 }
 
@@ -16321,19 +15155,6 @@ class OpType extends AbstractType {
     this.description(`Operation type in ${byteSize * 8} bits`);
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = this[P_INT_TYPE].typeInfo;
-    info.name = 'OpType';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -16364,24 +15185,6 @@ class OpType extends AbstractType {
 
   encodeToBytes(value) {
     return this[P_INT_TYPE].encodeToBytes(value);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-    description.encodedSize = this.encodedSize;
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.encoded = this.encodeToBytes(value).toHex();
-    }
-
-    return description;
   }
 
 }
@@ -16437,19 +15240,6 @@ class OperationHash extends CompositeType {
     this.addSubType(new BytesWithoutLength('md160'));
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'OperationHash';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
@@ -16473,16 +15263,6 @@ class OperationHash extends CompositeType {
 
   encodeToBytes(value) {
     return super.encodeToBytes(value);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    return super.describe(value);
   }
 
 }
@@ -16511,6 +15291,7 @@ const AbstractType = __webpack_require__(/*! ./AbstractType */ "../common/src/Co
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_REPEAT_LIMIT = Symbol('repeat_limit');
+const P_REPEAT_MARKER = Symbol('repeat_marker');
 const P_TYPE = Symbol('type');
 /**
  * A Type that itself is made up of multiple other types.
@@ -16520,11 +15301,12 @@ class Repeating extends AbstractType {
   /**
    * Constructor
    */
-  constructor(id, type, repeatLimit = -1) {
+  constructor(id, type, repeatLimit = -1, repeatMarker = null) {
     super(id || 'repeating');
     super.description('A type that itself has one repeating type that will ' + 'be written / read until the limit is reached or data is empty.');
     this[P_TYPE] = type;
     this[P_REPEAT_LIMIT] = repeatLimit;
+    this[P_REPEAT_MARKER] = repeatMarker;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -16533,19 +15315,6 @@ class Repeating extends AbstractType {
 
   get encodedSize() {
     return this[P_SIZE_ENCODED];
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Repeating';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Decodes the given bytes into an object.
@@ -16559,17 +15328,17 @@ class Repeating extends AbstractType {
     let result = [];
     let offset = 0;
     bc = BC.from(bc);
-    let counter = 0;
-    let limitArrived = false;
+    let limit = this[P_REPEAT_MARKER] !== null ? all[this[P_REPEAT_MARKER]] : this[P_REPEAT_LIMIT];
+    let counter = limit;
 
-    do {
+    while (limit > -1 && counter > 0 || limit === -1 && bc.length > offset) {
       const decoded = this[P_TYPE].decodeFromBytes(bc.slice(offset));
       result.push(decoded);
       offset += this[P_TYPE].encodedSize;
-      counter++;
-      limitArrived = this[P_REPEAT_LIMIT] > -1 && this[P_REPEAT_LIMIT] === counter;
-    } while (offset < bc.length && !limitArrived);
+      counter--;
+    }
 
+    this[P_SIZE_ENCODED] = offset;
     return result;
   }
   /**
@@ -16592,35 +15361,9 @@ class Repeating extends AbstractType {
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
   }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
 
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = description.encoded.length;
-    }
-
-    description.subTypes = [];
-    this.subTypes.forEach(subType => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = value[subType.id];
-      }
-
-      description.subTypes.push(subType.describe(subTypeValue));
-    });
-    return description;
+  get repeatingType() {
+    return this[P_TYPE];
   }
 
 }
@@ -18231,16 +16974,14 @@ module.exports = {
     },
     Pascal: {
       KDF: __webpack_require__(/*! ./src/Encryption/Pascal/KDF */ "./src/Encryption/Pascal/KDF.js"),
-      Key: __webpack_require__(/*! ./src/Encryption/Pascal/Key */ "./src/Encryption/Pascal/Key.js"),
+      ECIES: __webpack_require__(/*! ./src/Encryption/Pascal/ECIES */ "./src/Encryption/Pascal/ECIES.js"),
       Password: __webpack_require__(/*! ./src/Encryption/Pascal/Password */ "./src/Encryption/Pascal/Password.js"),
       PrivateKey: __webpack_require__(/*! ./src/Encryption/Pascal/PrivateKey */ "./src/Encryption/Pascal/PrivateKey.js")
     }
   },
   Keys: __webpack_require__(/*! ./src/Keys */ "./src/Keys.js"),
   mipher: {
-    AES_CBC_ZeroPadding: __webpack_require__(/*! ./src/mipher/AES_CBC_ZeroPadding */ "./src/mipher/AES_CBC_ZeroPadding.js"),
-    HMAC_MD5: __webpack_require__(/*! ./src/mipher/HMAC_MD5 */ "./src/mipher/HMAC_MD5.js"),
-    MD5: __webpack_require__(/*! ./src/mipher/MD5Mipher */ "./src/mipher/MD5Mipher.js")
+    AES_CBC_ZeroPadding: __webpack_require__(/*! ./src/mipher/AES_CBC_ZeroPadding */ "./src/mipher/AES_CBC_ZeroPadding.js")
   }
 };
 
@@ -18259,13 +17000,14 @@ const Abstract = __webpack_require__(/*! ./../Abstract */ "./src/Encryption/Abst
 const mAES = __webpack_require__(/*! mipher/dist/aes */ "../../node_modules/mipher/dist/aes.js");
 
 const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
+/**
+ * AES-CBC PKCS7 implementation.
+ */
+
 
 class CBCPKCS7 extends Abstract {
   /**
-   *
-   * @param {Buffer|Uint8Array|BC|String} value
-   * @param {Object} options
-   * @return {BC}
+   * @inheritDoc Abstract#encrypt
    */
   static encrypt(value, options = {
     key: BC.empty(),
@@ -18275,11 +17017,7 @@ class CBCPKCS7 extends Abstract {
     return new BC(aes.encrypt(BC.from(options.key).buffer, BC.from(value).buffer, BC.from(options.iv).buffer));
   }
   /**
-   * Decrypts the given value.
-   *
-   * @param {Buffer|Uint8Array|BC|String} value
-   * @param {Object} options
-   * @returns {BC}
+   * @inheritDoc Abstract#decrypt
    */
 
 
@@ -18310,13 +17048,14 @@ const Abstract = __webpack_require__(/*! ./../Abstract */ "./src/Encryption/Abst
 const AES_CBC_ZeroPadding = __webpack_require__(/*! ./../../mipher/AES_CBC_ZeroPadding */ "./src/mipher/AES_CBC_ZeroPadding.js");
 
 const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
+/**
+ * AES-CBC Zero Padding implementation.
+ */
+
 
 class CBCZeroPadding extends Abstract {
   /**
-   *
-   * @param {Buffer|Uint8Array|BC|String} value
-   * @param {Object} options
-   * @returns {BC}
+   * @inheritDoc Abstract#encrypt
    */
   static encrypt(value, options = {
     key: BC.empty(),
@@ -18326,10 +17065,7 @@ class CBCZeroPadding extends Abstract {
     return new BC(aes.encrypt(BC.from(options.key).buffer, BC.from(value).buffer, BC.from(options.iv).buffer));
   }
   /**
-   *
-   * @param {Buffer|Uint8Array|BC|String} value
-   * @param {Object} options
-   * @returns {BC}
+   * @inheritDoc Abstract#encrypt
    */
 
 
@@ -18482,6 +17218,244 @@ module.exports = ECDH;
 
 /***/ }),
 
+/***/ "./src/Encryption/Pascal/ECIES.js":
+/*!****************************************!*\
+  !*** ./src/Encryption/Pascal/ECIES.js ***!
+  \****************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+
+const Abstract = __webpack_require__(/*! ./../Abstract */ "./src/Encryption/Abstract.js");
+
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
+
+const ECDH = __webpack_require__(/*! ./../ECDH */ "./src/Encryption/ECDH.js");
+
+const ECIESData = __webpack_require__(/*! ./ECIES/Data */ "./src/Encryption/Pascal/ECIES/Data.js");
+
+const ECIESCoding = __webpack_require__(/*! ./ECIES/Coding */ "./src/Encryption/Pascal/ECIES/Coding.js");
+
+const CryptoJSEncHex = __webpack_require__(/*! crypto-js/enc-hex */ "../../node_modules/crypto-js/enc-hex.js");
+
+const CryptoJSHmacMd5 = __webpack_require__(/*! crypto-js/hmac-md5 */ "../../node_modules/crypto-js/hmac-md5.js");
+/**
+ * A class that can en-/decrypt payloads based on a public key / private key.
+ */
+
+
+class ECIES extends Abstract {
+  /**
+   * Decrypts the given encrypted value using the given key pair.
+   *
+   * @param {Buffer|Uint8Array|BC|String} value
+   * @param {Object} options
+   *
+   * @return {BC|false}
+   */
+  static decrypt(value, options = {
+    keyPair: null
+  }) {
+    let keyData = new ECIESCoding().decodeFromBytes(value);
+    const dec = ECDH.decrypt(keyData.encryptedData, {
+      privateKey: options.keyPair.privateKey,
+      publicKey: keyData.publicKey,
+      origMsgLength: keyData.originalDataLength
+    });
+    const mac = BC.fromHex(CryptoJSHmacMd5(CryptoJSEncHex.parse(keyData.encryptedData.toHex()), CryptoJSEncHex.parse(dec.key.toHex())).toString()); // var mac5 = hmac3.update(keyData.encryptedData.toString(), 'utf8').digest('hex');
+
+    if (keyData.mac.equals(mac)) {
+      return dec.data;
+    }
+
+    throw new Error('Unable to decrypt value.');
+  }
+  /**
+   * Encrypts the given value using the given public key.
+   *
+   * @param {Buffer|Uint8Array|BC|String} value
+   * @param {Object} options
+   * @return {BC}
+   */
+
+
+  static encrypt(value, options = {
+    publicKey: null
+  }) {
+    value = BC.from(value);
+    const enc = ECDH.encrypt(value, options); // TODO: this causes a big polyfill
+
+    const mac = BC.fromHex(CryptoJSHmacMd5(CryptoJSEncHex.parse(enc.data.toHex()), CryptoJSEncHex.parse(enc.key.toHex())).toString());
+    const originalDataLength = value.length;
+    const originalDataLengthIncPadLength = originalDataLength % 16 === 0 ? 0 : 16 - originalDataLength % 16;
+    let keyData = new ECIESData();
+    keyData.withPublicKey(enc.publicKey);
+    keyData.withMac(mac);
+    keyData.withEncryptedData(enc.data);
+    keyData.withOriginalDataLength(originalDataLength);
+    keyData.withOriginalDataLengthIncPadLength(originalDataLengthIncPadLength);
+    return new ECIESCoding().encodeToBytes(keyData);
+  }
+
+}
+
+module.exports = ECIES;
+
+/***/ }),
+
+/***/ "./src/Encryption/Pascal/ECIES/Coding.js":
+/*!***********************************************!*\
+  !*** ./src/Encryption/Pascal/ECIES/Coding.js ***!
+  \***********************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Endian;
+
+const CommonCoding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
+
+const CompositeType = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding.CompositeType;
+
+const Data = __webpack_require__(/*! ./Data */ "./src/Encryption/Pascal/ECIES/Data.js");
+
+class Coding extends CompositeType {
+  constructor() {
+    super('pascalcoin_ecies');
+    this.description('Coding for an pascalcoin encrypted ECIES message');
+    this.addSubType(new CommonCoding.Core.Int8('publicKeyLength', true));
+    this.addSubType(new CommonCoding.Core.Int8('macLength', true));
+    this.addSubType(new CommonCoding.Core.Int16('originalDataLength', true, Endian.LITTLE_ENDIAN));
+    this.addSubType(new CommonCoding.Core.Int16('originalDataLengthIncPadLength', true, Endian.LITTLE_ENDIAN));
+    this.addSubType(new CommonCoding.Decissive('publicKey', 'publicKeyLength', function (publicKeyLength) {
+      return new CommonCoding.Core.BytesFixedLength('publicKey', publicKeyLength);
+    }));
+    this.addSubType(new CommonCoding.Decissive('mac', 'macLength', function (macLength) {
+      return new CommonCoding.Core.BytesFixedLength('mac', macLength);
+    }));
+    this.addSubType(new CommonCoding.Core.BytesWithoutLength('encryptedData'));
+  }
+  /**
+   *
+   * @param bc
+   * @param options
+   * @param all
+   * @return {ECIESData}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
+    let decoded = super.decodeFromBytes(bc, options, all);
+    let data = new Data();
+    data.withPublicKey(decoded.publicKey);
+    data.withOriginalDataLength(decoded.originalDataLength);
+    data.withOriginalDataLengthIncPadLength(decoded.originalDataLengthIncPadLength);
+    data.withMac(decoded.mac);
+    data.withEncryptedData(decoded.encryptedData);
+    return data;
+  }
+
+}
+
+module.exports = Coding;
+
+/***/ }),
+
+/***/ "./src/Encryption/Pascal/ECIES/Data.js":
+/*!*********************************************!*\
+  !*** ./src/Encryption/Pascal/ECIES/Data.js ***!
+  \*********************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+
+const P_PUBLIC_KEY = Symbol('pubkey');
+const P_MAC = Symbol('mac');
+const P_ORIGINAL_DATA_LENGTH = Symbol('original_data_length');
+const P_ORIGINAL_DATA_LENGTH_INC_PAD_LENGTH = Symbol('original_data_length_inc_pad_length');
+const P_ENCRYPTED_DATA = Symbol('encryped_data');
+/**
+ * A class that can en-/decrypt payloads based on a public key / private key.
+ */
+
+class Data {
+  withPublicKey(publicKey) {
+    this[P_PUBLIC_KEY] = publicKey;
+    return this;
+  }
+
+  withMac(mac) {
+    this[P_MAC] = mac;
+    return this;
+  }
+
+  withOriginalDataLength(length) {
+    this[P_ORIGINAL_DATA_LENGTH] = length;
+    return this;
+  }
+
+  withOriginalDataLengthIncPadLength(length) {
+    this[P_ORIGINAL_DATA_LENGTH_INC_PAD_LENGTH] = length;
+    return this;
+  }
+
+  withEncryptedData(encryptedData) {
+    this[P_ENCRYPTED_DATA] = encryptedData;
+    return this;
+  }
+
+  get publicKey() {
+    return this[P_PUBLIC_KEY];
+  }
+
+  get publicKeyLength() {
+    return this[P_PUBLIC_KEY].length;
+  }
+
+  get originalDataLength() {
+    return this[P_ORIGINAL_DATA_LENGTH];
+  }
+
+  get originalDataLengthIncPadLength() {
+    return this[P_ORIGINAL_DATA_LENGTH_INC_PAD_LENGTH];
+  }
+
+  get encryptedData() {
+    return this[P_ENCRYPTED_DATA];
+  }
+
+  get mac() {
+    return this[P_MAC];
+  }
+
+  get macLength() {
+    return this[P_MAC].length;
+  }
+
+}
+
+module.exports = Data;
+
+/***/ }),
+
 /***/ "./src/Encryption/Pascal/KDF.js":
 /*!**************************************!*\
   !*** ./src/Encryption/Pascal/KDF.js ***!
@@ -18538,244 +17512,6 @@ class KDF {
 }
 
 module.exports = KDF;
-
-/***/ }),
-
-/***/ "./src/Encryption/Pascal/Key.js":
-/*!**************************************!*\
-  !*** ./src/Encryption/Pascal/Key.js ***!
-  \**************************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) Benjamin Ansbach - all rights reserved.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-
-const Abstract = __webpack_require__(/*! ./../Abstract */ "./src/Encryption/Abstract.js");
-
-const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
-
-const ECDH = __webpack_require__(/*! ./../ECDH */ "./src/Encryption/ECDH.js");
-
-const KeyData = __webpack_require__(/*! ./KeyCoding/KeyData */ "./src/Encryption/Pascal/KeyCoding/KeyData.js");
-
-const KeyCoding = __webpack_require__(/*! ./KeyCoding/KeyCoding */ "./src/Encryption/Pascal/KeyCoding/KeyCoding.js");
-
-const CryptoJSEncHex = __webpack_require__(/*! crypto-js/enc-hex */ "../../node_modules/crypto-js/enc-hex.js");
-
-const CryptoJSHmacMd5 = __webpack_require__(/*! crypto-js/hmac-md5 */ "../../node_modules/crypto-js/hmac-md5.js");
-/**
- * A class that can en-/decrypt payloads based on a public key / private key.
- */
-
-
-class Key extends Abstract {
-  /**
-   * Decrypts the given encrypted value using the given key pair.
-   *
-   * @param {Buffer|Uint8Array|BC|String} value
-   * @param {Object} options
-   *
-   * @return {BC|false}
-   */
-  static decrypt(value, options = {
-    keyPair: null
-  }) {
-    let keyData = new KeyCoding().decodeFromBytes(value);
-    const dec = ECDH.decrypt(keyData.encryptedData, {
-      privateKey: options.keyPair.privateKey,
-      publicKey: keyData.publicKey,
-      origMsgLength: keyData.originalDataLength
-    });
-    const mac = BC.fromHex(CryptoJSHmacMd5(CryptoJSEncHex.parse(keyData.encryptedData.toHex()), CryptoJSEncHex.parse(dec.key.toHex())).toString()); // var mac5 = hmac3.update(keyData.encryptedData.toString(), 'utf8').digest('hex');
-
-    if (keyData.mac.equals(mac)) {
-      return dec.data;
-    }
-
-    return false;
-  }
-  /**
-   * Encrypts the given value using the given public key.
-   *
-   * @param {Buffer|Uint8Array|BC|String} value
-   * @param {Object} options
-   * @return {BC}
-   */
-
-
-  static encrypt(value, options = {
-    publicKey: null
-  }) {
-    value = BC.from(value);
-    const enc = ECDH.encrypt(value, options); // TODO: this causes a big polyfill
-
-    const mac = BC.fromHex(CryptoJSHmacMd5(CryptoJSEncHex.Hex.parse(enc.data.toHex()), CryptoJSEncHex.Hex.parse(enc.key.toHex())).toString());
-    const originalDataLength = value.length;
-    const originalDataLengthIncPadLength = originalDataLength % 16 === 0 ? 0 : 16 - originalDataLength % 16;
-    let keyData = new KeyData();
-    keyData.withPublicKey(enc.publicKey);
-    keyData.withMac(mac);
-    keyData.withEncryptedData(enc.data);
-    keyData.withOriginalDataLength(originalDataLength);
-    keyData.withOriginalDataLengthIncPadLength(originalDataLengthIncPadLength);
-    return new KeyCoding().encodeToBytes(keyData);
-  }
-
-}
-
-module.exports = Key;
-
-/***/ }),
-
-/***/ "./src/Encryption/Pascal/KeyCoding/KeyCoding.js":
-/*!******************************************************!*\
-  !*** ./src/Encryption/Pascal/KeyCoding/KeyCoding.js ***!
-  \******************************************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Endian;
-
-const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
-
-const CompositeType = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding.CompositeType;
-
-const KeyData = __webpack_require__(/*! ./KeyData */ "./src/Encryption/Pascal/KeyCoding/KeyData.js");
-
-class KeyCoding extends CompositeType {
-  constructor() {
-    super('pascalcoin_ecdh');
-    this.description('Coding for an pascalcoin encrypted ECDH message');
-    this.addSubType(new Coding.Core.Int8('publicKeyLength', true));
-    this.addSubType(new Coding.Core.Int8('macLength', true));
-    this.addSubType(new Coding.Core.Int16('originalDataLength', true, Endian.LITTLE_ENDIAN));
-    this.addSubType(new Coding.Core.Int16('originalDataLengthIncPadLength', true, Endian.LITTLE_ENDIAN));
-    this.addSubType(new Coding.Decissive('publicKey', 'publicKeyLength', function (publicKeyLength) {
-      return new Coding.Core.BytesFixedLength('publicKey', publicKeyLength);
-    }));
-    this.addSubType(new Coding.Decissive('mac', 'macLength', function (macLength) {
-      return new Coding.Core.BytesFixedLength('mac', macLength);
-    }));
-    this.addSubType(new Coding.Core.BytesWithoutLength('encryptedData'));
-  }
-  /**
-   *
-   * @param bc
-   * @param options
-   * @param all
-   * @return {KeyData}
-   */
-
-
-  decodeFromBytes(bc, options = {}, all = null) {
-    let decoded = super.decodeFromBytes(bc, options, all);
-    let keyData = new KeyData();
-    keyData.withPublicKey(decoded.publicKey);
-    keyData.withOriginalDataLength(decoded.originalDataLength);
-    keyData.withOriginalDataLengthIncPadLength(decoded.originalDataLengthIncPadLength);
-    keyData.withMac(decoded.mac);
-    keyData.withEncryptedData(decoded.encryptedData);
-    return keyData;
-  }
-
-}
-
-module.exports = KeyCoding;
-
-/***/ }),
-
-/***/ "./src/Encryption/Pascal/KeyCoding/KeyData.js":
-/*!****************************************************!*\
-  !*** ./src/Encryption/Pascal/KeyCoding/KeyData.js ***!
-  \****************************************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) Benjamin Ansbach - all rights reserved.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-
-const P_PUBLIC_KEY = Symbol('pubkey');
-const P_MAC = Symbol('mac');
-const P_ORIGINAL_DATA_LENGTH = Symbol('original_data_length');
-const P_ORIGINAL_DATA_LENGTH_INC_PAD_LENGTH = Symbol('original_data_length_inc_pad_length');
-const P_ENCRYPTED_DATA = Symbol('encryped_data');
-/**
- * A class that can en-/decrypt payloads based on a public key / private key.
- */
-
-class KeyData {
-  withPublicKey(publicKey) {
-    this[P_PUBLIC_KEY] = publicKey;
-    return this;
-  }
-
-  withMac(mac) {
-    this[P_MAC] = mac;
-    return this;
-  }
-
-  withOriginalDataLength(length) {
-    this[P_ORIGINAL_DATA_LENGTH] = length;
-    return this;
-  }
-
-  withOriginalDataLengthIncPadLength(length) {
-    this[P_ORIGINAL_DATA_LENGTH_INC_PAD_LENGTH] = length;
-    return this;
-  }
-
-  withEncryptedData(encryptedData) {
-    this[P_ENCRYPTED_DATA] = encryptedData;
-    return this;
-  }
-
-  get publicKey() {
-    return this[P_PUBLIC_KEY];
-  }
-
-  get publicKeyLength() {
-    return this[P_PUBLIC_KEY].length;
-  }
-
-  get originalDataLength() {
-    return this[P_ORIGINAL_DATA_LENGTH];
-  }
-
-  get originalDataLengthIncPadLength() {
-    return this[P_ORIGINAL_DATA_LENGTH_INC_PAD_LENGTH];
-  }
-
-  get encryptedData() {
-    return this[P_ENCRYPTED_DATA];
-  }
-
-  get mac() {
-    return this[P_MAC];
-  }
-
-  get macLength() {
-    return this[P_MAC].length;
-  }
-
-}
-
-module.exports = KeyData;
 
 /***/ }),
 
@@ -18852,7 +17588,7 @@ class Password extends Abstract {
     let result = aes.decrypt(keyInfo.key.buffer, rest.buffer, keyInfo.iv.buffer);
 
     if (result.length === 0) {
-      return false;
+      throw new Error('Unable to decrypt value.');
     }
 
     return new BC(result);
@@ -19108,139 +17844,6 @@ module.exports = AES_CBC_ZeroPadding;
 
 /***/ }),
 
-/***/ "./src/mipher/HMAC_MD5.js":
-/*!********************************!*\
-  !*** ./src/mipher/HMAC_MD5.js ***!
-  \********************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) Benjamin Ansbach - all rights reserved.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-const MipherHMAC = __webpack_require__(/*! mipher/dist/hmac */ "../../node_modules/mipher/dist/hmac.js").HMAC;
-
-const MipherMD5 = __webpack_require__(/*! ./MD5Mipher */ "./src/mipher/MD5Mipher.js");
-/**
- * AES-CBC + ZeroPadding integration using the mipher library
- */
-
-
-class HMAC_MD5 {
-  static hash(key, data) {
-    let m = new MipherHMAC(new MipherMD5());
-    m.init(key);
-    return m.digest(data);
-  }
-
-}
-
-module.exports = HMAC_MD5;
-
-/***/ }),
-
-/***/ "./src/mipher/MD5Mipher.js":
-/*!*********************************!*\
-  !*** ./src/mipher/MD5Mipher.js ***!
-  \*********************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) Benjamin Ansbach - all rights reserved.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-const MD5 = __webpack_require__(/*! md5.js */ "../../node_modules/md5.js/index.js");
-/**
- * SHA512 class
- */
-
-
-class MD5Mipher {
-  get hashSize() {
-    return 32;
-  }
-  /**
-     * SHA512 ctor
-     */
-
-
-  constructor() {
-    this.updates = [];
-  }
-  /**
-     * Init the hash
-     * @return {Object} this
-     */
-
-
-  init() {
-    // return new MD5Mipher();
-    this.updates = [];
-    return this;
-  }
-  /**
-     * Update the hash with additional message data
-     * @param {Uint8Array} msg Additional message data as byte array
-     * @return {SHA512} this
-     */
-
-
-  update(msg) {
-    this.updates.push(Buffer.from(msg));
-    return this;
-  }
-  /**
-     * Finalize the hash with additional message data
-     * @param {Uint8Array} msg Additional message data as byte array
-     * @return {Uint8Array} Hash as 64 byte array
-     */
-
-
-  digest(msg = null) {
-    if (msg !== null) {
-      this.update(msg);
-    }
-
-    let sponge = new MD5();
-    this.updates.forEach(update => {
-      sponge.update(update);
-    });
-    return sponge.digest('hex');
-  }
-  /**
-     * All in one step
-     * @param {Uint8Array} msg Additional message data
-     * @return {Uint8Array} Hash as 64 byte array
-     */
-
-
-  hash(msg) {
-    return new MD5Mipher().update(msg).digest();
-  }
-  /**
-     * Performs a quick selftest
-     * @return {Boolean} True if successful
-     */
-
-
-  selftest() {
-    return true;
-  }
-
-}
-
-module.exports = MD5Mipher;
-
-/***/ }),
-
 /***/ 0:
 /*!************************!*\
   !*** multi ./index.js ***!
@@ -19275,18 +17878,6 @@ module.exports = require("buffer");
 /***/ (function(module, exports) {
 
 module.exports = require("crypto");
-
-/***/ }),
-
-/***/ "stream":
-/*!*************************!*\
-  !*** external "stream" ***!
-  \*************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports) {
-
-module.exports = require("stream");
 
 /***/ }),
 

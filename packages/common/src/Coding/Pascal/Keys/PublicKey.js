@@ -31,24 +31,21 @@ class PublicKey extends CompositeType {
 
     // oh come on..
     if (omitXYLenghts) {
-      this.addSubType(new BytesWithoutLength('x'));
+      this.addSubType(
+        new BytesWithoutLength('x')
+          .description('The X value of the public key.')
+      );
       this.addSubType(new BytesWithoutLength('y'));
     } else {
-      this.addSubType(new BytesWithLength('x', 2));
-      this.addSubType(new BytesWithLength('y', 2));
+      this.addSubType(
+        new BytesWithLength('x', 2, 'x_length', 'Length of X value')
+          .description('The X value of the public key.')
+      );
+      this.addSubType(
+        new BytesWithLength('y', 2, 'y_length', 'Length of Y value')
+          .description('The X value of the public key.')
+      );
     }
-  }
-
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'PublicKey';
-    info.hierarchy.push(info.name);
-    return info;
   }
 
   /**

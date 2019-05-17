@@ -42,18 +42,6 @@ class OpType extends AbstractType {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = this[P_INT_TYPE].typeInfo;
-
-    info.name = 'OpType';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
@@ -80,23 +68,6 @@ class OpType extends AbstractType {
    */
   encodeToBytes(value) {
     return this[P_INT_TYPE].encodeToBytes(value);
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = super.describe(value);
-
-    description.encodedSize = this.encodedSize;
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.encoded = this.encodeToBytes(value).toHex();
-    }
-
-    return description;
   }
 }
 

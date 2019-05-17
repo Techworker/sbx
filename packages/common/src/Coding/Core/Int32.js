@@ -26,18 +26,6 @@ class Int32 extends AbstractInt {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'Int32';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {

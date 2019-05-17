@@ -6,18 +6,13 @@
  */
 
 const Abstract = require('./../../Abstract');
-const Receiver = require('./Receiver/Receiver');
-const Sender = require('./Sender/Sender');
 
-const P_OPERATIONS = Symbol('operations');
 const P_CHANGERS = Symbol('changers');
 const P_SENDERS = Symbol('senders');
 const P_RECEIVERS = Symbol('receivers');
-const P_RECEIVERS_UQ = Symbol('receivers_uq');
-const P_KEYPAIRS = Symbol('keypairs');
 
 /**
- * Representation of a signable ChangeKey operation.
+ * Representation of a signable MultiOperation.
  */
 class MultiOperation extends Abstract {
   /**
@@ -34,62 +29,88 @@ class MultiOperation extends Abstract {
    */
   constructor() {
     super();
-    this[P_OPERATIONS] = [];
-    this[P_SENDERS] = {};
+    this[P_SENDERS] = [];
     this[P_RECEIVERS] = [];
-    this[P_CHANGERS] = {};
-    this[P_RECEIVERS_UQ] = {};
-    this[P_KEYPAIRS] = {};
+    this[P_CHANGERS] = [];
   }
 
-  addTransaction(keyPair, operation, receiverPayload = null) {
-    // transaction operation, first create a single sender
-    if (this[P_SENDERS][operation.sender] === undefined) {
-      let sender = new Sender(
-        operation.sender,
-        operation.amount
-      );
+  /**
+   * Adds a single sender.
+   *
+   * @param {Sender} sender
+   */
+  addSender(sender) {
+    this[P_SENDERS].push(sender);
+  }
 
-      sender.withNOperation(operation.nOperation);
-      sender.withPayload(operation.payload);
-      this[P_SENDERS][operation.sender] = sender;
-    } else {
-      this[P_SENDERS][operation.sender].addAmount(operation.amount);
-    }
-    this[P_KEYPAIRS][operation.sender] = keyPair;
-
-    let receiver = new Receiver(
-      operation.target,
-      operation.amount
-    );
-
-    receiver.withPayload(receiverPayload || operation.payload);
-    const uq = receiver.payload.toHex() + receiver.amount.toStringOpt();
-
-    if (this[P_RECEIVERS_UQ][uq] !== undefined) {
-      throw new Error('Receivers must have unique amount and payload.');
-    }
-    this[P_RECEIVERS_UQ][uq] = uq;
+  /**
+   * Adds a receiver.
+   *
+   * @param {Receiver} receiver
+   */
+  addReceiver(receiver) {
     this[P_RECEIVERS].push(receiver);
   }
 
+  /**
+   * Adds a Changer.
+   *
+   * @param {Changer} changer
+   */
+  addChanger(changer) {
+    this[P_CHANGERS].push(changer);
+  }
+
+  /**
+   * Gets the list of all senders.
+   *
+   * @return {Sender[]}
+   */
   get senders() {
     return Object.values(this[P_SENDERS]);
   }
+
+  /**
+   * Gets the number of all senders.
+   *
+   * @return {number}
+   */
   get sendersCount() {
     return this.senders.length;
   }
 
+  /**
+   * Gets the list of all receivers.
+   *
+   * @return {Receiver[]}
+   */
   get receivers() {
     return this[P_RECEIVERS];
   }
+
+  /**
+   * Gets the number of receivers.
+   *
+   * @return {Number}
+   */
   get receiversCount() {
     return this[P_RECEIVERS].length;
   }
 
+  /**
+   * Gets the list of changers.
+   *
+   * @return {Changer[]}
+   */
   get changers() {
-    return Object.values(this[P_CHANGERS]);
+    return this[P_CHANGERS];
   }
+
+  /**
+   * Gets the number of changers.
+   *
+   * @return {number}
+   */
   get changersCount() {
     return this.changers.length;
   }

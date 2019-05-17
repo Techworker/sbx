@@ -53,19 +53,6 @@ class AbstractType {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    return {
-      name: 'AbstractType',
-      description: this.description(),
-      extra: {},
-      hierarchy: ['AbstractType']
-    };
-  }
-
-  /**
    * Gets the encoded size of the type.
    *
    * @return {Number}
@@ -97,25 +84,6 @@ class AbstractType {
   }
 
   /**
-   * Describes the type.
-   *
-   * @param {*} value
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-
-    if (this.hasFixedValue) {
-      description.fixed = this.fixedValue;
-    }
-
-    return description;
-  }
-
-  /**
    * Sets a fixed value.
    *
    * @param {*} value
@@ -138,7 +106,10 @@ class AbstractType {
       return this[P_DESCRIPTION];
     }
 
-    this[P_DESCRIPTION] = description;
+    if (this[P_DESCRIPTION] === undefined) {
+      this[P_DESCRIPTION] = [];
+    }
+    this[P_DESCRIPTION].push(description);
     return this;
   }
 

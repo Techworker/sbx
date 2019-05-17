@@ -10,6 +10,7 @@ const AbstractType = require('./AbstractType');
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_REPEAT_LIMIT = Symbol('repeat_limit');
+const P_REPEAT_MARKER = Symbol('repeat_marker');
 const P_TYPE = Symbol('type');
 
 /**
@@ -19,12 +20,13 @@ class Repeating extends AbstractType {
   /**
    * Constructor
    */
-  constructor(id, type, repeatLimit = -1) {
+  constructor(id, type, repeatLimit = -1, repeatMarker = null) {
     super(id || 'repeating');
     super.description('A type that itself has one repeating type that will ' +
       'be written / read until the limit is reached or data is empty.');
     this[P_TYPE] = type;
     this[P_REPEAT_LIMIT] = repeatLimit;
+    this[P_REPEAT_MARKER] = repeatMarker;
   }
 
   /**
@@ -32,18 +34,6 @@ class Repeating extends AbstractType {
    */
   get encodedSize() {
     return this[P_SIZE_ENCODED];
-  }
-
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'Repeating';
-    info.hierarchy.push(info.name);
-    return info;
   }
 
   /**
@@ -58,18 +48,18 @@ class Repeating extends AbstractType {
 
     bc = BC.from(bc);
 
-    let counter = 0;
-    let limitArrived = false;
+    let limit = this[P_REPEAT_MARKER] !== null ? all[this[P_REPEAT_MARKER]] : this[P_REPEAT_LIMIT];
+    let counter = limit;
 
-    do {
+    while ((limit > -1 && counter > 0) || (limit === -1 && bc.length > offset)) {
       const decoded = this[P_TYPE].decodeFromBytes(bc.slice(offset));
 
       result.push(decoded);
       offset += this[P_TYPE].encodedSize;
-      counter++;
-      limitArrived = (this[P_REPEAT_LIMIT] > -1 && this[P_REPEAT_LIMIT] === counter);
+      counter--;
+    }
 
-    } while (offset < bc.length && !limitArrived);
+    this[P_SIZE_ENCODED] = offset;
 
     return result;
   }
@@ -94,34 +84,8 @@ class Repeating extends AbstractType {
     return bc;
   }
 
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = description.encoded.length;
-    }
-
-    description.subTypes = [];
-
-    this.subTypes.forEach((subType) => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = value[subType.id];
-      }
-
-      description.subTypes.push(subType.describe(subTypeValue));
-    });
-
-    return description;
+  get repeatingType() {
+    return this[P_TYPE];
   }
 }
 

@@ -7055,30 +7055,6 @@ class BC {
     return Buffer.from(this[P_BUFFER].toString('hex'), 'hex');
   }
   /**
-   * Switches the endianness of the BC.
-   *
-   * @returns {BC}
-   */
-
-
-  switchEndian() {
-    return BC.fromHex(this[P_BUFFER].toString('hex').match(/../g).reverse().join(''));
-  }
-  /**
-   * Switches the endianness of the BC.
-   *
-   * @returns {BC}
-   */
-
-
-  switchEndianIf(targetEndian) {
-    if (Endian.detect() !== targetEndian) {
-      return this.switchEndian();
-    }
-
-    return this;
-  }
-  /**
      * Returns a sub-BC defined by the start and end position.
      *
      * @param {Number}start
@@ -7358,21 +7334,6 @@ class AbstractType {
     return this[P_FIXED_VALUE];
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    return {
-      name: 'AbstractType',
-      description: this.description(),
-      extra: {},
-      hierarchy: ['AbstractType']
-    };
-  }
-  /**
    * Gets the encoded size of the type.
    *
    * @return {Number}
@@ -7407,27 +7368,6 @@ class AbstractType {
     throw new Error('Missing implementation for encodeToBytes.');
   }
   /**
-   * Describes the type.
-   *
-   * @param {*} value
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-
-    if (this.hasFixedValue) {
-      description.fixed = this.fixedValue;
-    }
-
-    return description;
-  }
-  /**
    * Sets a fixed value.
    *
    * @param {*} value
@@ -7453,7 +7393,11 @@ class AbstractType {
       return this[P_DESCRIPTION];
     }
 
-    this[P_DESCRIPTION] = description;
+    if (this[P_DESCRIPTION] === undefined) {
+      this[P_DESCRIPTION] = [];
+    }
+
+    this[P_DESCRIPTION].push(description);
     return this;
   }
   /**
@@ -7526,19 +7470,6 @@ class CompositeType extends AbstractType {
     return this[P_SIZE_ENCODED];
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'CompositeType';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Adds a new field (type) definition.
    *
    * @param {AbstractType} field
@@ -7573,6 +7504,7 @@ class CompositeType extends AbstractType {
       obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), options, obj);
       offset += subType.encodedSize;
     });
+    this[P_SIZE_ENCODED] = offset;
     return options.toArray ? Object.values(obj) : obj;
   }
   /**
@@ -7599,36 +7531,6 @@ class CompositeType extends AbstractType {
     });
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = description.encoded.length;
-    }
-
-    description.subTypes = [];
-    this.subTypes.forEach(subType => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = value[subType.id];
-      }
-
-      description.subTypes.push(subType.describe(subTypeValue));
-    });
-    return description;
   }
 
 }
@@ -7673,23 +7575,6 @@ class AbstractInt extends AbstractType {
     this[P_ENDIAN] = endian;
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'AbstractInt';
-    info.extra = {
-      unsigned: this.unsigned,
-      endian: this.endian
-    };
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Gets the endianness.
    *
    * @returns {String}
@@ -7708,24 +7593,6 @@ class AbstractInt extends AbstractType {
 
   get unsigned() {
     return this[P_UNSIGNED];
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-    description.encodedSize = this.encodedSize;
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.encoded = this.encodeToBytes(value).toHex();
-    }
-
-    return description;
   }
 
 }
@@ -7770,19 +7637,6 @@ class BytesFixedLength extends AbstractType {
     this[P_SIZE] = length;
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'BytesFixedLength';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -7814,27 +7668,6 @@ class BytesFixedLength extends AbstractType {
   encodeToBytes(value) {
     value = BC.from(value);
     return value.slice(0, this[P_SIZE]);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-    description.encodedSize = this[P_SIZE];
-
-    if (arguments.length > 0) {
-      description.value = value;
-      description.encoded = this.encodeToBytes(value);
-    }
-
-    return description;
   }
 
 }
@@ -7885,40 +7718,31 @@ class BytesWithLength extends AbstractType {
    * @param {string} id
    * @param {Number} byteSize
    */
-  constructor(id, byteSize = 1) {
+  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null) {
     super(id || `bytes_with_length_${byteSize * 8}`);
     this.description('Bytes with variable size prepended');
     this[P_BYTES_FIELD] = new BytesWithoutLength('value');
 
     switch (byteSize) {
       case 1:
-        this[P_LENGTH_FIELD] = new Int8('length', true);
+        this[P_LENGTH_FIELD] = new Int8(lengthId, true);
         break;
 
       case 2:
-        this[P_LENGTH_FIELD] = new Int16('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int16(lengthId, true, Endian.LITTLE_ENDIAN);
         break;
 
       case 4:
-        this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int32(lengthId, true, Endian.LITTLE_ENDIAN);
         break;
 
       default:
-        throw new Error('InByteSize must be either 8, 16 or 32');
+        throw new Error('ByteSize must be either 1, 2 or 4');
     }
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
 
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'BytesWithLength';
-    info.hierarchy.push(info.name);
-    return info;
+    if (lengthDesc !== null) {
+      this[P_LENGTH_FIELD].description(lengthDesc);
+    }
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -7956,24 +7780,9 @@ class BytesWithLength extends AbstractType {
     let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED] - this[P_LENGTH_FIELD].encodedSize);
     return bc.append(this[P_BYTES_FIELD].encodeToBytes(value));
   }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
 
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.decodedSimple = value.toHex();
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
+  get lengthField() {
+    return this[P_LENGTH_FIELD];
   }
 
 }
@@ -8016,19 +7825,6 @@ class BytesWithoutLength extends AbstractType {
     this.description('Bytes without length prepended.');
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'BytesWithoutLength';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -8062,27 +7858,6 @@ class BytesWithoutLength extends AbstractType {
     let encoded = BC.from(value);
     this[P_SIZE_ENCODED] = encoded.length;
     return encoded;
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-
-    if (arguments.length > 0) {
-      description.value = value;
-      description.encoded = this.encodeToBytes(value);
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
   }
 
 }
@@ -8124,19 +7899,6 @@ class Int16 extends AbstractInt {
   constructor(id, unsigned, endian) {
     super(id || 'int16', unsigned, endian);
     this.description('2byte 16bit int value');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Int16';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -8210,19 +7972,6 @@ class Int32 extends AbstractInt {
   constructor(id, unsigned, endian) {
     super(id || 'int32', unsigned, endian);
     this.description('4byte 32bit int value');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Int32';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -8318,19 +8067,6 @@ class Int64 extends AbstractInt {
     this.description('8byte 64bit int value');
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Int64';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -8349,7 +8085,7 @@ class Int64 extends AbstractInt {
 
 
   decodeFromBytes(bc, options = {}, all = null) {
-    let value = new BN(BC.from(bc).buffer, 10, this.endian.toLowerCase());
+    let value = new BN(BC.from(bc).slice(0, this.encodedSize).buffer, 10, this.endian.toLowerCase());
 
     if (!this.unsigned) {
       value = value.fromTwos(64);
@@ -8372,25 +8108,6 @@ class Int64 extends AbstractInt {
     }
 
     return BC.from(value.toBuffer(this.endian.toLowerCase(), this.encodedSize));
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-    description.encodedSize = this.encodedSize;
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.decodedSimple = value.toString(10, this.encodedSize);
-      description.encoded = this.encodeToBytes(value).toHex();
-    }
-
-    return description;
   }
 
 }
@@ -8433,20 +8150,6 @@ class Int8 extends AbstractInt {
   constructor(id, unsigned) {
     super(id || 'int8', unsigned, Endian.LITTLE_ENDIAN);
     this.description('1byte 8bit int value');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Int8';
-    info.hierarchy.push(info.name);
-    delete info.extra.endian;
-    return info;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -8546,19 +8249,6 @@ class StringWithLength extends AbstractType {
     }
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'StringWithLength';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -8577,8 +8267,8 @@ class StringWithLength extends AbstractType {
 
 
   decodeFromBytes(bc, options = {}, all = null) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc));
-    return this[P_STRING_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_LENGTH_FIELD].encodedSize + this[P_SIZE_ENCODED]));
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc));
+    return this[P_STRING_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_SIZE_ENCODED]));
   }
   /**
    * Encodes the given value.
@@ -8592,24 +8282,6 @@ class StringWithLength extends AbstractType {
     this[P_SIZE_ENCODED] = value.length;
     let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED]);
     return bc.append(this[P_STRING_FIELD].encodeToBytes(value));
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.encoded = this.encodeToBytes(value);
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
   }
 
 }
@@ -8652,19 +8324,6 @@ class StringWithoutLength extends AbstractType {
     this.description('Single string value without length prepended.');
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'StringWithoutLength';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -8697,27 +8356,6 @@ class StringWithoutLength extends AbstractType {
     let encoded = BC.from(value, 'string');
     this[P_SIZE_ENCODED] = encoded.length;
     return encoded;
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-
-    if (arguments.length > 0) {
-      description.value = value;
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
   }
 
 }
@@ -8769,19 +8407,6 @@ class Decissive extends CompositeType {
     return this[P_SIZE_ENCODED];
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Decissive';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Decodes the given bytes into an object.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
@@ -8809,36 +8434,6 @@ class Decissive extends CompositeType {
     let bc = subType.encodeToBytes(objOrArray);
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = description.encoded.length;
-    }
-
-    description.subTypes = [];
-    this.subTypes.forEach(subType => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = value[subType.id];
-      }
-
-      description.subTypes.push(subType.describe(subTypeValue));
-    });
-    return description;
   }
 
 }
@@ -8875,22 +8470,9 @@ class AccountName extends StringWithLength {
    *
    * @param {String} id
    */
-  constructor(id = null) {
-    super(id || 'account_name');
+  constructor(id = null, byteSize = 2) {
+    super(id || 'account_name', byteSize);
     this.description('An account name');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'AccountName';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
@@ -8915,16 +8497,6 @@ class AccountName extends StringWithLength {
 
   encodeToBytes(value) {
     return super.encodeToBytes(value.toString());
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    return super.describe(value);
   }
 
 }
@@ -8968,19 +8540,6 @@ class AccountNumber extends Int32 {
     this.description('An account number');
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'AccountNumber';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
@@ -9004,16 +8563,6 @@ class AccountNumber extends Int32 {
 
   encodeToBytes(value) {
     return super.encodeToBytes(value.account);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    return super.describe(value);
   }
 
 }
@@ -9053,21 +8602,8 @@ class Currency extends Int64 {
    * @param {String} id
    */
   constructor(id = null) {
-    super(id || 'currency', false, Endian.LITTLE_ENDIAN);
+    super(id || 'currency', true, Endian.LITTLE_ENDIAN);
     this.description('A type for currency values.');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Currency';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads the pascal currency value from the given BC.
@@ -9092,16 +8628,6 @@ class Currency extends Int64 {
 
   encodeToBytes(value) {
     return super.encodeToBytes(value.bn);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    return super.describe(value);
   }
 
 }
@@ -9143,19 +8669,6 @@ class Curve extends Int16 {
   constructor(id = null) {
     super(id || 'curve', true, Endian.LITTLE_ENDIAN);
     this.description('Key curve id');
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Curve';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads the pascal currency value from the given BC.
@@ -9224,19 +8737,6 @@ class PrivateKey extends CompositeType {
     super(id || 'private_key');
     this.addSubType(new Curve('curve'));
     this.addSubType(new BytesWithLength('key', 2));
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'PrivateKey';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
@@ -9316,25 +8816,12 @@ class PublicKey extends CompositeType {
     this.addSubType(new Curve('curve')); // oh come on..
 
     if (omitXYLenghts) {
-      this.addSubType(new BytesWithoutLength('x'));
+      this.addSubType(new BytesWithoutLength('x').description('The X value of the public key.'));
       this.addSubType(new BytesWithoutLength('y'));
     } else {
-      this.addSubType(new BytesWithLength('x', 2));
-      this.addSubType(new BytesWithLength('y', 2));
+      this.addSubType(new BytesWithLength('x', 2, 'x_length', 'Length of X value').description('The X value of the public key.'));
+      this.addSubType(new BytesWithLength('y', 2, 'y_length', 'Length of Y value').description('The X value of the public key.'));
     }
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'PublicKey';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
@@ -9416,19 +8903,6 @@ class NOperation extends Int32 {
     super(id || 'nOperation', true, Endian.LITTLE_ENDIAN);
     this.description('Accounts n_operation value.');
   }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'NOperation';
-    info.hierarchy.push(info.name);
-    return info;
-  }
 
 }
 
@@ -9494,19 +8968,6 @@ class OpType extends AbstractType {
     this.description(`Operation type in ${byteSize * 8} bits`);
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = this[P_INT_TYPE].typeInfo;
-    info.name = 'OpType';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
 
@@ -9537,24 +8998,6 @@ class OpType extends AbstractType {
 
   encodeToBytes(value) {
     return this[P_INT_TYPE].encodeToBytes(value);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-    description.encodedSize = this.encodedSize;
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.encoded = this.encodeToBytes(value).toHex();
-    }
-
-    return description;
   }
 
 }
@@ -9610,19 +9053,6 @@ class OperationHash extends CompositeType {
     this.addSubType(new BytesWithoutLength('md160'));
   }
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'OperationHash';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-  /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
@@ -9646,16 +9076,6 @@ class OperationHash extends CompositeType {
 
   encodeToBytes(value) {
     return super.encodeToBytes(value);
-  }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    return super.describe(value);
   }
 
 }
@@ -9684,6 +9104,7 @@ const AbstractType = __webpack_require__(/*! ./AbstractType */ "../common/src/Co
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_REPEAT_LIMIT = Symbol('repeat_limit');
+const P_REPEAT_MARKER = Symbol('repeat_marker');
 const P_TYPE = Symbol('type');
 /**
  * A Type that itself is made up of multiple other types.
@@ -9693,11 +9114,12 @@ class Repeating extends AbstractType {
   /**
    * Constructor
    */
-  constructor(id, type, repeatLimit = -1) {
+  constructor(id, type, repeatLimit = -1, repeatMarker = null) {
     super(id || 'repeating');
     super.description('A type that itself has one repeating type that will ' + 'be written / read until the limit is reached or data is empty.');
     this[P_TYPE] = type;
     this[P_REPEAT_LIMIT] = repeatLimit;
+    this[P_REPEAT_MARKER] = repeatMarker;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -9706,19 +9128,6 @@ class Repeating extends AbstractType {
 
   get encodedSize() {
     return this[P_SIZE_ENCODED];
-  }
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-
-  /* istanbul ignore next */
-
-
-  get typeInfo() {
-    let info = super.typeInfo;
-    info.name = 'Repeating';
-    info.hierarchy.push(info.name);
-    return info;
   }
   /**
    * Decodes the given bytes into an object.
@@ -9732,17 +9141,17 @@ class Repeating extends AbstractType {
     let result = [];
     let offset = 0;
     bc = BC.from(bc);
-    let counter = 0;
-    let limitArrived = false;
+    let limit = this[P_REPEAT_MARKER] !== null ? all[this[P_REPEAT_MARKER]] : this[P_REPEAT_LIMIT];
+    let counter = limit;
 
-    do {
+    while (limit > -1 && counter > 0 || limit === -1 && bc.length > offset) {
       const decoded = this[P_TYPE].decodeFromBytes(bc.slice(offset));
       result.push(decoded);
       offset += this[P_TYPE].encodedSize;
-      counter++;
-      limitArrived = this[P_REPEAT_LIMIT] > -1 && this[P_REPEAT_LIMIT] === counter;
-    } while (offset < bc.length && !limitArrived);
+      counter--;
+    }
 
+    this[P_SIZE_ENCODED] = offset;
     return result;
   }
   /**
@@ -9765,35 +9174,9 @@ class Repeating extends AbstractType {
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
   }
-  /**
-   * @inheritDoc AbstractType#describe
-   */
 
-  /* istanbul ignore next */
-
-
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = description.encoded.length;
-    }
-
-    description.subTypes = [];
-    this.subTypes.forEach(subType => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = value[subType.id];
-      }
-
-      description.subTypes.push(subType.describe(subTypeValue));
-    });
-    return description;
+  get repeatingType() {
+    return this[P_TYPE];
   }
 
 }

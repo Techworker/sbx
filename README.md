@@ -2,6 +2,8 @@
 
 A PascalCoin Javascript Client library for the browser and NodeJS.
 
+`Donations to: 70666-10`
+
 This monorepo contains the following packages:
 
  - `@pascalcoin-sbx/common` - Common functionalities

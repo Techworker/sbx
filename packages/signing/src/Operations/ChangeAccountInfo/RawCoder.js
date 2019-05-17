@@ -98,8 +98,8 @@ class RawCoder extends CompositeType {
       decoded.target
     );
 
-    op.withNewType(decoded.type);
-    op.withNewName(decoded.name);
+    op.withNewType(decoded.newType);
+    op.withNewName(decoded.newName);
     op.withNewPublicKey(decoded.newPublicKey);
     op.withFee(decoded.fee);
     op.withPayload(decoded.payload);

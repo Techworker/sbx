@@ -25,18 +25,6 @@ class AccountNumber extends Int32 {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'AccountNumber';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
@@ -57,14 +45,6 @@ class AccountNumber extends Int32 {
    */
   encodeToBytes(value) {
     return super.encodeToBytes(value.account);
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    return super.describe(value);
   }
 }
 

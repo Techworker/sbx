@@ -6,10 +6,13 @@ const expect = chai.expect;
 
 describe('Coding.Pascal.AccountName', () => {
   it('can encode a pascalcoin account name', () => {
-    expect(new AccountNameCoder('name').encodeToBytes(new AccountName('test')).toHex()).to.be.equal('0474657374');
+    expect(new AccountNameCoder('name').encodeToBytes(new AccountName('test')).toHex()).to.be.equal('040074657374');
+    expect(new AccountNameCoder('name', 1).encodeToBytes(new AccountName('test')).toHex()).to.be.equal('0474657374');
   });
   it('can decode a pascalcoin account name', () => {
-    expect(new AccountNameCoder('name').decodeFromBytes(BC.from('0474657374')).toString()).to.be.equal('test');
-    expect(new AccountNameCoder('name').decodeFromBytes(BC.from('0474657374'))).to.be.instanceOf(AccountName);
+    expect(new AccountNameCoder('name').decodeFromBytes(BC.from('040074657374')).toString()).to.be.equal('test');
+    expect(new AccountNameCoder('name').decodeFromBytes(BC.from('040074657374'))).to.be.instanceOf(AccountName);
+    expect(new AccountNameCoder('name', 1).decodeFromBytes(BC.from('0474657374')).toString()).to.be.equal('test');
+    expect(new AccountNameCoder('name', 1).decodeFromBytes(BC.from('0474657374'))).to.be.instanceOf(AccountName);
   });
 });

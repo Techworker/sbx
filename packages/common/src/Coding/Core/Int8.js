@@ -26,21 +26,6 @@ class Int8 extends AbstractInt {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'Int8';
-    info.hierarchy.push(info.name);
-
-    delete info.extra.endian;
-
-    return info;
-  }
-
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {

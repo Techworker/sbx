@@ -44,19 +44,6 @@ class Int64 extends AbstractInt {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'Int64';
-    info.hierarchy.push(info.name);
-
-    return info;
-  }
-
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
@@ -72,7 +59,7 @@ class Int64 extends AbstractInt {
    * @returns {BN}
    */
   decodeFromBytes(bc, options = {}, all = null) {
-    let value = new BN(BC.from(bc).buffer, 10, this.endian.toLowerCase());
+    let value = new BN(BC.from(bc).slice(0, this.encodedSize).buffer, 10, this.endian.toLowerCase());
 
     if (!this.unsigned) {
       value = value.fromTwos(64);
@@ -93,24 +80,6 @@ class Int64 extends AbstractInt {
     }
 
     return BC.from(value.toBuffer(this.endian.toLowerCase(), this.encodedSize));
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = super.describe(value);
-
-    description.encodedSize = this.encodedSize;
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.decodedSimple = value.toString(10, this.encodedSize);
-      description.encoded = this.encodeToBytes(value).toHex();
-    }
-
-    return description;
   }
 }
 

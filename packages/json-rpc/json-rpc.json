@@ -390,7 +390,7 @@
       "description": "Executes a transaction operation",
       "camel": "signSendTo",
       "action": "SignOperationAction",
-      "return_type": "Operation",
+      "return_type": "Object",
       "return_array": false,
       "params": [
         {
@@ -467,7 +467,7 @@
       "description": "Signs a change key operation",
       "camel": "signChangeKey",
       "action": "SignOperationAction",
-      "return_type": "Operation",
+      "return_type": "Object",
       "return_array": false,
       "params": [
         {
@@ -535,7 +535,7 @@
       "description": "Signs a list operation",
       "camel": "signListAccountForSale",
       "action": "SignOperationAction",
-      "return_type": "Operation",
+      "return_type": "Object",
       "return_array": false,
       "params": [
         {
@@ -598,7 +598,7 @@
       "description": "Signs a delist operation",
       "camel": "signDelistAccountForSale",
       "action": "SignOperationAction",
-      "return_type": "Operation",
+      "return_type": "Object",
       "return_array": false,
       "params": [
         {
@@ -651,7 +651,7 @@
       "description": "Signs a buy account operation",
       "camel": "signBuyAccount",
       "action": "SignOperationAction",
-      "return_type": "Operation",
+      "return_type": "Object",
       "return_array": false,
       "params": [
         {
@@ -719,7 +719,7 @@
       "description": "Signs a change account info operation",
       "camel": "signChangeAccountInfo",
       "action": "SignOperationAction",
-      "return_type": "Operation",
+      "return_type": "Object",
       "return_array": false,
       "params": [
         {

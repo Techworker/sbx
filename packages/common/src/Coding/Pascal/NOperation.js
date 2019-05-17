@@ -22,18 +22,6 @@ class NOperation extends Int32 {
     super(id || 'nOperation', true, Endian.LITTLE_ENDIAN);
     this.description('Accounts n_operation value.');
   }
-
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'NOperation';
-    info.hierarchy.push(info.name);
-    return info;
-  }
 }
 
 module.exports = NOperation;

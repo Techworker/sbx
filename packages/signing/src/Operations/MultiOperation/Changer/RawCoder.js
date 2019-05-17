@@ -7,33 +7,40 @@
 
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const CompositeType = Coding.CompositeType;
-const Sender = require('./Sender');
 
 /**
- * The raw coder for a ChangeKey operation.
+ * The raw coder for a MultiOperation.Changer operation.
  */
 class RawAndDigestCoder extends CompositeType {
   /**
    * Constructor
    */
   constructor() {
-    super('multiop_sender_raw');
-    this.description('The coder for the raw representation of a MultiOperation.Sender');
+    super('multiop_changer_raw');
+    this.description('The coder for the raw representation of a MultiOperation.Changer');
     this.addSubType(
       new Coding.Pascal.AccountNumber('account')
         .description('The account of the operation.')
-    );
-    this.addSubType(
-      new Coding.Pascal.Currency('amount')
-        .description('The amount sent by the sender.')
     );
     this.addSubType(
       new Coding.Pascal.NOperation()
         .description('The next n_operation of the account.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('payload', 2)
-        .description('The payload of the operation.')
+      new Coding.Core.Int8('changeType')
+        .description('The change type.')
+    );
+    this.addSubType(
+      new Coding.Pascal.Keys.PublicKey('newPublicKey')
+        .description('The new public key of the account.')
+    );
+    this.addSubType(
+      new Coding.Pascal.AccountName('newName')
+        .description('The new name of the account.')
+    );
+    this.addSubType(
+      new Coding.Core.Int16('newType')
+        .description('The new type of the account.')
     );
     this.addSubType(
       new Coding.Core.BytesWithLength('r', 2)
@@ -52,33 +59,10 @@ class RawAndDigestCoder extends CompositeType {
   get typeInfo() {
     let info = super.typeInfo;
 
-    info.name = 'MultiOperation.Sender (RAW)';
+    info.name = 'MultiOperation.Changer (RAW)';
     info.hierarchy.push(info.name);
     return info;
   }
-
-  /**
-   * Decodes the encoded Sender.
-   *
-   * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Object} options
-   * @param {*} all
-   * @return {ChangeKey}
-   */
-  decodeFromBytes(bc, options = {}, all = null) {
-    const decoded = super.decodeFromBytes(bc);
-    const sender = new Sender(
-      decoded.account,
-      decoded.amount
-    );
-
-    sender.withPayload(decoded.payload);
-    sender.withNOperation(decoded.nOperation);
-    sender.withSign(decoded.r, decoded.s);
-
-    return sender;
-  }
-
 }
 
 module.exports = RawAndDigestCoder;

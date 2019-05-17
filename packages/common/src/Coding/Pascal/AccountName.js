@@ -18,22 +18,9 @@ class AccountName extends StringWithLength {
    *
    * @param {String} id
    */
-  constructor(id = null) {
-    super(id || 'account_name');
+  constructor(id = null, byteSize = 2) {
+    super(id || 'account_name', byteSize);
     this.description('An account name');
-  }
-
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'AccountName';
-    info.hierarchy.push(info.name);
-
-    return info;
   }
 
   /**
@@ -56,14 +43,6 @@ class AccountName extends StringWithLength {
    */
   encodeToBytes(value) {
     return super.encodeToBytes(value.toString());
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    return super.describe(value);
   }
 }
 

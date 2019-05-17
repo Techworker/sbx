@@ -41,18 +41,6 @@ class CompositeType extends AbstractType {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'CompositeType';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  /**
    * Adds a new field (type) definition.
    *
    * @param {AbstractType} field
@@ -83,6 +71,7 @@ class CompositeType extends AbstractType {
       obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), options, obj);
       offset += subType.encodedSize;
     });
+    this[P_SIZE_ENCODED] = offset;
 
     return options.toArray ? Object.values(obj) : obj;
   }
@@ -111,36 +100,6 @@ class CompositeType extends AbstractType {
 
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = description.encoded.length;
-    }
-
-    description.subTypes = [];
-
-    this.subTypes.forEach((subType) => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = value[subType.id];
-      }
-
-      description.subTypes.push(subType.describe(subTypeValue));
-    });
-
-    return description;
   }
 }
 

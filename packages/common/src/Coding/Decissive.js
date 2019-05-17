@@ -34,18 +34,6 @@ class Decissive extends CompositeType {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'Decissive';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  /**
    * Decodes the given bytes into an object.
    *
    * @param {BC|Buffer|Uint8Array|String} bc
@@ -72,36 +60,6 @@ class Decissive extends CompositeType {
 
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = this.decodeFromBytes(this.encodeToBytes(value));
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = description.encoded.length;
-    }
-
-    description.subTypes = [];
-
-    this.subTypes.forEach((subType) => {
-      let subTypeValue;
-
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
-      } else {
-        subTypeValue = value[subType.id];
-      }
-
-      description.subTypes.push(subType.describe(subTypeValue));
-    });
-
-    return description;
   }
 }
 

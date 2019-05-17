@@ -9,7 +9,7 @@ chai.expect();
 const expect = chai.expect;
 
 describe('Crypto.Encryption.Pascal.ECIES', () => {
-  it('can decrypt an PascalCoin payload', () => {
+  it('can decrypt an PascalCoin payload', (done) => {
     let keyPair = Keys.fromPrivateKey(
       PrivateKeyCrypt.decrypt(
         BC.from('53616C7465645F5F1CD34699BAFAD73EAE8A574154F08760BF8E8B9A554CA9691819BA06962D4A3774B9ACADA4B75471A85A10B2C418A56B1AFFF8F560AC6F66'),
@@ -22,6 +22,7 @@ describe('Crypto.Encryption.Pascal.ECIES', () => {
     payloads.forEach((pl) => {
       expect(ECIES.decrypt(pl.encrypted, {keyPair}).toString()).to.be.equal(pl.decrypted);
     });
+    done();
   });
 
   it('can encrypt and decrypt a value', () => {

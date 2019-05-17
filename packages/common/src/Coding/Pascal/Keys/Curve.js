@@ -25,18 +25,6 @@ class Curve extends Int16 {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'Curve';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  /**
    * Reads the pascal currency value from the given BC.
    *
    * @param {BC|Buffer|Uint8Array|String} bc

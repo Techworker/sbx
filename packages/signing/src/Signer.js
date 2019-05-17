@@ -61,9 +61,38 @@ class Signer {
    * TODO
    * @param operation
    */
-  signMultiOperation(operation) {
-    // const DigestCoder = Operations.digestCoderFor(operation);
-    // const digest = new DigestCoder(operation.opType).encodeToBytes(operation);
+  signMultiOperation(operation, keyPairs) {
+    const DigestCoder = Operations.digestCoderFor(operation);
+    const coder = new DigestCoder(operation.opType);
+    let digest = coder.encodeToBytes(operation);
+
+    console.log(digest.toHex());
+    let signatures = {};
+
+    operation.senders.forEach(sender => {
+      if (signatures[sender.account.account] === undefined) {
+        signatures[sender.account.account] = signWithHash(
+          keyPairs[sender.account.account], digest
+        );
+      }
+      sender.withSign(
+        signatures[sender.account.account].r,
+        signatures[sender.account.account].s
+      );
+    });
+    operation.changers.forEach(changer => {
+      if (signatures[changer.account.account] === undefined) {
+        signatures[changer.account.account] = signWithHash(
+          keyPairs[changer.account.account], digest
+        );
+      }
+      changer.withSign(
+        signatures[changer.account.account].r,
+        signatures[changer.account.account].s
+      );
+    });
+
+    return operation;
   }
 }
 

@@ -7,12 +7,12 @@
 
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const CompositeType = Coding.CompositeType;
-const Sender = require('./Changer');
+const Sender = require('./Sender');
 
 /**
  * The raw coder for a ChangeKey operation.
  */
-class RawAndDigestCoder extends CompositeType {
+class RawCoder extends CompositeType {
   /**
    * Constructor
    */
@@ -22,6 +22,10 @@ class RawAndDigestCoder extends CompositeType {
     this.addSubType(
       new Coding.Pascal.AccountNumber('account')
         .description('The account of the operation.')
+    );
+    this.addSubType(
+      new Coding.Pascal.Currency('amount')
+        .description('The amount sent by the sender.')
     );
     this.addSubType(
       new Coding.Pascal.NOperation()
@@ -77,4 +81,4 @@ class RawAndDigestCoder extends CompositeType {
 
 }
 
-module.exports = RawAndDigestCoder;
+module.exports = RawCoder;

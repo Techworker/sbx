@@ -26,18 +26,6 @@ class PrivateKey extends CompositeType {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'PrivateKey';
-    info.hierarchy.push(info.name);
-    return info;
-  }
-
-  /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
    *
    * @param {BC|Buffer|Uint8Array|String} bc

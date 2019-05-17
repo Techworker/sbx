@@ -27,38 +27,29 @@ class BytesWithLength extends AbstractType {
    * @param {string} id
    * @param {Number} byteSize
    */
-  constructor(id, byteSize = 1) {
+  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null) {
     super(id || `bytes_with_length_${byteSize * 8}`);
     this.description('Bytes with variable size prepended');
     this[P_BYTES_FIELD] = new BytesWithoutLength('value');
 
     switch (byteSize) {
       case 1:
-        this[P_LENGTH_FIELD] = new Int8('length', true);
+        this[P_LENGTH_FIELD] = new Int8(lengthId, true);
         break;
       case 2:
-        this[P_LENGTH_FIELD] = new Int16('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int16(lengthId, true, Endian.LITTLE_ENDIAN);
         break;
       case 4:
-        this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int32(lengthId, true, Endian.LITTLE_ENDIAN);
         break;
       default:
-        throw new Error('InByteSize must be either 8, 16 or 32');
+        throw new Error('ByteSize must be either 1, 2 or 4');
     }
 
-  }
+    if (lengthDesc !== null) {
+      this[P_LENGTH_FIELD].description(lengthDesc);
+    }
 
-  /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'BytesWithLength';
-    info.hierarchy.push(info.name);
-
-    return info;
   }
 
   /**
@@ -102,21 +93,8 @@ class BytesWithLength extends AbstractType {
     return bc.append(this[P_BYTES_FIELD].encodeToBytes(value));
   }
 
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = super.describe(value);
-
-    if (arguments.length > 0) {
-      description.decoded = value;
-      description.decodedSimple = value.toHex();
-      description.encoded = this.encodeToBytes(value).toHex();
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
+  get lengthField() {
+    return this[P_LENGTH_FIELD];
   }
 }
 

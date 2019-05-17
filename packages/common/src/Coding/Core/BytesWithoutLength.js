@@ -26,19 +26,6 @@ class BytesWithoutLength extends AbstractType {
   }
 
   /**
-   * @inheritDoc AbstractType#typeInfo
-   */
-  /* istanbul ignore next */
-  get typeInfo() {
-    let info = super.typeInfo;
-
-    info.name = 'BytesWithoutLength';
-    info.hierarchy.push(info.name);
-
-    return info;
-  }
-
-  /**
    * @inheritDoc AbstractType#encodedSize
    */
   get encodedSize() {
@@ -69,25 +56,6 @@ class BytesWithoutLength extends AbstractType {
 
     this[P_SIZE_ENCODED] = encoded.length;
     return encoded;
-  }
-
-  /**
-   * @inheritDoc AbstractType#describe
-   */
-  /* istanbul ignore next */
-  describe(value) {
-    let description = {
-      id: this.id,
-      type: this.typeInfo
-    };
-
-    if (arguments.length > 0) {
-      description.value = value;
-      description.encoded = this.encodeToBytes(value);
-      description.encodedSize = this.encodedSize;
-    }
-
-    return description;
   }
 }
 

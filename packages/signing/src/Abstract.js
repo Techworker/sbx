@@ -70,8 +70,8 @@ class Abstract {
   }
 
   withSign(r, s) {
-    this[P_R] = r;
-    this[P_S] = s;
+    this[P_R] = BC.from(r);
+    this[P_S] = BC.from(s);
   }
 
   /**
@@ -131,7 +131,6 @@ class Abstract {
   usesDigestToSign() {
     return false;
   }
-
 }
 
 module.exports = Abstract;

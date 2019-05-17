@@ -7,10 +7,9 @@
 
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const CompositeType = Coding.CompositeType;
-const Receiver = require('./Receiver');
 
 /**
- * The raw coder for a ChangeKey operation.
+ * The raw coder for a MultiOperation.Receiver.
  */
 class RawAndDigestCoder extends CompositeType {
   /**
@@ -18,7 +17,7 @@ class RawAndDigestCoder extends CompositeType {
    */
   constructor() {
     super('multiop_receiver_raw');
-    this.description('The coder for the raw representation of a MultiOperation.Receiver');
+    this.description('The coder for the raw and digest representation of a MultiOperation.Receiver');
     this.addSubType(
       new Coding.Pascal.AccountNumber('account')
         .description('The account of the operation.')
@@ -40,33 +39,10 @@ class RawAndDigestCoder extends CompositeType {
   get typeInfo() {
     let info = super.typeInfo;
 
-    info.name = 'MultiOperation.Receiver (RAW)';
+    info.name = 'MultiOperation.Receiver (RAW & DIGEST)';
     info.hierarchy.push(info.name);
     return info;
   }
-
-  /**
-   * Decodes the encoded Sender.
-   *
-   * @param {BC|Buffer|Uint8Array|String} bc
-   * @param {Object} options
-   * @param {*} all
-   * @return {ChangeKey}
-   */
-  decodeFromBytes(bc, options = {}, all = null) {
-    const decoded = super.decodeFromBytes(bc);
-    const receiver = new Receiver(
-      decoded.account,
-      decoded.amount
-    );
-
-    receiver.withPayload(decoded.payload);
-    receiver.withNOperation(decoded.nOperation);
-    receiver.withSign(decoded.r, decoded.s);
-
-    return receiver;
-  }
-
 }
 
 module.exports = RawAndDigestCoder;

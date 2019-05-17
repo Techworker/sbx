@@ -1,9 +1,9 @@
 /**
- * Copyright (c) Benjamin Ansbach - all rights reserved.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+* Copyright (c) Benjamin Ansbach - all rights reserved.
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
 const Executor = require('./Executor');
 const RPCCaller = require('./Caller');
@@ -30,9 +30,9 @@ const BC = require('@pascalcoin-sbx/common').BC;
 const P_EXECUTOR = Symbol('executor');
 
 /**
- * A simple rpc client that will prepare an action that can be executed against
- * a node.
- */
+* A simple rpc client that will prepare an action that can be executed against
+* a node.
+*/
 class Client {
 
   /**
@@ -448,7 +448,7 @@ class Client {
       sender_pubkey: senderPubkey,
       target_pubkey: targetPubkey,
       amount: new Currency(amount)
-    }, this[P_EXECUTOR], Operation, false);
+    }, this[P_EXECUTOR], Object, false);
   }
 
   /**
@@ -511,7 +511,7 @@ class Client {
       old_pubkey: oldPubkey,
       new_pubkey: newPubkey,
       account_signer: accountSigner !== null ? new AccountNumber(accountSigner) : accountSigner
-    }, this[P_EXECUTOR], Operation, false);
+    }, this[P_EXECUTOR], Object, false);
   }
 
   /**
@@ -574,7 +574,7 @@ class Client {
       locked_until_block: lockedUntilBlock !== null ? parseInt(lockedUntilBlock, 10) : lockedUntilBlock,
       price: new Currency(price),
       new_pubkey: newPubkey
-    }, this[P_EXECUTOR], Operation, false);
+    }, this[P_EXECUTOR], Object, false);
   }
 
   /**
@@ -613,7 +613,7 @@ class Client {
       signer_pubkey: signerPubkey,
       account_signer: new AccountNumber(accountSigner),
       account_target: new AccountNumber(accountTarget)
-    }, this[P_EXECUTOR], Operation, false);
+    }, this[P_EXECUTOR], Object, false);
   }
 
   /**
@@ -664,7 +664,7 @@ class Client {
       account_to_purchase: new AccountNumber(accountToPurchase),
       price: new Currency(price),
       seller_account: new AccountNumber(sellerAccount)
-    }, this[P_EXECUTOR], Operation, false);
+    }, this[P_EXECUTOR], Object, false);
   }
 
   /**
@@ -721,7 +721,7 @@ class Client {
       new_pubkey: newPubkey,
       new_name: newName !== null ? new AccountName(newName) : newName,
       new_type: newType !== null ? parseInt(newType, 10) : newType
-    }, this[P_EXECUTOR], Operation, false);
+    }, this[P_EXECUTOR], Object, false);
   }
 
   /**
