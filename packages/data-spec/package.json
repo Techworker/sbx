@@ -1,6 +1,6 @@
 {
   "name": "@pascalcoin-sbx/data-spec",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -23,7 +23,7 @@
     "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
   },
   "dependencies": {
-    "@pascalcoin-sbx/common": "^0.0.11",
-    "@pascalcoin-sbx/crypto": "^0.0.11"
+    "@pascalcoin-sbx/common": "^0.0.12",
+    "@pascalcoin-sbx/crypto": "^0.0.12"
   }
 }
