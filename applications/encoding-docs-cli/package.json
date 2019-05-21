@@ -1,0 +1,22 @@
+{
+  "name": "@pascalcoin-sbx/encoding-docs-cli",
+  "version": "0.0.12",
+  "description": "Exports transactions.",
+  "main": "index.js",
+  "keywords": [
+    "PascalCoin",
+    "BlockChain",
+    "Cryptography"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {
+    "@pascalcoin-sbx/common": "^0.0.12",
+    "@pascalcoin-sbx/signing": "^0.0.12",
+    "markdown-table": "^1.1.2"
+  }
+}
