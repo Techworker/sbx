@@ -1,6 +1,8 @@
 ## Types -> OperationHash
+
 A pascalCoin operation hash
 A type that itself is made up of multiple other types.
+
 | Position | Field      | Description                                                                                                                  | Name                  |                                      |
 | -------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | block      | The block the operation is in.<br />4byte 32bit int value                                                                    | Int32                 | unsigned: true<br />endian: LE<br /> |
@@ -8,7 +10,9 @@ A type that itself is made up of multiple other types.
 | 3        | nOperation | The n_operation value of the account with the current operation.<br />Accounts n_operation value.<br />4byte 32bit int value | NOperation (Int32)    | unsigned: true<br />endian: LE<br /> |
 | 4        | md160      | The RIPEMD160 hash of the operation data.<br />Bytes without length prepended.                                               | Bytes                 |                                      |
 ## Types -> PublicKey
+
 A type that itself is made up of multiple other types.
+
 | Position | Field    | Description                                                            | Name  |                                      |
 | -------- | -------- | ---------------------------------------------------------------------- | ----- | ------------------------------------ |
 | 1        | curve    | Key curve id<br />2byte 16bit int value                                | Bytes | unsigned: true<br />endian: LE<br /> |
@@ -17,15 +21,19 @@ A type that itself is made up of multiple other types.
 | 4        | y_length | Length of Y value<br />2byte 16bit int value                           | Int16 | unsigned: true<br />endian: LE<br /> |
 | 5        | y        | The X value of the public key.<br />Bytes with variable size prepended | Bytes |                                      |
 ## Types -> PrivateKey
+
 A type that itself is made up of multiple other types.
+
 | Position | Field  | Description                                                    | Name  |                                      |
 | -------- | ------ | -------------------------------------------------------------- | ----- | ------------------------------------ |
 | 1        | curve  | Key curve id<br />2byte 16bit int value                        | Bytes | unsigned: true<br />endian: LE<br /> |
 | 2        | length | 2byte 16bit int value                                          | Int16 | unsigned: true<br />endian: LE<br /> |
 | 3        | key    | The private key value.<br />Bytes with variable size prepended | Bytes |                                      |
 ## Transaction signing (raw) -> RawCoder
+
 The coder for the raw representation of a Transaction operation
 A type that itself is made up of multiple other types.
+
 | Position | Field          | Description                                                                                                           | Name                  |                                      |
 | -------- | -------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | sender         | The sender account.<br />An account number<br />4byte 32bit int value                                                 | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -46,8 +54,10 @@ A type that itself is made up of multiple other types.
 | 11       | s_length       | Length of s.<br />2byte 16bit int value                                                                               | Int16                 | unsigned: true<br />endian: LE<br /> |
 | 12       | s              | S value of the sign operation.<br />Bytes with variable size prepended                                                | Bytes                 |                                      |
 ## Transaction signing (digest) -> DigestCoder
+
 Digest encoder for a Transaction operation.
 A type that itself is made up of multiple other types.
+
 | Position | Field           | Description                                                                                                  | Name                  |                                      |
 | -------- | --------------- | ------------------------------------------------------------------------------------------------------------ | --------------------- | ------------------------------------ |
 | 1        | sender          | The sender account.<br />An account number<br />4byte 32bit int value                                        | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -59,8 +69,10 @@ A type that itself is made up of multiple other types.
 | 7        | v2_pubkey_curve | Curve ID 0 - previously active in <= v2.<br />Key curve id<br />2byte 16bit int value                        | Bytes                 | unsigned: true<br />endian: LE<br /> |
 | 8        | optype          | Operation type.<br />Operation type in 8 bits                                                                | OpType (Int8)         | unsigned: true<br />endian: LE<br /> |
 ## Signing -> ChangeKey signing (raw)
+
 The coder for the raw representation of a ChangeKey operation
 A type that itself is made up of multiple other types.
+
 | Position | Field          | Description                                                                                                           | Name                                  |                                      |
 | -------- | -------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------ |
 | 1        | signer         | The signer of the operation.<br />An account number<br />4byte 32bit int value                                        | AccountNumber (Int32)                 | unsigned: true<br />endian: LE<br /> |
@@ -80,8 +92,10 @@ A type that itself is made up of multiple other types.
 | 10       | s_length       | Length of s.<br />2byte 16bit int value                                                                               | Int16                                 | unsigned: true<br />endian: LE<br /> |
 | 11       | s              | S value of the sign operation.<br />Bytes with variable size prepended                                                | Bytes                                 |                                      |
 ## Signing -> ChangeKey signing (digest)
+
 Digest encoder for a ChangeKey operation.
 A type that itself is made up of multiple other types.
+
 | Position | Field           | Description                                                                                       | Name                  |                                      |
 | -------- | --------------- | ------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | signer          | The account that executes the operation.<br />An account number<br />4byte 32bit int value        | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -97,8 +111,10 @@ A type that itself is made up of multiple other types.
 | 6.5      | y               | The X value of the public key.<br />Bytes with variable size prepended                            | Bytes                 |                                      |
 | 7        | optype          | The optype as 8bit int.<br />Operation type in 8 bits                                             | OpType (Int8)         | unsigned: true<br />endian: LE<br /> |
 ## Signing -> ListAccountForSale signing (raw)
+
 The coder for the raw representation of a List Account operation
 A type that itself is made up of multiple other types.
+
 | Position | Field            | Description                                                                                                           | Name                                  |                                      |
 | -------- | ---------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------ |
 | 1        | signer           | The account that executes the operation.<br />An account number<br />4byte 32bit int value                            | AccountNumber (Int32)                 | unsigned: true<br />endian: LE<br /> |
@@ -123,8 +139,10 @@ A type that itself is made up of multiple other types.
 | 15       | s_length         | Length of s.<br />2byte 16bit int value                                                                               | Int16                                 | unsigned: true<br />endian: LE<br /> |
 | 16       | s                | S value of the sign operation.<br />Bytes with variable size prepended                                                | Bytes                                 |                                      |
 ## Signing -> ListAccountForSale signing (digest)
+
 Digest encoder for a List operation.
 A type that itself is made up of multiple other types.
+
 | Position | Field            | Description                                                                                                     | Name                  |                                      |
 | -------- | ---------------- | --------------------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | signer           | The account that executes the operation.<br />An account number<br />4byte 32bit int value                      | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -144,8 +162,10 @@ A type that itself is made up of multiple other types.
 | 10       | lockedUntilBlock | The block number until the account is locked.<br />4byte 32bit int value                                        | Int32                 | unsigned: true<br />endian: LE<br /> |
 | 11       | optype           | The optype as 8bit int.<br />Operation type in 8 bits                                                           | OpType (Int8)         | unsigned: true<br />endian: LE<br /> |
 ## Signing -> DeListAccountForSale signing (digest)
+
 The coder for the raw representation of a Delist Account operation
 A type that itself is made up of multiple other types.
+
 | Position | Field          | Description                                                                                       | Name                  |                                      |
 | -------- | -------------- | ------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | signer         | The account that executes the operation.<br />An account number<br />4byte 32bit int value        | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -160,8 +180,10 @@ A type that itself is made up of multiple other types.
 | 10       | s_length       | Length of s.<br />2byte 16bit int value                                                           | Int16                 | unsigned: true<br />endian: LE<br /> |
 | 11       | s              | S value of the sign operation.<br />Bytes with variable size prepended                            | Bytes                 |                                      |
 ## Signing -> DeListAccountForSale signing (raw)
+
 Digest encoder for a Delist operation.
 A type that itself is made up of multiple other types.
+
 | Position | Field            | Description                                                                                                     | Name                  |                                      |
 | -------- | ---------------- | --------------------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | signer           | The account that executes the operation.<br />An account number<br />4byte 32bit int value                      | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -181,8 +203,10 @@ A type that itself is made up of multiple other types.
 | 10       | lockedUntilBlock | The block number until the account is locked.<br />4byte 32bit int value                                        | Int32                 |                                      |
 | 11       | optype           | The optype as 8bit int.<br />Operation type in 8 bits                                                           | OpType (Int8)         | unsigned: true<br />endian: LE<br /> |
 ## Signing -> BuyAccount signing (raw)
+
 The coder for the raw representation of a BuyAccount operation
 A type that itself is made up of multiple other types.
+
 | Position | Field          | Description                                                                                                           | Name                  |                                      |
 | -------- | -------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | sender         | The buyer account.<br />An account number<br />4byte 32bit int value                                                  | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -212,8 +236,10 @@ A type that itself is made up of multiple other types.
 | 15       | s_length       | Length of s.<br />2byte 16bit int value                                                                               | Int16                 | unsigned: true<br />endian: LE<br /> |
 | 16       | s              | S value of the sign operation.<br />Bytes with variable size prepended                                                | Bytes                 |                                      |
 ## Signing -> BuyAccount signing (digest)
+
 Digest encoder for a BuyAccount operation.
 A type that itself is made up of multiple other types.
+
 | Position | Field           | Description                                                                                          | Name                  |                                      |
 | -------- | --------------- | ---------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | sender          | The buyer account.<br />An account number<br />4byte 32bit int value                                 | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -231,8 +257,10 @@ A type that itself is made up of multiple other types.
 | 10.3     | y               | Bytes without length prepended.                                                                      | Bytes                 |                                      |
 | 11       | optype          | The buy account optype as 8 bit int8<br />Operation type in 8 bits                                   | OpType (Int8)         | unsigned: true<br />endian: LE<br /> |
 ## Signing -> ChangeKeySigned signing (raw)
+
 The coder for the raw representation of a ChangeKeySigned operation
 A type that itself is made up of multiple other types.
+
 | Position | Field          | Description                                                                                                           | Name                                  |                                      |
 | -------- | -------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------ |
 | 1        | signer         | The signer of the operation.<br />An account number<br />4byte 32bit int value                                        | AccountNumber (Int32)                 | unsigned: true<br />endian: LE<br /> |
@@ -253,8 +281,10 @@ A type that itself is made up of multiple other types.
 | 11       | s_length       | Length of s.<br />2byte 16bit int value                                                                               | Int16                                 | unsigned: true<br />endian: LE<br /> |
 | 12       | s              | S value of the sign operation.<br />Bytes with variable size prepended                                                | Bytes                                 |                                      |
 ## Signing -> ChangeKeySigned signing (digest)
+
 Digest encoder for a ChangeKeySigned operation.
 A type that itself is made up of multiple other types.
+
 | Position | Field           | Description                                                                                       | Name                  |                                      |
 | -------- | --------------- | ------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | signer          | The account that executes the operation.<br />An account number<br />4byte 32bit int value        | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -271,8 +301,10 @@ A type that itself is made up of multiple other types.
 | 7.5      | y               | The X value of the public key.<br />Bytes with variable size prepended                            | Bytes                 |                                      |
 | 8        | optype          | The optype as 8bit int.<br />Operation type in 8 bits                                             | OpType (Int8)         | unsigned: true<br />endian: LE<br /> |
 ## Signing -> MultiOperation signing (raw)
+
 The coder for the raw representation of a MultiOperation
 A type that itself is made up of multiple other types.
+
 | Position | Field                | Description                                                                                                                                              | Name                           |                                                  |
 | -------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------ |
 | 1        | protocol             | The protocol version (3).<br />2byte 16bit int value                                                                                                     | Int16                          | unsigned: true<br />endian: LE<br />             |
@@ -314,8 +346,10 @@ A type that itself is made up of multiple other types.
 | 7.1.9    | s_length             | Length of s.<br />2byte 16bit int value                                                                                                                  | Int16                          | unsigned: true<br />endian: LE<br />             |
 | 7.1.10   | s                    | S value of the sign operation.<br />Bytes with variable size prepended                                                                                   | Bytes                          |                                                  |
 ## Signing -> MultiOperation signing (digest)
+
 The coder for the digest representation of a MultiOperation
 A type that itself is made up of multiple other types.
+
 | Position | Field                  | Description                                                                                                                                              | Name                           |                                                  |
 | -------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------ |
 | 1        | protocol               | The protocol version (3).<br />2byte 16bit int value                                                                                                     | Int16                          | unsigned: undefined<br />endian: undefined<br /> |
@@ -350,8 +384,10 @@ A type that itself is made up of multiple other types.
 | 7.1.6    | newType                | The new type of the account.<br />2byte 16bit int value                                                                                                  | Int16                          | unsigned: undefined<br />endian: undefined<br /> |
 | 8        | optype                 | The optype as 8bit int.<br />Operation type in 8 bits                                                                                                    | OpType (Int8)                  | unsigned: true<br />endian: LE<br />             |
 ## Signing -> Data signing (raw)
+
 The coder for the raw representation of a Data operation
 A type that itself is made up of multiple other types.
+
 | Position | Field          | Description                                                                                      | Name                  |                                      |
 | -------- | -------------- | ------------------------------------------------------------------------------------------------ | --------------------- | ------------------------------------ |
 | 1        | signer         | The account that executes the operation.<br />An account number<br />4byte 32bit int value       | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -369,8 +405,10 @@ A type that itself is made up of multiple other types.
 | 13       | s_length       | Length of s.<br />2byte 16bit int value                                                          | Int16                 | unsigned: true<br />endian: LE<br /> |
 | 14       | s              | S value of the sign operation.<br />Bytes with variable size prepended                           | Bytes                 |                                      |
 ## Signing -> Data signing (digest)
+
 Digest encoder for a DATA operation.
 A type that itself is made up of multiple other types.
+
 | Position | Field          | Description                                                                                           | Name                  |                                      |
 | -------- | -------------- | ----------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------ |
 | 1        | signer         | The account that executes the operation.<br />An account number<br />4byte 32bit int value            | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
@@ -385,8 +423,10 @@ A type that itself is made up of multiple other types.
 | 10       | payload        | The payload of the operation.<br />Bytes with variable size prepended                                 | Bytes                 |                                      |
 | 11       | optype         | The optype as 8bit int.<br />Operation type in 8 bits                                                 | OpType (Int8)         | unsigned: true<br />endian: LE<br /> |
 ## Collection -> Rawoperations
+
 Coder to combine multiple operations.
 A type that itself is made up of multiple other types.
+
 | Position | Field      | Description                                                                                                                                                                                                                                                                                                                                                                       | Name           |                                      |
 | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------ |
 | 1        | count      | The number of operations this message holds.<br />4byte 32bit int value                                                                                                                                                                                                                                                                                                           | Int32          | unsigned: true<br />endian: LE<br /> |

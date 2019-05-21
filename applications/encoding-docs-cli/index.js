@@ -285,8 +285,10 @@ desc.forEach((t) => {
     title += t.type.constructor.name;
   }
   console.log(title);
+  console.log('');
   console.log(t.type.description().reverse().join('\n'));
   let docs = createDocumentation(t.type);
 
+  console.log('');
   console.log(table(docs));
 });
