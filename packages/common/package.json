@@ -27,8 +27,5 @@
     "bs58": "^4.0.1",
     "mipher": "^1.1.5"
   },
-  "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad",
-  "devDependencies": {
-    "markdown-table": "^1.1.2"
-  }
+  "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad"
 }
