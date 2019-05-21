@@ -12,11 +12,6 @@
     "test": "mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/**/*.spec.js\"",
     "test:watch": "mocha --require babel-register --colors -w ./test/*.spec.js",
     "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/**/*.spec.js\"",
-    "test:cover:core": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/Core/**/*.spec.js\"",
-    "test:cover:layer2": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/Layer2/**/*.spec.js\"",
-    "test:cover:crypto": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/Crypto/**/*.spec.js\"",
-    "test:cover:rpc": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require babel-register --require babel-polyfill --colors \"./test/RPC/**/*.spec.js\"",
-    "test:cover:file": "cross-env NODE_ENV=test nyc --reporter=html mocha --require babel-register --colors $FILE",
     "repl": "node -i -e \"$(< ./lib/webpack-library-starter.js)\""
   },
   "repository": {
