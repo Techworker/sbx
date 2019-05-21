@@ -14,7 +14,7 @@
   "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "node index.js > docs.md"
+    "build": "node index.js > README.md"
   },
   "dependencies": {
     "@pascalcoin-sbx/common": "^0.0.12",
