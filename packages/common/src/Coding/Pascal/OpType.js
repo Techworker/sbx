@@ -69,6 +69,10 @@ class OpType extends AbstractType {
   encodeToBytes(value) {
     return this[P_INT_TYPE].encodeToBytes(value);
   }
+
+  get intType() {
+    return this[P_INT_TYPE];
+  }
 }
 
 module.exports = OpType;

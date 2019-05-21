@@ -23,11 +23,17 @@ const CompositeType = Coding.CompositeType;
 class RawOperationsCoder extends CompositeType {
   constructor() {
     super('combined signed operations');
-    super.description('Coder to combine multiple operations');
-    this.addSubType(new Coding.Core.Int32('count', true, Endian.LITTLE_ENDIAN));
-    const operationType = new CompositeType('operation');
+    super.description('Coder to combine multiple operations.');
+    this.addSubType(
+      new Coding.Core.Int32('count', true, Endian.LITTLE_ENDIAN)
+        .description('The number of operations this message holds.')
+    );
+    const operationType = new CompositeType('operation')
+      .description('The number of operations this message holds.');
 
-    operationType.addSubType(new Coding.Pascal.OpType('optype', 4));
+    operationType.addSubType(
+      new Coding.Pascal.OpType('optype', 4)
+        .description('The operation type.'));
     operationType.addSubType(new Coding.Decissive('operation', 'optype', (markerValue) => {
       switch (markerValue) {
         case 1:
@@ -51,7 +57,7 @@ class RawOperationsCoder extends CompositeType {
         default:
           throw new Error('Unable to map marker to a coder.');
       }
-    }));
+    }).description('Possible subtypes: Transaction op (raw), ChangeKey op (raw), ListAccountForSale op (raw), DeList op (raw), BuyAccount op (raw), ChangeKeySigned op (raw), ChangeAccountInfo op (raw), MultiOperation op (raw), Data op (raw)'));
     this.addSubType(new Coding.Repeating('operations', operationType, -1, 'count'));
   }
 }

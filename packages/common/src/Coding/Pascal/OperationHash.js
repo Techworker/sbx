@@ -27,10 +27,22 @@ class OperationHash extends CompositeType {
     super(id || 'ophash');
     this.description('A pascalCoin operation hash');
 
-    this.addSubType(new Int32('block', true, Endian.LITTLE_ENDIAN));
-    this.addSubType(new AccountNumber('account'));
-    this.addSubType(new NOperation('nOperation', 4));
-    this.addSubType(new BytesWithoutLength('md160'));
+    this.addSubType(
+      new Int32('block', true, Endian.LITTLE_ENDIAN)
+        .description('The block the operation is in.')
+    );
+    this.addSubType(
+      new AccountNumber('account')
+        .description('The account number that signed the operation.')
+    );
+    this.addSubType(
+      new NOperation('nOperation', 4)
+        .description('The n_operation value of the account with the current operation.')
+    );
+    this.addSubType(
+      new BytesWithoutLength('md160')
+        .description('The RIPEMD160 hash of the operation data.')
+    );
   }
 
   /**

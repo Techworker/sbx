@@ -21,8 +21,13 @@ class PrivateKey extends CompositeType {
    */
   constructor(id = null) {
     super(id || 'private_key');
-    this.addSubType(new Curve('curve'));
-    this.addSubType(new BytesWithLength('key', 2));
+    this.addSubType(
+      new Curve('curve')
+    );
+    this.addSubType(
+      new BytesWithLength('key', 2)
+        .description('The private key value.')
+    );
   }
 
   /**

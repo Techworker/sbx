@@ -31,7 +31,7 @@ class RawCoder extends CompositeType {
         .description('The next n_operation of the account.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('payload', 2)
+      new Coding.Core.BytesWithLength('payload', 2, 'payload_length', 'The length of the payload')
         .description('The payload of the operation.')
     );
   }

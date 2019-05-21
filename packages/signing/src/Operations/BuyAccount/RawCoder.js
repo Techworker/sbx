@@ -42,7 +42,7 @@ class RawCoder extends CompositeType {
         .description('The fee paid for the operation.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('payload', 2)
+      new Coding.Core.BytesWithLength('payload', 2, 'payload_length', 'The length of the payload')
         .description('The payload of the operation.')
     );
     this.addSubType(
@@ -68,11 +68,11 @@ class RawCoder extends CompositeType {
         .description('The new public key that will own the account.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('r', 2)
+      new Coding.Core.BytesWithLength('r', 2, 'r_length', 'Length of r.')
         .description('R value of the sign operation.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('s', 2)
+      new Coding.Core.BytesWithLength('s', 2, 's_length', 'Length of s.')
         .description('S value of the sign operation.')
     );
   }
