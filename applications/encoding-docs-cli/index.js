@@ -16,6 +16,10 @@ function describeType(type, repeating = false) {
       table.push(...describeType(type.lengthField));
       addRow(table, repeating, type.id, type.description(), 'Bytes');
       break;
+    case 'PublicKeyWithLength':
+      table.push(...describeType(type.lengthField));
+      table.push(...describeType(type.publicKeyCoding));
+      break;
     case 'StringWithLength':
       addRow(table, repeating, type.id, type.description(), 'Bytes');
       break;
