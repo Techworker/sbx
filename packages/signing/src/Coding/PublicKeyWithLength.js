@@ -17,7 +17,8 @@ const publicKeyCoding = new PublicKey();
 class PublicKeyWithLength extends BytesWithLength {
 
   constructor(id = null) {
-    super(id || 'pubkey', 2);
+    super(id || 'pubkey', 2, 'pubkey_length', 'The encoded length of the following public key');
+    this.description('Public key with the length prepended');
   }
 
   /**
@@ -43,6 +44,10 @@ class PublicKeyWithLength extends BytesWithLength {
    */
   encodeToBytes(value) {
     return super.encodeToBytes(publicKeyCoding.encodeToBytes(value));
+  }
+
+  get publicKeyCoding() {
+    return publicKeyCoding;
   }
 }
 
