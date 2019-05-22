@@ -19,8 +19,8 @@ class Currency extends Int64 {
    *
    * @param {String} id
    */
-  constructor(id = null) {
-    super(id || 'currency', true, Endian.LITTLE_ENDIAN);
+  constructor(id = null, unsigned = true, endian = Endian.LITTLE_ENDIAN) {
+    super(id || 'currency', unsigned, endian);
     this.description('A type for currency values.');
   }
 
