@@ -71,6 +71,26 @@ class OperationHash {
   get md160() {
     return this[P_MD160];
   }
+
+  /**
+   * Gets a value indicating whether the given ophash equals the current ophash.
+   *
+   * @param opHash
+   * @param ignoreBlock
+   * @return {boolean}
+   */
+  equals(opHash, ignoreBlock = false) {
+    let blockResult = true;
+
+    if (!ignoreBlock) {
+      blockResult = this.block === opHash.block;
+    }
+
+    return blockResult &&
+      this.nOperation === opHash.nOperation &&
+      this.account.account === opHash.account.account &&
+      this.md160.equals(opHash.md160);
+  }
 }
 
 module.exports = OperationHash;

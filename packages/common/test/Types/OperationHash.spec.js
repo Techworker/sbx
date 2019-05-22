@@ -19,4 +19,18 @@ describe('Core.Types.OperationHash', () => {
   it('checks a valid md160', () => {
     expect(() => new OperationHash(1, 2, 3, BC.fromHex('AA'.repeat(10)))).to.throw();
   });
+
+  it('can be compared with block info', () => {
+    const oph1 = new OperationHash(1, 2, 3, BC.fromHex('AA'.repeat(20)));
+    const oph2 = new OperationHash(1, 2, 3, BC.fromHex('AA'.repeat(20)));
+    const oph3 = new OperationHash(2, 2, 3, BC.fromHex('AA'.repeat(20)));
+    expect(oph1.equals(oph2)).to.equal(true);
+    expect(oph1.equals(oph3)).to.equal(false);
+  });
+
+  it('can be compared without block info', () => {
+    const oph1 = new OperationHash(1, 2, 3, BC.fromHex('AA'.repeat(20)));
+    const oph2 = new OperationHash(2, 2, 3, BC.fromHex('AA'.repeat(20)));
+    expect(oph1.equals(oph2, true)).to.equal(true);
+  });
 });
