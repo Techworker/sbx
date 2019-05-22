@@ -128,4 +128,11 @@ describe('Core.Types.Currency', () => {
     expect(c1.molina).to.be.equal("12000");
     expect(c1.pascal).to.be.equal('1.2');
   });
+
+  it('can be multiplied', () => {
+    let c1 = new Currency('1.2000').mul(5).serialize();
+
+    expect(c1.molina).to.be.equal("60000");
+    expect(c1.pascal).to.be.equal('6');
+  });
 });

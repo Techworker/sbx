@@ -155,15 +155,28 @@ class Currency {
   }
 
   /**
-     * Adds the given value to the current value and returns a **new**
-     * value.
-     *
-     * @param {Number|String|BigNumber|Currency} addValue
-     * @returns {Currency}
-     */
+   * Adds the given value to the current value and returns a **new**
+   * value.
+   *
+   * @param {Number|String|BigNumber|Currency} addValue
+   * @returns {Currency}
+   */
   add(addValue) {
     return new Currency(
       this.value.add(new Currency(addValue).value),
+    );
+  }
+
+  /**
+   * Adds the given value to the current value and returns a **new**
+   * value.
+   *
+   * @param {Number|String|BigNumber|Currency} addValue
+   * @returns {Currency}
+   */
+  mul(val) {
+    return Currency.fromMolina(
+      this.value.mul(new BN(val))
     );
   }
 
