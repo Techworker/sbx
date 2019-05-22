@@ -9,7 +9,7 @@ const Endian = require('./../../Endian');
 const CompositeType = require('./../CompositeType');
 const Int32 = require('./../Core/Int32');
 const AccountNumber = require('./AccountNumber');
-const BytesWithoutLength = require('./../Core/BytesWithoutLength');
+const BytesWithFixedLength = require('./../Core/BytesFixedLength');
 const NOperation = require('./NOperation');
 const OperationHashType = require('./../../Types/OperationHash');
 
@@ -40,7 +40,7 @@ class OperationHash extends CompositeType {
         .description('The n_operation value of the account with the current operation.')
     );
     this.addSubType(
-      new BytesWithoutLength('md160')
+      new BytesWithFixedLength('md160', 20)
         .description('The RIPEMD160 hash of the operation data.')
     );
   }
