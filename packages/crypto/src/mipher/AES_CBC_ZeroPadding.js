@@ -8,6 +8,14 @@
 const mipherAES = require('mipher/dist/aes');
 const mipherPadding = require('mipher/dist/padding');
 
+function zeroPad(bin, blocksize) {
+  let len = bin.length % blocksize ? blocksize - (bin.length % blocksize) : blocksize;
+  let out = Buffer.from(new Array(bin.length + len).fill(0));
+
+  out.fill(bin, 0, bin.length);
+  return out;
+}
+
 /**
  * AES-CBC + ZeroPadding integration using the mipher library
  */
@@ -30,7 +38,7 @@ class AES_CBC_ZeroPadding {
    * @returns {Uint8Array}
    */
   encrypt(key, pt, iv) {
-    return this.cipher.encrypt(key, this.padding.pad(pt, this.cipher.cipher.blockSize), iv);
+    return this.cipher.encrypt(key, zeroPad(pt, this.cipher.cipher.blockSize), iv);
   }
 
   /**
