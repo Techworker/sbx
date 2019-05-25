@@ -36,7 +36,7 @@ class KDF {
     // iv = sha256 (KEY + password + salt);
     let iv = Sha.sha256(key, password, salt);
 
-    return { key, iv };
+    return { key: key, iv: iv.slice(0, 16) };
   }
 }
 

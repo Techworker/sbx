@@ -14,7 +14,7 @@ describe('Crypto.KDF', () => {
     expect(data.iv).to.be.instanceof(BC);
 
     expect(data.key.length).to.be.equal(32);
-    expect(data.iv.length).to.be.equal(32);
+    expect(data.iv.length).to.be.equal(16);
   });
 
   it('generates key and iv with salt', () => {
@@ -23,7 +23,7 @@ describe('Crypto.KDF', () => {
     expect(data.iv).to.be.instanceof(BC);
 
     expect(data.key.length).to.be.equal(32);
-    expect(data.iv.length).to.be.equal(32);
+    expect(data.iv.length).to.be.equal(16);
   });
 
 });
