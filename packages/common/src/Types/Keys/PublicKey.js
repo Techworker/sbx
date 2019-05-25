@@ -98,12 +98,16 @@ class PublicKey {
   }
 
   /**
-   * Gets the ec key.
+   * Gets the ecdh public key.
    *
    * @returns {BC}
    */
   get ecdh() {
-    return BC.concat(BC.fromInt(4), this.x, this.y);
+    if (this.curve.id === Curve.CI_P521) {
+      return BC.concat(BC.fromHex('0400'), this.x, BC.fromHex('00'), this.y);
+    }
+
+    return BC.concat(BC.fromHex('04'), this.x, this.y);
   }
 
   /**
