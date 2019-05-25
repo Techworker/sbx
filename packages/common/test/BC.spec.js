@@ -138,4 +138,17 @@ describe('Core.BC', () => {
     // uint8array
     expect(BC.from(new Uint8Array(BC.from('ABAB').buffer)).toHex()).to.be.equal('ABAB');
   });
+
+  it('can split into same size arrays', () => {
+    let bc = BC.fromString('ABCDEFGHIJK');
+    let splitted = bc.split(2);
+
+    expect(splitted.length).to.be.equal(6);
+    expect(splitted[0].toString()).to.be.equal('AB');
+    expect(splitted[1].toString()).to.be.equal('CD');
+    expect(splitted[2].toString()).to.be.equal('EF');
+    expect(splitted[3].toString()).to.be.equal('GH');
+    expect(splitted[4].toString()).to.be.equal('IJ');
+    expect(splitted[5].toString()).to.be.equal('K');
+  });
 });

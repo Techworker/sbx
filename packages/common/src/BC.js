@@ -337,6 +337,25 @@ class BC {
     buf[method](value);
     return new BC(buf);
   }
+
+  /**
+   * Small helper to split a byte collection.
+   *
+   * @param {Number} size
+   * @return {BC[]}
+   */
+  split(size) {
+    let pos = 0;
+
+    let splitted = [];
+
+    for (; pos < this.length; pos += size) {
+      splitted.push(this.slice(pos, pos + size));
+    }
+
+    return splitted;
+  }
+
 }
 
 module.exports = BC;
