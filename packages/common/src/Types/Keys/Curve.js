@@ -112,7 +112,7 @@ class Curve {
   /**
    * Gets the curve id of the p521 curve.
    *
-   * @returns {string}
+   * @returns {Number}
    * @constructor
    */
   static get CI_P521() {
