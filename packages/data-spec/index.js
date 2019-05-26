@@ -4,3 +4,5 @@ module.exports = {
   Serializer: require('./src/Serializer'),
   Specs: require('./src/Specs')
 };
+
+// test
