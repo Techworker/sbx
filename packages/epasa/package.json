@@ -1,6 +1,6 @@
 {
   "name": "@pascalcoin-sbx/epasa",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "EPasa functionality for the PascalCoin BlockChain project.",
   "main": "index.js",
   "directories": {
@@ -23,7 +23,7 @@
     "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
   },
   "dependencies": {
-    "@pascalcoin-sbx/common": "^0.0.14",
+    "@pascalcoin-sbx/common": "^0.0.15",
     "murmur-hash": "^1.0.0"
   },
   "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad"

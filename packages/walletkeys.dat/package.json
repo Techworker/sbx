@@ -1,6 +1,6 @@
 {
   "name": "@pascalcoin-sbx/walletkeys.dat",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": ".",
   "main": "index.js",
   "directories": {
@@ -22,6 +22,6 @@
     "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
   },
   "dependencies": {
-    "@pascalcoin-sbx/common": "^0.0.14"
+    "@pascalcoin-sbx/common": "^0.0.15"
   }
 }
