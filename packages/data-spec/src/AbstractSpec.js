@@ -8,7 +8,7 @@
 class AbstractSpec {
   constructor() {
     if (new.target === AbstractSpec) {
-      throw new TypeError('Cannot construct Abstract instances directly');
+      throw new TypeError('Cannot construct Abstract instances directly - test prepublish!');
     }
   }
 
