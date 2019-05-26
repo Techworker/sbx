@@ -114,6 +114,16 @@ class PascalCoinInfo {
   static isDeveloperReward(block) {
     return block >= PascalCoinInfo.DEVELOPER_REWARD;
   }
+
+  /**
+   * Gets the max payload length in bytes.
+   *
+   * @return {number}
+   * @constructor
+   */
+  static get MAX_PAYLOAD_LENGTH() {
+    return 255;
+  }
 }
 
 module.exports = PascalCoinInfo;
