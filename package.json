@@ -40,6 +40,7 @@
     "lerna": "^3.13.1",
     "mocha": "^4.0.1",
     "nyc": "^13.1.0",
+    "ora": "^3.4.0",
     "regenerator": "^0.13.3",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.12.2",

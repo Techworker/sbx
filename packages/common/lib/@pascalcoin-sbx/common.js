@@ -7209,6 +7209,24 @@ class BC {
     buf[method](value);
     return new BC(buf);
   }
+  /**
+   * Small helper to split a byte collection.
+   *
+   * @param {Number} size
+   * @return {BC[]}
+   */
+
+
+  split(size) {
+    let pos = 0;
+    let splitted = [];
+
+    for (; pos < this.length; pos += size) {
+      splitted.push(this.slice(pos, pos + size));
+    }
+
+    return splitted;
+  }
 
 }
 
@@ -7707,6 +7725,7 @@ const BC = __webpack_require__(/*! ./../../BC */ "./src/BC.js");
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_LENGTH_FIELD = Symbol('length_field');
 const P_BYTES_FIELD = Symbol('bytes_field');
+const P_HAS_LEADING_ZB = Symbol('has_leading_zerobyte');
 /**
  * A field type to write dynamic content in form of bytes (prepends the length).
  */
@@ -7718,10 +7737,11 @@ class BytesWithLength extends AbstractType {
    * @param {string} id
    * @param {Number} byteSize
    */
-  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null) {
+  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null, endian = Endian.LITTLE_ENDIAN, hasLeadingZeroByte = false) {
     super(id || `bytes_with_length_${byteSize * 8}`);
     this.description('Bytes with variable size prepended');
     this[P_BYTES_FIELD] = new BytesWithoutLength('value');
+    this[P_HAS_LEADING_ZB] = hasLeadingZeroByte;
 
     switch (byteSize) {
       case 1:
@@ -7729,11 +7749,11 @@ class BytesWithLength extends AbstractType {
         break;
 
       case 2:
-        this[P_LENGTH_FIELD] = new Int16(lengthId, true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int16(lengthId, true, endian);
         break;
 
       case 4:
-        this[P_LENGTH_FIELD] = new Int32(lengthId, true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int32(lengthId, true, endian);
         break;
 
       default:
@@ -7763,8 +7783,8 @@ class BytesWithLength extends AbstractType {
 
 
   decodeFromBytes(bc, options = {}, all = null) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(bc) + this[P_LENGTH_FIELD].encodedSize;
-    return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_SIZE_ENCODED]));
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc)) + +this[P_HAS_LEADING_ZB];
+    return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize + +this[P_HAS_LEADING_ZB], this[P_SIZE_ENCODED]));
   }
   /**
    * Encodes the given value.
@@ -8219,6 +8239,7 @@ const StringWithoutLength = __webpack_require__(/*! ./StringWithoutLength */ "./
 const Endian = __webpack_require__(/*! ./../../Endian */ "./src/Endian.js");
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_HAS_LEADING_ZB = Symbol('has_leading_zerobyte');
 const P_LENGTH_FIELD = Symbol('length_field');
 const P_STRING_FIELD = Symbol('bytes_field');
 /**
@@ -8226,26 +8247,31 @@ const P_STRING_FIELD = Symbol('bytes_field');
  */
 
 class StringWithLength extends AbstractType {
-  constructor(id, byteSize = 1) {
+  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null, endian = Endian.LITTLE_ENDIAN, hasLeadingZeroByte = false) {
     super(id || `bytes_size${byteSize * 8}`);
     this.description('String with size prepended');
     this[P_STRING_FIELD] = new StringWithoutLength('value');
+    this[P_HAS_LEADING_ZB] = hasLeadingZeroByte;
 
     switch (byteSize) {
       case 1:
-        this[P_LENGTH_FIELD] = new Int8('length', true);
+        this[P_LENGTH_FIELD] = new Int8(lengthId, true);
         break;
 
       case 2:
-        this[P_LENGTH_FIELD] = new Int16('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int16(lengthId, true, endian);
         break;
 
       case 4:
-        this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int32(lengthId, true, endian);
         break;
 
       default:
         throw new Error('ByteSize must be either 1, 2 or 4');
+    }
+
+    if (lengthDesc !== null) {
+      this[P_LENGTH_FIELD].description(lengthDesc);
     }
   }
   /**
@@ -8267,8 +8293,8 @@ class StringWithLength extends AbstractType {
 
 
   decodeFromBytes(bc, options = {}, all = null) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc));
-    return this[P_STRING_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_SIZE_ENCODED]));
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc)) + +this[P_HAS_LEADING_ZB];
+    return this[P_STRING_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize + +this[P_HAS_LEADING_ZB], this[P_SIZE_ENCODED]));
   }
   /**
    * Encodes the given value.
@@ -8281,6 +8307,11 @@ class StringWithLength extends AbstractType {
   encodeToBytes(value) {
     this[P_SIZE_ENCODED] = value.length;
     let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED]);
+
+    if (this[P_HAS_LEADING_ZB]) {
+      bc = bc.append('00');
+    }
+
     return bc.append(this[P_STRING_FIELD].encodeToBytes(value));
   }
 
@@ -8601,8 +8632,8 @@ class Currency extends Int64 {
    *
    * @param {String} id
    */
-  constructor(id = null) {
-    super(id || 'currency', true, Endian.LITTLE_ENDIAN);
+  constructor(id = null, unsigned = true, endian = Endian.LITTLE_ENDIAN) {
+    super(id || 'currency', unsigned, endian);
     this.description('A type for currency values.');
   }
   /**
@@ -8736,7 +8767,7 @@ class PrivateKey extends CompositeType {
   constructor(id = null) {
     super(id || 'private_key');
     this.addSubType(new Curve('curve'));
-    this.addSubType(new BytesWithLength('key', 2));
+    this.addSubType(new BytesWithLength('key', 2).description('The private key value.'));
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
@@ -9000,6 +9031,10 @@ class OpType extends AbstractType {
     return this[P_INT_TYPE].encodeToBytes(value);
   }
 
+  get intType() {
+    return this[P_INT_TYPE];
+  }
+
 }
 
 module.exports = OpType;
@@ -9028,7 +9063,7 @@ const Int32 = __webpack_require__(/*! ./../Core/Int32 */ "./src/Coding/Core/Int3
 
 const AccountNumber = __webpack_require__(/*! ./AccountNumber */ "./src/Coding/Pascal/AccountNumber.js");
 
-const BytesWithoutLength = __webpack_require__(/*! ./../Core/BytesWithoutLength */ "./src/Coding/Core/BytesWithoutLength.js");
+const BytesWithFixedLength = __webpack_require__(/*! ./../Core/BytesFixedLength */ "./src/Coding/Core/BytesFixedLength.js");
 
 const NOperation = __webpack_require__(/*! ./NOperation */ "./src/Coding/Pascal/NOperation.js");
 
@@ -9047,10 +9082,10 @@ class OperationHash extends CompositeType {
   constructor(id = null) {
     super(id || 'ophash');
     this.description('A pascalCoin operation hash');
-    this.addSubType(new Int32('block', true, Endian.LITTLE_ENDIAN));
-    this.addSubType(new AccountNumber('account'));
-    this.addSubType(new NOperation('nOperation', 4));
-    this.addSubType(new BytesWithoutLength('md160'));
+    this.addSubType(new Int32('block', true, Endian.LITTLE_ENDIAN).description('The block the operation is in.'));
+    this.addSubType(new AccountNumber('account').description('The account number that signed the operation.'));
+    this.addSubType(new NOperation('nOperation', 4).description('The n_operation value of the account with the current operation.'));
+    this.addSubType(new BytesWithFixedLength('md160', 20).description('The RIPEMD160 hash of the operation data.'));
   }
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
@@ -9453,6 +9488,17 @@ class PascalCoinInfo {
 
   static isDeveloperReward(block) {
     return block >= PascalCoinInfo.DEVELOPER_REWARD;
+  }
+  /**
+   * Gets the max payload length in bytes.
+   *
+   * @return {number}
+   * @constructor
+   */
+
+
+  static get MAX_PAYLOAD_LENGTH() {
+    return 255;
   }
 
 }
@@ -9942,16 +9988,28 @@ class Currency {
     return this[P_VALUE].toString();
   }
   /**
-     * Adds the given value to the current value and returns a **new**
-     * value.
-     *
-     * @param {Number|String|BigNumber|Currency} addValue
-     * @returns {Currency}
-     */
+   * Adds the given value to the current value and returns a **new**
+   * value.
+   *
+   * @param {Number|String|BigNumber|Currency} addValue
+   * @returns {Currency}
+   */
 
 
   add(addValue) {
     return new Currency(this.value.add(new Currency(addValue).value));
+  }
+  /**
+   * Adds the given value to the current value and returns a **new**
+   * value.
+   *
+   * @param {Number|String|BigNumber|Currency} addValue
+   * @returns {Currency}
+   */
+
+
+  mul(val) {
+    return Currency.fromMolina(this.value.mul(new BN(val)));
   }
   /**
      * Subtracts the given value from the current value and returns a
@@ -10203,7 +10261,7 @@ class Curve {
   /**
    * Gets the curve id of the p521 curve.
    *
-   * @returns {string}
+   * @returns {Number}
    * @constructor
    */
 
@@ -10571,14 +10629,18 @@ class PublicKey {
     return BC.concat(this.x, this.y);
   }
   /**
-   * Gets the ec key.
+   * Gets the ecdh public key.
    *
    * @returns {BC}
    */
 
 
   get ecdh() {
-    return BC.concat(BC.fromInt(4), this.x, this.y);
+    if (this.curve.id === Curve.CI_P521) {
+      return BC.concat(BC.fromHex('0400'), this.x, BC.fromHex('00'), this.y);
+    }
+
+    return BC.concat(BC.fromHex('04'), this.x, this.y);
   }
   /**
      * Gets an empty public key instance.
@@ -10704,6 +10766,24 @@ class OperationHash {
 
   get md160() {
     return this[P_MD160];
+  }
+  /**
+   * Gets a value indicating whether the given ophash equals the current ophash.
+   *
+   * @param opHash
+   * @param ignoreBlock
+   * @return {boolean}
+   */
+
+
+  equals(opHash, ignoreBlock = false) {
+    let blockResult = true;
+
+    if (!ignoreBlock) {
+      blockResult = this.block === opHash.block;
+    }
+
+    return blockResult && this.nOperation === opHash.nOperation && this.account.account === opHash.account.account && this.md160.equals(opHash.md160);
   }
 
 }
