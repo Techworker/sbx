@@ -8,7 +8,7 @@ A type that itself is made up of multiple other types.
 | 1        | block      | The block the operation is in.<br />4byte 32bit int value                                                                    | Int32                 | unsigned: true<br />endian: LE<br /> |
 | 2        | account    | The account number that signed the operation.<br />An account number<br />4byte 32bit int value                              | AccountNumber (Int32) | unsigned: true<br />endian: LE<br /> |
 | 3        | nOperation | The n_operation value of the account with the current operation.<br />Accounts n_operation value.<br />4byte 32bit int value | NOperation (Int32)    | unsigned: true<br />endian: LE<br /> |
-| 4        | md160      | The RIPEMD160 hash of the operation data.<br />Bytes without length prepended.                                               | Bytes                 |                                      |
+| 4        | md160      | The RIPEMD160 hash of the operation data.<br />Bytes with a fixed length of 20                                               | BytesFixedLength      |                                      |
 ## Types -> PublicKey
 
 A type that itself is made up of multiple other types.
