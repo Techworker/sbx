@@ -1,6 +1,6 @@
 {
   "name": "@pascalcoin-sbx/graphql",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Graphql.",
   "main": "index.js",
   "directories": {
@@ -21,7 +21,7 @@
     "dev": "webpack --progress --colors --watch --env dev"
   },
   "dependencies": {
-    "@pascalcoin-sbx/json-rpc": "^0.0.16",
+    "@pascalcoin-sbx/json-rpc": "^0.0.17",
     "graphql": "^14.2.1"
   },
   "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad"
