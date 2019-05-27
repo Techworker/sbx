@@ -3726,6 +3726,8 @@ module.exports = basex(ALPHABET)
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GraphQLError; });
 /* harmony import */ var _printError__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./printError */ "../../node_modules/graphql/error/printError.mjs");
 /* harmony import */ var _language_location__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../language/location */ "../../node_modules/graphql/language/location.mjs");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -3735,6 +3737,13 @@ module.exports = basex(ALPHABET)
  * 
  */
 
+
+/**
+ * A GraphQLError describes an Error found during the parse, validate, or
+ * execute phases of performing a GraphQL operation. In addition to a message
+ * and stack trace, it also includes information about the locations in a
+ * GraphQL document and/or execution result that correspond to the Error.
+ */
 
 function GraphQLError( // eslint-disable-line no-redeclare
 message, nodes, source, positions, path, originalError, extensions) {
@@ -3781,7 +3790,15 @@ message, nodes, source, positions, path, originalError, extensions) {
     }, []);
   }
 
-  var _extensions = extensions || originalError && originalError.extensions;
+  var _extensions = extensions;
+
+  if (_extensions == null && originalError != null) {
+    var originalExtensions = originalError.extensions;
+
+    if (originalExtensions != null && _typeof(originalExtensions) === 'object') {
+      _extensions = originalExtensions;
+    }
+  }
 
   Object.defineProperties(this, {
     message: {
@@ -3863,6 +3880,7 @@ GraphQLError.prototype = Object.create(Error.prototype, {
   }
 });
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/error/formatError.mjs":
@@ -3908,6 +3926,7 @@ function formatError(error) {
   };
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/error/index.mjs":
@@ -3915,7 +3934,7 @@ function formatError(error) {
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/graphql/error/index.mjs ***!
   \**************************************************************************************/
 /*! exports provided: GraphQLError, syntaxError, locatedError, printError, formatError */
-/*! exports used: GraphQLError, formatError, printError, syntaxError */
+/*! exports used: GraphQLError, formatError, locatedError, printError, syntaxError */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3923,11 +3942,13 @@ function formatError(error) {
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _GraphQLError__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
 /* harmony import */ var _syntaxError__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./syntaxError */ "../../node_modules/graphql/error/syntaxError.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _syntaxError__WEBPACK_IMPORTED_MODULE_1__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "e", function() { return _syntaxError__WEBPACK_IMPORTED_MODULE_1__["a"]; });
 
 /* harmony import */ var _locatedError__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./locatedError */ "../../node_modules/graphql/error/locatedError.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _locatedError__WEBPACK_IMPORTED_MODULE_2__["a"]; });
+
 /* harmony import */ var _printError__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./printError */ "../../node_modules/graphql/error/printError.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _printError__WEBPACK_IMPORTED_MODULE_3__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _printError__WEBPACK_IMPORTED_MODULE_3__["a"]; });
 
 /* harmony import */ var _formatError__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./formatError */ "../../node_modules/graphql/error/formatError.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _formatError__WEBPACK_IMPORTED_MODULE_4__["a"]; });
@@ -3940,6 +3961,7 @@ function formatError(error) {
  *
  * 
  */
+
 
 
 
@@ -3983,6 +4005,7 @@ function locatedError(originalError, nodes, path) {
 
   return new _GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"](originalError && originalError.message, originalError && originalError.nodes || nodes, originalError && originalError.source, originalError && originalError.positions, path, originalError);
 }
+
 
 /***/ }),
 
@@ -4135,6 +4158,7 @@ function lpad(len, str) {
   return whitespace(len - str.length) + str;
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/error/syntaxError.mjs":
@@ -4165,6 +4189,7 @@ function lpad(len, str) {
 function syntaxError(source, position, description) {
   return new _GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]("Syntax Error: ".concat(description), undefined, source, [position]);
 }
+
 
 /***/ }),
 
@@ -4504,43 +4529,49 @@ function collectFields(exeContext, runtimeType, selectionSet, fields, visitedFra
 
     switch (selection.kind) {
       case _language_kinds__WEBPACK_IMPORTED_MODULE_13__[/* Kind */ "a"].FIELD:
-        if (!shouldIncludeNode(exeContext, selection)) {
-          continue;
+        {
+          if (!shouldIncludeNode(exeContext, selection)) {
+            continue;
+          }
+
+          var name = getFieldEntryKey(selection);
+
+          if (!fields[name]) {
+            fields[name] = [];
+          }
+
+          fields[name].push(selection);
+          break;
         }
-
-        var name = getFieldEntryKey(selection);
-
-        if (!fields[name]) {
-          fields[name] = [];
-        }
-
-        fields[name].push(selection);
-        break;
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_13__[/* Kind */ "a"].INLINE_FRAGMENT:
-        if (!shouldIncludeNode(exeContext, selection) || !doesFragmentConditionMatch(exeContext, selection, runtimeType)) {
-          continue;
-        }
+        {
+          if (!shouldIncludeNode(exeContext, selection) || !doesFragmentConditionMatch(exeContext, selection, runtimeType)) {
+            continue;
+          }
 
-        collectFields(exeContext, runtimeType, selection.selectionSet, fields, visitedFragmentNames);
-        break;
+          collectFields(exeContext, runtimeType, selection.selectionSet, fields, visitedFragmentNames);
+          break;
+        }
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_13__[/* Kind */ "a"].FRAGMENT_SPREAD:
-        var fragName = selection.name.value;
+        {
+          var fragName = selection.name.value;
 
-        if (visitedFragmentNames[fragName] || !shouldIncludeNode(exeContext, selection)) {
-          continue;
+          if (visitedFragmentNames[fragName] || !shouldIncludeNode(exeContext, selection)) {
+            continue;
+          }
+
+          visitedFragmentNames[fragName] = true;
+          var fragment = exeContext.fragments[fragName];
+
+          if (!fragment || !doesFragmentConditionMatch(exeContext, fragment, runtimeType)) {
+            continue;
+          }
+
+          collectFields(exeContext, runtimeType, fragment.selectionSet, fields, visitedFragmentNames);
+          break;
         }
-
-        visitedFragmentNames[fragName] = true;
-        var fragment = exeContext.fragments[fragName];
-
-        if (!fragment || !doesFragmentConditionMatch(exeContext, fragment, runtimeType)) {
-          continue;
-        }
-
-        collectFields(exeContext, runtimeType, fragment.selectionSet, fields, visitedFragmentNames);
-        break;
     }
   }
 
@@ -5006,6 +5037,7 @@ function getFieldDef(schema, parentType, fieldName) {
   return parentType.getFields()[fieldName];
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/execution/index.mjs":
@@ -5037,6 +5069,7 @@ function getFieldDef(schema, parentType, fieldName) {
  *
  * 
  */
+
 
 
 
@@ -5204,11 +5237,11 @@ function getArgumentValues(def, node, variableValues) {
 
     if (argumentNode && argumentNode.value.kind === _language_kinds__WEBPACK_IMPORTED_MODULE_8__[/* Kind */ "a"].VARIABLE) {
       var variableName = argumentNode.value.name.value;
-      hasValue = variableValues && hasOwnProperty(variableValues, variableName);
-      isNull = variableValues && variableValues[variableName] === null;
+      hasValue = variableValues != null && hasOwnProperty(variableValues, variableName);
+      isNull = variableValues != null && variableValues[variableName] === null;
     } else {
       hasValue = argumentNode != null;
-      isNull = argumentNode && argumentNode.value.kind === _language_kinds__WEBPACK_IMPORTED_MODULE_8__[/* Kind */ "a"].NULL;
+      isNull = argumentNode != null && argumentNode.value.kind === _language_kinds__WEBPACK_IMPORTED_MODULE_8__[/* Kind */ "a"].NULL;
     }
 
     if (!hasValue && argDef.defaultValue !== undefined) {
@@ -5282,6 +5315,7 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/graphql.mjs":
@@ -5295,10 +5329,11 @@ function hasOwnProperty(obj, prop) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return graphql; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return graphqlSync; });
-/* harmony import */ var _type_validate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./type/validate */ "../../node_modules/graphql/type/validate.mjs");
-/* harmony import */ var _language_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./language/parser */ "../../node_modules/graphql/language/parser.mjs");
-/* harmony import */ var _validation_validate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./validation/validate */ "../../node_modules/graphql/validation/validate.mjs");
-/* harmony import */ var _execution_execute__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./execution/execute */ "../../node_modules/graphql/execution/execute.mjs");
+/* harmony import */ var _jsutils_isPromise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jsutils/isPromise */ "../../node_modules/graphql/jsutils/isPromise.mjs");
+/* harmony import */ var _type_validate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./type/validate */ "../../node_modules/graphql/type/validate.mjs");
+/* harmony import */ var _language_parser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./language/parser */ "../../node_modules/graphql/language/parser.mjs");
+/* harmony import */ var _validation_validate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./validation/validate */ "../../node_modules/graphql/validation/validate.mjs");
+/* harmony import */ var _execution_execute__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./execution/execute */ "../../node_modules/graphql/execution/execute.mjs");
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -5307,6 +5342,7 @@ function hasOwnProperty(obj, prop) {
  *
  * 
  */
+
 
 
 
@@ -5333,7 +5369,7 @@ function graphqlSync(argsOrSchema, source, rootValue, contextValue, variableValu
   // Extract arguments from object args if provided.
   var result = arguments.length === 1 ? graphqlImpl(argsOrSchema.schema, argsOrSchema.source, argsOrSchema.rootValue, argsOrSchema.contextValue, argsOrSchema.variableValues, argsOrSchema.operationName, argsOrSchema.fieldResolver, argsOrSchema.typeResolver) : graphqlImpl(argsOrSchema, source, rootValue, contextValue, variableValues, operationName, fieldResolver, typeResolver); // Assert that the execution was synchronous.
 
-  if (result.then) {
+  if (Object(_jsutils_isPromise__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(result)) {
     throw new Error('GraphQL execution failed to complete synchronously.');
   }
 
@@ -5342,7 +5378,7 @@ function graphqlSync(argsOrSchema, source, rootValue, contextValue, variableValu
 
 function graphqlImpl(schema, source, rootValue, contextValue, variableValues, operationName, fieldResolver, typeResolver) {
   // Validate Schema
-  var schemaValidationErrors = Object(_type_validate__WEBPACK_IMPORTED_MODULE_0__[/* validateSchema */ "b"])(schema);
+  var schemaValidationErrors = Object(_type_validate__WEBPACK_IMPORTED_MODULE_1__[/* validateSchema */ "b"])(schema);
 
   if (schemaValidationErrors.length > 0) {
     return {
@@ -5354,7 +5390,7 @@ function graphqlImpl(schema, source, rootValue, contextValue, variableValues, op
   var document;
 
   try {
-    document = Object(_language_parser__WEBPACK_IMPORTED_MODULE_1__[/* parse */ "a"])(source);
+    document = Object(_language_parser__WEBPACK_IMPORTED_MODULE_2__[/* parse */ "a"])(source);
   } catch (syntaxError) {
     return {
       errors: [syntaxError]
@@ -5362,7 +5398,7 @@ function graphqlImpl(schema, source, rootValue, contextValue, variableValues, op
   } // Validate
 
 
-  var validationErrors = Object(_validation_validate__WEBPACK_IMPORTED_MODULE_2__[/* validate */ "c"])(schema, document);
+  var validationErrors = Object(_validation_validate__WEBPACK_IMPORTED_MODULE_3__[/* validate */ "c"])(schema, document);
 
   if (validationErrors.length > 0) {
     return {
@@ -5371,8 +5407,9 @@ function graphqlImpl(schema, source, rootValue, contextValue, variableValues, op
   } // Execute
 
 
-  return Object(_execution_execute__WEBPACK_IMPORTED_MODULE_3__[/* execute */ "h"])(schema, document, rootValue, contextValue, variableValues, operationName, fieldResolver, typeResolver);
+  return Object(_execution_execute__WEBPACK_IMPORTED_MODULE_4__[/* execute */ "h"])(schema, document, rootValue, contextValue, variableValues, operationName, fieldResolver, typeResolver);
 }
+
 
 /***/ }),
 
@@ -5380,7 +5417,7 @@ function graphqlImpl(schema, source, rootValue, contextValue, variableValues, op
 /*!********************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/graphql/index.mjs ***!
   \********************************************************************************/
-/*! exports provided: graphql, graphqlSync, GraphQLSchema, GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLDirective, TypeKind, specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID, specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, DEFAULT_DEPRECATION_REASON, SchemaMetaFieldDef, TypeMetaFieldDef, TypeNameMetaFieldDef, introspectionTypes, __Schema, __Directive, __DirectiveLocation, __Type, __Field, __InputValue, __EnumValue, __TypeKind, isSchema, isDirective, isType, isScalarType, isObjectType, isInterfaceType, isUnionType, isEnumType, isInputObjectType, isListType, isNonNullType, isInputType, isOutputType, isLeafType, isCompositeType, isAbstractType, isWrappingType, isNullableType, isNamedType, isRequiredArgument, isRequiredInputField, isSpecifiedScalarType, isIntrospectionType, isSpecifiedDirective, assertSchema, assertDirective, assertType, assertScalarType, assertObjectType, assertInterfaceType, assertUnionType, assertEnumType, assertInputObjectType, assertListType, assertNonNullType, assertInputType, assertOutputType, assertLeafType, assertCompositeType, assertAbstractType, assertWrappingType, assertNullableType, assertNamedType, getNullableType, getNamedType, validateSchema, assertValidSchema, Source, getLocation, parse, parseValue, parseType, print, visit, visitInParallel, visitWithTypeInfo, getVisitFn, Kind, TokenKind, DirectiveLocation, BREAK, isDefinitionNode, isExecutableDefinitionNode, isSelectionNode, isValueNode, isTypeNode, isTypeSystemDefinitionNode, isTypeDefinitionNode, isTypeSystemExtensionNode, isTypeExtensionNode, execute, defaultFieldResolver, defaultTypeResolver, responsePathAsArray, getDirectiveValues, subscribe, createSourceEventStream, validate, ValidationContext, specifiedRules, FieldsOnCorrectTypeRule, FragmentsOnCompositeTypesRule, KnownArgumentNamesRule, KnownDirectivesRule, KnownFragmentNamesRule, KnownTypeNamesRule, LoneAnonymousOperationRule, NoFragmentCyclesRule, NoUndefinedVariablesRule, NoUnusedFragmentsRule, NoUnusedVariablesRule, OverlappingFieldsCanBeMergedRule, PossibleFragmentSpreadsRule, ProvidedRequiredArgumentsRule, ScalarLeafsRule, SingleFieldSubscriptionsRule, UniqueArgumentNamesRule, UniqueDirectivesPerLocationRule, UniqueFragmentNamesRule, UniqueInputFieldNamesRule, UniqueOperationNamesRule, UniqueVariableNamesRule, ValuesOfCorrectTypeRule, VariablesAreInputTypesRule, VariablesInAllowedPositionRule, GraphQLError, formatError, printError, getIntrospectionQuery, introspectionQuery, getOperationAST, getOperationRootType, introspectionFromSchema, buildClientSchema, buildASTSchema, buildSchema, getDescription, extendSchema, lexicographicSortSchema, printSchema, printIntrospectionSchema, printType, typeFromAST, valueFromAST, valueFromASTUntyped, astFromValue, TypeInfo, coerceValue, isValidJSValue, isValidLiteralValue, concatAST, separateOperations, isEqualType, isTypeSubTypeOf, doTypesOverlap, assertValidName, isValidNameError, findBreakingChanges, findDangerousChanges, BreakingChangeType, DangerousChangeType, findDeprecatedUsages */
+/*! exports provided: graphql, graphqlSync, GraphQLSchema, GraphQLDirective, GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID, specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, TypeKind, DEFAULT_DEPRECATION_REASON, introspectionTypes, __Schema, __Directive, __DirectiveLocation, __Type, __Field, __InputValue, __EnumValue, __TypeKind, SchemaMetaFieldDef, TypeMetaFieldDef, TypeNameMetaFieldDef, isSchema, isDirective, isType, isScalarType, isObjectType, isInterfaceType, isUnionType, isEnumType, isInputObjectType, isListType, isNonNullType, isInputType, isOutputType, isLeafType, isCompositeType, isAbstractType, isWrappingType, isNullableType, isNamedType, isRequiredArgument, isRequiredInputField, isSpecifiedScalarType, isIntrospectionType, isSpecifiedDirective, assertSchema, assertDirective, assertType, assertScalarType, assertObjectType, assertInterfaceType, assertUnionType, assertEnumType, assertInputObjectType, assertListType, assertNonNullType, assertInputType, assertOutputType, assertLeafType, assertCompositeType, assertAbstractType, assertWrappingType, assertNullableType, assertNamedType, getNullableType, getNamedType, validateSchema, assertValidSchema, Source, getLocation, createLexer, TokenKind, parse, parseValue, parseType, print, visit, visitInParallel, visitWithTypeInfo, getVisitFn, BREAK, Kind, DirectiveLocation, isDefinitionNode, isExecutableDefinitionNode, isSelectionNode, isValueNode, isTypeNode, isTypeSystemDefinitionNode, isTypeDefinitionNode, isTypeSystemExtensionNode, isTypeExtensionNode, execute, defaultFieldResolver, defaultTypeResolver, responsePathAsArray, getDirectiveValues, subscribe, createSourceEventStream, validate, ValidationContext, specifiedRules, FieldsOnCorrectTypeRule, FragmentsOnCompositeTypesRule, KnownArgumentNamesRule, KnownDirectivesRule, KnownFragmentNamesRule, KnownTypeNamesRule, LoneAnonymousOperationRule, NoFragmentCyclesRule, NoUndefinedVariablesRule, NoUnusedFragmentsRule, NoUnusedVariablesRule, OverlappingFieldsCanBeMergedRule, PossibleFragmentSpreadsRule, ProvidedRequiredArgumentsRule, ScalarLeafsRule, SingleFieldSubscriptionsRule, UniqueArgumentNamesRule, UniqueDirectivesPerLocationRule, UniqueFragmentNamesRule, UniqueInputFieldNamesRule, UniqueOperationNamesRule, UniqueVariableNamesRule, ValuesOfCorrectTypeRule, VariablesAreInputTypesRule, VariablesInAllowedPositionRule, GraphQLError, syntaxError, locatedError, printError, formatError, getIntrospectionQuery, introspectionQuery, getOperationAST, getOperationRootType, introspectionFromSchema, buildClientSchema, buildASTSchema, buildSchema, getDescription, extendSchema, lexicographicSortSchema, printSchema, printType, printIntrospectionSchema, typeFromAST, valueFromAST, valueFromASTUntyped, astFromValue, TypeInfo, coerceValue, isValidJSValue, isValidLiteralValue, concatAST, separateOperations, stripIgnoredCharacters, isEqualType, isTypeSubTypeOf, doTypesOverlap, assertValidName, isValidNameError, BreakingChangeType, DangerousChangeType, findBreakingChanges, findDangerousChanges, findDeprecatedUsages */
 /*! all exports used */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
@@ -5393,6 +5430,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _type__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./type */ "../../node_modules/graphql/type/index.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQLSchema", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["p"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQLDirective", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["d"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQLScalarType", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["o"]; });
 
@@ -5409,10 +5448,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQLList", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["l"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQLNonNull", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["m"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQLDirective", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["d"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TypeKind", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["u"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "specifiedScalarTypes", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["Bb"]; });
 
@@ -5434,13 +5469,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQLDeprecatedDirective", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["c"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TypeKind", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["u"]; });
+
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_DEPRECATION_REASON", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["a"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SchemaMetaFieldDef", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["t"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TypeMetaFieldDef", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["v"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TypeNameMetaFieldDef", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["w"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "introspectionTypes", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["bb"]; });
 
@@ -5459,6 +5490,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "__EnumValue", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["z"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "__TypeKind", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["E"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SchemaMetaFieldDef", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["t"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TypeMetaFieldDef", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["v"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TypeNameMetaFieldDef", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["w"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isSchema", function() { return _type__WEBPACK_IMPORTED_MODULE_1__["ub"]; });
 
@@ -5557,49 +5594,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _language__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./language */ "../../node_modules/graphql/language/index.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Source", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["d"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getLocation", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["f"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getLocation", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["g"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "parse", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["q"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "parseValue", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["s"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "parseType", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["r"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "print", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["t"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "visit", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["u"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "visitInParallel", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["v"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "visitWithTypeInfo", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["w"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getVisitFn", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["g"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Kind", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["c"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createLexer", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["f"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TokenKind", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["e"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DirectiveLocation", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["b"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "parse", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["r"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "parseValue", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["t"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "parseType", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["s"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "print", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["u"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "visit", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["v"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "visitInParallel", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["w"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "visitWithTypeInfo", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["x"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getVisitFn", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["h"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BREAK", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["a"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isDefinitionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["h"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Kind", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["c"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isExecutableDefinitionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["i"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DirectiveLocation", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["b"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isSelectionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["j"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isDefinitionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["i"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isValueNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["p"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isExecutableDefinitionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["j"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["m"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isSelectionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["k"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeSystemDefinitionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["n"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isValueNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["q"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeDefinitionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["k"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["n"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeSystemExtensionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["o"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeSystemDefinitionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["o"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeExtensionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["l"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeDefinitionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["l"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeSystemExtensionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["p"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeExtensionNode", function() { return _language__WEBPACK_IMPORTED_MODULE_2__["m"]; });
 
 /* harmony import */ var _execution__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./execution */ "../../node_modules/graphql/execution/index.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "execute", function() { return _execution__WEBPACK_IMPORTED_MODULE_3__["c"]; });
@@ -5677,9 +5716,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./error */ "../../node_modules/graphql/error/index.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GraphQLError", function() { return _error__WEBPACK_IMPORTED_MODULE_6__["a"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "formatError", function() { return _error__WEBPACK_IMPORTED_MODULE_6__["b"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "syntaxError", function() { return _error__WEBPACK_IMPORTED_MODULE_6__["e"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "printError", function() { return _error__WEBPACK_IMPORTED_MODULE_6__["c"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "locatedError", function() { return _error__WEBPACK_IMPORTED_MODULE_6__["c"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "printError", function() { return _error__WEBPACK_IMPORTED_MODULE_6__["d"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "formatError", function() { return _error__WEBPACK_IMPORTED_MODULE_6__["b"]; });
 
 /* harmony import */ var _utilities__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utilities */ "../../node_modules/graphql/utilities/index.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getIntrospectionQuery", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["q"]; });
@@ -5706,15 +5749,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "printSchema", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["C"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "printIntrospectionSchema", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["B"]; });
-
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "printType", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["D"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "typeFromAST", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["F"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "printIntrospectionSchema", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["B"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "valueFromAST", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["G"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "typeFromAST", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["G"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "valueFromASTUntyped", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["H"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "valueFromAST", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["H"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "valueFromASTUntyped", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["I"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "astFromValue", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["e"]; });
 
@@ -5730,6 +5773,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "separateOperations", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["E"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stripIgnoredCharacters", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["F"]; });
+
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isEqualType", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["v"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isTypeSubTypeOf", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["w"]; });
@@ -5740,13 +5785,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isValidNameError", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["z"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "findBreakingChanges", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["m"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "findDangerousChanges", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["n"]; });
-
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BreakingChangeType", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["a"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DangerousChangeType", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["b"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "findBreakingChanges", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["m"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "findDangerousChanges", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["n"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "findDeprecatedUsages", function() { return _utilities__WEBPACK_IMPORTED_MODULE_7__["o"]; });
 
@@ -5790,12 +5835,13 @@ __webpack_require__.r(__webpack_exports__);
 
 // Execute GraphQL queries.
 
- // Validate GraphQL queries.
+ // Validate GraphQL documents.
 
 
 // Create, format, and print GraphQL errors.
 
 // Utilities for operating on GraphQL type schema and parsed sources.
+
 
 
 /***/ }),
@@ -5835,6 +5881,7 @@ classObject) {
     classObject.prototype[_nodejsCustomInspectSymbol__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]] = fn;
   }
 }
+
 
 /***/ }),
 
@@ -5879,6 +5926,7 @@ function defineToStringTag(classObject) {
     });
   }
 }
+
 
 /***/ }),
 
@@ -5940,7 +5988,7 @@ function formatObjectValue(value, previouslySeenValues) {
   if (value) {
     var customInspectFn = getCustomFn(value);
 
-    if (customInspectFn) {
+    if (customInspectFn !== undefined) {
       // $FlowFixMe(>=0.90.0)
       var customValue = customInspectFn.call(value); // check for infinite recursion
 
@@ -6027,6 +6075,7 @@ function getObjectTag(object) {
   return tag;
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/jsutils/instanceOf.mjs":
@@ -6072,6 +6121,7 @@ function instanceOf(value, constructor) {
   return false;
 });
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/jsutils/invariant.mjs":
@@ -6093,11 +6143,14 @@ function instanceOf(value, constructor) {
  * 
  */
 function invariant(condition, message) {
+  var booleanCondition = Boolean(condition);
   /* istanbul ignore else */
-  if (!condition) {
+
+  if (!booleanCondition) {
     throw new Error(message);
   }
 }
+
 
 /***/ }),
 
@@ -6127,6 +6180,7 @@ function isInvalid(value) {
   return value === undefined || value !== value;
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/jsutils/isNullish.mjs":
@@ -6154,6 +6208,7 @@ function isInvalid(value) {
 function isNullish(value) {
   return value === null || value === undefined || value !== value;
 }
+
 
 /***/ }),
 
@@ -6184,6 +6239,7 @@ function isNullish(value) {
 function isPromise(value) {
   return Boolean(value && typeof value.then === 'function');
 }
+
 
 /***/ }),
 
@@ -6231,9 +6287,11 @@ function isPromise(value) {
  */
 function keyMap(list, keyFn) {
   return list.reduce(function (map, item) {
-    return map[keyFn(item)] = item, map;
+    map[keyFn(item)] = item;
+    return map;
   }, Object.create(null));
 }
+
 
 /***/ }),
 
@@ -6275,9 +6333,11 @@ function keyMap(list, keyFn) {
  */
 function keyValMap(list, keyFn, valFn) {
   return list.reduce(function (map, item) {
-    return map[keyFn(item)] = valFn(item), map;
+    map[keyFn(item)] = valFn(item);
+    return map;
   }, Object.create(null));
 }
+
 
 /***/ }),
 
@@ -6337,6 +6397,7 @@ function mapValue(map, fn) {
   return result;
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/jsutils/memoize3.mjs":
@@ -6392,13 +6453,14 @@ function memoize3(fn) {
       cache1.set(a2, cache2);
     }
 
-    var newValue = fn.apply(this, arguments);
+    var newValue = fn(a1, a2, a3);
     cache2.set(a3, newValue);
     return newValue;
   }
 
   return memoized;
 }
+
 
 /***/ }),
 
@@ -6421,6 +6483,7 @@ function memoize3(fn) {
  */
 var nodejsCustomInspectSymbol = typeof Symbol === 'function' ? Symbol.for('nodejs.util.inspect.custom') : undefined;
 /* harmony default export */ __webpack_exports__["a"] = (nodejsCustomInspectSymbol);
+
 
 /***/ }),
 
@@ -6465,6 +6528,7 @@ function orList(items) {
   return selected.join(', ') + ', or ' + lastItem;
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/jsutils/promiseForObject.mjs":
@@ -6506,6 +6570,7 @@ function promiseForObject(object) {
   });
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/jsutils/promiseReduce.mjs":
@@ -6544,6 +6609,7 @@ function promiseReduce(values, callback, initialValue) {
   }, initialValue);
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/jsutils/quotedOrList.mjs":
@@ -6575,6 +6641,7 @@ function quotedOrList(items) {
     return "\"".concat(item, "\"");
   }));
 }
+
 
 /***/ }),
 
@@ -6677,19 +6744,21 @@ function lexicalDistance(aStr, bStr) {
   return d[aLength][bLength];
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/language/blockString.mjs":
 /*!***********************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/graphql/language/blockString.mjs ***!
   \***********************************************************************************************/
-/*! exports provided: dedentBlockStringValue, printBlockString */
-/*! exports used: dedentBlockStringValue, printBlockString */
+/*! exports provided: dedentBlockStringValue, getBlockStringIndentation, printBlockString */
+/*! exports used: dedentBlockStringValue, getBlockStringIndentation, printBlockString */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return dedentBlockStringValue; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return printBlockString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getBlockStringIndentation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return printBlockString; });
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -6709,24 +6778,11 @@ function dedentBlockStringValue(rawString) {
   // Expand a block string's raw value into independent lines.
   var lines = rawString.split(/\r\n|[\n\r]/g); // Remove common indentation from all lines but first.
 
-  var commonIndent = null;
+  var commonIndent = getBlockStringIndentation(lines);
 
-  for (var i = 1; i < lines.length; i++) {
-    var line = lines[i];
-    var indent = leadingWhitespace(line);
-
-    if (indent < line.length && (commonIndent === null || indent < commonIndent)) {
-      commonIndent = indent;
-
-      if (commonIndent === 0) {
-        break;
-      }
-    }
-  }
-
-  if (commonIndent) {
-    for (var _i = 1; _i < lines.length; _i++) {
-      lines[_i] = lines[_i].slice(commonIndent);
+  if (commonIndent !== 0) {
+    for (var i = 1; i < lines.length; i++) {
+      lines[i] = lines[i].slice(commonIndent);
     }
   } // Remove leading and trailing blank lines.
 
@@ -6741,6 +6797,29 @@ function dedentBlockStringValue(rawString) {
 
 
   return lines.join('\n');
+} // @internal
+
+function getBlockStringIndentation(lines) {
+  var commonIndent = null;
+
+  for (var i = 1; i < lines.length; i++) {
+    var line = lines[i];
+    var indent = leadingWhitespace(line);
+
+    if (indent === line.length) {
+      continue; // skip empty lines
+    }
+
+    if (commonIndent === null || indent < commonIndent) {
+      commonIndent = indent;
+
+      if (commonIndent === 0) {
+        break;
+      }
+    }
+  }
+
+  return commonIndent === null ? 0 : commonIndent;
 }
 
 function leadingWhitespace(str) {
@@ -6784,6 +6863,7 @@ function printBlockString(value) {
 
   return '"""' + result.replace(/"""/g, '\\"""') + '"""';
 }
+
 
 /***/ }),
 
@@ -6836,68 +6916,71 @@ var DirectiveLocation = Object.freeze({
  * The enum type representing the directive location values.
  */
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/language/index.mjs":
 /*!*****************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/graphql/language/index.mjs ***!
   \*****************************************************************************************/
-/*! exports provided: getLocation, Kind, createLexer, TokenKind, parse, parseValue, parseType, print, Source, visit, visitInParallel, visitWithTypeInfo, getVisitFn, BREAK, isDefinitionNode, isExecutableDefinitionNode, isSelectionNode, isValueNode, isTypeNode, isTypeSystemDefinitionNode, isTypeDefinitionNode, isTypeSystemExtensionNode, isTypeExtensionNode, DirectiveLocation */
-/*! exports used: BREAK, DirectiveLocation, Kind, Source, TokenKind, getLocation, getVisitFn, isDefinitionNode, isExecutableDefinitionNode, isSelectionNode, isTypeDefinitionNode, isTypeExtensionNode, isTypeNode, isTypeSystemDefinitionNode, isTypeSystemExtensionNode, isValueNode, parse, parseType, parseValue, print, visit, visitInParallel, visitWithTypeInfo */
+/*! exports provided: Source, getLocation, Kind, createLexer, TokenKind, parse, parseValue, parseType, print, visit, visitInParallel, visitWithTypeInfo, getVisitFn, BREAK, isDefinitionNode, isExecutableDefinitionNode, isSelectionNode, isValueNode, isTypeNode, isTypeSystemDefinitionNode, isTypeDefinitionNode, isTypeSystemExtensionNode, isTypeExtensionNode, DirectiveLocation */
+/*! exports used: BREAK, DirectiveLocation, Kind, Source, TokenKind, createLexer, getLocation, getVisitFn, isDefinitionNode, isExecutableDefinitionNode, isSelectionNode, isTypeDefinitionNode, isTypeExtensionNode, isTypeNode, isTypeSystemDefinitionNode, isTypeSystemExtensionNode, isValueNode, parse, parseType, parseValue, print, visit, visitInParallel, visitWithTypeInfo */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _location__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./location */ "../../node_modules/graphql/language/location.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "f", function() { return _location__WEBPACK_IMPORTED_MODULE_0__["a"]; });
+/* harmony import */ var _source__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./source */ "../../node_modules/graphql/language/source.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _source__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
-/* harmony import */ var _kinds__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./kinds */ "../../node_modules/graphql/language/kinds.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _kinds__WEBPACK_IMPORTED_MODULE_1__["a"]; });
+/* harmony import */ var _location__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./location */ "../../node_modules/graphql/language/location.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "g", function() { return _location__WEBPACK_IMPORTED_MODULE_1__["a"]; });
 
-/* harmony import */ var _lexer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lexer */ "../../node_modules/graphql/language/lexer.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "e", function() { return _lexer__WEBPACK_IMPORTED_MODULE_2__["a"]; });
+/* harmony import */ var _kinds__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./kinds */ "../../node_modules/graphql/language/kinds.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _kinds__WEBPACK_IMPORTED_MODULE_2__["a"]; });
 
-/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./parser */ "../../node_modules/graphql/language/parser.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "q", function() { return _parser__WEBPACK_IMPORTED_MODULE_3__["a"]; });
+/* harmony import */ var _lexer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lexer */ "../../node_modules/graphql/language/lexer.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "f", function() { return _lexer__WEBPACK_IMPORTED_MODULE_3__["b"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "s", function() { return _parser__WEBPACK_IMPORTED_MODULE_3__["c"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "e", function() { return _lexer__WEBPACK_IMPORTED_MODULE_3__["a"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "r", function() { return _parser__WEBPACK_IMPORTED_MODULE_3__["b"]; });
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./parser */ "../../node_modules/graphql/language/parser.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "r", function() { return _parser__WEBPACK_IMPORTED_MODULE_4__["a"]; });
 
-/* harmony import */ var _printer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./printer */ "../../node_modules/graphql/language/printer.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "t", function() { return _printer__WEBPACK_IMPORTED_MODULE_4__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "t", function() { return _parser__WEBPACK_IMPORTED_MODULE_4__["c"]; });
 
-/* harmony import */ var _source__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./source */ "../../node_modules/graphql/language/source.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _source__WEBPACK_IMPORTED_MODULE_5__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "s", function() { return _parser__WEBPACK_IMPORTED_MODULE_4__["b"]; });
+
+/* harmony import */ var _printer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./printer */ "../../node_modules/graphql/language/printer.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "u", function() { return _printer__WEBPACK_IMPORTED_MODULE_5__["a"]; });
 
 /* harmony import */ var _visitor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./visitor */ "../../node_modules/graphql/language/visitor.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "u", function() { return _visitor__WEBPACK_IMPORTED_MODULE_6__["c"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "v", function() { return _visitor__WEBPACK_IMPORTED_MODULE_6__["c"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "v", function() { return _visitor__WEBPACK_IMPORTED_MODULE_6__["d"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "w", function() { return _visitor__WEBPACK_IMPORTED_MODULE_6__["d"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "w", function() { return _visitor__WEBPACK_IMPORTED_MODULE_6__["e"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "x", function() { return _visitor__WEBPACK_IMPORTED_MODULE_6__["e"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "g", function() { return _visitor__WEBPACK_IMPORTED_MODULE_6__["b"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "h", function() { return _visitor__WEBPACK_IMPORTED_MODULE_6__["b"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _visitor__WEBPACK_IMPORTED_MODULE_6__["a"]; });
 
 /* harmony import */ var _predicates__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./predicates */ "../../node_modules/graphql/language/predicates.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "h", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "i", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["a"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "i", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["b"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "j", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["b"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "j", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["c"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "k", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["c"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "p", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["i"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "q", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["i"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "m", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["f"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "n", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["f"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "n", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["g"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "o", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["g"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "k", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["d"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "l", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["d"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "o", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["h"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "p", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["h"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "l", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["e"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "m", function() { return _predicates__WEBPACK_IMPORTED_MODULE_7__["e"]; });
 
 /* harmony import */ var _directiveLocation__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./directiveLocation */ "../../node_modules/graphql/language/directiveLocation.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _directiveLocation__WEBPACK_IMPORTED_MODULE_8__["a"]; });
@@ -6910,6 +6993,7 @@ var DirectiveLocation = Object.freeze({
  *
  * 
  */
+
 
 
 
@@ -7004,19 +7088,21 @@ var Kind = Object.freeze({
  * The enum type representing the possible kind values of AST nodes.
  */
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/language/lexer.mjs":
 /*!*****************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/graphql/language/lexer.mjs ***!
   \*****************************************************************************************/
-/*! exports provided: createLexer, TokenKind, getTokenDesc */
-/*! exports used: TokenKind, createLexer, getTokenDesc */
+/*! exports provided: createLexer, TokenKind, isPunctuatorToken, getTokenDesc */
+/*! exports used: TokenKind, createLexer, getTokenDesc, isPunctuatorToken */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return createLexer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TokenKind; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isPunctuatorToken; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getTokenDesc; });
 /* harmony import */ var _jsutils_defineToJSON__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/defineToJSON */ "../../node_modules/graphql/jsutils/defineToJSON.mjs");
 /* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../error */ "../../node_modules/graphql/error/index.mjs");
@@ -7111,9 +7197,15 @@ var TokenKind = Object.freeze({
  * The enum type representing the token kinds values.
  */
 
+// @internal
+function isPunctuatorToken(token) {
+  var kind = token.kind;
+  return kind === TokenKind.BANG || kind === TokenKind.DOLLAR || kind === TokenKind.AMP || kind === TokenKind.PAREN_L || kind === TokenKind.PAREN_R || kind === TokenKind.SPREAD || kind === TokenKind.COLON || kind === TokenKind.EQUALS || kind === TokenKind.AT || kind === TokenKind.BRACKET_L || kind === TokenKind.BRACKET_R || kind === TokenKind.BRACE_L || kind === TokenKind.PIPE || kind === TokenKind.BRACE_R;
+}
 /**
  * A helper function to describe a token as a string for debugging
  */
+
 function getTokenDesc(token) {
   var value = token.value;
   return value ? "".concat(token.kind, " \"").concat(value, "\"") : token.kind;
@@ -7317,7 +7409,7 @@ function readToken(lexer, prev) {
       return readString(source, pos, line, col, prev);
   }
 
-  throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "d"])(source, pos, unexpectedCharacterMessage(code));
+  throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "e"])(source, pos, unexpectedCharacterMessage(code));
 }
 /**
  * Report a message that an unexpected character was encountered.
@@ -7417,7 +7509,7 @@ function readNumber(source, start, firstCode, line, col, prev) {
     code = body.charCodeAt(++position);
 
     if (code >= 48 && code <= 57) {
-      throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "d"])(source, position, "Invalid number, unexpected digit after 0: ".concat(printCharCode(code), "."));
+      throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "e"])(source, position, "Invalid number, unexpected digit after 0: ".concat(printCharCode(code), "."));
     }
   } else {
     position = readDigits(source, position, code);
@@ -7467,7 +7559,7 @@ function readDigits(source, start, firstCode) {
     return position;
   }
 
-  throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "d"])(source, position, "Invalid number, expected digit but got: ".concat(printCharCode(code), "."));
+  throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "e"])(source, position, "Invalid number, expected digit but got: ".concat(printCharCode(code), "."));
 }
 /**
  * Reads a string token from the source file.
@@ -7493,7 +7585,7 @@ function readString(source, start, line, col, prev) {
 
 
     if (code < 0x0020 && code !== 0x0009) {
-      throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "d"])(source, position, "Invalid character within String: ".concat(printCharCode(code), "."));
+      throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "e"])(source, position, "Invalid character within String: ".concat(printCharCode(code), "."));
     }
 
     ++position;
@@ -7537,19 +7629,21 @@ function readString(source, start, line, col, prev) {
           break;
 
         case 117:
-          // u
-          var charCode = uniCharCode(body.charCodeAt(position + 1), body.charCodeAt(position + 2), body.charCodeAt(position + 3), body.charCodeAt(position + 4));
+          {
+            // uXXXX
+            var charCode = uniCharCode(body.charCodeAt(position + 1), body.charCodeAt(position + 2), body.charCodeAt(position + 3), body.charCodeAt(position + 4));
 
-          if (charCode < 0) {
-            throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "d"])(source, position, 'Invalid character escape sequence: ' + "\\u".concat(body.slice(position + 1, position + 5), "."));
+            if (charCode < 0) {
+              throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "e"])(source, position, 'Invalid character escape sequence: ' + "\\u".concat(body.slice(position + 1, position + 5), "."));
+            }
+
+            value += String.fromCharCode(charCode);
+            position += 4;
+            break;
           }
 
-          value += String.fromCharCode(charCode);
-          position += 4;
-          break;
-
         default:
-          throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "d"])(source, position, "Invalid character escape sequence: \\".concat(String.fromCharCode(code), "."));
+          throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "e"])(source, position, "Invalid character escape sequence: \\".concat(String.fromCharCode(code), "."));
       }
 
       ++position;
@@ -7557,7 +7651,7 @@ function readString(source, start, line, col, prev) {
     }
   }
 
-  throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "d"])(source, position, 'Unterminated string.');
+  throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "e"])(source, position, 'Unterminated string.');
 }
 /**
  * Reads a block string token from the source file.
@@ -7582,7 +7676,7 @@ function readBlockString(source, start, line, col, prev, lexer) {
 
 
     if (code < 0x0020 && code !== 0x0009 && code !== 0x000a && code !== 0x000d) {
-      throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "d"])(source, position, "Invalid character within String: ".concat(printCharCode(code), "."));
+      throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "e"])(source, position, "Invalid character within String: ".concat(printCharCode(code), "."));
     }
 
     if (code === 10) {
@@ -7610,7 +7704,7 @@ function readBlockString(source, start, line, col, prev, lexer) {
     }
   }
 
-  throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "d"])(source, position, 'Unterminated string.');
+  throw Object(_error__WEBPACK_IMPORTED_MODULE_1__[/* syntaxError */ "e"])(source, position, 'Unterminated string.');
 }
 /**
  * Converts four hexadecimal chars to the integer that the
@@ -7667,6 +7761,7 @@ function readName(source, start, line, col, prev) {
   return new Tok(TokenKind.NAME, start, position, line, col, prev, body.slice(start, position));
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/language/location.mjs":
@@ -7712,6 +7807,7 @@ function getLocation(source, position) {
     column: column
   };
 }
+
 
 /***/ }),
 
@@ -9091,7 +9187,7 @@ function parseDirectiveLocation(lexer) {
   var start = lexer.token;
   var name = parseName(lexer);
 
-  if (_directiveLocation__WEBPACK_IMPORTED_MODULE_6__[/* DirectiveLocation */ "a"].hasOwnProperty(name.value)) {
+  if (_directiveLocation__WEBPACK_IMPORTED_MODULE_6__[/* DirectiveLocation */ "a"][name.value] !== undefined) {
     return name;
   }
 
@@ -9146,7 +9242,7 @@ function expectToken(lexer, kind) {
     return token;
   }
 
-  throw Object(_error__WEBPACK_IMPORTED_MODULE_3__[/* syntaxError */ "d"])(lexer.source, token.start, "Expected ".concat(kind, ", found ").concat(Object(_lexer__WEBPACK_IMPORTED_MODULE_4__[/* getTokenDesc */ "c"])(token)));
+  throw Object(_error__WEBPACK_IMPORTED_MODULE_3__[/* syntaxError */ "e"])(lexer.source, token.start, "Expected ".concat(kind, ", found ").concat(Object(_lexer__WEBPACK_IMPORTED_MODULE_4__[/* getTokenDesc */ "c"])(token)));
 }
 /**
  * If the next token is of the given kind, return that token after advancing
@@ -9178,7 +9274,7 @@ function expectKeyword(lexer, value) {
     return token;
   }
 
-  throw Object(_error__WEBPACK_IMPORTED_MODULE_3__[/* syntaxError */ "d"])(lexer.source, token.start, "Expected \"".concat(value, "\", found ").concat(Object(_lexer__WEBPACK_IMPORTED_MODULE_4__[/* getTokenDesc */ "c"])(token)));
+  throw Object(_error__WEBPACK_IMPORTED_MODULE_3__[/* syntaxError */ "e"])(lexer.source, token.start, "Expected \"".concat(value, "\", found ").concat(Object(_lexer__WEBPACK_IMPORTED_MODULE_4__[/* getTokenDesc */ "c"])(token)));
 }
 /**
  * If the next token is a given keyword, return that token after advancing
@@ -9204,7 +9300,7 @@ function expectOptionalKeyword(lexer, value) {
 
 function unexpected(lexer, atToken) {
   var token = atToken || lexer.token;
-  return Object(_error__WEBPACK_IMPORTED_MODULE_3__[/* syntaxError */ "d"])(lexer.source, token.start, "Unexpected ".concat(Object(_lexer__WEBPACK_IMPORTED_MODULE_4__[/* getTokenDesc */ "c"])(token)));
+  return Object(_error__WEBPACK_IMPORTED_MODULE_3__[/* syntaxError */ "e"])(lexer.source, token.start, "Unexpected ".concat(Object(_lexer__WEBPACK_IMPORTED_MODULE_4__[/* getTokenDesc */ "c"])(token)));
 }
 /**
  * Returns a possibly empty list of parse nodes, determined by
@@ -9242,6 +9338,7 @@ function many(lexer, openKind, parseFn, closeKind) {
 
   return nodes;
 }
+
 
 /***/ }),
 
@@ -9300,6 +9397,7 @@ function isTypeSystemExtensionNode(node) {
 function isTypeExtensionNode(node) {
   return node.kind === _kinds__WEBPACK_IMPORTED_MODULE_0__[/* Kind */ "a"].SCALAR_TYPE_EXTENSION || node.kind === _kinds__WEBPACK_IMPORTED_MODULE_0__[/* Kind */ "a"].OBJECT_TYPE_EXTENSION || node.kind === _kinds__WEBPACK_IMPORTED_MODULE_0__[/* Kind */ "a"].INTERFACE_TYPE_EXTENSION || node.kind === _kinds__WEBPACK_IMPORTED_MODULE_0__[/* Kind */ "a"].UNION_TYPE_EXTENSION || node.kind === _kinds__WEBPACK_IMPORTED_MODULE_0__[/* Kind */ "a"].ENUM_TYPE_EXTENSION || node.kind === _kinds__WEBPACK_IMPORTED_MODULE_0__[/* Kind */ "a"].INPUT_OBJECT_TYPE_EXTENSION;
 }
+
 
 /***/ }),
 
@@ -9416,7 +9514,7 @@ var printDocASTReducer = {
   StringValue: function StringValue(_ref10, key) {
     var value = _ref10.value,
         isBlockString = _ref10.block;
-    return isBlockString ? Object(_blockString__WEBPACK_IMPORTED_MODULE_1__[/* printBlockString */ "b"])(value, key === 'description' ? '' : '  ') : JSON.stringify(value);
+    return isBlockString ? Object(_blockString__WEBPACK_IMPORTED_MODULE_1__[/* printBlockString */ "c"])(value, key === 'description' ? '' : '  ') : JSON.stringify(value);
   },
   BooleanValue: function BooleanValue(_ref11) {
     var value = _ref11.value;
@@ -9623,6 +9721,7 @@ function hasMultilineItems(maybeArray) {
   return maybeArray && maybeArray.some(isMultiline);
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/language/source.mjs":
@@ -9668,6 +9767,7 @@ var Source = function Source(body, name, locationOffset) {
 }; // Conditionally apply `[Symbol.toStringTag]` if `Symbol`s are supported
 
 Object(_jsutils_defineToStringTag__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(Source);
+
 
 /***/ }),
 
@@ -9864,10 +9964,8 @@ function visit(root, visitor) {
         } else {
           var clone = {};
 
-          var _arr = Object.keys(node);
-
-          for (var _i = 0; _i < _arr.length; _i++) {
-            var k = _arr[_i];
+          for (var _i = 0, _Object$keys = Object.keys(node); _i < _Object$keys.length; _i++) {
+            var k = _Object$keys[_i];
             clone[k] = node[k];
           }
 
@@ -10120,6 +10218,7 @@ function getVisitFn(visitor, kind, isLeaving) {
   }
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/polyfills/find.mjs":
@@ -10154,6 +10253,7 @@ var find = Array.prototype.find ? function (list, predicate) {
   }
 };
 /* harmony default export */ __webpack_exports__["a"] = (find);
+
 
 /***/ }),
 
@@ -10197,6 +10297,7 @@ var flatMap = Array.prototype.flatMap ? function (list, fn) {
 };
 /* harmony default export */ __webpack_exports__["a"] = (flatMap);
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/polyfills/isFinite.mjs":
@@ -10225,6 +10326,7 @@ var isFinite = Number.isFinite || function (value) {
 
 /* harmony default export */ __webpack_exports__["a"] = (isFinite);
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/polyfills/isInteger.mjs":
@@ -10252,6 +10354,7 @@ var isInteger = Number.isInteger || function (value) {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (isInteger);
+
 
 /***/ }),
 
@@ -10283,6 +10386,7 @@ var objectEntries = Object.entries || function (obj) {
 
 /* harmony default export */ __webpack_exports__["a"] = (objectEntries);
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/polyfills/objectValues.mjs":
@@ -10313,6 +10417,7 @@ var objectValues = Object.values || function (obj) {
 
 /* harmony default export */ __webpack_exports__["a"] = (objectValues);
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/subscription/index.mjs":
@@ -10337,6 +10442,7 @@ var objectValues = Object.values || function (obj) {
  *
  * 
  */
+
 
 
 /***/ }),
@@ -10438,6 +10544,7 @@ function iteratorResult(value) {
     done: false
   };
 }
+
 
 /***/ }),
 
@@ -10613,6 +10720,7 @@ function createSourceEventStream(schema, document, rootValue, contextValue, vari
     return Promise.reject(error);
   }
 }
+
 
 /***/ }),
 
@@ -11154,7 +11262,7 @@ function defineFieldMap(config) {
   !isPlainObj(fieldMap) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(config.name, " fields must be an object with field names as keys or a ") + 'function which returns such an object.') : void 0;
   return Object(_jsutils_mapValue__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])(fieldMap, function (fieldConfig, fieldName) {
     !isPlainObj(fieldConfig) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(config.name, ".").concat(fieldName, " field config must be an object")) : void 0;
-    !!fieldConfig.hasOwnProperty('isDeprecated') ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(config.name, ".").concat(fieldName, " should provide \"deprecationReason\" ") + 'instead of "isDeprecated".') : void 0;
+    !!('isDeprecated' in fieldConfig) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(config.name, ".").concat(fieldName, " should provide \"deprecationReason\" ") + 'instead of "isDeprecated".') : void 0;
     !(fieldConfig.resolve == null || typeof fieldConfig.resolve === 'function') ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(config.name, ".").concat(fieldName, " field resolver must be a function if ") + "provided, but got: ".concat(Object(_jsutils_inspect__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"])(fieldConfig.resolve), ".")) : void 0;
     var argsConfig = fieldConfig.args || {};
     !isPlainObj(argsConfig) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(config.name, ".").concat(fieldName, " args must be an object with argument ") + 'names as keys.') : void 0;
@@ -11374,9 +11482,7 @@ var GraphQLEnumType
 =
 /*#__PURE__*/
 function () {
-  function GraphQLEnumType(config
-  /* <T> */
-  ) {
+  function GraphQLEnumType(config) {
     this.name = config.name;
     this.description = config.description;
     this.astNode = config.astNode;
@@ -11401,9 +11507,7 @@ function () {
     return this._nameLookup[name];
   };
 
-  _proto5.serialize = function serialize(value
-  /* T */
-  ) {
+  _proto5.serialize = function serialize(value) {
     var enumValue = this._valueLookup.get(value);
 
     if (enumValue) {
@@ -11466,22 +11570,20 @@ function () {
 Object(_jsutils_defineToStringTag__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(GraphQLEnumType);
 Object(_jsutils_defineToJSON__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(GraphQLEnumType);
 
-function defineEnumValues(type, valueMap
-/* <T> */
-) {
+function defineEnumValues(type, valueMap) {
   !isPlainObj(valueMap) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(type.name, " values must be an object with value names as keys.")) : void 0;
   return Object(_polyfills_objectEntries__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(valueMap).map(function (_ref2) {
     var valueName = _ref2[0],
         value = _ref2[1];
     !isPlainObj(value) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(type.name, ".").concat(valueName, " must refer to an object with a \"value\" key ") + "representing an internal value but got: ".concat(Object(_jsutils_inspect__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"])(value), ".")) : void 0;
-    !!value.hasOwnProperty('isDeprecated') ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(type.name, ".").concat(valueName, " should provide \"deprecationReason\" instead ") + 'of "isDeprecated".') : void 0;
+    !!('isDeprecated' in value) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(type.name, ".").concat(valueName, " should provide \"deprecationReason\" instead ") + 'of "isDeprecated".') : void 0;
     return {
       name: valueName,
       description: value.description,
       isDeprecated: Boolean(value.deprecationReason),
       deprecationReason: value.deprecationReason,
       astNode: value.astNode,
-      value: value.hasOwnProperty('value') ? value.value : valueName
+      value: 'value' in value ? value.value : valueName
     };
   });
 }
@@ -11560,7 +11662,7 @@ function defineInputFieldMap(config) {
   var fieldMap = resolveThunk(config.fields) || {};
   !isPlainObj(fieldMap) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(config.name, " fields must be an object with field names as keys or a ") + 'function which returns such an object.') : void 0;
   return Object(_jsutils_mapValue__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"])(fieldMap, function (fieldConfig, fieldName) {
-    !!fieldConfig.hasOwnProperty('resolve') ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(config.name, ".").concat(fieldName, " field has a resolve property, but ") + 'Input Types cannot define resolvers.') : void 0;
+    !!('resolve' in fieldConfig) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(0, "".concat(config.name, ".").concat(fieldName, " field has a resolve property, but ") + 'Input Types cannot define resolvers.') : void 0;
     return _objectSpread({}, fieldConfig, {
       name: fieldName
     });
@@ -11570,6 +11672,7 @@ function defineInputFieldMap(config) {
 function isRequiredInputField(field) {
   return isNonNullType(field.type) && field.defaultValue === undefined;
 }
+
 
 /***/ }),
 
@@ -11610,7 +11713,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
  *
  * 
  */
-
 
 
 
@@ -11740,10 +11842,12 @@ var GraphQLDeprecatedDirective = new GraphQLDirective({
 
 var specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective];
 function isSpecifiedDirective(directive) {
-  return specifiedDirectives.some(function (specifiedDirective) {
-    return specifiedDirective.name === directive.name;
+  return isDirective(directive) && specifiedDirectives.some(function (_ref2) {
+    var name = _ref2.name;
+    return name === directive.name;
   });
 }
+
 
 /***/ }),
 
@@ -11751,7 +11855,7 @@ function isSpecifiedDirective(directive) {
 /*!*************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/graphql/type/index.mjs ***!
   \*************************************************************************************/
-/*! exports provided: isSchema, assertSchema, GraphQLSchema, isType, isScalarType, isObjectType, isInterfaceType, isUnionType, isEnumType, isInputObjectType, isListType, isNonNullType, isInputType, isOutputType, isLeafType, isCompositeType, isAbstractType, isWrappingType, isNullableType, isNamedType, isRequiredArgument, isRequiredInputField, assertType, assertScalarType, assertObjectType, assertInterfaceType, assertUnionType, assertEnumType, assertInputObjectType, assertListType, assertNonNullType, assertInputType, assertOutputType, assertLeafType, assertCompositeType, assertAbstractType, assertWrappingType, assertNullableType, assertNamedType, getNullableType, getNamedType, GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, isDirective, assertDirective, GraphQLDirective, isSpecifiedDirective, specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, DEFAULT_DEPRECATION_REASON, isSpecifiedScalarType, specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID, TypeKind, isIntrospectionType, introspectionTypes, __Schema, __Directive, __DirectiveLocation, __Type, __Field, __InputValue, __EnumValue, __TypeKind, SchemaMetaFieldDef, TypeMetaFieldDef, TypeNameMetaFieldDef, validateSchema, assertValidSchema */
+/*! exports provided: isSchema, assertSchema, GraphQLSchema, isType, isScalarType, isObjectType, isInterfaceType, isUnionType, isEnumType, isInputObjectType, isListType, isNonNullType, isInputType, isOutputType, isLeafType, isCompositeType, isAbstractType, isWrappingType, isNullableType, isNamedType, isRequiredArgument, isRequiredInputField, assertType, assertScalarType, assertObjectType, assertInterfaceType, assertUnionType, assertEnumType, assertInputObjectType, assertListType, assertNonNullType, assertInputType, assertOutputType, assertLeafType, assertCompositeType, assertAbstractType, assertWrappingType, assertNullableType, assertNamedType, getNullableType, getNamedType, GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, isDirective, assertDirective, GraphQLDirective, isSpecifiedDirective, specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, DEFAULT_DEPRECATION_REASON, isSpecifiedScalarType, specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID, isIntrospectionType, introspectionTypes, __Schema, __Directive, __DirectiveLocation, __Type, __Field, __InputValue, __EnumValue, __TypeKind, TypeKind, SchemaMetaFieldDef, TypeMetaFieldDef, TypeNameMetaFieldDef, validateSchema, assertValidSchema */
 /*! exports used: DEFAULT_DEPRECATION_REASON, GraphQLBoolean, GraphQLDeprecatedDirective, GraphQLDirective, GraphQLEnumType, GraphQLFloat, GraphQLID, GraphQLIncludeDirective, GraphQLInputObjectType, GraphQLInt, GraphQLInterfaceType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLScalarType, GraphQLSchema, GraphQLSkipDirective, GraphQLString, GraphQLUnionType, SchemaMetaFieldDef, TypeKind, TypeMetaFieldDef, TypeNameMetaFieldDef, __Directive, __DirectiveLocation, __EnumValue, __Field, __InputValue, __Schema, __Type, __TypeKind, assertAbstractType, assertCompositeType, assertDirective, assertEnumType, assertInputObjectType, assertInputType, assertInterfaceType, assertLeafType, assertListType, assertNamedType, assertNonNullType, assertNullableType, assertObjectType, assertOutputType, assertScalarType, assertSchema, assertType, assertUnionType, assertValidSchema, assertWrappingType, getNamedType, getNullableType, introspectionTypes, isAbstractType, isCompositeType, isDirective, isEnumType, isInputObjectType, isInputType, isInterfaceType, isIntrospectionType, isLeafType, isListType, isNamedType, isNonNullType, isNullableType, isObjectType, isOutputType, isRequiredArgument, isRequiredInputField, isScalarType, isSchema, isSpecifiedDirective, isSpecifiedScalarType, isType, isUnionType, isWrappingType, specifiedDirectives, specifiedScalarTypes, validateSchema */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
@@ -11891,8 +11995,6 @@ function isSpecifiedDirective(directive) {
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "g", function() { return _scalars__WEBPACK_IMPORTED_MODULE_3__["c"]; });
 
 /* harmony import */ var _introspection__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./introspection */ "../../node_modules/graphql/type/introspection.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "u", function() { return _introspection__WEBPACK_IMPORTED_MODULE_4__["b"]; });
-
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "jb", function() { return _introspection__WEBPACK_IMPORTED_MODULE_4__["n"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "bb", function() { return _introspection__WEBPACK_IMPORTED_MODULE_4__["m"]; });
@@ -11912,6 +12014,8 @@ function isSpecifiedDirective(directive) {
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "z", function() { return _introspection__WEBPACK_IMPORTED_MODULE_4__["g"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "E", function() { return _introspection__WEBPACK_IMPORTED_MODULE_4__["l"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "u", function() { return _introspection__WEBPACK_IMPORTED_MODULE_4__["b"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "t", function() { return _introspection__WEBPACK_IMPORTED_MODULE_4__["a"]; });
 
@@ -11937,6 +12041,8 @@ function isSpecifiedDirective(directive) {
 
 // Common built-in scalar instances.
 
+
+// Validate GraphQL schema.
 
 
 
@@ -12472,10 +12578,12 @@ var TypeNameMetaFieldDef = {
 };
 var introspectionTypes = [__Schema, __Directive, __DirectiveLocation, __Type, __Field, __InputValue, __EnumValue, __TypeKind];
 function isIntrospectionType(type) {
-  return Object(_definition__WEBPACK_IMPORTED_MODULE_4__[/* isNamedType */ "K"])(type) && ( // Would prefer to use introspectionTypes.some(), however %checks needs
-  // a simple expression.
-  type.name === __Schema.name || type.name === __Directive.name || type.name === __DirectiveLocation.name || type.name === __Type.name || type.name === __Field.name || type.name === __InputValue.name || type.name === __EnumValue.name || type.name === __TypeKind.name);
+  return Object(_definition__WEBPACK_IMPORTED_MODULE_4__[/* isNamedType */ "K"])(type) && introspectionTypes.some(function (_ref8) {
+    var name = _ref8.name;
+    return type.name === name;
+  });
 }
+
 
 /***/ }),
 
@@ -12736,10 +12844,12 @@ var GraphQLID = new _definition__WEBPACK_IMPORTED_MODULE_3__[/* GraphQLScalarTyp
 });
 var specifiedScalarTypes = [GraphQLString, GraphQLInt, GraphQLFloat, GraphQLBoolean, GraphQLID];
 function isSpecifiedScalarType(type) {
-  return Object(_definition__WEBPACK_IMPORTED_MODULE_3__[/* isNamedType */ "K"])(type) && ( // Would prefer to use specifiedScalarTypes.some(), however %checks needs
-  // a simple expression.
-  type.name === GraphQLString.name || type.name === GraphQLInt.name || type.name === GraphQLFloat.name || type.name === GraphQLBoolean.name || type.name === GraphQLID.name);
+  return Object(_definition__WEBPACK_IMPORTED_MODULE_3__[/* isScalarType */ "R"])(type) && specifiedScalarTypes.some(function (_ref) {
+    var name = _ref.name;
+    return type.name === name;
+  });
 }
+
 
 /***/ }),
 
@@ -12999,7 +13109,8 @@ function () {
     if (!possibleTypeMap[abstractType.name]) {
       var possibleTypes = this.getPossibleTypes(abstractType);
       possibleTypeMap[abstractType.name] = possibleTypes.reduce(function (map, type) {
-        return map[type.name] = true, map;
+        map[type.name] = true;
+        return map;
       }, Object.create(null));
     }
 
@@ -13133,6 +13244,7 @@ function typeMapDirectiveReducer(map, directive) {
     return typeMapReducer(_map, arg.type);
   }, map);
 }
+
 
 /***/ }),
 
@@ -13910,6 +14022,7 @@ function getUnionMemberTypeNodes(union, typeName) {
   });
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/TypeInfo.mjs":
@@ -13951,7 +14064,9 @@ var TypeInfo =
 function () {
   function TypeInfo(schema, // NOTE: this experimental optional second parameter is only needed in order
   // to support non-spec-compliant codebases. You should never need to use it.
+  // It may disappear in the future.
   getFieldDefFn, // Initial type may be provided in rare cases to facilitate traversals
+  // beginning somewhere other than documents.
   initialType) {
     this._schema = schema;
     this._typeStack = [];
@@ -14037,128 +14152,146 @@ function () {
 
     switch (node.kind) {
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].SELECTION_SET:
-        var namedType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNamedType */ "A"])(this.getType());
+        {
+          var namedType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNamedType */ "A"])(this.getType());
 
-        this._parentTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isCompositeType */ "D"])(namedType) ? namedType : undefined);
+          this._parentTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isCompositeType */ "D"])(namedType) ? namedType : undefined);
 
-        break;
-
-      case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].FIELD:
-        var parentType = this.getParentType();
-        var fieldDef;
-        var fieldType;
-
-        if (parentType) {
-          fieldDef = this._getFieldDef(schema, parentType, node);
-
-          if (fieldDef) {
-            fieldType = fieldDef.type;
-          }
+          break;
         }
 
-        this._fieldDefStack.push(fieldDef);
+      case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].FIELD:
+        {
+          var parentType = this.getParentType();
+          var fieldDef;
+          var fieldType;
 
-        this._typeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isOutputType */ "O"])(fieldType) ? fieldType : undefined);
+          if (parentType) {
+            fieldDef = this._getFieldDef(schema, parentType, node);
 
-        break;
+            if (fieldDef) {
+              fieldType = fieldDef.type;
+            }
+          }
+
+          this._fieldDefStack.push(fieldDef);
+
+          this._typeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isOutputType */ "O"])(fieldType) ? fieldType : undefined);
+
+          break;
+        }
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].DIRECTIVE:
         this._directive = schema.getDirective(node.name.value);
         break;
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].OPERATION_DEFINITION:
-        var type;
+        {
+          var type;
 
-        if (node.operation === 'query') {
-          type = schema.getQueryType();
-        } else if (node.operation === 'mutation') {
-          type = schema.getMutationType();
-        } else if (node.operation === 'subscription') {
-          type = schema.getSubscriptionType();
+          if (node.operation === 'query') {
+            type = schema.getQueryType();
+          } else if (node.operation === 'mutation') {
+            type = schema.getMutationType();
+          } else if (node.operation === 'subscription') {
+            type = schema.getSubscriptionType();
+          }
+
+          this._typeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(type) ? type : undefined);
+
+          break;
         }
-
-        this._typeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(type) ? type : undefined);
-
-        break;
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].INLINE_FRAGMENT:
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].FRAGMENT_DEFINITION:
-        var typeConditionAST = node.typeCondition;
-        var outputType = typeConditionAST ? Object(_typeFromAST__WEBPACK_IMPORTED_MODULE_4__[/* typeFromAST */ "a"])(schema, typeConditionAST) : Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNamedType */ "A"])(this.getType());
+        {
+          var typeConditionAST = node.typeCondition;
+          var outputType = typeConditionAST ? Object(_typeFromAST__WEBPACK_IMPORTED_MODULE_4__[/* typeFromAST */ "a"])(schema, typeConditionAST) : Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNamedType */ "A"])(this.getType());
 
-        this._typeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isOutputType */ "O"])(outputType) ? outputType : undefined);
+          this._typeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isOutputType */ "O"])(outputType) ? outputType : undefined);
 
-        break;
+          break;
+        }
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].VARIABLE_DEFINITION:
-        var inputType = Object(_typeFromAST__WEBPACK_IMPORTED_MODULE_4__[/* typeFromAST */ "a"])(schema, node.type);
+        {
+          var inputType = Object(_typeFromAST__WEBPACK_IMPORTED_MODULE_4__[/* typeFromAST */ "a"])(schema, node.type);
 
-        this._inputTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputType */ "G"])(inputType) ? inputType : undefined);
+          this._inputTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputType */ "G"])(inputType) ? inputType : undefined);
 
-        break;
+          break;
+        }
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].ARGUMENT:
-        var argDef;
-        var argType;
-        var fieldOrDirective = this.getDirective() || this.getFieldDef();
+        {
+          var argDef;
+          var argType;
+          var fieldOrDirective = this.getDirective() || this.getFieldDef();
 
-        if (fieldOrDirective) {
-          argDef = Object(_polyfills_find__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(fieldOrDirective.args, function (arg) {
-            return arg.name === node.name.value;
-          });
+          if (fieldOrDirective) {
+            argDef = Object(_polyfills_find__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(fieldOrDirective.args, function (arg) {
+              return arg.name === node.name.value;
+            });
 
-          if (argDef) {
-            argType = argDef.type;
+            if (argDef) {
+              argType = argDef.type;
+            }
           }
+
+          this._argument = argDef;
+
+          this._defaultValueStack.push(argDef ? argDef.defaultValue : undefined);
+
+          this._inputTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputType */ "G"])(argType) ? argType : undefined);
+
+          break;
         }
-
-        this._argument = argDef;
-
-        this._defaultValueStack.push(argDef ? argDef.defaultValue : undefined);
-
-        this._inputTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputType */ "G"])(argType) ? argType : undefined);
-
-        break;
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].LIST:
-        var listType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNullableType */ "B"])(this.getInputType());
-        var itemType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isListType */ "J"])(listType) ? listType.ofType : listType; // List positions never have a default value.
+        {
+          var listType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNullableType */ "B"])(this.getInputType());
+          var itemType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isListType */ "J"])(listType) ? listType.ofType : listType; // List positions never have a default value.
 
-        this._defaultValueStack.push(undefined);
+          this._defaultValueStack.push(undefined);
 
-        this._inputTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputType */ "G"])(itemType) ? itemType : undefined);
+          this._inputTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputType */ "G"])(itemType) ? itemType : undefined);
 
-        break;
+          break;
+        }
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].OBJECT_FIELD:
-        var objectType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNamedType */ "A"])(this.getInputType());
-        var inputFieldType;
-        var inputField;
+        {
+          var objectType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNamedType */ "A"])(this.getInputType());
+          var inputFieldType;
+          var inputField;
 
-        if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputObjectType */ "F"])(objectType)) {
-          inputField = objectType.getFields()[node.name.value];
+          if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputObjectType */ "F"])(objectType)) {
+            inputField = objectType.getFields()[node.name.value];
 
-          if (inputField) {
-            inputFieldType = inputField.type;
+            if (inputField) {
+              inputFieldType = inputField.type;
+            }
           }
+
+          this._defaultValueStack.push(inputField ? inputField.defaultValue : undefined);
+
+          this._inputTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputType */ "G"])(inputFieldType) ? inputFieldType : undefined);
+
+          break;
         }
-
-        this._defaultValueStack.push(inputField ? inputField.defaultValue : undefined);
-
-        this._inputTypeStack.push(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputType */ "G"])(inputFieldType) ? inputFieldType : undefined);
-
-        break;
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].ENUM:
-        var enumType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNamedType */ "A"])(this.getInputType());
-        var enumValue;
+        {
+          var enumType = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* getNamedType */ "A"])(this.getInputType());
+          var enumValue;
 
-        if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isEnumType */ "E"])(enumType)) {
-          enumValue = enumType.getValue(node.value);
+          if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isEnumType */ "E"])(enumType)) {
+            enumValue = enumType.getValue(node.value);
+          }
+
+          this._enumValue = enumValue;
+          break;
         }
-
-        this._enumValue = enumValue;
-        break;
     }
   };
 
@@ -14243,6 +14376,7 @@ function getFieldDef(schema, parentType, fieldNode) {
   }
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/assertValidName.mjs":
@@ -14297,6 +14431,7 @@ function isValidNameError(name, node) {
     return new _error_GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]("Names must match /^[_a-zA-Z][_a-zA-Z0-9]*$/ but \"".concat(name, "\" does not."), node);
   }
 }
+
 
 /***/ }),
 
@@ -14517,6 +14652,7 @@ function astFromValue(value, type) {
  */
 
 var integerStringRegExp = /^-?(?:0|[1-9][0-9]*)$/;
+
 
 /***/ }),
 
@@ -14781,6 +14917,7 @@ function () {
   _proto.buildArg = function buildArg(value) {
     // Note: While this could make assertions to get the correctly typed
     // value, that would throw immediately while type system validation
+    // with validateSchema() will produce more actionable results.
     var type = this.getWrappedType(value.type);
     return {
       type: type,
@@ -14793,6 +14930,7 @@ function () {
   _proto.buildInputField = function buildInputField(value) {
     // Note: While this could make assertions to get the correctly typed
     // value, that would throw immediately while type system validation
+    // with validateSchema() will produce more actionable results.
     var type = this.getWrappedType(value.type);
     return {
       type: type,
@@ -15021,6 +15159,7 @@ function buildSchema(source, options) {
   return buildASTSchema(Object(_language_parser__WEBPACK_IMPORTED_MODULE_9__[/* parse */ "a"])(source, options), options);
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/buildClientSchema.mjs":
@@ -15086,11 +15225,12 @@ function buildClientSchema(introspection, options) {
     return buildType(typeIntrospection);
   });
 
-  var _arr = [].concat(_type_scalars__WEBPACK_IMPORTED_MODULE_10__[/* specifiedScalarTypes */ "g"], _type_introspection__WEBPACK_IMPORTED_MODULE_9__[/* introspectionTypes */ "m"]);
-
-  for (var _i = 0; _i < _arr.length; _i++) {
+  for (var _i = 0, _arr = [].concat(_type_scalars__WEBPACK_IMPORTED_MODULE_10__[/* specifiedScalarTypes */ "g"], _type_introspection__WEBPACK_IMPORTED_MODULE_9__[/* introspectionTypes */ "m"]); _i < _arr.length; _i++) {
     var stdType = _arr[_i];
-    typeMap[stdType.name] = stdType;
+
+    if (typeMap[stdType.name]) {
+      typeMap[stdType.name] = stdType;
+    }
   } // Get the root Query, Mutation, and Subscription types.
 
 
@@ -15340,6 +15480,7 @@ function buildClientSchema(introspection, options) {
   }
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/coerceValue.mjs":
@@ -15508,10 +15649,8 @@ function coerceValue(value, type, blameNode, path) {
       }
     }
 
-    var _arr = Object.keys(value);
-
-    for (var _i = 0; _i < _arr.length; _i++) {
-      var fieldName = _arr[_i];
+    for (var _i = 0, _Object$keys = Object.keys(value); _i < _Object$keys.length; _i++) {
+      var fieldName = _Object$keys[_i];
 
       if (!fields[fieldName]) {
         var _suggestions = Object(_jsutils_suggestionList__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(fieldName, Object.keys(fields));
@@ -15575,6 +15714,7 @@ function printPath(path) {
   return pathStr ? 'value' + pathStr : '';
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/concatAST.mjs":
@@ -15611,6 +15751,7 @@ function concatAST(asts) {
     })
   };
 }
+
 
 /***/ }),
 
@@ -15816,10 +15957,8 @@ function extendSchema(schema, documentAST, options) {
   } // Then, incorporate schema definition and all schema extensions.
 
 
-  var _arr = schemaExts;
-
-  for (var _i = 0; _i < _arr.length; _i++) {
-    var schemaExt = _arr[_i];
+  for (var _i = 0, _schemaExts = schemaExts; _i < _schemaExts.length; _i++) {
+    var schemaExt = _schemaExts[_i];
 
     if (schemaExt.operationTypes) {
       var _iteratorNormalCompletion4 = true;
@@ -16045,13 +16184,14 @@ function extendSchema(schema, documentAST, options) {
   }
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/findBreakingChanges.mjs":
 /*!********************************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/graphql/utilities/findBreakingChanges.mjs ***!
   \********************************************************************************************************/
-/*! exports provided: BreakingChangeType, DangerousChangeType, findBreakingChanges, findDangerousChanges, findRemovedTypes, findTypesThatChangedKind, findArgChanges, findFieldsThatChangedTypeOnObjectOrInterfaceTypes, findFieldsThatChangedTypeOnInputObjectTypes, findTypesRemovedFromUnions, findTypesAddedToUnions, findValuesRemovedFromEnums, findValuesAddedToEnums, findInterfacesRemovedFromObjectTypes, findInterfacesAddedToObjectTypes, findRemovedDirectives, findRemovedDirectiveArgs, findAddedNonNullDirectiveArgs, findRemovedLocationsForDirective, findRemovedDirectiveLocations */
+/*! exports provided: BreakingChangeType, DangerousChangeType, findBreakingChanges, findDangerousChanges */
 /*! exports used: BreakingChangeType, DangerousChangeType, findBreakingChanges, findDangerousChanges */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
@@ -16060,25 +16200,10 @@ function extendSchema(schema, documentAST, options) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return DangerousChangeType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return findBreakingChanges; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return findDangerousChanges; });
-/* unused harmony export findRemovedTypes */
-/* unused harmony export findTypesThatChangedKind */
-/* unused harmony export findArgChanges */
-/* unused harmony export findFieldsThatChangedTypeOnObjectOrInterfaceTypes */
-/* unused harmony export findFieldsThatChangedTypeOnInputObjectTypes */
-/* unused harmony export findTypesRemovedFromUnions */
-/* unused harmony export findTypesAddedToUnions */
-/* unused harmony export findValuesRemovedFromEnums */
-/* unused harmony export findValuesAddedToEnums */
-/* unused harmony export findInterfacesRemovedFromObjectTypes */
-/* unused harmony export findInterfacesAddedToObjectTypes */
-/* unused harmony export findRemovedDirectives */
-/* unused harmony export findRemovedDirectiveArgs */
-/* unused harmony export findAddedNonNullDirectiveArgs */
-/* unused harmony export findRemovedLocationsForDirective */
-/* unused harmony export findRemovedDirectiveLocations */
 /* harmony import */ var _polyfills_find__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../polyfills/find */ "../../node_modules/graphql/polyfills/find.mjs");
-/* harmony import */ var _type_definition__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../type/definition */ "../../node_modules/graphql/type/definition.mjs");
-/* harmony import */ var _jsutils_keyMap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../jsutils/keyMap */ "../../node_modules/graphql/jsutils/keyMap.mjs");
+/* harmony import */ var _jsutils_inspect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/inspect */ "../../node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _type_definition__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../type/definition */ "../../node_modules/graphql/type/definition.mjs");
+/* harmony import */ var _jsutils_keyMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../jsutils/keyMap */ "../../node_modules/graphql/jsutils/keyMap.mjs");
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -16087,6 +16212,7 @@ function extendSchema(schema, documentAST, options) {
  *
  * 
  */
+
 
 
 
@@ -16141,10 +16267,8 @@ function findRemovedTypes(oldSchema, newSchema) {
   var newTypeMap = newSchema.getTypeMap();
   var breakingChanges = [];
 
-  var _arr = Object.keys(oldTypeMap);
-
-  for (var _i = 0; _i < _arr.length; _i++) {
-    var typeName = _arr[_i];
+  for (var _i = 0, _Object$keys = Object.keys(oldTypeMap); _i < _Object$keys.length; _i++) {
+    var typeName = _Object$keys[_i];
 
     if (!newTypeMap[typeName]) {
       breakingChanges.push({
@@ -16161,15 +16285,14 @@ function findRemovedTypes(oldSchema, newSchema) {
  * changes in the newSchema related to changing the type of a type.
  */
 
+
 function findTypesThatChangedKind(oldSchema, newSchema) {
   var oldTypeMap = oldSchema.getTypeMap();
   var newTypeMap = newSchema.getTypeMap();
   var breakingChanges = [];
 
-  var _arr2 = Object.keys(oldTypeMap);
-
-  for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
-    var typeName = _arr2[_i2];
+  for (var _i2 = 0, _Object$keys2 = Object.keys(oldTypeMap); _i2 < _Object$keys2.length; _i2++) {
+    var typeName = _Object$keys2[_i2];
 
     if (!newTypeMap[typeName]) {
       continue;
@@ -16195,30 +16318,27 @@ function findTypesThatChangedKind(oldSchema, newSchema) {
  * argument's default value).
  */
 
+
 function findArgChanges(oldSchema, newSchema) {
   var oldTypeMap = oldSchema.getTypeMap();
   var newTypeMap = newSchema.getTypeMap();
   var breakingChanges = [];
   var dangerousChanges = [];
 
-  var _arr3 = Object.keys(oldTypeMap);
-
-  for (var _i3 = 0; _i3 < _arr3.length; _i3++) {
-    var typeName = _arr3[_i3];
+  for (var _i3 = 0, _Object$keys3 = Object.keys(oldTypeMap); _i3 < _Object$keys3.length; _i3++) {
+    var typeName = _Object$keys3[_i3];
     var oldType = oldTypeMap[typeName];
     var newType = newTypeMap[typeName];
 
-    if (!(Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isObjectType */ "N"])(oldType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isInterfaceType */ "H"])(oldType)) || !(Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isObjectType */ "N"])(newType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isInterfaceType */ "H"])(newType)) || newType.constructor !== oldType.constructor) {
+    if (!(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(oldType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInterfaceType */ "H"])(oldType)) || !(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(newType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInterfaceType */ "H"])(newType)) || newType.constructor !== oldType.constructor) {
       continue;
     }
 
     var oldTypeFields = oldType.getFields();
     var newTypeFields = newType.getFields();
 
-    var _arr4 = Object.keys(oldTypeFields);
-
-    for (var _i4 = 0; _i4 < _arr4.length; _i4++) {
-      var fieldName = _arr4[_i4];
+    for (var _i4 = 0, _Object$keys4 = Object.keys(oldTypeFields); _i4 < _Object$keys4.length; _i4++) {
+      var fieldName = _Object$keys4[_i4];
 
       if (!newTypeFields[fieldName]) {
         continue;
@@ -16292,7 +16412,7 @@ function findArgChanges(oldSchema, newSchema) {
           if (!oldArgDef) {
             var argName = newArgDef.name;
 
-            if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isRequiredArgument */ "P"])(newArgDef)) {
+            if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isRequiredArgument */ "P"])(newArgDef)) {
               breakingChanges.push({
                 type: BreakingChangeType.REQUIRED_ARG_ADDED,
                 description: "A required arg ".concat(argName, " on ") + "".concat(typeName, ".").concat(fieldName, " was added")
@@ -16333,31 +16453,34 @@ function findArgChanges(oldSchema, newSchema) {
 }
 
 function typeKindName(type) {
-  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isScalarType */ "R"])(type)) {
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isScalarType */ "R"])(type)) {
     return 'a Scalar type';
   }
 
-  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isObjectType */ "N"])(type)) {
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(type)) {
     return 'an Object type';
   }
 
-  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isInterfaceType */ "H"])(type)) {
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInterfaceType */ "H"])(type)) {
     return 'an Interface type';
   }
 
-  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isUnionType */ "T"])(type)) {
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isUnionType */ "T"])(type)) {
     return 'a Union type';
   }
 
-  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isEnumType */ "E"])(type)) {
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isEnumType */ "E"])(type)) {
     return 'an Enum type';
   }
 
-  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isInputObjectType */ "F"])(type)) {
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputObjectType */ "F"])(type)) {
     return 'an Input type';
-  }
+  } // Not reachable. All possible named types have been considered.
 
-  throw new TypeError('Unknown type ' + type.constructor.name);
+  /* istanbul ignore next */
+
+
+  throw new TypeError("Unexpected type: ".concat(Object(_jsutils_inspect__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(type), "."));
 }
 
 function findFieldsThatChangedTypeOnObjectOrInterfaceTypes(oldSchema, newSchema) {
@@ -16365,24 +16488,20 @@ function findFieldsThatChangedTypeOnObjectOrInterfaceTypes(oldSchema, newSchema)
   var newTypeMap = newSchema.getTypeMap();
   var breakingChanges = [];
 
-  var _arr5 = Object.keys(oldTypeMap);
-
-  for (var _i5 = 0; _i5 < _arr5.length; _i5++) {
-    var typeName = _arr5[_i5];
+  for (var _i5 = 0, _Object$keys5 = Object.keys(oldTypeMap); _i5 < _Object$keys5.length; _i5++) {
+    var typeName = _Object$keys5[_i5];
     var oldType = oldTypeMap[typeName];
     var newType = newTypeMap[typeName];
 
-    if (!(Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isObjectType */ "N"])(oldType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isInterfaceType */ "H"])(oldType)) || !(Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isObjectType */ "N"])(newType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isInterfaceType */ "H"])(newType)) || newType.constructor !== oldType.constructor) {
+    if (!(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(oldType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInterfaceType */ "H"])(oldType)) || !(Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(newType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInterfaceType */ "H"])(newType)) || newType.constructor !== oldType.constructor) {
       continue;
     }
 
     var oldTypeFieldsDef = oldType.getFields();
     var newTypeFieldsDef = newType.getFields();
 
-    var _arr6 = Object.keys(oldTypeFieldsDef);
-
-    for (var _i6 = 0; _i6 < _arr6.length; _i6++) {
-      var fieldName = _arr6[_i6];
+    for (var _i6 = 0, _Object$keys6 = Object.keys(oldTypeFieldsDef); _i6 < _Object$keys6.length; _i6++) {
+      var fieldName = _Object$keys6[_i6];
 
       // Check if the field is missing on the type in the new schema.
       if (!(fieldName in newTypeFieldsDef)) {
@@ -16396,8 +16515,8 @@ function findFieldsThatChangedTypeOnObjectOrInterfaceTypes(oldSchema, newSchema)
         var isSafe = isChangeSafeForObjectOrInterfaceField(oldFieldType, newFieldType);
 
         if (!isSafe) {
-          var oldFieldTypeString = Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNamedType */ "K"])(oldFieldType) ? oldFieldType.name : oldFieldType.toString();
-          var newFieldTypeString = Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNamedType */ "K"])(newFieldType) ? newFieldType.name : newFieldType.toString();
+          var oldFieldTypeString = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNamedType */ "K"])(oldFieldType) ? oldFieldType.name : oldFieldType.toString();
+          var newFieldTypeString = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNamedType */ "K"])(newFieldType) ? newFieldType.name : newFieldType.toString();
           breakingChanges.push({
             type: BreakingChangeType.FIELD_CHANGED_KIND,
             description: "".concat(typeName, ".").concat(fieldName, " changed type from ") + "".concat(oldFieldTypeString, " to ").concat(newFieldTypeString, ".")
@@ -16409,30 +16528,27 @@ function findFieldsThatChangedTypeOnObjectOrInterfaceTypes(oldSchema, newSchema)
 
   return breakingChanges;
 }
+
 function findFieldsThatChangedTypeOnInputObjectTypes(oldSchema, newSchema) {
   var oldTypeMap = oldSchema.getTypeMap();
   var newTypeMap = newSchema.getTypeMap();
   var breakingChanges = [];
   var dangerousChanges = [];
 
-  var _arr7 = Object.keys(oldTypeMap);
-
-  for (var _i7 = 0; _i7 < _arr7.length; _i7++) {
-    var typeName = _arr7[_i7];
+  for (var _i7 = 0, _Object$keys7 = Object.keys(oldTypeMap); _i7 < _Object$keys7.length; _i7++) {
+    var typeName = _Object$keys7[_i7];
     var oldType = oldTypeMap[typeName];
     var newType = newTypeMap[typeName];
 
-    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isInputObjectType */ "F"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isInputObjectType */ "F"])(newType)) {
+    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputObjectType */ "F"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isInputObjectType */ "F"])(newType)) {
       continue;
     }
 
     var oldTypeFieldsDef = oldType.getFields();
     var newTypeFieldsDef = newType.getFields();
 
-    var _arr8 = Object.keys(oldTypeFieldsDef);
-
-    for (var _i8 = 0; _i8 < _arr8.length; _i8++) {
-      var fieldName = _arr8[_i8];
+    for (var _i8 = 0, _Object$keys8 = Object.keys(oldTypeFieldsDef); _i8 < _Object$keys8.length; _i8++) {
+      var fieldName = _Object$keys8[_i8];
 
       // Check if the field is missing on the type in the new schema.
       if (!(fieldName in newTypeFieldsDef)) {
@@ -16446,8 +16562,8 @@ function findFieldsThatChangedTypeOnInputObjectTypes(oldSchema, newSchema) {
         var isSafe = isChangeSafeForInputObjectFieldOrFieldArg(oldFieldType, newFieldType);
 
         if (!isSafe) {
-          var oldFieldTypeString = Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNamedType */ "K"])(oldFieldType) ? oldFieldType.name : oldFieldType.toString();
-          var newFieldTypeString = Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNamedType */ "K"])(newFieldType) ? newFieldType.name : newFieldType.toString();
+          var oldFieldTypeString = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNamedType */ "K"])(oldFieldType) ? oldFieldType.name : oldFieldType.toString();
+          var newFieldTypeString = Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNamedType */ "K"])(newFieldType) ? newFieldType.name : newFieldType.toString();
           breakingChanges.push({
             type: BreakingChangeType.FIELD_CHANGED_KIND,
             description: "".concat(typeName, ".").concat(fieldName, " changed type from ") + "".concat(oldFieldTypeString, " to ").concat(newFieldTypeString, ".")
@@ -16457,13 +16573,11 @@ function findFieldsThatChangedTypeOnInputObjectTypes(oldSchema, newSchema) {
     } // Check if a field was added to the input object type
 
 
-    var _arr9 = Object.keys(newTypeFieldsDef);
-
-    for (var _i9 = 0; _i9 < _arr9.length; _i9++) {
-      var _fieldName = _arr9[_i9];
+    for (var _i9 = 0, _Object$keys9 = Object.keys(newTypeFieldsDef); _i9 < _Object$keys9.length; _i9++) {
+      var _fieldName = _Object$keys9[_i9];
 
       if (!(_fieldName in oldTypeFieldsDef)) {
-        if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isRequiredInputField */ "Q"])(newTypeFieldsDef[_fieldName])) {
+        if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isRequiredInputField */ "Q"])(newTypeFieldsDef[_fieldName])) {
           breakingChanges.push({
             type: BreakingChangeType.REQUIRED_INPUT_FIELD_ADDED,
             description: "A required field ".concat(_fieldName, " on ") + "input type ".concat(typeName, " was added.")
@@ -16485,40 +16599,40 @@ function findFieldsThatChangedTypeOnInputObjectTypes(oldSchema, newSchema) {
 }
 
 function isChangeSafeForObjectOrInterfaceField(oldType, newType) {
-  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNamedType */ "K"])(oldType)) {
-    return (// if they're both named types, see if their names are equivalent
-      Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNamedType */ "K"])(newType) && oldType.name === newType.name || // moving from nullable to non-null of the same underlying type is safe
-      Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNonNullType */ "L"])(newType) && isChangeSafeForObjectOrInterfaceField(oldType, newType.ofType)
-    );
-  } else if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isListType */ "J"])(oldType)) {
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isListType */ "J"])(oldType)) {
     return (// if they're both lists, make sure the underlying types are compatible
-      Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isListType */ "J"])(newType) && isChangeSafeForObjectOrInterfaceField(oldType.ofType, newType.ofType) || // moving from nullable to non-null of the same underlying type is safe
-      Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNonNullType */ "L"])(newType) && isChangeSafeForObjectOrInterfaceField(oldType, newType.ofType)
+      Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isListType */ "J"])(newType) && isChangeSafeForObjectOrInterfaceField(oldType.ofType, newType.ofType) || // moving from nullable to non-null of the same underlying type is safe
+      Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNonNullType */ "L"])(newType) && isChangeSafeForObjectOrInterfaceField(oldType, newType.ofType)
     );
-  } else if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNonNullType */ "L"])(oldType)) {
-    // if they're both non-null, make sure the underlying types are compatible
-    return Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNonNullType */ "L"])(newType) && isChangeSafeForObjectOrInterfaceField(oldType.ofType, newType.ofType);
   }
 
-  return false;
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNonNullType */ "L"])(oldType)) {
+    // if they're both non-null, make sure the underlying types are compatible
+    return Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNonNullType */ "L"])(newType) && isChangeSafeForObjectOrInterfaceField(oldType.ofType, newType.ofType);
+  }
+
+  return (// if they're both named types, see if their names are equivalent
+    Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNamedType */ "K"])(newType) && oldType.name === newType.name || // moving from nullable to non-null of the same underlying type is safe
+    Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNonNullType */ "L"])(newType) && isChangeSafeForObjectOrInterfaceField(oldType, newType.ofType)
+  );
 }
 
 function isChangeSafeForInputObjectFieldOrFieldArg(oldType, newType) {
-  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNamedType */ "K"])(oldType)) {
-    // if they're both named types, see if their names are equivalent
-    return Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNamedType */ "K"])(newType) && oldType.name === newType.name;
-  } else if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isListType */ "J"])(oldType)) {
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isListType */ "J"])(oldType)) {
     // if they're both lists, make sure the underlying types are compatible
-    return Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isListType */ "J"])(newType) && isChangeSafeForInputObjectFieldOrFieldArg(oldType.ofType, newType.ofType);
-  } else if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNonNullType */ "L"])(oldType)) {
-    return (// if they're both non-null, make sure the underlying types are
-      // compatible
-      Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNonNullType */ "L"])(newType) && isChangeSafeForInputObjectFieldOrFieldArg(oldType.ofType, newType.ofType) || // moving from non-null to nullable of the same underlying type is safe
-      !Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isNonNullType */ "L"])(newType) && isChangeSafeForInputObjectFieldOrFieldArg(oldType.ofType, newType)
-    );
+    return Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isListType */ "J"])(newType) && isChangeSafeForInputObjectFieldOrFieldArg(oldType.ofType, newType.ofType);
   }
 
-  return false;
+  if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNonNullType */ "L"])(oldType)) {
+    return (// if they're both non-null, make sure the underlying types are
+      // compatible
+      Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNonNullType */ "L"])(newType) && isChangeSafeForInputObjectFieldOrFieldArg(oldType.ofType, newType.ofType) || // moving from non-null to nullable of the same underlying type is safe
+      !Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNonNullType */ "L"])(newType) && isChangeSafeForInputObjectFieldOrFieldArg(oldType.ofType, newType)
+    );
+  } // if they're both named types, see if their names are equivalent
+
+
+  return Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isNamedType */ "K"])(newType) && oldType.name === newType.name;
 }
 /**
  * Given two schemas, returns an Array containing descriptions of any breaking
@@ -16531,14 +16645,12 @@ function findTypesRemovedFromUnions(oldSchema, newSchema) {
   var newTypeMap = newSchema.getTypeMap();
   var typesRemovedFromUnion = [];
 
-  var _arr10 = Object.keys(oldTypeMap);
-
-  for (var _i10 = 0; _i10 < _arr10.length; _i10++) {
-    var typeName = _arr10[_i10];
+  for (var _i10 = 0, _Object$keys10 = Object.keys(oldTypeMap); _i10 < _Object$keys10.length; _i10++) {
+    var typeName = _Object$keys10[_i10];
     var oldType = oldTypeMap[typeName];
     var newType = newTypeMap[typeName];
 
-    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isUnionType */ "T"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isUnionType */ "T"])(newType)) {
+    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isUnionType */ "T"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isUnionType */ "T"])(newType)) {
       continue;
     }
 
@@ -16605,19 +16717,18 @@ function findTypesRemovedFromUnions(oldSchema, newSchema) {
  * changes in the newSchema related to adding types to a union type.
  */
 
+
 function findTypesAddedToUnions(oldSchema, newSchema) {
   var oldTypeMap = oldSchema.getTypeMap();
   var newTypeMap = newSchema.getTypeMap();
   var typesAddedToUnion = [];
 
-  var _arr11 = Object.keys(newTypeMap);
-
-  for (var _i11 = 0; _i11 < _arr11.length; _i11++) {
-    var typeName = _arr11[_i11];
+  for (var _i11 = 0, _Object$keys11 = Object.keys(newTypeMap); _i11 < _Object$keys11.length; _i11++) {
+    var typeName = _Object$keys11[_i11];
     var oldType = oldTypeMap[typeName];
     var newType = newTypeMap[typeName];
 
-    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isUnionType */ "T"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isUnionType */ "T"])(newType)) {
+    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isUnionType */ "T"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isUnionType */ "T"])(newType)) {
       continue;
     }
 
@@ -16684,19 +16795,18 @@ function findTypesAddedToUnions(oldSchema, newSchema) {
  * changes in the newSchema related to removing values from an enum type.
  */
 
+
 function findValuesRemovedFromEnums(oldSchema, newSchema) {
   var oldTypeMap = oldSchema.getTypeMap();
   var newTypeMap = newSchema.getTypeMap();
   var valuesRemovedFromEnums = [];
 
-  var _arr12 = Object.keys(oldTypeMap);
-
-  for (var _i12 = 0; _i12 < _arr12.length; _i12++) {
-    var typeName = _arr12[_i12];
+  for (var _i12 = 0, _Object$keys12 = Object.keys(oldTypeMap); _i12 < _Object$keys12.length; _i12++) {
+    var typeName = _Object$keys12[_i12];
     var oldType = oldTypeMap[typeName];
     var newType = newTypeMap[typeName];
 
-    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isEnumType */ "E"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isEnumType */ "E"])(newType)) {
+    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isEnumType */ "E"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isEnumType */ "E"])(newType)) {
       continue;
     }
 
@@ -16763,19 +16873,18 @@ function findValuesRemovedFromEnums(oldSchema, newSchema) {
  * changes in the newSchema related to adding values to an enum type.
  */
 
+
 function findValuesAddedToEnums(oldSchema, newSchema) {
   var oldTypeMap = oldSchema.getTypeMap();
   var newTypeMap = newSchema.getTypeMap();
   var valuesAddedToEnums = [];
 
-  var _arr13 = Object.keys(oldTypeMap);
-
-  for (var _i13 = 0; _i13 < _arr13.length; _i13++) {
-    var typeName = _arr13[_i13];
+  for (var _i13 = 0, _Object$keys13 = Object.keys(oldTypeMap); _i13 < _Object$keys13.length; _i13++) {
+    var typeName = _Object$keys13[_i13];
     var oldType = oldTypeMap[typeName];
     var newType = newTypeMap[typeName];
 
-    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isEnumType */ "E"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isEnumType */ "E"])(newType)) {
+    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isEnumType */ "E"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isEnumType */ "E"])(newType)) {
       continue;
     }
 
@@ -16837,19 +16946,18 @@ function findValuesAddedToEnums(oldSchema, newSchema) {
 
   return valuesAddedToEnums;
 }
+
 function findInterfacesRemovedFromObjectTypes(oldSchema, newSchema) {
   var oldTypeMap = oldSchema.getTypeMap();
   var newTypeMap = newSchema.getTypeMap();
   var breakingChanges = [];
 
-  var _arr14 = Object.keys(oldTypeMap);
-
-  for (var _i14 = 0; _i14 < _arr14.length; _i14++) {
-    var typeName = _arr14[_i14];
+  for (var _i14 = 0, _Object$keys14 = Object.keys(oldTypeMap); _i14 < _Object$keys14.length; _i14++) {
+    var typeName = _Object$keys14[_i14];
     var oldType = oldTypeMap[typeName];
     var newType = newTypeMap[typeName];
 
-    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isObjectType */ "N"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isObjectType */ "N"])(newType)) {
+    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(newType)) {
       continue;
     }
 
@@ -16894,19 +17002,18 @@ function findInterfacesRemovedFromObjectTypes(oldSchema, newSchema) {
 
   return breakingChanges;
 }
+
 function findInterfacesAddedToObjectTypes(oldSchema, newSchema) {
   var oldTypeMap = oldSchema.getTypeMap();
   var newTypeMap = newSchema.getTypeMap();
   var interfacesAddedToObjectTypes = [];
 
-  var _arr15 = Object.keys(newTypeMap);
-
-  for (var _i15 = 0; _i15 < _arr15.length; _i15++) {
-    var typeName = _arr15[_i15];
+  for (var _i15 = 0, _Object$keys15 = Object.keys(newTypeMap); _i15 < _Object$keys15.length; _i15++) {
+    var typeName = _Object$keys15[_i15];
     var oldType = oldTypeMap[typeName];
     var newType = newTypeMap[typeName];
 
-    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isObjectType */ "N"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isObjectType */ "N"])(newType)) {
+    if (!Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(oldType) || !Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isObjectType */ "N"])(newType)) {
       continue;
     }
 
@@ -16951,6 +17058,7 @@ function findInterfacesAddedToObjectTypes(oldSchema, newSchema) {
 
   return interfacesAddedToObjectTypes;
 }
+
 function findRemovedDirectives(oldSchema, newSchema) {
   var removedDirectives = [];
   var newSchemaDirectiveMap = getDirectiveMapForSchema(newSchema);
@@ -17138,7 +17246,7 @@ function findAddedNonNullDirectiveArgs(oldSchema, newSchema) {
         for (var _iterator19 = findAddedArgsForDirective(oldDirective, newDirective)[Symbol.iterator](), _step19; !(_iteratorNormalCompletion19 = (_step19 = _iterator19.next()).done); _iteratorNormalCompletion19 = true) {
           var arg = _step19.value;
 
-          if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_1__[/* isRequiredArgument */ "P"])(arg)) {
+          if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_2__[/* isRequiredArgument */ "P"])(arg)) {
             addedNonNullableArgs.push({
               type: BreakingChangeType.REQUIRED_DIRECTIVE_ARG_ADDED,
               description: "A required arg ".concat(arg.name, " on directive ") + "".concat(newDirective.name, " was added")
@@ -17177,6 +17285,7 @@ function findAddedNonNullDirectiveArgs(oldSchema, newSchema) {
 
   return addedNonNullableArgs;
 }
+
 function findRemovedLocationsForDirective(oldDirective, newDirective) {
   var removedLocations = [];
   var newLocationSet = new Set(newDirective.locations);
@@ -17209,6 +17318,7 @@ function findRemovedLocationsForDirective(oldDirective, newDirective) {
 
   return removedLocations;
 }
+
 function findRemovedDirectiveLocations(oldSchema, newSchema) {
   var removedLocations = [];
   var oldSchemaDirectiveMap = getDirectiveMapForSchema(oldSchema);
@@ -17271,16 +17381,17 @@ function findRemovedDirectiveLocations(oldSchema, newSchema) {
 }
 
 function getDirectiveMapForSchema(schema) {
-  return Object(_jsutils_keyMap__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(schema.getDirectives(), function (dir) {
+  return Object(_jsutils_keyMap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(schema.getDirectives(), function (dir) {
     return dir.name;
   });
 }
 
 function getArgumentMapForDirective(directive) {
-  return Object(_jsutils_keyMap__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(directive.args, function (arg) {
+  return Object(_jsutils_keyMap__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(directive.args, function (arg) {
     return arg.name;
   });
 }
+
 
 /***/ }),
 
@@ -17348,6 +17459,7 @@ function findDeprecatedUsages(schema, ast) {
   return errors;
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/getOperationAST.mjs":
@@ -17401,6 +17513,7 @@ function getOperationAST(documentAST, operationName) {
   return operation;
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/getOperationRootType.mjs":
@@ -17428,38 +17541,39 @@ function getOperationAST(documentAST, operationName) {
  * Extracts the root type of the operation from the schema.
  */
 function getOperationRootType(schema, operation) {
-  switch (operation.operation) {
-    case 'query':
-      var queryType = schema.getQueryType();
+  if (operation.operation === 'query') {
+    var queryType = schema.getQueryType();
 
-      if (!queryType) {
-        throw new _error_GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]('Schema does not define the required query root type.', operation);
-      }
+    if (!queryType) {
+      throw new _error_GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]('Schema does not define the required query root type.', operation);
+    }
 
-      return queryType;
-
-    case 'mutation':
-      var mutationType = schema.getMutationType();
-
-      if (!mutationType) {
-        throw new _error_GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]('Schema is not configured for mutations.', operation);
-      }
-
-      return mutationType;
-
-    case 'subscription':
-      var subscriptionType = schema.getSubscriptionType();
-
-      if (!subscriptionType) {
-        throw new _error_GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]('Schema is not configured for subscriptions.', operation);
-      }
-
-      return subscriptionType;
-
-    default:
-      throw new _error_GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]('Can only have query, mutation and subscription operations.', operation);
+    return queryType;
   }
+
+  if (operation.operation === 'mutation') {
+    var mutationType = schema.getMutationType();
+
+    if (!mutationType) {
+      throw new _error_GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]('Schema is not configured for mutations.', operation);
+    }
+
+    return mutationType;
+  }
+
+  if (operation.operation === 'subscription') {
+    var subscriptionType = schema.getSubscriptionType();
+
+    if (!subscriptionType) {
+      throw new _error_GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]('Schema is not configured for subscriptions.', operation);
+    }
+
+    return subscriptionType;
+  }
+
+  throw new _error_GraphQLError__WEBPACK_IMPORTED_MODULE_0__[/* GraphQLError */ "a"]('Can only have query, mutation and subscription operations.', operation);
 }
+
 
 /***/ }),
 
@@ -17467,8 +17581,8 @@ function getOperationRootType(schema, operation) {
 /*!******************************************************************************************!*\
   !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/graphql/utilities/index.mjs ***!
   \******************************************************************************************/
-/*! exports provided: getIntrospectionQuery, introspectionQuery, getOperationAST, getOperationRootType, introspectionFromSchema, buildClientSchema, buildASTSchema, buildSchema, getDescription, extendSchema, lexicographicSortSchema, printSchema, printType, printIntrospectionSchema, typeFromAST, valueFromAST, valueFromASTUntyped, astFromValue, TypeInfo, coerceValue, isValidJSValue, isValidLiteralValue, concatAST, separateOperations, isEqualType, isTypeSubTypeOf, doTypesOverlap, assertValidName, isValidNameError, BreakingChangeType, DangerousChangeType, findBreakingChanges, findDangerousChanges, findDeprecatedUsages */
-/*! exports used: BreakingChangeType, DangerousChangeType, TypeInfo, assertValidName, astFromValue, buildASTSchema, buildClientSchema, buildSchema, coerceValue, concatAST, doTypesOverlap, extendSchema, findBreakingChanges, findDangerousChanges, findDeprecatedUsages, getDescription, getIntrospectionQuery, getOperationAST, getOperationRootType, introspectionFromSchema, introspectionQuery, isEqualType, isTypeSubTypeOf, isValidJSValue, isValidLiteralValue, isValidNameError, lexicographicSortSchema, printIntrospectionSchema, printSchema, printType, separateOperations, typeFromAST, valueFromAST, valueFromASTUntyped */
+/*! exports provided: getIntrospectionQuery, introspectionQuery, getOperationAST, getOperationRootType, introspectionFromSchema, buildClientSchema, buildASTSchema, buildSchema, getDescription, extendSchema, lexicographicSortSchema, printSchema, printType, printIntrospectionSchema, typeFromAST, valueFromAST, valueFromASTUntyped, astFromValue, TypeInfo, coerceValue, isValidJSValue, isValidLiteralValue, concatAST, separateOperations, stripIgnoredCharacters, isEqualType, isTypeSubTypeOf, doTypesOverlap, assertValidName, isValidNameError, BreakingChangeType, DangerousChangeType, findBreakingChanges, findDangerousChanges, findDeprecatedUsages */
+/*! exports used: BreakingChangeType, DangerousChangeType, TypeInfo, assertValidName, astFromValue, buildASTSchema, buildClientSchema, buildSchema, coerceValue, concatAST, doTypesOverlap, extendSchema, findBreakingChanges, findDangerousChanges, findDeprecatedUsages, getDescription, getIntrospectionQuery, getOperationAST, getOperationRootType, introspectionFromSchema, introspectionQuery, isEqualType, isTypeSubTypeOf, isValidJSValue, isValidLiteralValue, isValidNameError, lexicographicSortSchema, printIntrospectionSchema, printSchema, printType, separateOperations, stripIgnoredCharacters, typeFromAST, valueFromAST, valueFromASTUntyped */
 /***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17510,13 +17624,13 @@ function getOperationRootType(schema, operation) {
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "B", function() { return _schemaPrinter__WEBPACK_IMPORTED_MODULE_8__["a"]; });
 
 /* harmony import */ var _typeFromAST__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./typeFromAST */ "../../node_modules/graphql/utilities/typeFromAST.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "F", function() { return _typeFromAST__WEBPACK_IMPORTED_MODULE_9__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "G", function() { return _typeFromAST__WEBPACK_IMPORTED_MODULE_9__["a"]; });
 
 /* harmony import */ var _valueFromAST__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./valueFromAST */ "../../node_modules/graphql/utilities/valueFromAST.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "G", function() { return _valueFromAST__WEBPACK_IMPORTED_MODULE_10__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "H", function() { return _valueFromAST__WEBPACK_IMPORTED_MODULE_10__["a"]; });
 
 /* harmony import */ var _valueFromASTUntyped__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./valueFromASTUntyped */ "../../node_modules/graphql/utilities/valueFromASTUntyped.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "H", function() { return _valueFromASTUntyped__WEBPACK_IMPORTED_MODULE_11__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "I", function() { return _valueFromASTUntyped__WEBPACK_IMPORTED_MODULE_11__["a"]; });
 
 /* harmony import */ var _astFromValue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./astFromValue */ "../../node_modules/graphql/utilities/astFromValue.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "e", function() { return _astFromValue__WEBPACK_IMPORTED_MODULE_12__["a"]; });
@@ -17539,29 +17653,32 @@ function getOperationRootType(schema, operation) {
 /* harmony import */ var _separateOperations__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./separateOperations */ "../../node_modules/graphql/utilities/separateOperations.mjs");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "E", function() { return _separateOperations__WEBPACK_IMPORTED_MODULE_18__["a"]; });
 
-/* harmony import */ var _typeComparators__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./typeComparators */ "../../node_modules/graphql/utilities/typeComparators.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "v", function() { return _typeComparators__WEBPACK_IMPORTED_MODULE_19__["b"]; });
+/* harmony import */ var _stripIgnoredCharacters__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./stripIgnoredCharacters */ "../../node_modules/graphql/utilities/stripIgnoredCharacters.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "F", function() { return _stripIgnoredCharacters__WEBPACK_IMPORTED_MODULE_19__["a"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "w", function() { return _typeComparators__WEBPACK_IMPORTED_MODULE_19__["c"]; });
+/* harmony import */ var _typeComparators__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./typeComparators */ "../../node_modules/graphql/utilities/typeComparators.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "v", function() { return _typeComparators__WEBPACK_IMPORTED_MODULE_20__["b"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "k", function() { return _typeComparators__WEBPACK_IMPORTED_MODULE_19__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "w", function() { return _typeComparators__WEBPACK_IMPORTED_MODULE_20__["c"]; });
 
-/* harmony import */ var _assertValidName__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./assertValidName */ "../../node_modules/graphql/utilities/assertValidName.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _assertValidName__WEBPACK_IMPORTED_MODULE_20__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "k", function() { return _typeComparators__WEBPACK_IMPORTED_MODULE_20__["a"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "z", function() { return _assertValidName__WEBPACK_IMPORTED_MODULE_20__["b"]; });
+/* harmony import */ var _assertValidName__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./assertValidName */ "../../node_modules/graphql/utilities/assertValidName.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _assertValidName__WEBPACK_IMPORTED_MODULE_21__["a"]; });
 
-/* harmony import */ var _findBreakingChanges__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./findBreakingChanges */ "../../node_modules/graphql/utilities/findBreakingChanges.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _findBreakingChanges__WEBPACK_IMPORTED_MODULE_21__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "z", function() { return _assertValidName__WEBPACK_IMPORTED_MODULE_21__["b"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _findBreakingChanges__WEBPACK_IMPORTED_MODULE_21__["b"]; });
+/* harmony import */ var _findBreakingChanges__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./findBreakingChanges */ "../../node_modules/graphql/utilities/findBreakingChanges.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _findBreakingChanges__WEBPACK_IMPORTED_MODULE_22__["a"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "m", function() { return _findBreakingChanges__WEBPACK_IMPORTED_MODULE_21__["c"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _findBreakingChanges__WEBPACK_IMPORTED_MODULE_22__["b"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "n", function() { return _findBreakingChanges__WEBPACK_IMPORTED_MODULE_21__["d"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "m", function() { return _findBreakingChanges__WEBPACK_IMPORTED_MODULE_22__["c"]; });
 
-/* harmony import */ var _findDeprecatedUsages__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./findDeprecatedUsages */ "../../node_modules/graphql/utilities/findDeprecatedUsages.mjs");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "o", function() { return _findDeprecatedUsages__WEBPACK_IMPORTED_MODULE_22__["a"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "n", function() { return _findBreakingChanges__WEBPACK_IMPORTED_MODULE_22__["d"]; });
+
+/* harmony import */ var _findDeprecatedUsages__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./findDeprecatedUsages */ "../../node_modules/graphql/utilities/findDeprecatedUsages.mjs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "o", function() { return _findDeprecatedUsages__WEBPACK_IMPORTED_MODULE_23__["a"]; });
 
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -17573,10 +17690,10 @@ function getOperationRootType(schema, operation) {
  */
 // The GraphQL query recommended for a full schema introspection.
 
-// Gets the target Operation from a Document
+// Gets the target Operation from a Document.
  // Gets the Type for the target Operation AST.
 
- // Convert a GraphQLSchema to an IntrospectionQuery
+ // Convert a GraphQLSchema to an IntrospectionQuery.
 
  // Build a GraphQLSchema from an introspection result.
 
@@ -17601,13 +17718,16 @@ function getOperationRootType(schema, operation) {
 
  // Coerces a JavaScript value to a GraphQL type, or produces errors.
 
- // @deprecated use coerceValue - will be removed in v15
+ // @deprecated use coerceValue - will be removed in v15.
 
  // @deprecated use validation - will be removed in v15
 
  // Concatenates multiple AST together.
 
  // Separates an AST into an AST per Operation.
+
+ // Strips characters that are not significant to the validity or execution
+// of a GraphQL document.
 
  // Comparators for types
 
@@ -17617,6 +17737,7 @@ function getOperationRootType(schema, operation) {
 
 
 // Report all deprecated usage within a GraphQL document.
+
 
 
 /***/ }),
@@ -17632,9 +17753,10 @@ function getOperationRootType(schema, operation) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return introspectionFromSchema; });
 /* harmony import */ var _jsutils_invariant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/invariant */ "../../node_modules/graphql/jsutils/invariant.mjs");
-/* harmony import */ var _introspectionQuery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./introspectionQuery */ "../../node_modules/graphql/utilities/introspectionQuery.mjs");
+/* harmony import */ var _jsutils_isPromise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../jsutils/isPromise */ "../../node_modules/graphql/jsutils/isPromise.mjs");
 /* harmony import */ var _execution_execute__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../execution/execute */ "../../node_modules/graphql/execution/execute.mjs");
 /* harmony import */ var _language_parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../language/parser */ "../../node_modules/graphql/language/parser.mjs");
+/* harmony import */ var _introspectionQuery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./introspectionQuery */ "../../node_modules/graphql/utilities/introspectionQuery.mjs");
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -17657,12 +17779,14 @@ function getOperationRootType(schema, operation) {
  * This is the inverse of buildClientSchema. The primary use case is outside
  * of the server context, for instance when doing schema comparisons.
  */
+
 function introspectionFromSchema(schema, options) {
-  var queryAST = Object(_language_parser__WEBPACK_IMPORTED_MODULE_3__[/* parse */ "a"])(Object(_introspectionQuery__WEBPACK_IMPORTED_MODULE_1__[/* getIntrospectionQuery */ "a"])(options));
+  var queryAST = Object(_language_parser__WEBPACK_IMPORTED_MODULE_3__[/* parse */ "a"])(Object(_introspectionQuery__WEBPACK_IMPORTED_MODULE_4__[/* getIntrospectionQuery */ "a"])(options));
   var result = Object(_execution_execute__WEBPACK_IMPORTED_MODULE_2__[/* execute */ "h"])(schema, queryAST);
-  !(!result.then && !result.errors && result.data) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(0) : void 0;
+  !(!Object(_jsutils_isPromise__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(result) && !result.errors && result.data) ? Object(_jsutils_invariant__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(0) : void 0;
   return result.data;
 }
+
 
 /***/ }),
 
@@ -17696,6 +17820,7 @@ function getIntrospectionQuery(options) {
  */
 
 var introspectionQuery = getIntrospectionQuery();
+
 
 /***/ }),
 
@@ -17733,6 +17858,7 @@ function isValidJSValue(value, type) {
     return error.message;
   }) : [];
 }
+
 
 /***/ }),
 
@@ -17786,6 +17912,7 @@ function isValidLiteralValue(type, valueNode) {
   Object(_language_visitor__WEBPACK_IMPORTED_MODULE_2__[/* visit */ "c"])(valueNode, Object(_language_visitor__WEBPACK_IMPORTED_MODULE_2__[/* visitWithTypeInfo */ "e"])(typeInfo, visitor));
   return context.getErrors();
 }
+
 
 /***/ }),
 
@@ -17956,10 +18083,9 @@ function sortObjMap(map, sortValueFn) {
   var sortedKeys = sortBy(Object.keys(map), function (x) {
     return x;
   });
-  var _arr = sortedKeys;
 
-  for (var _i = 0; _i < _arr.length; _i++) {
-    var key = _arr[_i];
+  for (var _i = 0, _sortedKeys = sortedKeys; _i < _sortedKeys.length; _i++) {
+    var key = _sortedKeys[_i];
     var value = map[key];
     sortedMap[key] = sortValueFn ? sortValueFn(value) : value;
   }
@@ -17980,6 +18106,7 @@ function sortBy(array, mapToKey) {
     return key1.localeCompare(key2);
   });
 }
+
 
 /***/ }),
 
@@ -18252,7 +18379,7 @@ function printDescription(options, def) {
 
   var text = lines.join('\n');
   var preferMultipleLines = text.length > 70;
-  var blockString = Object(_language_blockString__WEBPACK_IMPORTED_MODULE_5__[/* printBlockString */ "b"])(text, '', preferMultipleLines);
+  var blockString = Object(_language_blockString__WEBPACK_IMPORTED_MODULE_5__[/* printBlockString */ "c"])(text, '', preferMultipleLines);
   var prefix = indentation && !firstInBlock ? '\n' + indentation : indentation;
   return prefix + blockString.replace(/\n/g, '\n' + indentation) + '\n';
 }
@@ -18299,6 +18426,7 @@ function breakLine(line, maxLen) {
 
   return sublines;
 }
+
 
 /***/ }),
 
@@ -18356,10 +18484,9 @@ function separateOperations(documentAST) {
   // is necessary for completing that operation.
 
   var separatedDocumentASTs = Object.create(null);
-  var _arr = operations;
 
-  for (var _i = 0; _i < _arr.length; _i++) {
-    var operation = _arr[_i];
+  for (var _i = 0, _operations = operations; _i < _operations.length; _i++) {
+    var operation = _operations[_i];
     var operationName = opName(operation);
     var dependencies = Object.create(null);
     collectTransitiveDependencies(dependencies, depGraph, operationName); // The list of definition nodes to be included for this operation, sorted
@@ -18367,10 +18494,8 @@ function separateOperations(documentAST) {
 
     var definitions = [operation];
 
-    var _arr2 = Object.keys(dependencies);
-
-    for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
-      var name = _arr2[_i2];
+    for (var _i2 = 0, _Object$keys = Object.keys(dependencies); _i2 < _Object$keys.length; _i2++) {
+      var name = _Object$keys[_i2];
       definitions.push(fragments[name]);
     }
 
@@ -18397,10 +18522,8 @@ function collectTransitiveDependencies(collected, depGraph, fromName) {
   var immediateDeps = depGraph[fromName];
 
   if (immediateDeps) {
-    var _arr3 = Object.keys(immediateDeps);
-
-    for (var _i3 = 0; _i3 < _arr3.length; _i3++) {
-      var toName = _arr3[_i3];
+    for (var _i3 = 0, _Object$keys2 = Object.keys(immediateDeps); _i3 < _Object$keys2.length; _i3++) {
+      var toName = _Object$keys2[_i3];
 
       if (!collected[toName]) {
         collected[toName] = true;
@@ -18409,6 +18532,152 @@ function collectTransitiveDependencies(collected, depGraph, fromName) {
     }
   }
 }
+
+
+/***/ }),
+
+/***/ "../../node_modules/graphql/utilities/stripIgnoredCharacters.mjs":
+/*!***********************************************************************************************************!*\
+  !*** /home/ben/Code/crypto/pascalcoin/untitled/node_modules/graphql/utilities/stripIgnoredCharacters.mjs ***!
+  \***********************************************************************************************************/
+/*! exports provided: stripIgnoredCharacters */
+/*! exports used: stripIgnoredCharacters */
+/***/ (function(__webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return stripIgnoredCharacters; });
+/* harmony import */ var _jsutils_inspect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../jsutils/inspect */ "../../node_modules/graphql/jsutils/inspect.mjs");
+/* harmony import */ var _language_source__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../language/source */ "../../node_modules/graphql/language/source.mjs");
+/* harmony import */ var _language_lexer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../language/lexer */ "../../node_modules/graphql/language/lexer.mjs");
+/* harmony import */ var _language_blockString__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../language/blockString */ "../../node_modules/graphql/language/blockString.mjs");
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+
+
+
+/**
+ * Strips characters that are not significant to the validity or execution
+ * of a GraphQL document:
+ *   - UnicodeBOM
+ *   - WhiteSpace
+ *   - LineTerminator
+ *   - Comment
+ *   - Comma
+ *   - BlockString indentation
+ *
+ * Note: It is required to have a delimiter character between neighboring
+ * non-punctuator tokens and this function always uses single space as delimiter.
+ *
+ * It is guaranteed that both input and output documents if parsed would result
+ * in the exact same AST except for nodes location.
+ *
+ * Warning: It is guaranteed that this function will always produce stable results.
+ * However, it's not guaranteed that it will stay the same between different
+ * releases due to bugfixes or changes in the GraphQL specification.
+ *
+ * Query example:
+ *
+ * query SomeQuery($foo: String!, $bar: String) {
+ *   someField(foo: $foo, bar: $bar) {
+ *     a
+ *     b {
+ *       c
+ *       d
+ *     }
+ *   }
+ * }
+ *
+ * Becomes:
+ *
+ * query SomeQuery($foo:String!$bar:String){someField(foo:$foo bar:$bar){a b{c d}}}
+ *
+ * SDL example:
+ *
+ * """
+ * Type description
+ * """
+ * type Foo {
+ *   """
+ *   Field description
+ *   """
+ *   bar: String
+ * }
+ *
+ * Becomes:
+ *
+ * """Type description""" type Foo{"""Field description""" bar:String}
+ */
+
+function stripIgnoredCharacters(source) {
+  var sourceObj = typeof source === 'string' ? new _language_source__WEBPACK_IMPORTED_MODULE_1__[/* Source */ "a"](source) : source;
+
+  if (!(sourceObj instanceof _language_source__WEBPACK_IMPORTED_MODULE_1__[/* Source */ "a"])) {
+    throw new TypeError("Must provide string or Source. Received: ".concat(Object(_jsutils_inspect__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(sourceObj)));
+  }
+
+  var body = sourceObj.body;
+  var lexer = Object(_language_lexer__WEBPACK_IMPORTED_MODULE_2__[/* createLexer */ "b"])(sourceObj);
+  var strippedBody = '';
+  var wasLastAddedTokenNonPunctuator = false;
+
+  while (lexer.advance().kind !== _language_lexer__WEBPACK_IMPORTED_MODULE_2__[/* TokenKind */ "a"].EOF) {
+    var currentToken = lexer.token;
+    var tokenKind = currentToken.kind;
+    /**
+     * Every two non-punctuator tokens should have space between them.
+     * Also prevent case of non-punctuator token following by spread resulting
+     * in invalid token (e.g. `1...` is invalid Float token).
+     */
+
+    var isNonPunctuator = !Object(_language_lexer__WEBPACK_IMPORTED_MODULE_2__[/* isPunctuatorToken */ "d"])(currentToken);
+
+    if (wasLastAddedTokenNonPunctuator) {
+      if (isNonPunctuator || currentToken.kind === _language_lexer__WEBPACK_IMPORTED_MODULE_2__[/* TokenKind */ "a"].SPREAD) {
+        strippedBody += ' ';
+      }
+    }
+
+    var tokenBody = body.slice(currentToken.start, currentToken.end);
+
+    if (tokenKind === _language_lexer__WEBPACK_IMPORTED_MODULE_2__[/* TokenKind */ "a"].BLOCK_STRING) {
+      strippedBody += dedentBlockString(tokenBody);
+    } else {
+      strippedBody += tokenBody;
+    }
+
+    wasLastAddedTokenNonPunctuator = isNonPunctuator;
+  }
+
+  return strippedBody;
+}
+
+function dedentBlockString(blockStr) {
+  // skip leading and trailing triple quotations
+  var rawStr = blockStr.slice(3, -3);
+  var body = Object(_language_blockString__WEBPACK_IMPORTED_MODULE_3__[/* dedentBlockStringValue */ "a"])(rawStr);
+  var lines = body.split(/\r\n|[\n\r]/g);
+
+  if (Object(_language_blockString__WEBPACK_IMPORTED_MODULE_3__[/* getBlockStringIndentation */ "b"])(lines) > 0) {
+    body = '\n' + body;
+  }
+
+  var lastChar = body[body.length - 1];
+  var hasTrailingQuote = lastChar === '"' && body.slice(-4) !== '\\"""';
+
+  if (hasTrailingQuote || lastChar === '\\') {
+    body += '\n';
+  }
+
+  return '"""' + body + '"""';
+}
+
 
 /***/ }),
 
@@ -18543,6 +18812,7 @@ function doTypesOverlap(schema, typeA, typeB) {
   return false;
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/typeFromAST.mjs":
@@ -18592,6 +18862,7 @@ function typeFromAST(schema, typeNode) {
 
   throw new Error("Unexpected type node: \"".concat(Object(_jsutils_inspect__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(typeNode), "\"."));
 }
+
 
 /***/ }),
 
@@ -18806,6 +19077,7 @@ function isMissingVariable(valueNode, variables) {
   return valueNode.kind === _language_kinds__WEBPACK_IMPORTED_MODULE_4__[/* Kind */ "a"].VARIABLE && (!variables || Object(_jsutils_isInvalid__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"])(variables[valueNode.name.value]));
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/utilities/valueFromASTUntyped.mjs":
@@ -18880,8 +19152,10 @@ function valueFromASTUntyped(valueNode, variables) {
       });
 
     case _language_kinds__WEBPACK_IMPORTED_MODULE_3__[/* Kind */ "a"].VARIABLE:
-      var variableName = valueNode.name.value;
-      return variables && !Object(_jsutils_isInvalid__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(variables[variableName]) ? variables[variableName] : undefined;
+      {
+        var variableName = valueNode.name.value;
+        return variables && !Object(_jsutils_isInvalid__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"])(variables[variableName]) ? variables[variableName] : undefined;
+      }
   } // Not reachable. All possible value nodes have been considered.
 
   /* istanbul ignore next */
@@ -18889,6 +19163,7 @@ function valueFromASTUntyped(valueNode, variables) {
 
   throw new Error("Unexpected value node: \"".concat(Object(_jsutils_inspect__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(valueNode), "\"."));
 }
+
 
 /***/ }),
 
@@ -19146,6 +19421,7 @@ function (_ASTValidationContext2) {
   return ValidationContext;
 }(ASTValidationContext);
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/index.mjs":
@@ -19251,6 +19527,7 @@ function (_ASTValidationContext2) {
  */
 
 
+// All validation rules in the GraphQL Specification.
  // Spec Section: "Field Selections on Objects, Interfaces, and Unions Types"
 
  // Spec Section: "Fragments on Composite Types"
@@ -19300,6 +19577,7 @@ function (_ASTValidationContext2) {
  // Spec Section: "Variables are Input Types"
 
  // Spec Section: "All Variable Usages Are Allowed"
+
 
 
 
@@ -19374,6 +19652,7 @@ function ExecutableDefinitions(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -19542,6 +19821,7 @@ function getSuggestedFieldNames(schema, type, fieldName) {
   return [];
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/FragmentsOnCompositeTypes.mjs":
@@ -19608,6 +19888,7 @@ function FragmentsOnCompositeTypes(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -19789,6 +20070,7 @@ function KnownArgumentNamesOnDirectives(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -19979,11 +20261,14 @@ function getDirectiveLocationForASTPath(ancestors) {
         return _language_directiveLocation__WEBPACK_IMPORTED_MODULE_2__[/* DirectiveLocation */ "a"].INPUT_OBJECT;
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].INPUT_VALUE_DEFINITION:
-        var parentNode = ancestors[ancestors.length - 3];
-        return parentNode.kind === _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].INPUT_OBJECT_TYPE_DEFINITION ? _language_directiveLocation__WEBPACK_IMPORTED_MODULE_2__[/* DirectiveLocation */ "a"].INPUT_FIELD_DEFINITION : _language_directiveLocation__WEBPACK_IMPORTED_MODULE_2__[/* DirectiveLocation */ "a"].ARGUMENT_DEFINITION;
+        {
+          var parentNode = ancestors[ancestors.length - 3];
+          return parentNode.kind === _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].INPUT_OBJECT_TYPE_DEFINITION ? _language_directiveLocation__WEBPACK_IMPORTED_MODULE_2__[/* DirectiveLocation */ "a"].INPUT_FIELD_DEFINITION : _language_directiveLocation__WEBPACK_IMPORTED_MODULE_2__[/* DirectiveLocation */ "a"].ARGUMENT_DEFINITION;
+        }
     }
   }
 }
+
 
 /***/ }),
 
@@ -20030,6 +20315,7 @@ function KnownFragmentNames(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -20140,6 +20426,7 @@ function isSDLNode(value) {
   return Boolean(value && !Array.isArray(value) && (Object(_language_predicates__WEBPACK_IMPORTED_MODULE_3__[/* isTypeSystemDefinitionNode */ "g"])(value) || Object(_language_predicates__WEBPACK_IMPORTED_MODULE_3__[/* isTypeSystemExtensionNode */ "h"])(value)));
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/LoneAnonymousOperation.mjs":
@@ -20190,6 +20477,7 @@ function LoneAnonymousOperation(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -20246,6 +20534,7 @@ function LoneSchemaDefinition(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -20336,6 +20625,7 @@ function NoFragmentCycles(context) {
   }
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/NoUndefinedVariables.mjs":
@@ -20414,6 +20704,7 @@ function NoUndefinedVariables(context) {
   };
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/NoUnusedFragments.mjs":
@@ -20462,10 +20753,9 @@ function NoUnusedFragments(context) {
     Document: {
       leave: function leave() {
         var fragmentNameUsed = Object.create(null);
-        var _arr = operationDefs;
 
-        for (var _i = 0; _i < _arr.length; _i++) {
-          var operation = _arr[_i];
+        for (var _i = 0, _operationDefs = operationDefs; _i < _operationDefs.length; _i++) {
+          var operation = _operationDefs[_i];
           var _iteratorNormalCompletion = true;
           var _didIteratorError = false;
           var _iteratorError = undefined;
@@ -20491,10 +20781,8 @@ function NoUnusedFragments(context) {
           }
         }
 
-        var _arr2 = fragmentDefs;
-
-        for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
-          var fragmentDef = _arr2[_i2];
+        for (var _i2 = 0, _fragmentDefs = fragmentDefs; _i2 < _fragmentDefs.length; _i2++) {
+          var fragmentDef = _fragmentDefs[_i2];
           var fragName = fragmentDef.name.value;
 
           if (fragmentNameUsed[fragName] !== true) {
@@ -20505,6 +20793,7 @@ function NoUnusedFragments(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -20575,10 +20864,8 @@ function NoUnusedVariables(context) {
           }
         }
 
-        var _arr = variableDefs;
-
-        for (var _i = 0; _i < _arr.length; _i++) {
-          var variableDef = _arr[_i];
+        for (var _i = 0, _variableDefs = variableDefs; _i < _variableDefs.length; _i++) {
+          var variableDef = _variableDefs[_i];
           var variableName = variableDef.variable.name.value;
 
           if (variableNameUsed[variableName] !== true) {
@@ -20592,6 +20879,7 @@ function NoUnusedVariables(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -20666,10 +20954,9 @@ function OverlappingFieldsCanBeMerged(context) {
   return {
     SelectionSet: function SelectionSet(selectionSet) {
       var conflicts = findConflictsWithinSelectionSet(context, cachedFieldsAndFragmentNames, comparedFragmentPairs, context.getParentType(), selectionSet);
-      var _arr = conflicts;
 
-      for (var _i = 0; _i < _arr.length; _i++) {
-        var _ref3 = _arr[_i];
+      for (var _i = 0, _conflicts = conflicts; _i < _conflicts.length; _i++) {
+        var _ref3 = _conflicts[_i];
         var _ref2$ = _ref3[0];
         var responseName = _ref2$[0];
         var reason = _ref2$[1];
@@ -20901,6 +21188,7 @@ function collectConflictsWithin(context, conflicts, cachedFieldsAndFragmentNames
   // A field map is a keyed collection, where each key represents a response
   // name and the value at that key is a list of all fields which provide that
   // response name. For every response name, if there are multiple fields, they
+  // must be compared to find a potential conflict.
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -20954,10 +21242,8 @@ function collectConflictsBetween(context, conflicts, cachedFieldsAndFragmentName
   // response name. For any response name which appears in both provided field
   // maps, each field from the first field map must be compared to every field
   // in the second field map to find potential conflicts.
-  var _arr2 = Object.keys(fieldMap1);
-
-  for (var _i3 = 0; _i3 < _arr2.length; _i3++) {
-    var responseName = _arr2[_i3];
+  for (var _i3 = 0, _Object$keys = Object.keys(fieldMap1); _i3 < _Object$keys.length; _i3++) {
+    var responseName = _Object$keys[_i3];
     var fields2 = fieldMap2[responseName];
 
     if (fields2) {
@@ -21117,33 +21403,37 @@ function _collectFieldsAndFragmentNames(context, parentType, selectionSet, nodeA
 
     switch (selection.kind) {
       case _language_kinds__WEBPACK_IMPORTED_MODULE_4__[/* Kind */ "a"].FIELD:
-        var fieldName = selection.name.value;
-        var fieldDef = void 0;
+        {
+          var fieldName = selection.name.value;
+          var fieldDef = void 0;
 
-        if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_6__[/* isObjectType */ "N"])(parentType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_6__[/* isInterfaceType */ "H"])(parentType)) {
-          fieldDef = parentType.getFields()[fieldName];
+          if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_6__[/* isObjectType */ "N"])(parentType) || Object(_type_definition__WEBPACK_IMPORTED_MODULE_6__[/* isInterfaceType */ "H"])(parentType)) {
+            fieldDef = parentType.getFields()[fieldName];
+          }
+
+          var responseName = selection.alias ? selection.alias.value : fieldName;
+
+          if (!nodeAndDefs[responseName]) {
+            nodeAndDefs[responseName] = [];
+          }
+
+          nodeAndDefs[responseName].push([parentType, selection, fieldDef]);
+          break;
         }
-
-        var responseName = selection.alias ? selection.alias.value : fieldName;
-
-        if (!nodeAndDefs[responseName]) {
-          nodeAndDefs[responseName] = [];
-        }
-
-        nodeAndDefs[responseName].push([parentType, selection, fieldDef]);
-        break;
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_4__[/* Kind */ "a"].FRAGMENT_SPREAD:
         fragmentNames[selection.name.value] = true;
         break;
 
       case _language_kinds__WEBPACK_IMPORTED_MODULE_4__[/* Kind */ "a"].INLINE_FRAGMENT:
-        var typeCondition = selection.typeCondition;
-        var inlineFragmentType = typeCondition ? Object(_utilities_typeFromAST__WEBPACK_IMPORTED_MODULE_7__[/* typeFromAST */ "a"])(context.getSchema(), typeCondition) : parentType;
+        {
+          var typeCondition = selection.typeCondition;
+          var inlineFragmentType = typeCondition ? Object(_utilities_typeFromAST__WEBPACK_IMPORTED_MODULE_7__[/* typeFromAST */ "a"])(context.getSchema(), typeCondition) : parentType;
 
-        _collectFieldsAndFragmentNames(context, inlineFragmentType, selection.selectionSet, nodeAndDefs, fragmentNames);
+          _collectFieldsAndFragmentNames(context, inlineFragmentType, selection.selectionSet, nodeAndDefs, fragmentNames);
 
-        break;
+          break;
+        }
     }
   }
 } // Given a series of Conflicts which occurred between two sub-fields, generate
@@ -21216,6 +21506,7 @@ function _pairSetAdd(data, a, b, areMutuallyExclusive) {
 
   map[b] = areMutuallyExclusive;
 }
+
 
 /***/ }),
 
@@ -21296,6 +21587,7 @@ function getFragmentType(context, name) {
     }
   }
 }
+
 
 /***/ }),
 
@@ -21463,6 +21755,7 @@ function extensionKindToTypeName(kind) {
       return 'unknown type';
   }
 }
+
 
 /***/ }),
 
@@ -21638,10 +21931,8 @@ function ProvidedRequiredArgumentsOnDirectives(context) {
             return arg.name.value;
           });
 
-          var _arr = Object.keys(requiredArgs);
-
-          for (var _i = 0; _i < _arr.length; _i++) {
-            var argName = _arr[_i];
+          for (var _i = 0, _Object$keys = Object.keys(requiredArgs); _i < _Object$keys.length; _i++) {
+            var argName = _Object$keys[_i];
 
             if (!argNodeMap[argName]) {
               var argType = requiredArgs[argName].type;
@@ -21657,6 +21948,7 @@ function ProvidedRequiredArgumentsOnDirectives(context) {
 function isRequiredArgumentNode(arg) {
   return arg.type.kind === _language_kinds__WEBPACK_IMPORTED_MODULE_1__[/* Kind */ "a"].NON_NULL_TYPE && arg.defaultValue == null;
 }
+
 
 /***/ }),
 
@@ -21718,6 +22010,7 @@ function ScalarLeafs(context) {
   };
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/SingleFieldSubscriptions.mjs":
@@ -21761,6 +22054,7 @@ function SingleFieldSubscriptions(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -21817,6 +22111,7 @@ function UniqueArgumentNames(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -21877,6 +22172,7 @@ function UniqueDirectiveNames(context) {
   };
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/UniqueDirectivesPerLocation.mjs":
@@ -21917,6 +22213,7 @@ function UniqueDirectivesPerLocation(context) {
     // defines any directives.
     enter: function enter(node) {
       // Flow can't refine that node.directives will only contain directives,
+      // so we cast so the rest of the code is well typed.
       var directives = node.directives;
 
       if (directives) {
@@ -21954,6 +22251,7 @@ function UniqueDirectivesPerLocation(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -22048,6 +22346,7 @@ function UniqueEnumValueNames(context) {
     return false;
   }
 }
+
 
 /***/ }),
 
@@ -22154,6 +22453,7 @@ function hasField(type, fieldName) {
   return false;
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/UniqueFragmentNames.mjs":
@@ -22205,6 +22505,7 @@ function UniqueFragmentNames(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -22264,6 +22565,7 @@ function UniqueInputFieldNames(context) {
   };
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/UniqueOperationNames.mjs":
@@ -22317,6 +22619,7 @@ function UniqueOperationNames(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -22407,6 +22710,7 @@ function UniqueOperationTypes(context) {
   }
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/UniqueTypeNames.mjs":
@@ -22473,6 +22777,7 @@ function UniqueTypeNames(context) {
   }
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/UniqueVariableNames.mjs":
@@ -22522,6 +22827,7 @@ function UniqueVariableNames(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -22721,6 +23027,7 @@ function enumTypeSuggestion(type, node) {
   }
 }
 
+
 /***/ }),
 
 /***/ "../../node_modules/graphql/validation/rules/VariablesAreInputTypes.mjs":
@@ -22772,6 +23079,7 @@ function VariablesAreInputTypes(context) {
     }
   };
 }
+
 
 /***/ }),
 
@@ -22878,7 +23186,7 @@ function VariablesInAllowedPosition(context) {
 
 function allowedVariableUsage(schema, varType, varDefaultValue, locationType, locationDefaultValue) {
   if (Object(_type_definition__WEBPACK_IMPORTED_MODULE_3__[/* isNonNullType */ "L"])(locationType) && !Object(_type_definition__WEBPACK_IMPORTED_MODULE_3__[/* isNonNullType */ "L"])(varType)) {
-    var hasNonNullVariableDefaultValue = varDefaultValue && varDefaultValue.kind !== _language_kinds__WEBPACK_IMPORTED_MODULE_2__[/* Kind */ "a"].NULL;
+    var hasNonNullVariableDefaultValue = varDefaultValue != null && varDefaultValue.kind !== _language_kinds__WEBPACK_IMPORTED_MODULE_2__[/* Kind */ "a"].NULL;
     var hasLocationDefaultValue = locationDefaultValue !== undefined;
 
     if (!hasNonNullVariableDefaultValue && !hasLocationDefaultValue) {
@@ -22891,6 +23199,7 @@ function allowedVariableUsage(schema, varType, varDefaultValue, locationType, lo
 
   return Object(_utilities_typeComparators__WEBPACK_IMPORTED_MODULE_4__[/* isTypeSubTypeOf */ "c"])(schema, varType, locationType);
 }
+
 
 /***/ }),
 
@@ -23012,11 +23321,10 @@ var specifiedRules = [_rules_ExecutableDefinitions__WEBPACK_IMPORTED_MODULE_0__[
 
 
 
-
-
  // @internal
 
 var specifiedSDLRules = [_rules_LoneSchemaDefinition__WEBPACK_IMPORTED_MODULE_26__[/* LoneSchemaDefinition */ "a"], _rules_UniqueOperationTypes__WEBPACK_IMPORTED_MODULE_27__[/* UniqueOperationTypes */ "a"], _rules_UniqueTypeNames__WEBPACK_IMPORTED_MODULE_28__[/* UniqueTypeNames */ "a"], _rules_UniqueEnumValueNames__WEBPACK_IMPORTED_MODULE_29__[/* UniqueEnumValueNames */ "a"], _rules_UniqueFieldDefinitionNames__WEBPACK_IMPORTED_MODULE_30__[/* UniqueFieldDefinitionNames */ "a"], _rules_UniqueDirectiveNames__WEBPACK_IMPORTED_MODULE_31__[/* UniqueDirectiveNames */ "a"], _rules_KnownTypeNames__WEBPACK_IMPORTED_MODULE_4__[/* KnownTypeNames */ "a"], _rules_KnownDirectives__WEBPACK_IMPORTED_MODULE_17__[/* KnownDirectives */ "a"], _rules_UniqueDirectivesPerLocation__WEBPACK_IMPORTED_MODULE_18__[/* UniqueDirectivesPerLocation */ "a"], _rules_PossibleTypeExtensions__WEBPACK_IMPORTED_MODULE_32__[/* PossibleTypeExtensions */ "a"], _rules_KnownArgumentNames__WEBPACK_IMPORTED_MODULE_19__[/* KnownArgumentNamesOnDirectives */ "b"], _rules_UniqueArgumentNames__WEBPACK_IMPORTED_MODULE_20__[/* UniqueArgumentNames */ "a"], _rules_UniqueInputFieldNames__WEBPACK_IMPORTED_MODULE_25__[/* UniqueInputFieldNames */ "a"], _rules_ProvidedRequiredArguments__WEBPACK_IMPORTED_MODULE_22__[/* ProvidedRequiredArgumentsOnDirectives */ "b"]];
+
 
 /***/ }),
 
@@ -23128,6 +23436,7 @@ function assertValidSDLExtension(documentAST, schema) {
     }).join('\n\n'));
   }
 }
+
 
 /***/ }),
 
@@ -25243,6 +25552,24 @@ class BC {
     buf[method](value);
     return new BC(buf);
   }
+  /**
+   * Small helper to split a byte collection.
+   *
+   * @param {Number} size
+   * @return {BC[]}
+   */
+
+
+  split(size) {
+    let pos = 0;
+    let splitted = [];
+
+    for (; pos < this.length; pos += size) {
+      splitted.push(this.slice(pos, pos + size));
+    }
+
+    return splitted;
+  }
 
 }
 
@@ -25740,6 +26067,7 @@ const BC = __webpack_require__(/*! ./../../BC */ "../common/src/BC.js");
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_LENGTH_FIELD = Symbol('length_field');
 const P_BYTES_FIELD = Symbol('bytes_field');
+const P_HAS_LEADING_ZB = Symbol('has_leading_zerobyte');
 /**
  * A field type to write dynamic content in form of bytes (prepends the length).
  */
@@ -25751,10 +26079,11 @@ class BytesWithLength extends AbstractType {
    * @param {string} id
    * @param {Number} byteSize
    */
-  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null) {
+  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null, endian = Endian.LITTLE_ENDIAN, hasLeadingZeroByte = false) {
     super(id || `bytes_with_length_${byteSize * 8}`);
     this.description('Bytes with variable size prepended');
     this[P_BYTES_FIELD] = new BytesWithoutLength('value');
+    this[P_HAS_LEADING_ZB] = hasLeadingZeroByte;
 
     switch (byteSize) {
       case 1:
@@ -25762,11 +26091,11 @@ class BytesWithLength extends AbstractType {
         break;
 
       case 2:
-        this[P_LENGTH_FIELD] = new Int16(lengthId, true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int16(lengthId, true, endian);
         break;
 
       case 4:
-        this[P_LENGTH_FIELD] = new Int32(lengthId, true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int32(lengthId, true, endian);
         break;
 
       default:
@@ -25796,8 +26125,8 @@ class BytesWithLength extends AbstractType {
 
 
   decodeFromBytes(bc, options = {}, all = null) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].decodeFromBytes(bc) + this[P_LENGTH_FIELD].encodedSize;
-    return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_SIZE_ENCODED]));
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc)) + +this[P_HAS_LEADING_ZB];
+    return this[P_BYTES_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize + +this[P_HAS_LEADING_ZB], this[P_SIZE_ENCODED]));
   }
   /**
    * Encodes the given value.
@@ -26252,6 +26581,7 @@ const StringWithoutLength = __webpack_require__(/*! ./StringWithoutLength */ "..
 const Endian = __webpack_require__(/*! ./../../Endian */ "../common/src/Endian.js");
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_HAS_LEADING_ZB = Symbol('has_leading_zerobyte');
 const P_LENGTH_FIELD = Symbol('length_field');
 const P_STRING_FIELD = Symbol('bytes_field');
 /**
@@ -26259,26 +26589,31 @@ const P_STRING_FIELD = Symbol('bytes_field');
  */
 
 class StringWithLength extends AbstractType {
-  constructor(id, byteSize = 1) {
+  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null, endian = Endian.LITTLE_ENDIAN, hasLeadingZeroByte = false) {
     super(id || `bytes_size${byteSize * 8}`);
     this.description('String with size prepended');
     this[P_STRING_FIELD] = new StringWithoutLength('value');
+    this[P_HAS_LEADING_ZB] = hasLeadingZeroByte;
 
     switch (byteSize) {
       case 1:
-        this[P_LENGTH_FIELD] = new Int8('length', true);
+        this[P_LENGTH_FIELD] = new Int8(lengthId, true);
         break;
 
       case 2:
-        this[P_LENGTH_FIELD] = new Int16('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int16(lengthId, true, endian);
         break;
 
       case 4:
-        this[P_LENGTH_FIELD] = new Int32('length', true, Endian.LITTLE_ENDIAN);
+        this[P_LENGTH_FIELD] = new Int32(lengthId, true, endian);
         break;
 
       default:
         throw new Error('ByteSize must be either 1, 2 or 4');
+    }
+
+    if (lengthDesc !== null) {
+      this[P_LENGTH_FIELD].description(lengthDesc);
     }
   }
   /**
@@ -26300,8 +26635,8 @@ class StringWithLength extends AbstractType {
 
 
   decodeFromBytes(bc, options = {}, all = null) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc));
-    return this[P_STRING_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize, this[P_SIZE_ENCODED]));
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc)) + +this[P_HAS_LEADING_ZB];
+    return this[P_STRING_FIELD].decodeFromBytes(bc.slice(this[P_LENGTH_FIELD].encodedSize + +this[P_HAS_LEADING_ZB], this[P_SIZE_ENCODED]));
   }
   /**
    * Encodes the given value.
@@ -26314,6 +26649,11 @@ class StringWithLength extends AbstractType {
   encodeToBytes(value) {
     this[P_SIZE_ENCODED] = value.length;
     let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED]);
+
+    if (this[P_HAS_LEADING_ZB]) {
+      bc = bc.append('00');
+    }
+
     return bc.append(this[P_STRING_FIELD].encodeToBytes(value));
   }
 
@@ -26634,8 +26974,8 @@ class Currency extends Int64 {
    *
    * @param {String} id
    */
-  constructor(id = null) {
-    super(id || 'currency', true, Endian.LITTLE_ENDIAN);
+  constructor(id = null, unsigned = true, endian = Endian.LITTLE_ENDIAN) {
+    super(id || 'currency', unsigned, endian);
     this.description('A type for currency values.');
   }
   /**
@@ -26769,7 +27109,7 @@ class PrivateKey extends CompositeType {
   constructor(id = null) {
     super(id || 'private_key');
     this.addSubType(new Curve('curve'));
-    this.addSubType(new BytesWithLength('key', 2));
+    this.addSubType(new BytesWithLength('key', 2).description('The private key value.'));
   }
   /**
    * Reads a value and returns a new PascalCoin PublicKey instance.
@@ -27033,6 +27373,10 @@ class OpType extends AbstractType {
     return this[P_INT_TYPE].encodeToBytes(value);
   }
 
+  get intType() {
+    return this[P_INT_TYPE];
+  }
+
 }
 
 module.exports = OpType;
@@ -27061,7 +27405,7 @@ const Int32 = __webpack_require__(/*! ./../Core/Int32 */ "../common/src/Coding/C
 
 const AccountNumber = __webpack_require__(/*! ./AccountNumber */ "../common/src/Coding/Pascal/AccountNumber.js");
 
-const BytesWithoutLength = __webpack_require__(/*! ./../Core/BytesWithoutLength */ "../common/src/Coding/Core/BytesWithoutLength.js");
+const BytesWithFixedLength = __webpack_require__(/*! ./../Core/BytesFixedLength */ "../common/src/Coding/Core/BytesFixedLength.js");
 
 const NOperation = __webpack_require__(/*! ./NOperation */ "../common/src/Coding/Pascal/NOperation.js");
 
@@ -27080,10 +27424,10 @@ class OperationHash extends CompositeType {
   constructor(id = null) {
     super(id || 'ophash');
     this.description('A pascalCoin operation hash');
-    this.addSubType(new Int32('block', true, Endian.LITTLE_ENDIAN));
-    this.addSubType(new AccountNumber('account'));
-    this.addSubType(new NOperation('nOperation', 4));
-    this.addSubType(new BytesWithoutLength('md160'));
+    this.addSubType(new Int32('block', true, Endian.LITTLE_ENDIAN).description('The block the operation is in.'));
+    this.addSubType(new AccountNumber('account').description('The account number that signed the operation.'));
+    this.addSubType(new NOperation('nOperation', 4).description('The n_operation value of the account with the current operation.'));
+    this.addSubType(new BytesWithFixedLength('md160', 20).description('The RIPEMD160 hash of the operation data.'));
   }
   /**
    * Reads a value and returns a new PascalCoin AccountNumber instance.
@@ -27486,6 +27830,17 @@ class PascalCoinInfo {
 
   static isDeveloperReward(block) {
     return block >= PascalCoinInfo.DEVELOPER_REWARD;
+  }
+  /**
+   * Gets the max payload length in bytes.
+   *
+   * @return {number}
+   * @constructor
+   */
+
+
+  static get MAX_PAYLOAD_LENGTH() {
+    return 255;
   }
 
 }
@@ -27974,16 +28329,28 @@ class Currency {
     return this[P_VALUE].toString();
   }
   /**
-     * Adds the given value to the current value and returns a **new**
-     * value.
-     *
-     * @param {Number|String|BigNumber|Currency} addValue
-     * @returns {Currency}
-     */
+   * Adds the given value to the current value and returns a **new**
+   * value.
+   *
+   * @param {Number|String|BigNumber|Currency} addValue
+   * @returns {Currency}
+   */
 
 
   add(addValue) {
     return new Currency(this.value.add(new Currency(addValue).value));
+  }
+  /**
+   * Adds the given value to the current value and returns a **new**
+   * value.
+   *
+   * @param {Number|String|BigNumber|Currency} addValue
+   * @returns {Currency}
+   */
+
+
+  mul(val) {
+    return Currency.fromMolina(this.value.mul(new BN(val)));
   }
   /**
      * Subtracts the given value from the current value and returns a
@@ -28235,7 +28602,7 @@ class Curve {
   /**
    * Gets the curve id of the p521 curve.
    *
-   * @returns {string}
+   * @returns {Number}
    * @constructor
    */
 
@@ -28603,14 +28970,18 @@ class PublicKey {
     return BC.concat(this.x, this.y);
   }
   /**
-   * Gets the ec key.
+   * Gets the ecdh public key.
    *
    * @returns {BC}
    */
 
 
   get ecdh() {
-    return BC.concat(BC.fromInt(4), this.x, this.y);
+    if (this.curve.id === Curve.CI_P521) {
+      return BC.concat(BC.fromHex('0400'), this.x, BC.fromHex('00'), this.y);
+    }
+
+    return BC.concat(BC.fromHex('04'), this.x, this.y);
   }
   /**
      * Gets an empty public key instance.
@@ -28736,6 +29107,24 @@ class OperationHash {
 
   get md160() {
     return this[P_MD160];
+  }
+  /**
+   * Gets a value indicating whether the given ophash equals the current ophash.
+   *
+   * @param opHash
+   * @param ignoreBlock
+   * @return {boolean}
+   */
+
+
+  equals(opHash, ignoreBlock = false) {
+    let blockResult = true;
+
+    if (!ignoreBlock) {
+      blockResult = this.block === opHash.block;
+    }
+
+    return blockResult && this.nOperation === opHash.nOperation && this.account.account === opHash.account.account && this.md160.equals(opHash.md160);
   }
 
 }
