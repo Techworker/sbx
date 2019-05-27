@@ -57,7 +57,9 @@ class RawOperationsCoder extends CompositeType {
         default:
           throw new Error('Unable to map marker to a coder.');
       }
-    }).description('Possible subtypes: Transaction op (raw), ChangeKey op (raw), ListAccountForSale op (raw), DeList op (raw), BuyAccount op (raw), ChangeKeySigned op (raw), ChangeAccountInfo op (raw), MultiOperation op (raw), Data op (raw)'));
+    }).description('Possible subtypes: Transaction op (raw), ChangeKey op (raw), ListAccountForSale ' +
+      'op (raw), DeList op (raw), BuyAccount op (raw), ChangeKeySigned op (raw), ChangeAccountInfo op ' +
+      '(raw), MultiOperation op (raw), Data op (raw)'));
     this.addSubType(new Coding.Repeating('operations', operationType, -1, 'count'));
   }
 }
