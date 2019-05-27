@@ -49,6 +49,8 @@ class FileCoder extends CompositeType {
 
         return V100Coder;
       }
+
+      throw new Error('Invalid walletkeys version');
     });
 
     this.addSubType(decissiveCoder);
