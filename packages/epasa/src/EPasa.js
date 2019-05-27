@@ -191,7 +191,7 @@ class EPasa {
    * Constructor.
    */
   constructor() {
-    // this[P_PAYLOAD_TYPE] = EPasa.NON_DETERMISTIC;
+    this[P_PAYLOAD_TYPE] = EPasa.NON_DETERMISTIC;
   }
 
   /**
@@ -309,7 +309,7 @@ class EPasa {
    * @returns {boolean}
    */
   isNonDetermistic() {
-    return ((this[P_PAYLOAD_TYPE] & EPasa.NON_DETERMISTIC) === EPasa.NON_DETERMISTIC);
+    return !this.hasEncryption() || !this.hasFormat();
   }
 
   /**
