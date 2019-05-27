@@ -176,8 +176,12 @@ class Parser {
       }
 
       // checksum
-      if (state.inChecksum && curr.char !== ':') {
-        state.checksum += curr.char;
+      if (state.inChecksum) {
+        if (curr.char === ':') {
+          state.checksumIdentFound = true;
+        } else {
+          state.checksum += curr.char;
+        }
       }
     }
 
@@ -200,6 +204,10 @@ class Parser {
       throw new Error('Invalid EPasa - missing or too short checksum');
     }
 
+    if (state.checksum.length > 0 && !state.checksumIdentFound) {
+      throw new Error('Invalid EPasa - missing checksum identifier');
+    }
+
     if (state.inChecksum && state.checksum.length > 4 && state.checksumIdentFound) {
       throw new Error('Invalid EPasa - missing or too long checksum');
     }
@@ -211,6 +219,10 @@ class Parser {
 
     // create a new epasa and trigger the validation
     let epasa = new EPasa();
+
+    if (state.account === '') {
+      throw new Error('Missing account number/name');
+    }
 
     try {
       epasa.accountNumber = state.account;
@@ -228,9 +240,12 @@ class Parser {
       epasa.password = state.password;
     }
 
-    if (state.format === EPasa.FORMAT_BASE58 && state.payload !== '') {
+    if (state.payload === '') {
+      epasa.format = EPasa.NON_DETERMISTIC;
+    } else {
       epasa.format = state.format;
     }
+
     epasa.encryption = state.encryption;
 
     if (state.format === EPasa.FORMAT_HEX) {

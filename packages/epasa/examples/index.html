@@ -1,0 +1,141 @@
+<script src="../lib/@pascalcoin-sbx/epasa.js"></script>
+<input type="text" size="100" id="epasa" />
+<p style="padding: 5px; background-color: #f0f0f0; font-family: 'Courier New'" id="COMPILED"></p>
+<style>
+    .active {
+        background-color: lightgreen;
+    }
+</style>
+
+<p style="color: red;" id="ERROR"></p>
+
+
+<p>Account number: <span id="ACCOUNT_NUMBER"></span></p>
+<p>Account name: <span id="ACCOUNT_NAME"></span></p>
+
+<span id="NON_DETERMISTIC">Non Determistic</span>
+
+<p>
+    <b>Encryption</b>
+    <span id="ENC_PUBLIC">PUBLIC</span>
+    <span id="ENC_SENDER">SENDER/ECIES</span>
+    <span id="ENC_RECEIVER">RECEIVER/ECIES</span>
+    <span id="ENC_PASSWORD">PASSWORD/AES</span>
+</p>
+<p>Password: <span id="password"></span></p>
+<p>
+    <b>Format</b>
+    <span id="FORMAT_ASCII">ASCII</span>
+    <span id="FORMAT_HEX">HEX</span>
+    <span id="FORMAT_BASE58">BASE58</span>
+</p>
+<p>Payload: <span id="PAYLOAD"></span></p>
+<p>Checksum: <span id="checksum"></span></p>
+
+<script>
+
+  document.getElementById('epasa').addEventListener('keyup', function() {
+    document.getElementById('ERROR').innerText = '';
+    document.getElementById('COMPILED').innerText = '';
+    var epasa;
+    var actives2 = document.getElementsByClassName('active');
+    for(var i2 = 0; i2 < actives2.length; i2++) {
+      actives2[i2].classList.remove("active");
+    }
+    actives2 = document.getElementsByClassName('active');
+    for(i2 = 0; i2 < actives2.length; i2++) {
+      actives2[i2].classList.remove("active");
+    }
+    document.getElementById('PAYLOAD').innerText = '';
+
+    try {
+      epasa = window['@pascalcoin-sbx/epasa'].Parser.parse(document.getElementById('epasa').value);
+      document.getElementById('COMPILED').innerText = epasa.compile();
+    }
+    catch(ex) {
+      document.getElementById('ERROR').innerText = ex.message;
+      return;
+    }
+
+    var actives = document.getElementsByClassName('active');
+    for(var i = 0; i < actives.length; i++) {
+      console.log(actives[i]);
+      actives[i].classList.remove("active");
+    }
+
+    if(epasa.isFormatHex()) {
+      document.getElementById('FORMAT_HEX').classList.add('active');
+      if(epasa.payload !== undefined) {
+        document.getElementById('PAYLOAD').innerText = epasa.payload.toHex();
+      } else {
+        document.getElementById('PAYLOAD').innerText = '';
+      }
+    } else {
+      document.getElementById('FORMAT_HEX').classList.remove('active');
+    }
+
+    if(epasa.isFormatAscii()) {
+      if(epasa.payload !== undefined) {
+        document.getElementById('PAYLOAD').innerText = epasa.payload.toString();
+      } else {
+        document.getElementById('PAYLOAD').innerText = '';
+      }
+      document.getElementById('FORMAT_ASCII').classList.add('active');
+    } else {
+      document.getElementById('FORMAT_ASCII').classList.remove('active');
+    }
+    if(epasa.isFormatBase58()) {
+      if(epasa.payload !== undefined) {
+        document.getElementById('PAYLOAD').innerText = epasa.payload.toString();
+      } else {
+        document.getElementById('PAYLOAD').innerText = '';
+      }
+      document.getElementById('FORMAT_BASE58').classList.add('active');
+    } else {
+      document.getElementById('FORMAT_BASE58').classList.remove('active');
+    }
+
+    if(epasa.isNonDetermistic()) {
+      document.getElementById('NON_DETERMISTIC').classList.add('active');
+    } else {
+      document.getElementById('NON_DETERMISTIC').classList.remove('active');
+    }
+
+    if(epasa.isEncryptionReceiver()) {
+      document.getElementById('ENC_RECEIVER').classList.add('active');
+    } else {
+      document.getElementById('ENC_RECEIVER').classList.remove('active');
+    }
+
+    if(epasa.isEncryptionSender()) {
+      document.getElementById('ENC_SENDER').classList.add('active');
+    } else {
+      document.getElementById('ENC_SENDER').classList.remove('active');
+    }
+
+    if(epasa.isEncryptionPublic()) {
+      document.getElementById('ENC_PUBLIC').classList.add('active');
+    } else {
+      document.getElementById('ENC_PUBLIC').classList.remove('active');
+    }
+
+    if(epasa.isEncryptionPassword()) {
+      document.getElementById('ENC_PASSWORD').classList.add('active');
+      document.getElementById('password').innerText = epasa.password;
+    } else {
+      document.getElementById('ENC_PASSWORD').classList.remove('active');
+      document.getElementById('password').innerText = '';
+    }
+
+    if(epasa.accountName !== undefined) {
+      document.getElementById('ACCOUNT_NAME').innerText = epasa.accountName.toString();
+    } else {
+      document.getElementById('ACCOUNT_NAME').innerText = '';
+    }
+    if(epasa.accountNumber !== undefined) {
+      document.getElementById('ACCOUNT_NUMBER').innerText = epasa.accountNumber.toString();
+    } else {
+      document.getElementById('ACCOUNT_NUMBER').innerText = '';
+    }
+  });
+</script>

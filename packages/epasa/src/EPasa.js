@@ -191,7 +191,7 @@ class EPasa {
    * Constructor.
    */
   constructor() {
-    this[P_PAYLOAD_TYPE] = EPasa.NON_DETERMISTIC;
+    // this[P_PAYLOAD_TYPE] = EPasa.NON_DETERMISTIC;
   }
 
   /**
@@ -361,7 +361,7 @@ class EPasa {
   set payload(payload) {
 
     if (!this.hasFormat()) {
-      this.format = EPasa.FORMAT_ASCII;
+      this.format = EPasa.NON_DETERMISTIC;
     }
 
     if ((!this.hasFormat() || !this.hasEncryption()) && payload.toString() !== '') {
@@ -369,11 +369,7 @@ class EPasa {
     }
 
     if (!(payload instanceof BC)) {
-      if (this.isFormatHex()) {
-        payload = BC.fromHex(payload);
-      } else {
-        payload = BC.fromString(payload);
-      }
+      payload = BC.from(payload);
     }
 
     this.validatePayloadLength(payload);
@@ -533,8 +529,9 @@ class EPasa {
   static calculateChecksum(ePasaString) {
     return new Int16('checksum', true, Endian.LITTLE_ENDIAN)
       .encodeToBytes(MurmurHash3.x86.hash32(ePasaString) % 65536)
-      .toHex();
+      .toHex(true);
   }
 }
 
 module.exports = EPasa;
+
