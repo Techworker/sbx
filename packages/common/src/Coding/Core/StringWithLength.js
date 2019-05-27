@@ -24,7 +24,8 @@ const P_STRING_FIELD = Symbol('bytes_field');
  */
 class StringWithLength extends AbstractType {
 
-  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null, endian = Endian.LITTLE_ENDIAN, hasLeadingZeroByte = false) {
+  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null,
+    endian = Endian.LITTLE_ENDIAN, hasLeadingZeroByte = false) {
     super(id || `bytes_size${byteSize * 8}`);
     this.description('String with size prepended');
     this[P_STRING_FIELD] = new StringWithoutLength('value');
@@ -64,7 +65,9 @@ class StringWithLength extends AbstractType {
    * @returns {String}
    */
   decodeFromBytes(bc, options = {}, all = null) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc)) + (+this[P_HAS_LEADING_ZB]);
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize +
+      this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc)) +
+      (+this[P_HAS_LEADING_ZB]);
     return this[P_STRING_FIELD].decodeFromBytes(
       bc.slice(
         this[P_LENGTH_FIELD].encodedSize + (+this[P_HAS_LEADING_ZB]),

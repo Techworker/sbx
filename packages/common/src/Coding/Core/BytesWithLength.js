@@ -28,7 +28,8 @@ class BytesWithLength extends AbstractType {
    * @param {string} id
    * @param {Number} byteSize
    */
-  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null, endian = Endian.LITTLE_ENDIAN, hasLeadingZeroByte = false) {
+  constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null,
+    endian = Endian.LITTLE_ENDIAN, hasLeadingZeroByte = false) {
     super(id || `bytes_with_length_${byteSize * 8}`);
     this.description('Bytes with variable size prepended');
     this[P_BYTES_FIELD] = new BytesWithoutLength('value');
@@ -70,7 +71,9 @@ class BytesWithLength extends AbstractType {
    * @returns {BC}
    */
   decodeFromBytes(bc, options = {}, all = null) {
-    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize + this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc)) + (+this[P_HAS_LEADING_ZB]);
+    this[P_SIZE_ENCODED] = this[P_LENGTH_FIELD].encodedSize +
+      this[P_LENGTH_FIELD].decodeFromBytes(BC.from(bc)) +
+      (+this[P_HAS_LEADING_ZB]);
     return this[P_BYTES_FIELD].decodeFromBytes(
       bc.slice(
         this[P_LENGTH_FIELD].encodedSize + (+this[P_HAS_LEADING_ZB]),
