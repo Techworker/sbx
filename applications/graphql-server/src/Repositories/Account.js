@@ -1,10 +1,10 @@
-const BaseResolver = require('./BaseResolver');
-const EnumResolver = require('./EnumResolver');
+const Abstract = require('./Abstract');
+const Enum = require('./../Enum');
 
 /**
  * A resolver with an Account as root.
  */
-class AccountResolver extends BaseResolver {
+class Account extends Abstract {
   /**
    * Constructor
    *
@@ -34,8 +34,8 @@ class AccountResolver extends BaseResolver {
    * @returns {Promise<any>}
    */
   getOperations(account, page, amount, opType, subType) {
-    const resolvedOpType = EnumResolver.OPTYPE(opType);
-    const resolvedSubType = EnumResolver.SUBTYPE(subType);
+    const resolvedOpType = Enum.OPTYPE(opType);
+    const resolvedSubType = Enum.SUBTYPE(subType);
     const filter = (operation) => {
       if (resolvedOpType === -1 || operation.opType === resolvedOpType) {
         if (resolvedSubType === -1 || operation.subType === resolvedSubType) {
@@ -66,4 +66,4 @@ class AccountResolver extends BaseResolver {
   }
 }
 
-module.exports = AccountResolver;
+module.exports = Account;

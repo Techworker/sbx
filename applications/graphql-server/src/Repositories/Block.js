@@ -1,10 +1,9 @@
-const BaseResolver = require('./BaseResolver');
-const EnumResolver = require('./EnumResolver');
+const Abstract = require('./Abstract');
 
 /**
  * A resolver with an Account as root.
  */
-class BlockResolver extends BaseResolver {
+class Block extends Abstract {
   /**
    * Constructor
    *
@@ -34,12 +33,10 @@ class BlockResolver extends BaseResolver {
    * @returns {Promise<any>}
    */
   getOperations(block, page, amount, opType, subType) {
-    const resolvedOpType = EnumResolver.OPTYPE(opType);
-    const resolvedSubType = EnumResolver.SUBTYPE(subType);
 
     const filter = (operation) => {
-      if (resolvedOpType === -1 || operation.opType === resolvedOpType) {
-        if (resolvedSubType === -1 || operation.subType === resolvedSubType) {
+      if (opType === -1 || operation.opType === opType) {
+        if (subType === -1 || operation.subType === subType) {
           return true;
         }
       }
@@ -67,4 +64,4 @@ class BlockResolver extends BaseResolver {
   }
 }
 
-module.exports = BlockResolver;
+module.exports = Block;

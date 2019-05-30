@@ -1,9 +1,9 @@
-const BaseResolver = require('./BaseResolver');
+const Abstract = require('./Abstract');
 
 /**
  * A resolver with an Operation as root.
  */
-class AccountResolver extends BaseResolver {
+class Operation extends Abstract {
   /**
    * Constructor
    *
@@ -24,4 +24,4 @@ class AccountResolver extends BaseResolver {
   }
 }
 
-module.exports = AccountResolver;
+module.exports = Operation;
