@@ -1,6 +1,6 @@
 {
   "name": "@pascalcoin-sbx/encoding-docs-cli",
-  "version": "0.0.17",
+  "version": "0.0.18-alpha.0",
   "description": "Exports transactions.",
   "main": "index.js",
   "keywords": [
@@ -17,9 +17,9 @@
     "build": "node index.js > README.md"
   },
   "dependencies": {
-    "@pascalcoin-sbx/common": "^0.0.17",
-    "@pascalcoin-sbx/signing": "^0.0.17",
-    "@pascalcoin-sbx/walletkeys.dat": "^0.0.17",
+    "@pascalcoin-sbx/common": "^0.0.18-alpha.0",
+    "@pascalcoin-sbx/signing": "^0.0.18-alpha.0",
+    "@pascalcoin-sbx/walletkeys.dat": "^0.0.18-alpha.0",
     "markdown-table": "^1.1.2"
   }
 }

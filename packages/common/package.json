@@ -1,6 +1,6 @@
 {
   "name": "@pascalcoin-sbx/common",
-  "version": "0.0.17",
+  "version": "0.0.18-alpha.0",
   "description": "Core basics for the PascalCoin BlockChain project.",
   "main": "index.js",
   "directories": {

@@ -1,7 +1,7 @@
 {
-  "name": "@pascalcoin-sbx/walletkeys.dat",
+  "name": "@pascalcoin-sbx/application-kitchensink",
   "version": "0.0.18-alpha.0",
-  "description": ".",
+  "description": "Application to showcase sbx functionalities.",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -18,10 +18,9 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --env dev && webpack --env build",
-    "test": "mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\"",
-    "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\""
+    "dev": "webpack --progress --colors --watch --env dev"
   },
   "dependencies": {
-    "@pascalcoin-sbx/common": "^0.0.18-alpha.0"
+    "@pascalcoin-sbx/pascalcoin": "^0.0.18-alpha.0"
   }
 }
