@@ -17,14 +17,18 @@
   "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --env dev && webpack --env build"
+    "build": "webpack --env dev && webpack --env build",
+    "dev": "webpack --progress --colors --watch --env dev"
   },
   "dependencies": {
     "@pascalcoin-sbx/common": "^0.0.17",
     "@pascalcoin-sbx/crypto": "^0.0.17",
+    "@pascalcoin-sbx/data-spec": "^0.0.17",
     "@pascalcoin-sbx/epasa": "^0.0.17",
     "@pascalcoin-sbx/json-rpc": "^0.0.17",
-    "@pascalcoin-sbx/signing": "^0.0.17"
+    "@pascalcoin-sbx/payload-split": "^0.0.17",
+    "@pascalcoin-sbx/signing": "^0.0.17",
+    "@pascalcoin-sbx/walletkeys.dat": "^0.0.17"
   },
   "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad"
 }

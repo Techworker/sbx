@@ -30915,6 +30915,8 @@ const P_ID = Symbol('id');
 const P_FIXED_VALUE = Symbol('fixed_value');
 const P_HAS_FIXED_VALUE = Symbol('has_fixed_value');
 const P_DESCRIPTION = Symbol('description');
+const P_TARGET_FIELD_NAME = Symbol('target_field_name');
+const P_HAS_TARGET_FIELD_NAME = Symbol('has_target_field_name');
 /**
  * Abstract field type to encode and decode values. Abstracts encodeToBytes and decodeFromBytes as
  * basic implementations but in fact it can be anything.
@@ -30929,6 +30931,7 @@ class AbstractType {
   constructor(id = null) {
     this[P_ID] = id;
     this[P_HAS_FIXED_VALUE] = false;
+    this[P_HAS_TARGET_FIELD_NAME] = false;
   }
   /**
    * Gets the field ident.
@@ -30959,6 +30962,26 @@ class AbstractType {
 
   get fixedValue() {
     return this[P_FIXED_VALUE];
+  }
+  /**
+   * Gets a value indicating whether the field has a different target field name.
+   *
+   * @returns {Boolean}
+   */
+
+
+  get hasTargetFieldName() {
+    return this[P_HAS_TARGET_FIELD_NAME];
+  }
+  /**
+   * Gets the target field name.
+   *
+   * @returns {string}
+   */
+
+
+  get targetFieldName() {
+    return this[P_TARGET_FIELD_NAME];
   }
   /**
    * Gets the encoded size of the type.
@@ -31005,6 +31028,19 @@ class AbstractType {
   withFixedValue(value) {
     this[P_FIXED_VALUE] = value;
     this[P_HAS_FIXED_VALUE] = true;
+    return this;
+  }
+  /**
+   * Sets a fixed value.
+   *
+   * @param {string} targetFieldName
+   * @returns {AbstractType}
+   */
+
+
+  withTargetFieldName(targetFieldName) {
+    this[P_TARGET_FIELD_NAME] = targetFieldName;
+    this[P_HAS_TARGET_FIELD_NAME] = true;
     return this;
   }
   /**
@@ -31065,6 +31101,7 @@ const AbstractType = __webpack_require__(/*! ./AbstractType */ "../common/src/Co
 
 const P_SUBTYPES = Symbol('subtypes');
 const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_FLATTEN = Symbol('flatten');
 /**
  * A Type that itself is made up of multiple other (sub-)types.
  */
@@ -31073,10 +31110,11 @@ class CompositeType extends AbstractType {
   /**
    * Constructor
    */
-  constructor(id) {
+  constructor(id, flatten = false) {
     super(id || 'composite_type');
     super.description('A type that itself is made up of multiple other types.');
     this[P_SUBTYPES] = [];
+    this[P_FLATTEN] = flatten;
   }
   /**
    * Gets all subtypes.
@@ -31124,11 +31162,19 @@ class CompositeType extends AbstractType {
       throw new Error('This type cannot be decoded.');
     }
 
-    const obj = {};
+    let obj = {};
     let offset = 0;
     bc = BC.from(bc);
     this.subTypes.forEach(subType => {
-      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), options, obj);
+      const fieldName = subType.hasTargetFieldName ? subType.targetFieldName : subType.id;
+      const decoded = subType.decodeFromBytes(bc.slice(offset), options, obj);
+
+      if (subType.constructor.name === 'Decissive' && subType.flatten) {
+        obj = Object.assign(obj, decoded);
+      } else {
+        obj[fieldName] = decoded;
+      }
+
       offset += subType.encodedSize;
     });
     this[P_SIZE_ENCODED] = offset;
@@ -31150,7 +31196,11 @@ class CompositeType extends AbstractType {
       if (subType.hasFixedValue) {
         subTypeValue = subType.fixedValue;
       } else {
-        subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[subType.id];
+        if (subType.constructor.name === 'Decissive' && subType.flatten) {
+          subTypeValue = objOrArray;
+        } else {
+          subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[subType.id];
+        }
       } // we will use the first available
 
 
@@ -31158,6 +31208,16 @@ class CompositeType extends AbstractType {
     });
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
+  }
+  /**
+   * Gets a value indicating whether the value should be flattened.
+   *
+   * @return {bool}
+   */
+
+
+  get flatten() {
+    return this[P_FLATTEN];
   }
 
 }
@@ -31730,6 +31790,7 @@ class Int64 extends AbstractInt {
 
 
   encodeToBytes(value) {
+    value = new BN(value);
     value = validate64Bit(this.unsigned, value);
 
     if (!this.unsigned) {
@@ -32023,6 +32084,7 @@ const CompositeType = __webpack_require__(/*! ./CompositeType */ "../common/src/
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_SUBTYPE_RESOLVER = Symbol('subtype_resolver');
 const P_MARKER_FIELD = Symbol('marker_field');
+const P_FLATTEN = Symbol('flatten');
 /**
  * A Type that itself is made up of multiple other types. The types are selected dynamically
  * depending on the given resolver.
@@ -32032,11 +32094,12 @@ class Decissive extends CompositeType {
   /**
    * Constructor
    */
-  constructor(id, markerField, subTypeResolver) {
+  constructor(id, markerField, subTypeResolver, flatten = false) {
     super(id || 'decissive');
     super.description('A type that itself has many sub types but only some are triggere based on a marker.');
     this[P_SUBTYPE_RESOLVER] = subTypeResolver;
     this[P_MARKER_FIELD] = markerField;
+    this[P_FLATTEN] = flatten;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -32074,6 +32137,16 @@ class Decissive extends CompositeType {
     let bc = subType.encodeToBytes(objOrArray);
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
+  }
+  /**
+   * Gets a value indicating whether the value should be flattened.
+   *
+   * @return {bool}
+   */
+
+
+  get flatten() {
+    return this[P_FLATTEN];
   }
 
 }
@@ -35359,6 +35432,403 @@ module.exports = AES_CBC_ZeroPadding;
 
 /***/ }),
 
+/***/ "../data-spec/index.js":
+/*!*****************************!*\
+  !*** ../data-spec/index.js ***!
+  \*****************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = {
+  Registry: __webpack_require__(/*! ./src/Registry */ "../data-spec/src/Registry.js"),
+  AbstractSpec: __webpack_require__(/*! ./src/AbstractSpec */ "../data-spec/src/AbstractSpec.js"),
+  Serializer: __webpack_require__(/*! ./src/Serializer */ "../data-spec/src/Serializer/index.js"),
+  Specs: __webpack_require__(/*! ./src/Specs */ "../data-spec/src/Specs/index.js")
+}; // test
+
+/***/ }),
+
+/***/ "../data-spec/src/AbstractSpec.js":
+/*!****************************************!*\
+  !*** ../data-spec/src/AbstractSpec.js ***!
+  \****************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+class AbstractSpec {
+  constructor() {
+    if (new.target === AbstractSpec) {
+      throw new TypeError('Cannot construct Abstract instances directly');
+    }
+  }
+
+  static get type() {
+    throw new Error('type getter not implemented');
+  }
+
+  static parse(payload) {
+    throw new Error('parse not implemented');
+  }
+
+  serialize() {
+    throw new Error('serialize not implemented');
+  }
+
+}
+
+module.exports = AbstractSpec;
+
+/***/ }),
+
+/***/ "../data-spec/src/Registry.js":
+/*!************************************!*\
+  !*** ../data-spec/src/Registry.js ***!
+  \************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const P_ITEMS = [];
+
+class Registry {
+  constructor() {
+    this[P_ITEMS] = {};
+  }
+  /**
+     *
+   * @param {AbstractSpec} dataSpec
+   * @param {Number} type
+     */
+
+
+  register(dataSpec, type = null) {
+    if (type === null) {
+      type = dataSpec.type;
+    } else {
+      type = parseInt(type, 10);
+    }
+
+    if (this[P_ITEMS][type] === undefined) {
+      this[P_ITEMS][type] = [];
+    }
+
+    this[P_ITEMS][type].push(dataSpec);
+  }
+
+}
+
+module.exports = Registry;
+
+/***/ }),
+
+/***/ "../data-spec/src/Serializer/CSV.js":
+/*!******************************************!*\
+  !*** ../data-spec/src/Serializer/CSV.js ***!
+  \******************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Util = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Util;
+
+const P_DELIMITER = Symbol('delimiter');
+const P_ENCLOSURE = Symbol('enclosure');
+const P_ESCAPE_CHAR = Symbol('escape_char');
+
+function escape(str, enclosure, escapeChar) {
+  return str.replace(new RegExp(Util.escapeRegex(enclosure), 'g'), escapeChar + enclosure);
+}
+/**
+ * A simple CSV serializer and deserializer.
+ */
+
+
+class CSV {
+  /**
+   * Constructor
+   *
+   * @param {String} delimiter
+   * @param {String} enclosure
+   * @param {String} escapeChar
+   */
+  constructor(delimiter = ',', enclosure = '"', escapeChar = '\\') {
+    this[P_DELIMITER] = delimiter;
+    this[P_ENCLOSURE] = enclosure;
+    this[P_ESCAPE_CHAR] = escapeChar;
+  }
+  /**
+   * Serializes the given data.
+   *
+   * @param {Object|Array} data
+   * @param {Boolean} withKeys
+   * @param {String} withKeysDelim
+   * @returns {string}
+   */
+
+
+  serialize(data, withKeys = false, withKeysDelim = ':') {
+    let r = '';
+    const keys = Object.keys(data); // loop data and add values to resulting csv
+
+    keys.forEach((key, idx) => {
+      let valEsc = escape(data[key], this[P_ENCLOSURE], this[P_ESCAPE_CHAR]); // prepend key and delim
+
+      if (withKeys) {
+        let keyEsc = escape(key, this[P_ENCLOSURE], this[P_ESCAPE_CHAR]);
+        r += `${this[P_ENCLOSURE]}${keyEsc}${withKeysDelim}${valEsc}${this[P_ENCLOSURE]}`;
+      } else {
+        r += `${this[P_ENCLOSURE]}${valEsc}${this[P_ENCLOSURE]}`;
+      }
+
+      if (idx < keys.length - 1) {
+        r += this[P_DELIMITER];
+      }
+    });
+    return r;
+  }
+  /**
+   * Parses the given csv string and returns an object or an array with the results.
+   *
+   * @param {String} csv
+   * @param {Boolean} withKeys
+   * @param {String} withKeysDelim
+   * @returns {Array|Object}
+   */
+
+
+  deserialize(csv, withKeys = false, withKeysDelim = ':') {
+    const state = {
+      inValue: false
+    };
+    let result = [];
+
+    if (withKeys === true) {
+      result = {};
+    }
+
+    let curr = '';
+
+    const addCurr = () => {
+      if (withKeys) {
+        result[curr.split(withKeysDelim)[0]] = curr.split(withKeysDelim)[1];
+      } else {
+        result.push(curr);
+      }
+    }; // loop the csv string
+
+
+    for (let i = 0; i < csv.length; i++) {
+      const c = csv.charAt(i);
+      const cb = i > 0 ? csv.charAt(i - 1) : false; // check if its an enclosure
+
+      if (c === this[P_ENCLOSURE] && !state.inValue) {
+        state.inValue = true;
+        continue;
+      }
+
+      if (c === this[P_ENCLOSURE] && cb !== this[P_ESCAPE_CHAR] && state.inValue) {
+        state.inValue = false;
+        addCurr();
+        curr = '';
+        continue;
+      } // handle no enclosure
+
+
+      if (this[P_ENCLOSURE] === '') {
+        // we are always "in" a value, except we find a delimiter
+        state.inValue = true;
+
+        if (c === this[P_DELIMITER]) {
+          addCurr();
+          curr = '';
+          continue;
+        }
+      }
+
+      if (state.inValue) {
+        if (cb === this[P_ESCAPE_CHAR]) {
+          curr = curr.substr(0, curr.length - this[P_ESCAPE_CHAR].length);
+        }
+
+        curr += c;
+      }
+    }
+
+    if (curr !== '') {
+      addCurr();
+    }
+
+    return result;
+  }
+
+}
+
+module.exports = CSV;
+
+/***/ }),
+
+/***/ "../data-spec/src/Serializer/JSON.js":
+/*!*******************************************!*\
+  !*** ../data-spec/src/Serializer/JSON.js ***!
+  \*******************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const P_PRETTY = Symbol('pretty');
+/**
+ * A serializer from JSON. It simply generates a JSON string from the given
+ * value or parses the given json string.
+ */
+
+class JSON_ {
+  /**
+   * Constructor.
+   *
+   * @param {Boolean} pretty
+   */
+  constructor(pretty = false) {
+    this[P_PRETTY] = !!pretty;
+  }
+  /**
+   * Serializes the given parameter.
+   *
+   * @param {*} data
+   * @returns {string}
+   */
+
+
+  serialize(data) {
+    if (this[P_PRETTY]) {
+      return JSON.stringify(data, null, 2);
+    }
+
+    return JSON.stringify(data);
+  }
+  /**
+   * Deserializes the given json string.
+   *
+   * @param {String} jsonString
+   * @returns {*}
+   */
+
+
+  static deserialize(jsonString) {
+    return JSON.parse(jsonString);
+  }
+
+}
+
+module.exports = JSON_;
+
+/***/ }),
+
+/***/ "../data-spec/src/Serializer/index.js":
+/*!********************************************!*\
+  !*** ../data-spec/src/Serializer/index.js ***!
+  \********************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+module.exports = {
+  JSON: __webpack_require__(/*! ./JSON */ "../data-spec/src/Serializer/JSON.js"),
+  CSV: __webpack_require__(/*! ./CSV */ "../data-spec/src/Serializer/CSV.js")
+};
+
+/***/ }),
+
+/***/ "../data-spec/src/Specs/Ruuvi.js":
+/*!***************************************!*\
+  !*** ../data-spec/src/Specs/Ruuvi.js ***!
+  \***************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
+
+const AbstractSpec = __webpack_require__(/*! ./../AbstractSpec */ "../data-spec/src/AbstractSpec.js");
+
+class Ruuvi extends AbstractSpec {
+  static get type() {
+    return 12;
+  }
+
+  static parse(payload) {
+    return JSON.parse(BC.from(payload).toString());
+  }
+
+  serialize() {
+    return JSON.stringify({
+      a: 'B'
+    });
+  }
+
+}
+
+module.exports = Ruuvi;
+
+/***/ }),
+
+/***/ "../data-spec/src/Specs/index.js":
+/*!***************************************!*\
+  !*** ../data-spec/src/Specs/index.js ***!
+  \***************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+module.exports = {
+  Ruuvi: __webpack_require__(/*! ./Ruuvi */ "../data-spec/src/Specs/Ruuvi.js")
+};
+
+/***/ }),
+
 /***/ "../epasa/index.js":
 /*!*************************!*\
   !*** ../epasa/index.js ***!
@@ -35601,8 +36071,9 @@ class EPasa {
    */
 
 
-  constructor() {} // this[P_PAYLOAD_TYPE] = EPasa.NON_DETERMISTIC;
-
+  constructor() {
+    this[P_PAYLOAD_TYPE] = EPasa.NON_DETERMISTIC;
+  }
   /**
    * Sets the account number.
    *
@@ -35731,7 +36202,7 @@ class EPasa {
 
 
   isNonDetermistic() {
-    return (this[P_PAYLOAD_TYPE] & EPasa.NON_DETERMISTIC) === EPasa.NON_DETERMISTIC;
+    return !this.hasEncryption() || !this.hasFormat();
   }
   /**
    * Gets the password of the epasa.
@@ -36437,6 +36908,7 @@ const P_METHOD = Symbol('method');
 const P_EXECUTOR = Symbol('executor');
 const P_DESTINATION_TYPE = Symbol('destination_type');
 const P_RETURNS_ARRAY = Symbol('returns_array');
+const P_REQUEST_ID = Symbol('request_id');
 /**
  * A basic action that holds the rpc method and its parameters.
  */
@@ -36538,6 +37010,21 @@ class BaseAction {
 
   isValid() {
     return true;
+  }
+  /**
+   * Sets the state.
+   *
+   * @return {*}
+   */
+
+
+  get requestId() {
+    return this[P_REQUEST_ID];
+  }
+
+  withRequestId(requestId) {
+    this[P_REQUEST_ID] = requestId;
+    return this;
   }
 
 }
@@ -36689,8 +37176,18 @@ class PagedAction extends BaseAction {
     this.changeParam('max', 100);
   }
 
+  withStart(start) {
+    this.start = start;
+    return this;
+  }
+
   set start(start) {
     this.changeParam('start', start);
+    return this;
+  }
+
+  withMax(max) {
+    this.max = max;
     return this;
   }
 
@@ -38382,6 +38879,10 @@ function transformRpcResult(value, DestinationType) {
       return BC.from(value);
 
     default:
+      if (DestinationType.createFromRPC !== undefined) {
+        return DestinationType.createFromRPC(value);
+      }
+
       return new DestinationType(value);
   }
 }
@@ -38414,7 +38915,7 @@ class Executor {
     transformCallback = transformCallback || this.transform(action.destinationType, action.returnsArray);
     return new Promise((resolve, reject) => {
       this[P_CALLER].call(action.method, transformRpcParams(action.params)).then(response => {
-        resolve([response, transformCallback]);
+        resolve([response, transformCallback, action.requestId]);
       }).catch(error => {
         reject(error);
       });
@@ -38538,6 +39039,20 @@ const P_PRICE = Symbol('price');
 const P_SELLER_ACCOUNT = Symbol('seller_account');
 const P_PRIVATE_SALE = Symbol('private_sale');
 const P_NEW_ENC_PUBKEY = Symbol('new_enc_pubkey');
+const codingProps = {
+  account: P_ACCOUNT,
+  publicKey: P_ENC_PUBKEY,
+  balance: P_BALANCE,
+  nOperation: P_N_OPERATION,
+  updatedB: P_STATE,
+  name: P_NAME,
+  type: P_TYPE,
+  lockedUntilBlock: P_LOCKED_UNTIL_BLOCK,
+  price: P_PRICE,
+  sellerAccount: P_SELLER_ACCOUNT,
+  privateSale: P_PRIVATE_SALE,
+  newPublicKey: P_NEW_ENC_PUBKEY
+};
 /**
  * Represents an account.
  */
@@ -38568,42 +39083,44 @@ class Account extends Abstract {
    */
 
 
-  constructor(data) {
-    super(data);
-    this[P_ACCOUNT] = new AccountNumber(data.account);
-    this[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
-    this[P_BALANCE] = new Currency(data.balance);
-    this[P_N_OPERATION] = parseInt(data.n_operation, 10);
-    this[P_UPDATED_B] = parseInt(data.updated_b, 10);
+  static createFromRPC(data) {
+    let account = new Account(data);
+    account[P_ACCOUNT] = new AccountNumber(data.account);
+    account[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
+    account[P_BALANCE] = new Currency(data.balance);
+    account[P_N_OPERATION] = parseInt(data.n_operation, 10);
+    account[P_UPDATED_B] = parseInt(data.updated_b, 10);
 
     if (data.state !== Account.STATE_NORMAL && data.state !== Account.STATE_LISTED) {
       throw new Error('Invalid account state.');
     }
 
-    this[P_STATE] = data.state;
-    this[P_NAME] = new AccountName(data.name);
-    this[P_TYPE] = data.type;
-    this[P_LOCKED_UNTIL_BLOCK] = null;
+    account[P_STATE] = data.state;
+    account[P_NAME] = new AccountName(data.name);
+    account[P_TYPE] = data.type;
+    account[P_LOCKED_UNTIL_BLOCK] = null;
 
     if (data.locked_until_block !== undefined) {
-      this[P_LOCKED_UNTIL_BLOCK] = parseInt(data.locked_until_block, 10);
+      account[P_LOCKED_UNTIL_BLOCK] = parseInt(data.locked_until_block, 10);
     } // when not listed
 
 
-    this[P_PRICE] = null;
-    this[P_SELLER_ACCOUNT] = null;
-    this[P_PRIVATE_SALE] = null;
-    this[P_NEW_ENC_PUBKEY] = null;
+    account[P_PRICE] = null;
+    account[P_SELLER_ACCOUNT] = null;
+    account[P_PRIVATE_SALE] = null;
+    account[P_NEW_ENC_PUBKEY] = null;
 
-    if (this[P_STATE] === Account.STATE_LISTED) {
-      this[P_PRICE] = new Currency(data.price);
-      this[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
-      this[P_PRIVATE_SALE] = data.private_sale;
+    if (account[P_STATE] === Account.STATE_LISTED) {
+      account[P_PRICE] = new Currency(data.price);
+      account[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
+      account[P_PRIVATE_SALE] = data.private_sale;
 
       if (data.new_enc_pubkey !== '000000000000' && data.new_enc_pubkey !== undefined) {
-        this[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
+        account[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
       }
     }
+
+    return account;
   }
   /**
    * Gets the account number of the account.
@@ -38747,6 +39264,24 @@ class Account extends Abstract {
   isForSale() {
     return this[P_STATE] === Account.STATE_LISTED;
   }
+  /**
+   * Gets a plain object copy of the instance.
+   */
+
+
+  serialize() {
+    let serialized = {};
+    Object.keys(codingProps).forEach(p => serialized[p] = this[p]);
+    return serialized;
+  }
+
+  static createFromSerialized(serialized) {
+    let account = new Account({});
+    Object.keys(codingProps).forEach(p => {
+      account[codingProps[p]] = serialized[p];
+    });
+    return account;
+  }
 
 }
 
@@ -38807,28 +39342,30 @@ class Block extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
-    this[P_BLOCK] = parseInt(data.block, 10);
-    this[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
-    this[P_REWARD] = new Currency(data.reward);
-    this[P_FEE] = new Currency(data.fee);
-    this[P_VER] = parseInt(data.ver, 10);
-    this[P_VER_A] = parseInt(data.ver_a, 10);
-    this[P_TIMESTAMP] = parseInt(data.timestamp, 10);
-    this[P_TARGET] = new BN(data.target.toString(), 10);
-    this[P_NONCE] = new BN(data.nonce.toString(), 10);
-    this[P_PAYLOAD] = data.payload;
-    this[P_SBH] = BC.fromHex(data.sbh);
-    this[P_OPH] = BC.fromHex(data.oph);
-    this[P_POW] = BC.fromHex(data.pow);
-    this[P_HASHRATEKHS] = new BN(data.hashratekhs.toString(), 10);
-    this[P_MATURATION] = parseInt(data.maturation, 10);
-    this[P_OPERATIONS] = null;
+  static createFromRPC(data) {
+    let block = new Block(data);
+    block[P_BLOCK] = parseInt(data.block, 10);
+    block[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
+    block[P_REWARD] = new Currency(data.reward);
+    block[P_FEE] = new Currency(data.fee);
+    block[P_VER] = parseInt(data.ver, 10);
+    block[P_VER_A] = parseInt(data.ver_a, 10);
+    block[P_TIMESTAMP] = parseInt(data.timestamp, 10);
+    block[P_TARGET] = new BN(data.target.toString(), 10);
+    block[P_NONCE] = new BN(data.nonce.toString(), 10);
+    block[P_PAYLOAD] = data.payload;
+    block[P_SBH] = BC.fromHex(data.sbh);
+    block[P_OPH] = BC.fromHex(data.oph);
+    block[P_POW] = BC.fromHex(data.pow);
+    block[P_HASHRATEKHS] = new BN(data.hashratekhs.toString(), 10);
+    block[P_MATURATION] = parseInt(data.maturation, 10);
+    block[P_OPERATIONS] = null;
 
     if (data.operations !== undefined) {
-      this[P_OPERATIONS] = parseInt(data.operations, 10);
+      block[P_OPERATIONS] = parseInt(data.operations, 10);
     }
+
+    return block;
   }
   /**
    * Gets the number of a block.
@@ -39053,56 +39590,58 @@ class Changer extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
-    this[P_ACCOUNT] = new AccountNumber(data.account);
-    this[P_N_OPERATION] = null;
+  static createFromRPC(data) {
+    let changer = new Changer();
+    changer[P_ACCOUNT] = new AccountNumber(data.account);
+    changer[P_N_OPERATION] = null;
 
     if (data.n_operation !== undefined) {
-      this[P_N_OPERATION] = parseInt(data.n_operation, 10);
+      changer[P_N_OPERATION] = parseInt(data.n_operation, 10);
     }
 
-    this[P_NEW_ENC_PUBKEY] = null;
+    changer[P_NEW_ENC_PUBKEY] = null;
 
     if (data.new_enc_pubkey !== undefined) {
-      this[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
+      changer[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
     }
 
-    this[P_NEW_NAME] = null;
+    changer[P_NEW_NAME] = null;
 
     if (data.new_name !== undefined) {
-      this[P_NEW_NAME] = new AccountName(data.new_name);
+      changer[P_NEW_NAME] = new AccountName(data.new_name);
     }
 
-    this[P_NEW_TYPE] = null;
+    changer[P_NEW_TYPE] = null;
 
     if (data.new_type !== undefined) {
-      this[P_NEW_TYPE] = data.new_type;
+      changer[P_NEW_TYPE] = data.new_type;
     }
 
-    this[P_SELLER_ACCOUNT] = null;
+    changer[P_SELLER_ACCOUNT] = null;
 
     if (data.seller_account !== undefined) {
-      this[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
+      changer[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
     }
 
-    this[P_ACCOUNT_PRICE] = null;
+    changer[P_ACCOUNT_PRICE] = null;
 
     if (data.account_price !== undefined) {
-      this[P_ACCOUNT_PRICE] = new Currency(data.account_price);
+      changer[P_ACCOUNT_PRICE] = new Currency(data.account_price);
     }
 
-    this[P_LOCKED_UNTIL_BLOCK] = null;
+    changer[P_LOCKED_UNTIL_BLOCK] = null;
 
     if (data.locked_until_block !== undefined) {
-      this[P_LOCKED_UNTIL_BLOCK] = parseInt(data.locked_until_block, 10);
+      changer[P_LOCKED_UNTIL_BLOCK] = parseInt(data.locked_until_block, 10);
     }
 
-    this[P_FEE] = new Currency(0);
+    changer[P_FEE] = new Currency(0);
 
     if (data.fee !== undefined) {
-      this[P_FEE] = new Currency(data.fee);
+      changer[P_FEE] = new Currency(data.fee);
     }
+
+    return changer;
   }
   /**
    * Gets the changed account.
@@ -39237,18 +39776,19 @@ class Connection extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
-    this[P_RECV] = parseInt(data.recv, 10);
-    this[P_TIMEDIFF] = parseInt(data.timediff, 10);
-    this[P_NETVER_A] = parseInt(data.netver_a, 10);
-    this[P_SECS] = parseInt(data.secs, 10);
-    this[P_SERVER] = !!data.server;
-    this[P_IP] = data.ip;
-    this[P_NETVER] = parseInt(data.netver, 10);
-    this[P_SENT] = parseInt(data.sent, 10);
-    this[P_APPVER] = data.appver;
-    this[P_PORT] = parseInt(data.port, 10);
+  static createFromRPC(data) {
+    let connection = new Connection(data);
+    connection[P_RECV] = parseInt(data.recv, 10);
+    connection[P_TIMEDIFF] = parseInt(data.timediff, 10);
+    connection[P_NETVER_A] = parseInt(data.netver_a, 10);
+    connection[P_SECS] = parseInt(data.secs, 10);
+    connection[P_SERVER] = !!data.server;
+    connection[P_IP] = data.ip;
+    connection[P_NETVER] = parseInt(data.netver, 10);
+    connection[P_SENT] = parseInt(data.sent, 10);
+    connection[P_APPVER] = data.appver;
+    connection[P_PORT] = parseInt(data.port, 10);
+    return connection;
   }
   /**
    * Gets the number of received bytes from the connection.
@@ -39384,10 +39924,11 @@ class NetProtocol extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
-    this[P_VER] = parseInt(data.ver, 10);
-    this[P_VER_A] = parseInt(data.ver_a, 10);
+  static createFromRPC(data) {
+    let netProtocol = new NetProtocol(data);
+    netProtocol[P_VER] = parseInt(data.ver, 10);
+    netProtocol[P_VER_A] = parseInt(data.ver_a, 10);
+    return netProtocol;
   }
   /**
      * Gets the wallets protocol version.
@@ -39451,17 +39992,18 @@ class NetStats extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
-    this[P_BRECEIVED] = parseInt(data.breceived, 10);
-    this[P_SERVERS_T] = parseInt(data.servers_t, 10);
-    this[P_TSERVERS] = parseInt(data.tservers, 10);
-    this[P_TOTAL] = parseInt(data.total, 10);
-    this[P_BSEND] = parseInt(data.bsend, 10);
-    this[P_SERVERS] = parseInt(data.servers, 10);
-    this[P_CLIENTS] = parseInt(data.clients, 10);
-    this[P_ACTIVE] = parseInt(data.active, 10);
-    this[P_TCLIENTS] = parseInt(data.tclients, 10);
+  static createFromRPC(data) {
+    let netStats = new NetStats(data);
+    netStats[P_BRECEIVED] = parseInt(data.breceived, 10);
+    netStats[P_SERVERS_T] = parseInt(data.servers_t, 10);
+    netStats[P_TSERVERS] = parseInt(data.tservers, 10);
+    netStats[P_TOTAL] = parseInt(data.total, 10);
+    netStats[P_BSEND] = parseInt(data.bsend, 10);
+    netStats[P_SERVERS] = parseInt(data.servers, 10);
+    netStats[P_CLIENTS] = parseInt(data.clients, 10);
+    netStats[P_ACTIVE] = parseInt(data.active, 10);
+    netStats[P_TCLIENTS] = parseInt(data.tclients, 10);
+    return netStats;
   }
   /**
      * Gets the received bytes.
@@ -39590,12 +40132,13 @@ class NodeServer extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
-    this[P_PORT] = parseInt(data.port, 10);
-    this[P_LASTCON] = parseInt(data.lastcon, 10);
-    this[P_ATTEMPTS] = parseInt(data.attempts, 10);
-    this[P_IP] = data.ip;
+  static createFromRPC(data) {
+    let nodeServer = new NodeServer(data);
+    nodeServer[P_PORT] = parseInt(data.port, 10);
+    nodeServer[P_LASTCON] = parseInt(data.lastcon, 10);
+    nodeServer[P_ATTEMPTS] = parseInt(data.attempts, 10);
+    nodeServer[P_IP] = data.ip;
+    return nodeServer;
   }
   /**
      * Gets the port of the server.
@@ -39684,22 +40227,23 @@ const P_POW = Symbol('pow');
 const P_OPENSSL = Symbol('openssl');
 
 class NodeStatus extends Abstract {
-  constructor(data) {
-    super(data);
-    this[P_READY] = !!data.ready;
-    this[P_READY_S] = data.ready_s;
-    this[P_STATUS_S] = data.status_s;
-    this[P_PORT] = parseInt(data.port, 10);
-    this[P_LOCKED] = !!data.locked;
-    this[P_TIMESTAMP] = parseInt(data.timestamp, 10);
-    this[P_BLOCKS] = parseInt(data.blocks, 10);
-    this[P_VERSION] = data.version;
-    this[P_SBH] = BC.fromHex(data.sbh);
-    this[P_POW] = BC.fromHex(data.pow);
-    this[P_OPENSSL] = BC.fromHex(data.openssl);
-    this[P_NETPROTOCOL] = new NetProtocol(data.netprotocol);
-    this[P_NETSTATS] = new NetStats(data.netstats);
-    this[P_NODESERVERS] = data.nodeservers.map(ns => new NodeServer(ns));
+  static createFromRPC(data) {
+    let nodeStatus = new NodeStatus(data);
+    nodeStatus[P_READY] = !!data.ready;
+    nodeStatus[P_READY_S] = data.ready_s;
+    nodeStatus[P_STATUS_S] = data.status_s;
+    nodeStatus[P_PORT] = parseInt(data.port, 10);
+    nodeStatus[P_LOCKED] = !!data.locked;
+    nodeStatus[P_TIMESTAMP] = parseInt(data.timestamp, 10);
+    nodeStatus[P_BLOCKS] = parseInt(data.blocks, 10);
+    nodeStatus[P_VERSION] = data.version;
+    nodeStatus[P_SBH] = BC.fromHex(data.sbh);
+    nodeStatus[P_POW] = BC.fromHex(data.pow);
+    nodeStatus[P_OPENSSL] = BC.fromHex(data.openssl);
+    nodeStatus[P_NETPROTOCOL] = new NetProtocol(data.netprotocol);
+    nodeStatus[P_NETSTATS] = new NetStats(data.netstats);
+    nodeStatus[P_NODESERVERS] = data.nodeservers.map(ns => new NodeServer(ns));
+    return nodeStatus;
   }
   /**
      * Gets a flag indicating whether the node is ready.
@@ -40048,83 +40592,84 @@ class Operation extends Abstract {
    */
 
 
-  constructor(data) {
-    super(data);
-    this[P_VALID] = true;
+  static createFromRPC(data) {
+    let operation = new Operation(data);
+    operation[P_VALID] = true;
 
     if (data.valid !== undefined) {
-      this[P_VALID] = !!data.valid;
+      operation[P_VALID] = !!data.valid;
     }
 
-    this[P_ERRORS] = null;
+    operation[P_ERRORS] = null;
 
     if (data.errors !== undefined) {
-      this[P_ERRORS] = data.errors;
+      operation[P_ERRORS] = data.errors;
     }
 
     if (data.payload !== undefined) {
-      this[P_PAYLOAD] = BC.fromHex(data.payload);
+      operation[P_PAYLOAD] = BC.fromHex(data.payload);
     } else {
-      this[P_PAYLOAD] = BC.fromHex('');
+      operation[P_PAYLOAD] = BC.fromHex('');
     }
 
-    this[P_BLOCK] = parseInt(data.block, 10);
-    this[P_TIME] = parseInt(data.time, 10);
-    this[P_OPBLOCK] = parseInt(data.opblock, 10);
-    this[P_MATURATION] = 0; // pending
+    operation[P_BLOCK] = parseInt(data.block, 10);
+    operation[P_TIME] = parseInt(data.time, 10);
+    operation[P_OPBLOCK] = parseInt(data.opblock, 10);
+    operation[P_MATURATION] = 0; // pending
 
     if (data.maturation !== null) {
-      this[P_MATURATION] = parseInt(data.maturation, 10);
+      operation[P_MATURATION] = parseInt(data.maturation, 10);
     }
 
-    this[P_OPTYPE] = parseInt(data.optype, 10); // multi-op
+    operation[P_OPTYPE] = parseInt(data.optype, 10); // multi-op
 
-    this[P_ACCOUNT] = null;
+    operation[P_ACCOUNT] = null;
 
     if (data.account !== undefined) {
-      this[P_ACCOUNT] = new AccountNumber(data.account);
+      operation[P_ACCOUNT] = new AccountNumber(data.account);
     }
 
-    this[P_OPTXT] = data.optxt;
-    this[P_AMOUNT] = new Currency(data.amount);
-    this[P_FEE] = new Currency(data.fee);
-    this[P_BALANCE] = null;
+    operation[P_OPTXT] = data.optxt;
+    operation[P_AMOUNT] = new Currency(data.amount);
+    operation[P_FEE] = new Currency(data.fee);
+    operation[P_BALANCE] = null;
 
     if (data.balance !== undefined) {
-      this[P_BALANCE] = new Currency(data.balance);
+      operation[P_BALANCE] = new Currency(data.balance);
     }
 
-    this[P_OPHASH] = null;
+    operation[P_OPHASH] = null;
 
     if (data.ophash !== undefined) {
-      this[P_OPHASH] = BC.fromHex(data.ophash);
+      operation[P_OPHASH] = BC.fromHex(data.ophash);
 
-      if (this[P_OPTYPE] !== Operation.BLOCKCHAIN_REWARD) {
-        this[P_OPHASH] = opHashCoder.decodeFromBytes(this[P_OPHASH]);
+      if (operation[P_OPTYPE] !== Operation.BLOCKCHAIN_REWARD) {
+        operation[P_OPHASH] = opHashCoder.decodeFromBytes(operation[P_OPHASH]);
       }
     }
 
-    this[P_OLD_OPHASH] = null;
+    operation[P_OLD_OPHASH] = null;
 
     if (data.old_ophash !== undefined) {
-      this[P_OLD_OPHASH] = BC.fromHex(data.old_ophash);
+      operation[P_OLD_OPHASH] = BC.fromHex(data.old_ophash);
     }
 
-    this[P_SUBTYPE] = data.subtype;
-    this[P_SIGNER_ACCOUNT] = null;
+    operation[P_SUBTYPE] = data.subtype;
+    operation[P_SIGNER_ACCOUNT] = null;
 
     if (data.signer_account !== undefined) {
-      this[P_SIGNER_ACCOUNT] = new AccountNumber(data.signer_account);
+      operation[P_SIGNER_ACCOUNT] = new AccountNumber(data.signer_account);
     } // eslint-disable-next-line no-multi-assign
 
 
-    this[P_SENDERS] = [];
-    this[P_RECEIVERS] = [];
-    this[P_CHANGERS] = []; // loop given data and initialize objects
+    operation[P_SENDERS] = [];
+    operation[P_RECEIVERS] = [];
+    operation[P_CHANGERS] = []; // loop given data and initialize objects
 
-    data.senders.forEach(s => this[P_SENDERS].push(new Sender(s)));
-    data.receivers.forEach(r => this[P_RECEIVERS].push(new Receiver(r)));
-    data.changers.forEach(c => this[P_CHANGERS].push(new Changer(c)));
+    data.senders.forEach(s => operation[P_SENDERS].push(new Sender(s)));
+    data.receivers.forEach(r => operation[P_RECEIVERS].push(new Receiver(r)));
+    data.changers.forEach(c => operation[P_CHANGERS].push(new Changer(c)));
+    return operation;
   }
   /**
    * Gets an indicator whether the operation was valid.
@@ -40499,11 +41044,12 @@ class Receiver extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
-    this[P_ACCOUNT] = new AccountNumber(data.account);
-    this[P_AMOUNT] = new Currency(data.amount);
-    this[P_PAYLOAD] = BC.fromHex(data.payload);
+  static createFromRPC(data) {
+    let receiver = new Receiver(data);
+    receiver[P_ACCOUNT] = new AccountNumber(data.account);
+    receiver[P_AMOUNT] = new Currency(data.amount);
+    receiver[P_PAYLOAD] = BC.fromHex(data.payload);
+    return receiver;
   }
   /**
    * Gets the account of the receiver.
@@ -40578,12 +41124,13 @@ class Sender extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
-    this[P_N_OPERATION] = parseInt(data.n_operation, 10);
-    this[P_ACCOUNT] = new AccountNumber(data.account);
-    this[P_AMOUNT] = new Currency(data.amount);
-    this[P_PAYLOAD] = BC.fromHex(data.payload);
+  static createFromRPC(data) {
+    let sender = new Sender(data);
+    sender[P_N_OPERATION] = parseInt(data.n_operation, 10);
+    sender[P_ACCOUNT] = new AccountNumber(data.account);
+    sender[P_AMOUNT] = new Currency(data.amount);
+    sender[P_PAYLOAD] = BC.fromHex(data.payload);
+    return sender;
   }
   /**
    * Gets the n operation of thwe sender.
@@ -40665,17 +41212,18 @@ class SignedMessage extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
-    this[P_DIGEST] = BC.fromHex(data.digest);
+  static createFromRPC(data) {
+    let signedMessage = new SignedMessage(data);
+    signedMessage[P_DIGEST] = BC.fromHex(data.digest);
 
     if (data.enc_pubkey !== undefined) {
-      this[P_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.enc_pubkey));
+      signedMessage[P_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.enc_pubkey));
     } else {
-      this[P_PUBKEY] = new PublicKeyCoder().decodeFromBase58(data.b58_pubkey);
+      signedMessage[P_PUBKEY] = new PublicKeyCoder().decodeFromBase58(data.b58_pubkey);
     }
 
-    this[P_SIGNATURE] = BC.fromHex(data.signature);
+    signedMessage[P_SIGNATURE] = BC.fromHex(data.signature);
+    return signedMessage;
   }
   /**
      * Gets the digest.
@@ -40753,31 +41301,33 @@ class WalletPublicKey extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
-    this[P_NAME] = data.name;
-    this[P_ENC_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.publicKey));
-    this[P_CAN_USE] = !!data.can_use;
-    this[P_B58_PUBKEY] = null;
-    this[P_EC_NID] = null;
-    this[P_X] = null;
-    this[P_Y] = null;
+  static createFromRPC(data) {
+    let walletPublicKey = new WalletPublicKey(data);
+    walletPublicKey[P_NAME] = data.name;
+    walletPublicKey[P_ENC_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.publicKey));
+    walletPublicKey[P_CAN_USE] = !!data.can_use;
+    walletPublicKey[P_B58_PUBKEY] = null;
+    walletPublicKey[P_EC_NID] = null;
+    walletPublicKey[P_X] = null;
+    walletPublicKey[P_Y] = null;
 
     if (data.b58_pubkey !== undefined) {
-      this[P_B58_PUBKEY] = data.b58_pubkey;
+      walletPublicKey[P_B58_PUBKEY] = data.b58_pubkey;
     }
 
     if (data.ec_nid !== undefined) {
-      this[P_EC_NID] = new Curve(parseInt(data.ec_nid, 10));
+      walletPublicKey[P_EC_NID] = new Curve(parseInt(data.ec_nid, 10));
     }
 
     if (data.x !== undefined) {
-      this[P_X] = BC.fromHex(data.x);
+      walletPublicKey[P_X] = BC.fromHex(data.x);
     }
 
     if (data.y !== undefined) {
-      this[P_Y] = BC.fromHex(data.y);
+      walletPublicKey[P_Y] = BC.fromHex(data.y);
     }
+
+    return walletPublicKey;
   }
   /**
      * Gets the name of the key.
@@ -40883,6 +41433,150 @@ module.exports = {
   Sender: __webpack_require__(/*! ./Sender */ "../json-rpc/src/Types/Sender.js"),
   WalletPublicKey: __webpack_require__(/*! ./WalletPublicKey */ "../json-rpc/src/Types/WalletPublicKey.js")
 };
+
+/***/ }),
+
+/***/ "../payload-split/index.js":
+/*!*********************************!*\
+  !*** ../payload-split/index.js ***!
+  \*********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! ./src/Payload */ "../payload-split/src/Payload.js");
+
+/***/ }),
+
+/***/ "../payload-split/src/Payload.js":
+/*!***************************************!*\
+  !*** ../payload-split/src/Payload.js ***!
+  \***************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+const BC = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").BC;
+
+const Curve = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Types.Keys.Curve;
+
+const PascalCoinInfo = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").PascalCoinInfo;
+
+const AES = __webpack_require__(/*! @pascalcoin-sbx/crypto */ "../crypto/index.js").Encryption.Pascal.Password;
+
+const ECIES = __webpack_require__(/*! @pascalcoin-sbx/crypto */ "../crypto/index.js").Encryption.Pascal.ECIES;
+
+let pascalEncTypes = [{
+  type: AES,
+  max_length: 223
+}, {
+  type: ECIES,
+  max_length: encOptions => {
+    switch (encOptions.publicKey.curve.id) {
+      case Curve.CI_SECP256K1:
+        return 191;
+
+      case Curve.CI_P521:
+        return 159;
+
+      case Curve.CI_P384:
+        return 175;
+    }
+
+    return PascalCoinInfo.MAX_PAYLOAD_LENGTH;
+  }
+}];
+/**
+ * A helper that is able to handle payload splitting and concenation.
+ */
+
+class Payload {
+  /**
+   * First splits the decrypted payload and then encrypts each part.
+   *
+   * @param {BC} payload
+   * @param {@pascalcoin-sbx/crypto/Encryption/Abstract} EncryptionType
+   * @param {Object} encryptionOptions
+   * @param {Number} decryptedMaxLength
+   * @return {BC[]}
+   */
+  static splitAndEncrypt(payload, EncryptionType, encryptionOptions = {}, decryptedMaxLength = -1) {
+    payload = BC.from(payload);
+    let maxLength = decryptedMaxLength;
+
+    if (maxLength === -1) {
+      let specification = pascalEncTypes.find(type => {
+        return type.type === EncryptionType;
+      });
+
+      if (specification === undefined) {
+        throw new Error('Inefficient to split a payload if I don\'t know ' + `the max payload length using ${EncryptionType.constructor.name}`);
+      }
+
+      if (Number.isInteger(specification.max_length)) {
+        maxLength = specification.max_length;
+      } else {
+        maxLength = specification.max_length(encryptionOptions);
+      }
+    }
+
+    return payload.split(maxLength).map(splittedPayload => {
+      return EncryptionType.encrypt(splittedPayload, encryptionOptions);
+    });
+  }
+  /**
+   * Encrypts the given payload first and splits the encrypted result.
+   *
+   * @param {BC} payload
+   * @param {@pascalcoin-sbx/crypto/Encryption/Abstract} EncryptionType
+   * @param {Object} encryptionOptions
+   * @return {BC[]}
+   */
+
+
+  static encryptAndSplit(payload, EncryptionType, encryptionOptions = {}) {
+    payload = BC.from(payload);
+    return EncryptionType.encrypt(payload, encryptionOptions).split(PascalCoinInfo.MAX_PAYLOAD_LENGTH);
+  }
+  /**
+   * Decrypts all given payloads and then concats the results.
+   *
+   * @param {BC[]} payloads
+   * @param {@pascalcoin-sbx/crypto/Encryption/Abstract} DecryptionType
+   * @param {Object} decryptionOptions
+   * @return {BC}
+   */
+
+
+  static decryptAndConcat(payloads, DecryptionType, decryptionOptions = {}) {
+    let decryptedPayloads = payloads.map(payload => DecryptionType.decrypt(payload, decryptionOptions));
+    let decrypted = BC.empty();
+    decryptedPayloads.forEach(decryptedPayload => {
+      decrypted = decrypted.append(decryptedPayload);
+    });
+    return decrypted;
+  }
+  /**
+   * Concats all encrypted payloads and decrypts the value.
+   *
+   * @param {BC[]} payloads
+   * @param {@pascalcoin-sbx/crypto/Encryption/Abstract} DecryptionType
+   * @param {Object} decryptionOptions
+   * @return {BC}
+   */
+
+
+  static concatAndDecrypt(payloads, DecryptionType, decryptionOptions = {}) {
+    let encrypted = BC.empty();
+    payloads.forEach(encryptedPayload => {
+      encrypted = encrypted.append(encryptedPayload);
+    });
+    return DecryptionType.decrypt(encrypted, decryptionOptions);
+  }
+
+}
+
+module.exports = Payload;
 
 /***/ }),
 
@@ -44724,6 +45418,336 @@ module.exports = Signer;
 
 /***/ }),
 
+/***/ "../walletkeys.dat/index.js":
+/*!**********************************!*\
+  !*** ../walletkeys.dat/index.js ***!
+  \**********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = {
+  File: __webpack_require__(/*! ./src/File */ "../walletkeys.dat/src/File.js"),
+  Key: __webpack_require__(/*! ./src/Key */ "../walletkeys.dat/src/Key.js"),
+  KeyCoder: __webpack_require__(/*! ./src/KeyCoder */ "../walletkeys.dat/src/KeyCoder.js"),
+  FileCoder: __webpack_require__(/*! ./src/FileCoder */ "../walletkeys.dat/src/FileCoder.js")
+};
+
+/***/ }),
+
+/***/ "../walletkeys.dat/src/File.js":
+/*!*************************************!*\
+  !*** ../walletkeys.dat/src/File.js ***!
+  \*************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const P_MAGIC = Symbol('magic');
+const P_VERSION = Symbol('version');
+const P_KEYS = Symbol('keys');
+/**
+ * Represents the contents of a WalletKeys.dat file.
+ */
+
+class File {
+  /**
+   * Constructor.
+   *
+   * @param {String} magic
+   * @param {Number} version
+   */
+  constructor(magic, version) {
+    this[P_MAGIC] = magic;
+    this[P_VERSION] = version;
+    this[P_KEYS] = [];
+  }
+  /**
+   * Gets the magic string.
+   *
+   * @return {String}
+   */
+
+
+  get magic() {
+    return this[P_MAGIC];
+  }
+  /**
+   * Gets the file version.
+   *
+   * @return {Number}
+   */
+
+
+  get version() {
+    return this[P_VERSION];
+  }
+  /**
+   * Gets the number of keys.
+   *
+   * @return {Number}
+   */
+
+
+  get countKeys() {
+    return this[P_KEYS].length;
+  }
+  /**
+   * Gets the keys in the file.
+   *
+   * @return {Key[]}
+   */
+
+
+  get keys() {
+    return this[P_KEYS];
+  }
+  /**
+   * Adds a key to the list of keys.
+   *
+   * @param {Key} key
+   */
+
+
+  addKey(key) {
+    this[P_KEYS].push(key);
+  }
+
+}
+
+module.exports = File;
+
+/***/ }),
+
+/***/ "../walletkeys.dat/src/FileCoder.js":
+/*!******************************************!*\
+  !*** ../walletkeys.dat/src/FileCoder.js ***!
+  \******************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
+
+const Endian = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Endian;
+
+const File = __webpack_require__(/*! ./File */ "../walletkeys.dat/src/File.js");
+
+const KeyCoder = __webpack_require__(/*! ./KeyCoder */ "../walletkeys.dat/src/KeyCoder.js");
+
+const CompositeType = Coding.CompositeType;
+/**
+ * Coder for a WalletKeys.dat file from the classic wallet.
+ */
+
+class FileCoder extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'walletkeys.dat');
+    this.description('The coder for the walletkeys.dat file from the classic wallet.');
+    this.addSubType(new Coding.Core.StringWithLength('magic', 1, 'magic_length', 'Length of the magic', Endian.LITTLE_ENDIAN, true).description('The name of the magic.'));
+    this.addSubType(new Coding.Core.Int32('version', true, Endian.LITTLE_ENDIAN).description('Version of file'));
+    const decissiveCoder = new Coding.Decissive('versioned', 'version', versionValue => {
+      // Decide here when the version is updated, currently only 100 is supported
+      if (versionValue === 100 || true) {
+        const V100Coder = new Coding.CompositeType('v100');
+        V100Coder.addSubType(new Coding.Core.Int32('countKeys', true, Endian.LITTLE_ENDIAN).description('The number of keys in the file'));
+        V100Coder.addSubType(new Coding.Repeating('keys', new KeyCoder('keys'), -1, 'countKeys').description('List of keys'));
+        return V100Coder;
+      }
+
+      throw new Error('Invalid walletkeys version');
+    });
+    this.addSubType(decissiveCoder);
+  }
+  /**
+   * Decodes the given bytes.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {File}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
+    const decoded = super.decodeFromBytes(bc, options, all);
+    const keyFile = new File(decoded.magic, decoded.version);
+    decoded.versioned.keys.forEach(key => {
+      keyFile.addKey(key);
+    });
+    return keyFile;
+  }
+  /**
+   * Encodes the given File object to a list of bytes.
+   *
+   * @param {File} objOrArray
+   * @returns {BC}
+   */
+
+
+  encodeToBytes(objOrArray) {
+    let obj = {
+      magic: objOrArray.magic,
+      version: objOrArray.version,
+      versioned: {
+        countKeys: objOrArray.countKeys,
+        keys: objOrArray.keys
+      }
+    };
+    return super.encodeToBytes(obj);
+  }
+
+}
+
+module.exports = FileCoder;
+
+/***/ }),
+
+/***/ "../walletkeys.dat/src/Key.js":
+/*!************************************!*\
+  !*** ../walletkeys.dat/src/Key.js ***!
+  \************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const P_NAME = Symbol('name');
+const P_PUBKEY = Symbol('public_key');
+const P_ENC_PRIVATE_KEY = Symbol('encrypted_private_key');
+/**
+ * Represents a key entry.
+ */
+
+class Key {
+  /**
+   * Constructor.
+   *
+   * @param {String} name
+   * @param {PublicKey} publicKey
+   * @param {BC} encryptedPrivateKey
+   */
+  constructor(name, publicKey, encryptedPrivateKey) {
+    this[P_NAME] = name;
+    this[P_PUBKEY] = publicKey;
+    this[P_ENC_PRIVATE_KEY] = encryptedPrivateKey;
+  }
+  /**
+   * Gets the name of the key.
+   *
+   * @return {String}
+   */
+
+
+  get name() {
+    return this[P_NAME];
+  }
+  /**
+   * Gets the associated public key.
+   *
+   * @return {PublicKey}
+   */
+
+
+  get publicKey() {
+    return this[P_PUBKEY];
+  }
+  /**
+   * Gets the encrypted private key.
+   *
+   * @return {BC}
+   */
+
+
+  get encryptedPrivateKey() {
+    return this[P_ENC_PRIVATE_KEY];
+  }
+
+}
+
+module.exports = Key;
+
+/***/ }),
+
+/***/ "../walletkeys.dat/src/KeyCoder.js":
+/*!*****************************************!*\
+  !*** ../walletkeys.dat/src/KeyCoder.js ***!
+  \*****************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) Benjamin Ansbach - all rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+const Coding = __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js").Coding;
+
+const Key = __webpack_require__(/*! ./Key */ "../walletkeys.dat/src/Key.js");
+
+const CompositeType = Coding.CompositeType;
+/**
+ * Coder for a key entry in the WalletKeys.dat file.
+ */
+
+class KeyCoder extends CompositeType {
+  /**
+   * Constructor.
+   *
+   * @param {String} id
+   */
+  constructor(id = null) {
+    super(id || 'walletkeys.dat_key');
+    this.description('The coder for a key entry in the walletkeys.dat file from the classic wallet.');
+    this.addSubType(new Coding.Core.StringWithLength('name', 2, 'name_length', 'Length of the key name').description('The name of the key.'));
+    this.addSubType(new Coding.Pascal.Keys.PublicKey('publicKey').description('The public key'));
+    this.addSubType(new Coding.Core.BytesWithLength('encryptedPrivateKey', 2, 'encryptedPrivateKeyLength', 'Length of crypted').description('The crypted key'));
+  }
+  /**
+   * Decodes the given bytes.
+   *
+   * @param {BC|Buffer|Uint8Array|String} bc
+   * @param {Object} options
+   * @param {*} all
+   * @return {Key}
+   */
+
+
+  decodeFromBytes(bc, options = {}, all = null) {
+    const decoded = super.decodeFromBytes(bc, options, all);
+    return new Key(decoded.name, decoded.publicKey, decoded.encryptedPrivateKey);
+  }
+
+}
+
+module.exports = KeyCoder;
+
+/***/ }),
+
 /***/ "./index.js":
 /*!******************!*\
   !*** ./index.js ***!
@@ -44735,9 +45759,12 @@ module.exports = Signer;
 module.exports = {
   Common: __webpack_require__(/*! @pascalcoin-sbx/common */ "../common/index.js"),
   Crypto: __webpack_require__(/*! @pascalcoin-sbx/crypto */ "../crypto/index.js"),
+  DataSpec: __webpack_require__(/*! @pascalcoin-sbx/data-spec */ "../data-spec/index.js"),
+  EPasa: __webpack_require__(/*! @pascalcoin-sbx/epasa */ "../epasa/index.js"),
   JsonRpc: __webpack_require__(/*! @pascalcoin-sbx/json-rpc */ "../json-rpc/index.js"),
+  PayloadSplit: __webpack_require__(/*! @pascalcoin-sbx/payload-split */ "../payload-split/index.js"),
   Signing: __webpack_require__(/*! @pascalcoin-sbx/signing */ "../signing/index.js"),
-  EPasa: __webpack_require__(/*! @pascalcoin-sbx/epasa */ "../epasa/index.js")
+  WalletKeysDat: __webpack_require__(/*! @pascalcoin-sbx/walletkeys.dat */ "../walletkeys.dat/index.js")
 };
 
 /***/ }),

@@ -33,7 +33,7 @@ describe('Core.Types.Operation.Sender', () => {
 
       operations.forEach((rawOp) => {
         rawOp.senders.forEach((rawSender) => {
-          new Sender(rawSender);
+          Sender.createFromRPC(rawSender);
         });
       });
     });
@@ -45,7 +45,7 @@ describe('Core.Types.Operation.Sender', () => {
 
       operations.forEach((rawOp) => {
         rawOp.senders.forEach((rawSender) => {
-          let sender = new Sender(rawSender);
+          let sender = Sender.createFromRPC(rawSender);
 
           expect(sender.account).to.be.instanceof(AccountNumber);
           expect(sender.account.account).to.be.equal(rawSender.account);

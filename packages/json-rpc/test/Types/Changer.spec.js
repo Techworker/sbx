@@ -37,7 +37,7 @@ describe('Core.Types.Operation.Changer', () => {
 
       operations.forEach((rawOp) => {
         rawOp.receivers.forEach((rawChanger) => {
-          new Changer(rawChanger);
+          Changer.createFromRPC(rawChanger);
         });
       });
     });
@@ -49,7 +49,7 @@ describe('Core.Types.Operation.Changer', () => {
 
       operations.forEach((rawOp) => {
         rawOp.changers.forEach((rawChanger) => {
-          let changer = new Changer(rawChanger);
+          let changer = Changer.createFromRPC(rawChanger);
 
           expect(changer.account).to.be.instanceof(AccountNumber);
           expect(changer.account.account).to.be.equal(rawChanger.account);

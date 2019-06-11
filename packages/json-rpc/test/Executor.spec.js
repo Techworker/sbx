@@ -170,7 +170,7 @@ describe('RPC.Executor', () => {
 
   it('will extract the account number from an account', (done) => {
     const params = {
-      field: new Account({
+      field: Account.createFromRPC({
         account: 100,
         enc_pubkey: new PublicKeyCoder().encodeToBytes(PublicKey.empty()),
         balance: 1,
@@ -211,7 +211,7 @@ describe('RPC.Executor', () => {
     const blocks = JSON.parse(fs.readFileSync(path.join(__dirname, '/fixtures/blocks.json')));
 
     const params = {
-      field: new Block(blocks[0])
+      field: Block.createFromRPC(blocks[0])
     };
 
     const c = getCallerInstance();

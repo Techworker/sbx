@@ -27,23 +27,25 @@ const P_POW = Symbol('pow');
 const P_OPENSSL = Symbol('openssl');
 
 class NodeStatus extends Abstract {
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
+    let nodeStatus = new NodeStatus(data);
 
-    this[P_READY] = !!data.ready;
-    this[P_READY_S] = data.ready_s;
-    this[P_STATUS_S] = data.status_s;
-    this[P_PORT] = parseInt(data.port, 10);
-    this[P_LOCKED] = !!data.locked;
-    this[P_TIMESTAMP] = parseInt(data.timestamp, 10);
-    this[P_BLOCKS] = parseInt(data.blocks, 10);
-    this[P_VERSION] = data.version;
-    this[P_SBH] = BC.fromHex(data.sbh);
-    this[P_POW] = BC.fromHex(data.pow);
-    this[P_OPENSSL] = BC.fromHex(data.openssl);
-    this[P_NETPROTOCOL] = new NetProtocol(data.netprotocol);
-    this[P_NETSTATS] = new NetStats(data.netstats);
-    this[P_NODESERVERS] = data.nodeservers.map(ns => new NodeServer(ns));
+    nodeStatus[P_READY] = !!data.ready;
+    nodeStatus[P_READY_S] = data.ready_s;
+    nodeStatus[P_STATUS_S] = data.status_s;
+    nodeStatus[P_PORT] = parseInt(data.port, 10);
+    nodeStatus[P_LOCKED] = !!data.locked;
+    nodeStatus[P_TIMESTAMP] = parseInt(data.timestamp, 10);
+    nodeStatus[P_BLOCKS] = parseInt(data.blocks, 10);
+    nodeStatus[P_VERSION] = data.version;
+    nodeStatus[P_SBH] = BC.fromHex(data.sbh);
+    nodeStatus[P_POW] = BC.fromHex(data.pow);
+    nodeStatus[P_OPENSSL] = BC.fromHex(data.openssl);
+    nodeStatus[P_NETPROTOCOL] = new NetProtocol(data.netprotocol);
+    nodeStatus[P_NETSTATS] = new NetStats(data.netstats);
+    nodeStatus[P_NODESERVERS] = data.nodeservers.map(ns => new NodeServer(ns));
+
+    return nodeStatus;
   }
 
   /**

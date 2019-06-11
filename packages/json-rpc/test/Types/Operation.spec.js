@@ -35,7 +35,9 @@ describe('Core.Types.Operation', () => {
     optypes.forEach((opt) => {
       const operations = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/ops/optype_' + opt + '.json')));
 
-      operations.forEach((op) => new Operation(op));
+      operations.forEach((op) => {
+        Operation.createFromRPC(op);
+      });
     });
   });
 
@@ -44,7 +46,7 @@ describe('Core.Types.Operation', () => {
     const operations = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/ops/pending.json')));
 
     operations.forEach((op) => {
-      let operation = new Operation(op);
+      let operation = Operation.createFromRPC(op);
 
       expect(operation.isPending()).to.be.equal(true);
     });
@@ -57,7 +59,7 @@ describe('Core.Types.Operation', () => {
 
       operations.forEach((op) => {
 
-        let operation = new Operation(op);
+        let operation = Operation.createFromRPC(op);
 
         expect(operation.isPending()).to.be.equal(false);
 
@@ -174,7 +176,7 @@ describe('Core.Types.Operation', () => {
       const operations = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/ops/optype_' + opt + '.json')));
 
       operations.forEach((op) => {
-        let operation = new Operation(op);
+        let operation = Operation.createFromRPC(op);
 
         Object.keys(isMap).forEach((isOpType) => {
           isOpType = parseInt(isOpType, 10);

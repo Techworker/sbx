@@ -21,13 +21,15 @@ class NodeServer extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
+    let nodeServer = new NodeServer(data);
 
-    this[P_PORT] = parseInt(data.port, 10);
-    this[P_LASTCON] = parseInt(data.lastcon, 10);
-    this[P_ATTEMPTS] = parseInt(data.attempts, 10);
-    this[P_IP] = data.ip;
+    nodeServer[P_PORT] = parseInt(data.port, 10);
+    nodeServer[P_LASTCON] = parseInt(data.lastcon, 10);
+    nodeServer[P_ATTEMPTS] = parseInt(data.attempts, 10);
+    nodeServer[P_IP] = data.ip;
+
+    return nodeServer;
   }
 
   /**

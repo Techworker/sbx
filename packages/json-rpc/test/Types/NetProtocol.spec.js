@@ -11,12 +11,12 @@ describe('Core.Types.NodeStatus.NetProtocol', () => {
   it('can be created from a RPC response', () => {
     const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/nodestatus.json')));
 
-    new NetProtocol(raw.netprotocol);
+    NetProtocol.createFromRPC(raw.netprotocol);
   });
 
   it('can be created from json and contains valid values', () => {
     const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/nodestatus.json')));
-    let np = new NetProtocol(raw.netprotocol);
+    let np = NetProtocol.createFromRPC(raw.netprotocol);
 
     expect(np.ver).to.be.equal(raw.netprotocol.ver);
     expect(np.verA).to.be.equal(raw.netprotocol.ver_a);

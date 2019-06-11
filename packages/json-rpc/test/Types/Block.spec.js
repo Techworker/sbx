@@ -27,7 +27,7 @@ describe('Core.Types.Block', () => {
     const blocks = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/blocks.json')));
 
     blocks.forEach((b) => {
-      let block = new Block(b);
+      let block = Block.createFromRPC(b);
 
       expect(block.block).to.be.equal(b.block);
       expect(block.publicKey).to.be.instanceof(PublicKey);
@@ -70,7 +70,7 @@ describe('Core.Types.Block', () => {
     const blocks = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/blocks.json')));
 
     blocks.forEach((b) => {
-      let block = new Block(b);
+      let block = Block.createFromRPC(b);
       let createdAccounts = block.createdAccounts;
 
       expect(createdAccounts.length).to.be.equal(5);
@@ -91,7 +91,7 @@ describe('Core.Types.Block', () => {
     const blocks = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/blocks.json')));
 
     blocks.forEach((b) => {
-      let block = new Block(b);
+      let block = Block.createFromRPC(b);
 
       expect(block.__initializationData).to.be.deep.equal(b);
     });

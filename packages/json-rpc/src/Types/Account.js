@@ -29,6 +29,21 @@ const P_SELLER_ACCOUNT = Symbol('seller_account');
 const P_PRIVATE_SALE = Symbol('private_sale');
 const P_NEW_ENC_PUBKEY = Symbol('new_enc_pubkey');
 
+const codingProps = {
+  account: P_ACCOUNT,
+  publicKey: P_ENC_PUBKEY,
+  balance: P_BALANCE,
+  nOperation: P_N_OPERATION,
+  updatedB: P_STATE,
+  name: P_NAME,
+  type: P_TYPE,
+  lockedUntilBlock: P_LOCKED_UNTIL_BLOCK,
+  price: P_PRICE,
+  sellerAccount: P_SELLER_ACCOUNT,
+  privateSale: P_PRIVATE_SALE,
+  newPublicKey: P_NEW_ENC_PUBKEY
+};
+
 /**
  * Represents an account.
  */
@@ -56,42 +71,44 @@ class Account extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
+    let account = new Account(data);
 
-    this[P_ACCOUNT] = new AccountNumber(data.account);
-    this[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
-    this[P_BALANCE] = new Currency(data.balance);
-    this[P_N_OPERATION] = parseInt(data.n_operation, 10);
-    this[P_UPDATED_B] = parseInt(data.updated_b, 10);
+    account[P_ACCOUNT] = new AccountNumber(data.account);
+    account[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
+    account[P_BALANCE] = new Currency(data.balance);
+    account[P_N_OPERATION] = parseInt(data.n_operation, 10);
+    account[P_UPDATED_B] = parseInt(data.updated_b, 10);
 
     if (data.state !== Account.STATE_NORMAL && data.state !== Account.STATE_LISTED) {
       throw new Error('Invalid account state.');
     }
 
-    this[P_STATE] = data.state;
-    this[P_NAME] = new AccountName(data.name);
-    this[P_TYPE] = data.type;
+    account[P_STATE] = data.state;
+    account[P_NAME] = new AccountName(data.name);
+    account[P_TYPE] = data.type;
 
-    this[P_LOCKED_UNTIL_BLOCK] = null;
+    account[P_LOCKED_UNTIL_BLOCK] = null;
     if (data.locked_until_block !== undefined) {
-      this[P_LOCKED_UNTIL_BLOCK] = parseInt(data.locked_until_block, 10);
+      account[P_LOCKED_UNTIL_BLOCK] = parseInt(data.locked_until_block, 10);
     }
 
     // when not listed
-    this[P_PRICE] = null;
-    this[P_SELLER_ACCOUNT] = null;
-    this[P_PRIVATE_SALE] = null;
-    this[P_NEW_ENC_PUBKEY] = null;
+    account[P_PRICE] = null;
+    account[P_SELLER_ACCOUNT] = null;
+    account[P_PRIVATE_SALE] = null;
+    account[P_NEW_ENC_PUBKEY] = null;
 
-    if (this[P_STATE] === Account.STATE_LISTED) {
-      this[P_PRICE] = new Currency(data.price);
-      this[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
-      this[P_PRIVATE_SALE] = data.private_sale;
+    if (account[P_STATE] === Account.STATE_LISTED) {
+      account[P_PRICE] = new Currency(data.price);
+      account[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
+      account[P_PRIVATE_SALE] = data.private_sale;
       if (data.new_enc_pubkey !== '000000000000' && data.new_enc_pubkey !== undefined) {
-        this[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
+        account[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
       }
     }
+
+    return account;
   }
 
   /**
@@ -221,6 +238,26 @@ class Account extends Abstract {
   isForSale() {
     return this[P_STATE] === Account.STATE_LISTED;
   }
+
+  /**
+   * Gets a plain object copy of the instance.
+   */
+  serialize() {
+    let serialized = {};
+
+    Object.keys(codingProps).forEach((p) => (serialized[p] = this[p]));
+    return serialized;
+  }
+
+  static createFromSerialized(serialized) {
+    let account = new Account({});
+
+    Object.keys(codingProps).forEach((p) => {
+      account[codingProps[p]] = serialized[p];
+    });
+    return account;
+  }
+
 }
 
 module.exports = Account;

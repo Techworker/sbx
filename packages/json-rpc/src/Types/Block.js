@@ -40,28 +40,30 @@ class Block extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
+    let block = new Block(data);
 
-    this[P_BLOCK] = parseInt(data.block, 10);
-    this[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
-    this[P_REWARD] = new Currency(data.reward);
-    this[P_FEE] = new Currency(data.fee);
-    this[P_VER] = parseInt(data.ver, 10);
-    this[P_VER_A] = parseInt(data.ver_a, 10);
-    this[P_TIMESTAMP] = parseInt(data.timestamp, 10);
-    this[P_TARGET] = new BN(data.target.toString(), 10);
-    this[P_NONCE] = new BN(data.nonce.toString(), 10);
-    this[P_PAYLOAD] = data.payload;
-    this[P_SBH] = BC.fromHex(data.sbh);
-    this[P_OPH] = BC.fromHex(data.oph);
-    this[P_POW] = BC.fromHex(data.pow);
-    this[P_HASHRATEKHS] = new BN(data.hashratekhs.toString(), 10);
-    this[P_MATURATION] = parseInt(data.maturation, 10);
-    this[P_OPERATIONS] = null;
+    block[P_BLOCK] = parseInt(data.block, 10);
+    block[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
+    block[P_REWARD] = new Currency(data.reward);
+    block[P_FEE] = new Currency(data.fee);
+    block[P_VER] = parseInt(data.ver, 10);
+    block[P_VER_A] = parseInt(data.ver_a, 10);
+    block[P_TIMESTAMP] = parseInt(data.timestamp, 10);
+    block[P_TARGET] = new BN(data.target.toString(), 10);
+    block[P_NONCE] = new BN(data.nonce.toString(), 10);
+    block[P_PAYLOAD] = data.payload;
+    block[P_SBH] = BC.fromHex(data.sbh);
+    block[P_OPH] = BC.fromHex(data.oph);
+    block[P_POW] = BC.fromHex(data.pow);
+    block[P_HASHRATEKHS] = new BN(data.hashratekhs.toString(), 10);
+    block[P_MATURATION] = parseInt(data.maturation, 10);
+    block[P_OPERATIONS] = null;
     if (data.operations !== undefined) {
-      this[P_OPERATIONS] = parseInt(data.operations, 10);
+      block[P_OPERATIONS] = parseInt(data.operations, 10);
     }
+
+    return block;
   }
 
   /**

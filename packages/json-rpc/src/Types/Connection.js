@@ -27,18 +27,22 @@ class Connection extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
-    this[P_RECV] = parseInt(data.recv, 10);
-    this[P_TIMEDIFF] = parseInt(data.timediff, 10);
-    this[P_NETVER_A] = parseInt(data.netver_a, 10);
-    this[P_SECS] = parseInt(data.secs, 10);
-    this[P_SERVER] = !!data.server;
-    this[P_IP] = data.ip;
-    this[P_NETVER] = parseInt(data.netver, 10);
-    this[P_SENT] = parseInt(data.sent, 10);
-    this[P_APPVER] = data.appver;
-    this[P_PORT] = parseInt(data.port, 10);
+  static createFromRPC(data) {
+
+    let connection = new Connection(data);
+
+    connection[P_RECV] = parseInt(data.recv, 10);
+    connection[P_TIMEDIFF] = parseInt(data.timediff, 10);
+    connection[P_NETVER_A] = parseInt(data.netver_a, 10);
+    connection[P_SECS] = parseInt(data.secs, 10);
+    connection[P_SERVER] = !!data.server;
+    connection[P_IP] = data.ip;
+    connection[P_NETVER] = parseInt(data.netver, 10);
+    connection[P_SENT] = parseInt(data.sent, 10);
+    connection[P_APPVER] = data.appver;
+    connection[P_PORT] = parseInt(data.port, 10);
+
+    return connection;
   }
 
   /**

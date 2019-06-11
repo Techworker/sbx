@@ -26,18 +26,21 @@ class NetStats extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
 
-    this[P_BRECEIVED] = parseInt(data.breceived, 10);
-    this[P_SERVERS_T] = parseInt(data.servers_t, 10);
-    this[P_TSERVERS] = parseInt(data.tservers, 10);
-    this[P_TOTAL] = parseInt(data.total, 10);
-    this[P_BSEND] = parseInt(data.bsend, 10);
-    this[P_SERVERS] = parseInt(data.servers, 10);
-    this[P_CLIENTS] = parseInt(data.clients, 10);
-    this[P_ACTIVE] = parseInt(data.active, 10);
-    this[P_TCLIENTS] = parseInt(data.tclients, 10);
+    let netStats = new NetStats(data);
+
+    netStats[P_BRECEIVED] = parseInt(data.breceived, 10);
+    netStats[P_SERVERS_T] = parseInt(data.servers_t, 10);
+    netStats[P_TSERVERS] = parseInt(data.tservers, 10);
+    netStats[P_TOTAL] = parseInt(data.total, 10);
+    netStats[P_BSEND] = parseInt(data.bsend, 10);
+    netStats[P_SERVERS] = parseInt(data.servers, 10);
+    netStats[P_CLIENTS] = parseInt(data.clients, 10);
+    netStats[P_ACTIVE] = parseInt(data.active, 10);
+    netStats[P_TCLIENTS] = parseInt(data.tclients, 10);
+
+    return netStats;
   }
 
   /**

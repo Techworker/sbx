@@ -19,10 +19,14 @@ class NetProtocol extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
-    this[P_VER] = parseInt(data.ver, 10);
-    this[P_VER_A] = parseInt(data.ver_a, 10);
+  static createFromRPC(data) {
+
+    let netProtocol = new NetProtocol(data);
+
+    netProtocol[P_VER] = parseInt(data.ver, 10);
+    netProtocol[P_VER_A] = parseInt(data.ver_a, 10);
+
+    return netProtocol;
   }
 
   /**

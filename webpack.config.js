@@ -3,7 +3,7 @@
 const path = require('path');
 const env = require('yargs').argv.env;
 
-module.exports = function (libraryRoot, outputSuffix, target) {
+module.exports = function (libraryRoot, outputSuffix, target, dist = '/lib') {
   const pkg = require(libraryRoot + '/package.json');
 
   let libraryName = pkg.name;
@@ -25,7 +25,7 @@ module.exports = function (libraryRoot, outputSuffix, target) {
     entry: [libraryRoot + '/index.js'],
     devtool: 'source-map',
     output: {
-      path: libraryRoot + '/lib',
+      path: libraryRoot + dist,
       filename: outputFile,
       library: libraryName,
       libraryTarget: 'umd',

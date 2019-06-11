@@ -10,6 +10,7 @@ const AbstractType = require('./AbstractType');
 
 const P_SUBTYPES = Symbol('subtypes');
 const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_FLATTEN = Symbol('flatten');
 
 /**
  * A Type that itself is made up of multiple other (sub-)types.
@@ -18,10 +19,11 @@ class CompositeType extends AbstractType {
   /**
    * Constructor
    */
-  constructor(id) {
+  constructor(id, flatten = false) {
     super(id || 'composite_type');
     super.description('A type that itself is made up of multiple other types.');
     this[P_SUBTYPES] = [];
+    this[P_FLATTEN] = flatten;
   }
 
   /**
@@ -62,13 +64,20 @@ class CompositeType extends AbstractType {
     if (this.canDecode === false) {
       throw new Error('This type cannot be decoded.');
     }
-    const obj = {};
+    let obj = {};
     let offset = 0;
 
     bc = BC.from(bc);
 
     this.subTypes.forEach((subType) => {
-      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), options, obj);
+      const fieldName = subType.hasTargetFieldName ? subType.targetFieldName : subType.id;
+      const decoded = subType.decodeFromBytes(bc.slice(offset), options, obj);
+
+      if (subType.constructor.name === 'Decissive' && subType.flatten) {
+        obj = Object.assign(obj, decoded);
+      } else {
+        obj[fieldName] = decoded;
+      }
       offset += subType.encodedSize;
     });
     this[P_SIZE_ENCODED] = offset;
@@ -91,7 +100,12 @@ class CompositeType extends AbstractType {
       if (subType.hasFixedValue) {
         subTypeValue = subType.fixedValue;
       } else {
-        subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[subType.id];
+        if (subType.constructor.name === 'Decissive' && subType.flatten) {
+          subTypeValue = objOrArray;
+        } else {
+          subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[subType.id];
+        }
+
       }
 
       // we will use the first available
@@ -100,6 +114,15 @@ class CompositeType extends AbstractType {
 
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
+  }
+
+  /**
+   * Gets a value indicating whether the value should be flattened.
+   *
+   * @return {bool}
+   */
+  get flatten() {
+    return this[P_FLATTEN];
   }
 }
 

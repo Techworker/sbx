@@ -27,8 +27,18 @@ class PagedAction extends BaseAction {
     this.changeParam('max', 100);
   }
 
+  withStart(start) {
+    this.start = start;
+    return this;
+  }
+
   set start(start) {
     this.changeParam('start', start);
+    return this;
+  }
+
+  withMax(max) {
+    this.max = max;
     return this;
   }
 

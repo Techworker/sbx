@@ -27,28 +27,31 @@ class WalletPublicKey extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
-    this[P_NAME] = data.name;
-    this[P_ENC_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.publicKey));
-    this[P_CAN_USE] = !!data.can_use;
+  static createFromRPC(data) {
+    let walletPublicKey = new WalletPublicKey(data);
 
-    this[P_B58_PUBKEY] = null;
-    this[P_EC_NID] = null;
-    this[P_X] = null;
-    this[P_Y] = null;
+    walletPublicKey[P_NAME] = data.name;
+    walletPublicKey[P_ENC_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.publicKey));
+    walletPublicKey[P_CAN_USE] = !!data.can_use;
+
+    walletPublicKey[P_B58_PUBKEY] = null;
+    walletPublicKey[P_EC_NID] = null;
+    walletPublicKey[P_X] = null;
+    walletPublicKey[P_Y] = null;
     if (data.b58_pubkey !== undefined) {
-      this[P_B58_PUBKEY] = data.b58_pubkey;
+      walletPublicKey[P_B58_PUBKEY] = data.b58_pubkey;
     }
     if (data.ec_nid !== undefined) {
-      this[P_EC_NID] = new Curve(parseInt(data.ec_nid, 10));
+      walletPublicKey[P_EC_NID] = new Curve(parseInt(data.ec_nid, 10));
     }
     if (data.x !== undefined) {
-      this[P_X] = BC.fromHex(data.x);
+      walletPublicKey[P_X] = BC.fromHex(data.x);
     }
     if (data.y !== undefined) {
-      this[P_Y] = BC.fromHex(data.y);
+      walletPublicKey[P_Y] = BC.fromHex(data.y);
     }
+
+    return walletPublicKey;
   }
 
   /**

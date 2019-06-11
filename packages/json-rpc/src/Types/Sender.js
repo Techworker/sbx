@@ -24,13 +24,15 @@ class Sender extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
+    let sender = new Sender(data);
 
-    this[P_N_OPERATION] = parseInt(data.n_operation, 10);
-    this[P_ACCOUNT] = new AccountNumber(data.account);
-    this[P_AMOUNT] = new Currency(data.amount);
-    this[P_PAYLOAD] = BC.fromHex(data.payload);
+    sender[P_N_OPERATION] = parseInt(data.n_operation, 10);
+    sender[P_ACCOUNT] = new AccountNumber(data.account);
+    sender[P_AMOUNT] = new Currency(data.amount);
+    sender[P_PAYLOAD] = BC.fromHex(data.payload);
+
+    return sender;
   }
 
   /**

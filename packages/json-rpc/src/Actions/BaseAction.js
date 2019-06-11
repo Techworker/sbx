@@ -10,6 +10,7 @@ const P_METHOD = Symbol('method');
 const P_EXECUTOR = Symbol('executor');
 const P_DESTINATION_TYPE = Symbol('destination_type');
 const P_RETURNS_ARRAY = Symbol('returns_array');
+const P_REQUEST_ID = Symbol('request_id');
 
 /**
  * A basic action that holds the rpc method and its parameters.
@@ -104,6 +105,20 @@ class BaseAction {
      */
   isValid() {
     return true;
+  }
+
+  /**
+   * Sets the state.
+   *
+   * @return {*}
+   */
+  get requestId() {
+    return this[P_REQUEST_ID];
+  }
+
+  withRequestId(requestId) {
+    this[P_REQUEST_ID] = requestId;
+    return this;
   }
 }
 

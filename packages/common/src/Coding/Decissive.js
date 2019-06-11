@@ -10,6 +10,7 @@ const CompositeType = require('./CompositeType');
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_SUBTYPE_RESOLVER = Symbol('subtype_resolver');
 const P_MARKER_FIELD = Symbol('marker_field');
+const P_FLATTEN = Symbol('flatten');
 
 /**
  * A Type that itself is made up of multiple other types. The types are selected dynamically
@@ -19,11 +20,12 @@ class Decissive extends CompositeType {
   /**
    * Constructor
    */
-  constructor(id, markerField, subTypeResolver) {
+  constructor(id, markerField, subTypeResolver, flatten = false) {
     super(id || 'decissive');
     super.description('A type that itself has many sub types but only some are triggere based on a marker.');
     this[P_SUBTYPE_RESOLVER] = subTypeResolver;
     this[P_MARKER_FIELD] = markerField;
+    this[P_FLATTEN] = flatten;
   }
 
   /**
@@ -60,6 +62,15 @@ class Decissive extends CompositeType {
 
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
+  }
+
+  /**
+   * Gets a value indicating whether the value should be flattened.
+   *
+   * @return {bool}
+   */
+  get flatten() {
+    return this[P_FLATTEN];
   }
 }
 

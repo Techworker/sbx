@@ -11,12 +11,12 @@ describe('Core.Types.NodeStatus.NetStats', () => {
   it('can be created from a RPC response', () => {
     const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/nodestatus.json')));
 
-    new NetStats(raw.netstats);
+    NetStats.createFromRPC(raw.netstats);
   });
 
   it('can be created from json and contains valid values', () => {
     const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '/../fixtures/nodestatus.json')));
-    let ns = new NetStats(raw.netstats);
+    let ns = NetStats.createFromRPC(raw.netstats);
 
     expect(ns.active).to.be.equal(raw.netstats.active);
     expect(ns.breceived).to.be.equal(raw.netstats.breceived);

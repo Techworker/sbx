@@ -7925,6 +7925,8 @@ const P_ID = Symbol('id');
 const P_FIXED_VALUE = Symbol('fixed_value');
 const P_HAS_FIXED_VALUE = Symbol('has_fixed_value');
 const P_DESCRIPTION = Symbol('description');
+const P_TARGET_FIELD_NAME = Symbol('target_field_name');
+const P_HAS_TARGET_FIELD_NAME = Symbol('has_target_field_name');
 /**
  * Abstract field type to encode and decode values. Abstracts encodeToBytes and decodeFromBytes as
  * basic implementations but in fact it can be anything.
@@ -7939,6 +7941,7 @@ class AbstractType {
   constructor(id = null) {
     this[P_ID] = id;
     this[P_HAS_FIXED_VALUE] = false;
+    this[P_HAS_TARGET_FIELD_NAME] = false;
   }
   /**
    * Gets the field ident.
@@ -7969,6 +7972,26 @@ class AbstractType {
 
   get fixedValue() {
     return this[P_FIXED_VALUE];
+  }
+  /**
+   * Gets a value indicating whether the field has a different target field name.
+   *
+   * @returns {Boolean}
+   */
+
+
+  get hasTargetFieldName() {
+    return this[P_HAS_TARGET_FIELD_NAME];
+  }
+  /**
+   * Gets the target field name.
+   *
+   * @returns {string}
+   */
+
+
+  get targetFieldName() {
+    return this[P_TARGET_FIELD_NAME];
   }
   /**
    * Gets the encoded size of the type.
@@ -8015,6 +8038,19 @@ class AbstractType {
   withFixedValue(value) {
     this[P_FIXED_VALUE] = value;
     this[P_HAS_FIXED_VALUE] = true;
+    return this;
+  }
+  /**
+   * Sets a fixed value.
+   *
+   * @param {string} targetFieldName
+   * @returns {AbstractType}
+   */
+
+
+  withTargetFieldName(targetFieldName) {
+    this[P_TARGET_FIELD_NAME] = targetFieldName;
+    this[P_HAS_TARGET_FIELD_NAME] = true;
     return this;
   }
   /**
@@ -8075,6 +8111,7 @@ const AbstractType = __webpack_require__(/*! ./AbstractType */ "../common/src/Co
 
 const P_SUBTYPES = Symbol('subtypes');
 const P_SIZE_ENCODED = Symbol('size_encoded');
+const P_FLATTEN = Symbol('flatten');
 /**
  * A Type that itself is made up of multiple other (sub-)types.
  */
@@ -8083,10 +8120,11 @@ class CompositeType extends AbstractType {
   /**
    * Constructor
    */
-  constructor(id) {
+  constructor(id, flatten = false) {
     super(id || 'composite_type');
     super.description('A type that itself is made up of multiple other types.');
     this[P_SUBTYPES] = [];
+    this[P_FLATTEN] = flatten;
   }
   /**
    * Gets all subtypes.
@@ -8134,11 +8172,19 @@ class CompositeType extends AbstractType {
       throw new Error('This type cannot be decoded.');
     }
 
-    const obj = {};
+    let obj = {};
     let offset = 0;
     bc = BC.from(bc);
     this.subTypes.forEach(subType => {
-      obj[subType.id] = subType.decodeFromBytes(bc.slice(offset), options, obj);
+      const fieldName = subType.hasTargetFieldName ? subType.targetFieldName : subType.id;
+      const decoded = subType.decodeFromBytes(bc.slice(offset), options, obj);
+
+      if (subType.constructor.name === 'Decissive' && subType.flatten) {
+        obj = Object.assign(obj, decoded);
+      } else {
+        obj[fieldName] = decoded;
+      }
+
       offset += subType.encodedSize;
     });
     this[P_SIZE_ENCODED] = offset;
@@ -8160,7 +8206,11 @@ class CompositeType extends AbstractType {
       if (subType.hasFixedValue) {
         subTypeValue = subType.fixedValue;
       } else {
-        subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[subType.id];
+        if (subType.constructor.name === 'Decissive' && subType.flatten) {
+          subTypeValue = objOrArray;
+        } else {
+          subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[subType.id];
+        }
       } // we will use the first available
 
 
@@ -8168,6 +8218,16 @@ class CompositeType extends AbstractType {
     });
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
+  }
+  /**
+   * Gets a value indicating whether the value should be flattened.
+   *
+   * @return {bool}
+   */
+
+
+  get flatten() {
+    return this[P_FLATTEN];
   }
 
 }
@@ -8740,6 +8800,7 @@ class Int64 extends AbstractInt {
 
 
   encodeToBytes(value) {
+    value = new BN(value);
     value = validate64Bit(this.unsigned, value);
 
     if (!this.unsigned) {
@@ -9033,6 +9094,7 @@ const CompositeType = __webpack_require__(/*! ./CompositeType */ "../common/src/
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_SUBTYPE_RESOLVER = Symbol('subtype_resolver');
 const P_MARKER_FIELD = Symbol('marker_field');
+const P_FLATTEN = Symbol('flatten');
 /**
  * A Type that itself is made up of multiple other types. The types are selected dynamically
  * depending on the given resolver.
@@ -9042,11 +9104,12 @@ class Decissive extends CompositeType {
   /**
    * Constructor
    */
-  constructor(id, markerField, subTypeResolver) {
+  constructor(id, markerField, subTypeResolver, flatten = false) {
     super(id || 'decissive');
     super.description('A type that itself has many sub types but only some are triggere based on a marker.');
     this[P_SUBTYPE_RESOLVER] = subTypeResolver;
     this[P_MARKER_FIELD] = markerField;
+    this[P_FLATTEN] = flatten;
   }
   /**
    * @inheritDoc AbstractType#encodedSize
@@ -9084,6 +9147,16 @@ class Decissive extends CompositeType {
     let bc = subType.encodeToBytes(objOrArray);
     this[P_SIZE_ENCODED] = bc.length;
     return bc;
+  }
+  /**
+   * Gets a value indicating whether the value should be flattened.
+   *
+   * @return {bool}
+   */
+
+
+  get flatten() {
+    return this[P_FLATTEN];
   }
 
 }
@@ -11711,8 +11784,9 @@ class EPasa {
    */
 
 
-  constructor() {} // this[P_PAYLOAD_TYPE] = EPasa.NON_DETERMISTIC;
-
+  constructor() {
+    this[P_PAYLOAD_TYPE] = EPasa.NON_DETERMISTIC;
+  }
   /**
    * Sets the account number.
    *
@@ -11841,7 +11915,7 @@ class EPasa {
 
 
   isNonDetermistic() {
-    return (this[P_PAYLOAD_TYPE] & EPasa.NON_DETERMISTIC) === EPasa.NON_DETERMISTIC;
+    return !this.hasEncryption() || !this.hasFormat();
   }
   /**
    * Gets the password of the epasa.

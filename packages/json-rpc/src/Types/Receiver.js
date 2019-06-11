@@ -23,12 +23,14 @@ class Receiver extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
+    let receiver = new Receiver(data);
 
-    this[P_ACCOUNT] = new AccountNumber(data.account);
-    this[P_AMOUNT] = new Currency(data.amount);
-    this[P_PAYLOAD] = BC.fromHex(data.payload);
+    receiver[P_ACCOUNT] = new AccountNumber(data.account);
+    receiver[P_AMOUNT] = new Currency(data.amount);
+    receiver[P_PAYLOAD] = BC.fromHex(data.payload);
+
+    return receiver;
   }
 
   /**

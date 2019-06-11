@@ -33,7 +33,7 @@ describe('Core.Types.Operation.Receiver', () => {
 
       operations.forEach((rawOp) => {
         rawOp.receivers.forEach((rawReceiver) => {
-          new Receiver(rawReceiver);
+          Receiver.createFromRPC(rawReceiver);
         });
       });
     });
@@ -45,7 +45,7 @@ describe('Core.Types.Operation.Receiver', () => {
 
       operations.forEach((rawOp) => {
         rawOp.senders.forEach((rawReceiver) => {
-          let receiver = new Receiver(rawReceiver);
+          let receiver = Receiver.createFromRPC(rawReceiver);
 
           expect(receiver.account).to.be.instanceof(AccountNumber);
           expect(receiver.account.account).to.be.equal(rawReceiver.account);

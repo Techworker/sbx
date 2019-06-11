@@ -33,49 +33,52 @@ class Changer extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
 
-    this[P_ACCOUNT] = new AccountNumber(data.account);
-    this[P_N_OPERATION] = null;
+    let changer = new Changer();
+
+    changer[P_ACCOUNT] = new AccountNumber(data.account);
+    changer[P_N_OPERATION] = null;
     if (data.n_operation !== undefined) {
-      this[P_N_OPERATION] = parseInt(data.n_operation, 10);
+      changer[P_N_OPERATION] = parseInt(data.n_operation, 10);
     }
 
-    this[P_NEW_ENC_PUBKEY] = null;
+    changer[P_NEW_ENC_PUBKEY] = null;
     if (data.new_enc_pubkey !== undefined) {
-      this[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
+      changer[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
     }
 
-    this[P_NEW_NAME] = null;
+    changer[P_NEW_NAME] = null;
     if (data.new_name !== undefined) {
-      this[P_NEW_NAME] = new AccountName(data.new_name);
+      changer[P_NEW_NAME] = new AccountName(data.new_name);
     }
 
-    this[P_NEW_TYPE] = null;
+    changer[P_NEW_TYPE] = null;
     if (data.new_type !== undefined) {
-      this[P_NEW_TYPE] = data.new_type;
+      changer[P_NEW_TYPE] = data.new_type;
     }
 
-    this[P_SELLER_ACCOUNT] = null;
+    changer[P_SELLER_ACCOUNT] = null;
     if (data.seller_account !== undefined) {
-      this[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
+      changer[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
     }
 
-    this[P_ACCOUNT_PRICE] = null;
+    changer[P_ACCOUNT_PRICE] = null;
     if (data.account_price !== undefined) {
-      this[P_ACCOUNT_PRICE] = new Currency(data.account_price);
+      changer[P_ACCOUNT_PRICE] = new Currency(data.account_price);
     }
 
-    this[P_LOCKED_UNTIL_BLOCK] = null;
+    changer[P_LOCKED_UNTIL_BLOCK] = null;
     if (data.locked_until_block !== undefined) {
-      this[P_LOCKED_UNTIL_BLOCK] = parseInt(data.locked_until_block, 10);
+      changer[P_LOCKED_UNTIL_BLOCK] = parseInt(data.locked_until_block, 10);
     }
 
-    this[P_FEE] = new Currency(0);
+    changer[P_FEE] = new Currency(0);
     if (data.fee !== undefined) {
-      this[P_FEE] = new Currency(data.fee);
+      changer[P_FEE] = new Currency(data.fee);
     }
+
+    return changer;
   }
 
   /**

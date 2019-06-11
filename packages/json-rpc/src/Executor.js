@@ -158,6 +158,10 @@ function transformRpcResult(value, DestinationType) {
     case 'BC':
       return BC.from(value);
     default:
+      if (DestinationType.createFromRPC !== undefined) {
+        return DestinationType.createFromRPC(value);
+      }
+
       return new DestinationType(value);
   }
 };
@@ -188,7 +192,7 @@ class Executor {
     return new Promise((resolve, reject) => {
       this[P_CALLER].call(action.method, transformRpcParams(action.params))
         .then((response) => {
-          resolve([response, transformCallback]);
+          resolve([response, transformCallback, action.requestId]);
         })
         .catch((error) => {
           reject(error);

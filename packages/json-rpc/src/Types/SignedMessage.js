@@ -22,16 +22,18 @@ class SignedMessage extends Abstract {
      *
      * @param {Object} data
      */
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
+    let signedMessage = new SignedMessage(data);
 
-    this[P_DIGEST] = BC.fromHex(data.digest);
+    signedMessage[P_DIGEST] = BC.fromHex(data.digest);
     if (data.enc_pubkey !== undefined) {
-      this[P_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.enc_pubkey));
+      signedMessage[P_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.enc_pubkey));
     } else {
-      this[P_PUBKEY] = new PublicKeyCoder().decodeFromBase58(data.b58_pubkey);
+      signedMessage[P_PUBKEY] = new PublicKeyCoder().decodeFromBase58(data.b58_pubkey);
     }
-    this[P_SIGNATURE] = BC.fromHex(data.signature);
+    signedMessage[P_SIGNATURE] = BC.fromHex(data.signature);
+
+    return signedMessage;
   }
 
   /**

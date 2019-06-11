@@ -162,76 +162,78 @@ class Operation extends Abstract {
    *
    * @param {Object} data
    */
-  constructor(data) {
-    super(data);
+  static createFromRPC(data) {
+    let operation = new Operation(data);
 
-    this[P_VALID] = true;
+    operation[P_VALID] = true;
     if (data.valid !== undefined) {
-      this[P_VALID] = !!data.valid;
+      operation[P_VALID] = !!data.valid;
     }
 
-    this[P_ERRORS] = null;
+    operation[P_ERRORS] = null;
     if (data.errors !== undefined) {
-      this[P_ERRORS] = data.errors;
+      operation[P_ERRORS] = data.errors;
     }
 
     if (data.payload !== undefined) {
-      this[P_PAYLOAD] = BC.fromHex(data.payload);
+      operation[P_PAYLOAD] = BC.fromHex(data.payload);
     } else {
-      this[P_PAYLOAD] = BC.fromHex('');
+      operation[P_PAYLOAD] = BC.fromHex('');
     }
 
-    this[P_BLOCK] = parseInt(data.block, 10);
-    this[P_TIME] = parseInt(data.time, 10);
-    this[P_OPBLOCK] = parseInt(data.opblock, 10);
-    this[P_MATURATION] = 0;
+    operation[P_BLOCK] = parseInt(data.block, 10);
+    operation[P_TIME] = parseInt(data.time, 10);
+    operation[P_OPBLOCK] = parseInt(data.opblock, 10);
+    operation[P_MATURATION] = 0;
     // pending
     if (data.maturation !== null) {
-      this[P_MATURATION] = parseInt(data.maturation, 10);
+      operation[P_MATURATION] = parseInt(data.maturation, 10);
     }
 
-    this[P_OPTYPE] = parseInt(data.optype, 10);
+    operation[P_OPTYPE] = parseInt(data.optype, 10);
     // multi-op
-    this[P_ACCOUNT] = null;
+    operation[P_ACCOUNT] = null;
     if (data.account !== undefined) {
-      this[P_ACCOUNT] = new AccountNumber(data.account);
+      operation[P_ACCOUNT] = new AccountNumber(data.account);
     }
-    this[P_OPTXT] = data.optxt;
-    this[P_AMOUNT] = new Currency(data.amount);
-    this[P_FEE] = new Currency(data.fee);
-    this[P_BALANCE] = null;
+    operation[P_OPTXT] = data.optxt;
+    operation[P_AMOUNT] = new Currency(data.amount);
+    operation[P_FEE] = new Currency(data.fee);
+    operation[P_BALANCE] = null;
     if (data.balance !== undefined) {
-      this[P_BALANCE] = new Currency(data.balance);
+      operation[P_BALANCE] = new Currency(data.balance);
     }
 
-    this[P_OPHASH] = null;
+    operation[P_OPHASH] = null;
     if (data.ophash !== undefined) {
-      this[P_OPHASH] = BC.fromHex(data.ophash);
-      if (this[P_OPTYPE] !== Operation.BLOCKCHAIN_REWARD) {
-        this[P_OPHASH] = opHashCoder.decodeFromBytes(this[P_OPHASH]);
+      operation[P_OPHASH] = BC.fromHex(data.ophash);
+      if (operation[P_OPTYPE] !== Operation.BLOCKCHAIN_REWARD) {
+        operation[P_OPHASH] = opHashCoder.decodeFromBytes(operation[P_OPHASH]);
       }
     }
 
-    this[P_OLD_OPHASH] = null;
+    operation[P_OLD_OPHASH] = null;
     if (data.old_ophash !== undefined) {
-      this[P_OLD_OPHASH] = BC.fromHex(data.old_ophash);
+      operation[P_OLD_OPHASH] = BC.fromHex(data.old_ophash);
     }
 
-    this[P_SUBTYPE] = data.subtype;
-    this[P_SIGNER_ACCOUNT] = null;
+    operation[P_SUBTYPE] = data.subtype;
+    operation[P_SIGNER_ACCOUNT] = null;
     if (data.signer_account !== undefined) {
-      this[P_SIGNER_ACCOUNT] = new AccountNumber(data.signer_account);
+      operation[P_SIGNER_ACCOUNT] = new AccountNumber(data.signer_account);
     }
 
     // eslint-disable-next-line no-multi-assign
-    this[P_SENDERS] = [];
-    this[P_RECEIVERS] = [];
-    this[P_CHANGERS] = [];
+    operation[P_SENDERS] = [];
+    operation[P_RECEIVERS] = [];
+    operation[P_CHANGERS] = [];
 
     // loop given data and initialize objects
-    data.senders.forEach(s => this[P_SENDERS].push(new Sender(s)));
-    data.receivers.forEach(r => this[P_RECEIVERS].push(new Receiver(r)));
-    data.changers.forEach(c => this[P_CHANGERS].push(new Changer(c)));
+    data.senders.forEach(s => operation[P_SENDERS].push(new Sender(s)));
+    data.receivers.forEach(r => operation[P_RECEIVERS].push(new Receiver(r)));
+    data.changers.forEach(c => operation[P_CHANGERS].push(new Changer(c)));
+
+    return operation;
   }
 
   /**
