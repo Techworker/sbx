@@ -6,6 +6,9 @@ const AES = require('@pascalcoin-sbx/crypto').Encryption.Pascal.Password;
 const ECIES = require('@pascalcoin-sbx/crypto').Encryption.Pascal.ECIES;
 
 let pascalEncTypes = [{
+  type: undefined,
+  max_length: 255
+},{
   type: AES,
   max_length: 223
 }, {
@@ -64,7 +67,7 @@ class Payload {
     }
 
     return payload.split(maxLength).map(splittedPayload => {
-      return EncryptionType.encrypt(splittedPayload, encryptionOptions);
+      return EncryptionType === undefined ? splittedPayload : EncryptionType.encrypt(splittedPayload, encryptionOptions);
     });
   }
 
