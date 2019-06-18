@@ -1,6 +1,6 @@
 {
   "name": "@pascalcoin-sbx/application-export-csv",
-  "version": "0.0.18-alpha.0",
+  "version": "0.0.18",
   "description": "Exports transactions.",
   "main": "index.js",
   "keywords": [
@@ -16,7 +16,7 @@
   "scripts": {},
   "dependencies": {
     "@pascalcoin-sbx/common": "^0.0.18-alpha.0",
-    "@pascalcoin-sbx/json-rpc": "^0.0.18-alpha.0",
+    "@pascalcoin-sbx/json-rpc": "^0.0.18",
     "md5": "^2.2.1",
     "prompt": "^1.0.0"
   },
