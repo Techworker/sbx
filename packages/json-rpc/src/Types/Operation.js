@@ -229,9 +229,9 @@ class Operation extends Abstract {
     operation[P_CHANGERS] = [];
 
     // loop given data and initialize objects
-    data.senders.forEach(s => operation[P_SENDERS].push(new Sender(s)));
-    data.receivers.forEach(r => operation[P_RECEIVERS].push(new Receiver(r)));
-    data.changers.forEach(c => operation[P_CHANGERS].push(new Changer(c)));
+    data.senders.forEach(s => operation[P_SENDERS].push(Sender.createFromRPC(s)));
+    data.receivers.forEach(r => operation[P_RECEIVERS].push(Receiver.createFromRPC(r)));
+    data.changers.forEach(c => operation[P_CHANGERS].push(Changer.createFromRPC(c)));
 
     return operation;
   }

@@ -41,9 +41,9 @@ class NodeStatus extends Abstract {
     nodeStatus[P_SBH] = BC.fromHex(data.sbh);
     nodeStatus[P_POW] = BC.fromHex(data.pow);
     nodeStatus[P_OPENSSL] = BC.fromHex(data.openssl);
-    nodeStatus[P_NETPROTOCOL] = new NetProtocol(data.netprotocol);
-    nodeStatus[P_NETSTATS] = new NetStats(data.netstats);
-    nodeStatus[P_NODESERVERS] = data.nodeservers.map(ns => new NodeServer(ns));
+    nodeStatus[P_NETPROTOCOL] = NetProtocol.createFromRPC(data.netprotocol);
+    nodeStatus[P_NETSTATS] = NetStats.createFromRPC(data.netstats);
+    nodeStatus[P_NODESERVERS] = data.nodeservers.map(ns => NodeServer.createFromRPC(ns));
 
     return nodeStatus;
   }
