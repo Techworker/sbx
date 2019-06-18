@@ -40240,9 +40240,9 @@ class NodeStatus extends Abstract {
     nodeStatus[P_SBH] = BC.fromHex(data.sbh);
     nodeStatus[P_POW] = BC.fromHex(data.pow);
     nodeStatus[P_OPENSSL] = BC.fromHex(data.openssl);
-    nodeStatus[P_NETPROTOCOL] = new NetProtocol(data.netprotocol);
-    nodeStatus[P_NETSTATS] = new NetStats(data.netstats);
-    nodeStatus[P_NODESERVERS] = data.nodeservers.map(ns => new NodeServer(ns));
+    nodeStatus[P_NETPROTOCOL] = NetProtocol.createFromRPC(data.netprotocol);
+    nodeStatus[P_NETSTATS] = NetStats.createFromRPC(data.netstats);
+    nodeStatus[P_NODESERVERS] = data.nodeservers.map(ns => NodeServer.createFromRPC(ns));
     return nodeStatus;
   }
   /**
@@ -40666,9 +40666,9 @@ class Operation extends Abstract {
     operation[P_RECEIVERS] = [];
     operation[P_CHANGERS] = []; // loop given data and initialize objects
 
-    data.senders.forEach(s => operation[P_SENDERS].push(new Sender(s)));
-    data.receivers.forEach(r => operation[P_RECEIVERS].push(new Receiver(r)));
-    data.changers.forEach(c => operation[P_CHANGERS].push(new Changer(c)));
+    data.senders.forEach(s => operation[P_SENDERS].push(Sender.createFromRPC(s)));
+    data.receivers.forEach(r => operation[P_RECEIVERS].push(Receiver.createFromRPC(r)));
+    data.changers.forEach(c => operation[P_CHANGERS].push(Changer.createFromRPC(c)));
     return operation;
   }
   /**
@@ -41467,6 +41467,9 @@ const AES = __webpack_require__(/*! @pascalcoin-sbx/crypto */ "../crypto/index.j
 const ECIES = __webpack_require__(/*! @pascalcoin-sbx/crypto */ "../crypto/index.js").Encryption.Pascal.ECIES;
 
 let pascalEncTypes = [{
+  type: undefined,
+  max_length: 255
+}, {
   type: AES,
   max_length: 223
 }, {
@@ -41521,7 +41524,7 @@ class Payload {
     }
 
     return payload.split(maxLength).map(splittedPayload => {
-      return EncryptionType.encrypt(splittedPayload, encryptionOptions);
+      return EncryptionType === undefined ? splittedPayload : EncryptionType.encrypt(splittedPayload, encryptionOptions);
     });
   }
   /**
