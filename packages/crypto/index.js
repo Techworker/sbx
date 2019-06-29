@@ -14,6 +14,7 @@ module.exports = {
     }
   },
   Keys: require('./src/Keys'),
+  Mnemonic: require('./src/Mnemonic'),
   mipher: {
     AES_CBC_ZeroPadding: require('./src/mipher/AES_CBC_ZeroPadding')
   }

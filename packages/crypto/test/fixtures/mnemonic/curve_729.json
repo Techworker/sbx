@@ -1,0 +1,58 @@
+[
+  {
+    "ec_nid": 729,
+    "curve": "sect283k1",
+    "lang": "english",
+    "mnemonic": "cloud run desk odor all concert forum demand breeze clog sugar silly rebuild antique apology ride angle convince",
+    "enc_privkey": null
+  },
+  {
+    "ec_nid": 729,
+    "curve": "sect283k1",
+    "lang": "chinese_simplified",
+    "mnemonic": "combine clump upon crystal soldier mind cream letter key improve attend enforce wealth guide lion evil soft collect",
+    "enc_privkey": null
+  },
+  {
+    "ec_nid": 729,
+    "curve": "sect283k1",
+    "lang": "chinese_traditional",
+    "mnemonic": "common spot goat drip warrior entry rural toilet cream twin tell antenna cotton hood siren someone note eyebrow",
+    "enc_privkey": null
+  },
+  {
+    "ec_nid": 729,
+    "curve": "sect283k1",
+    "lang": "french",
+    "mnemonic": "census arch economy eager ladder despair rough kite balance life stairs punch away bulb exile spy bone wage",
+    "enc_privkey": null
+  },
+  {
+    "ec_nid": 729,
+    "curve": "sect283k1",
+    "lang": "italian",
+    "mnemonic": "canoe glow devote forum kind cook guitar add leave utility horn sphere practice card hedgehog sugar rent cigar",
+    "enc_privkey": null
+  },
+  {
+    "ec_nid": 729,
+    "curve": "sect283k1",
+    "lang": "japanese",
+    "mnemonic": "carpet skull gap essence gorilla infant jazz noise food increase student giant comic spider tobacco trash fall crisp",
+    "enc_privkey": null
+  },
+  {
+    "ec_nid": 729,
+    "curve": "sect283k1",
+    "lang": "korean",
+    "mnemonic": "car photo worry super motion length screen burden bacon hand neck sea roof vacant input abandon retreat key",
+    "enc_privkey": null
+  },
+  {
+    "ec_nid": 729,
+    "curve": "sect283k1",
+    "lang": "spanish",
+    "mnemonic": "cause balcony health series protect license physical coach bomb crop sock demise excuse oblige trash use recipe tiny",
+    "enc_privkey": null
+  }
+]

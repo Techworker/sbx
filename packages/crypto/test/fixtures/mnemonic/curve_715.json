@@ -1,0 +1,58 @@
+[
+  {
+    "ec_nid": 715,
+    "curve": "p384",
+    "lang": "english",
+    "mnemonic": "bicycle ketchup shoulder cluster before arm basic require cream elevator angry hamster strike refuse long arch tomato top",
+    "enc_privkey": "CB02300017099715CAF378FB3691DDD6F750CE6BA7C2F4FE9F3CE523DA3659377172CEFEE35A21626C098A5AAF08085C5734F9F6"
+  },
+  {
+    "ec_nid": 715,
+    "curve": "p384",
+    "lang": "chinese_simplified",
+    "mnemonic": "bottom scorpion bright ride cool tooth shell calm feel curious manual eagle round poet unhappy bird rough birth",
+    "enc_privkey": "CB023000511774FE614CD8A127484B4C6C4F82168636C51038A18B9FD475528B2586506708C4CB202913B9F7257EAE37C5CA49E9"
+  },
+  {
+    "ec_nid": 715,
+    "curve": "p384",
+    "lang": "chinese_traditional",
+    "mnemonic": "banner spare predict enact vanish scan viable match nothing address token muffin ahead horror absorb arrive dash bracket",
+    "enc_privkey": "CB023000FD82B2EF6178DDE8A2B0507E4C8110FC6CFA07B0B9901372413D02EB4208FCAF409DA90AC6CE4B010B2A5A452BACAB48"
+  },
+  {
+    "ec_nid": 715,
+    "curve": "p384",
+    "lang": "french",
+    "mnemonic": "boy type divide burst bicycle mom shed payment mirror error dish firm hard margin bulk hungry control dial",
+    "enc_privkey": "CB02300064D90C805238D88DD31BB3A42787445BA858DB0B1B84E8D6DA2D01B0F79FF2C120235A3097FE707F840698FDB821F2F8"
+  },
+  {
+    "ec_nid": 715,
+    "curve": "p384",
+    "lang": "italian",
+    "mnemonic": "away unlock rhythm sword purchase phone that nurse siren lumber when talent awake picture picnic ghost weekend jaguar",
+    "enc_privkey": "CB023000043F067E936BA0A6B24AD128FC0543A056FD51057F889A52E0B7A00CD383775D222D4098EEB4DDFC2E8D24400AC39E04"
+  },
+  {
+    "ec_nid": 715,
+    "curve": "p384",
+    "lang": "japanese",
+    "mnemonic": "biology planet water unhappy convince tired select agent shoulder draw manual credit sleep often scare gap room chief",
+    "enc_privkey": "CB023000044A1C7E3FDF8DEB7EFBC98D07C6AFA65F5EF739879AFB8EF71C65C1CC92DF8BD2A700BFF37BD7B89DD8BD158D505020"
+  },
+  {
+    "ec_nid": 715,
+    "curve": "p384",
+    "lang": "korean",
+    "mnemonic": "ball giggle region pepper wire want weasel core lend sleep diesel invite thunder economy ski outside equal access",
+    "enc_privkey": "CB0230004C6EA95761F59FEA81CF4CB68C73C186F2A2C721E2D0379FDFE2D8B7DD39440D0EA415A024F2C5BDA812DCF60BF39A7F"
+  },
+  {
+    "ec_nid": 715,
+    "curve": "p384",
+    "lang": "spanish",
+    "mnemonic": "better bean main wedding dove forum impose erosion foster cram junior dance rival arrange crop pond shaft gallery",
+    "enc_privkey": "CB0230007567AE401ECC91FA5E5390F80C1B0A4467B313913D9935D44063B1CF4FFD972ED2678999F9ED66084A6968C02CD5CC2F"
+  }
+]

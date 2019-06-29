@@ -1,0 +1,58 @@
+[
+  {
+    "ec_nid": 714,
+    "curve": "secp256k1",
+    "lang": "english",
+    "mnemonic": "assault valid bar lesson pear false thrive spike check gold please clinic cheese milk nothing sock equip cruise",
+    "enc_privkey": "CA022000B0453D198B7D0D2A2043FD22D2A71B3E7AF2B02CDB798414EB606E5693BBC03A"
+  },
+  {
+    "ec_nid": 714,
+    "curve": "secp256k1",
+    "lang": "chinese_simplified",
+    "mnemonic": "audit walk walnut sample violin genius palm eternal census upon able toilet spot trash media gather phrase across",
+    "enc_privkey": "CA021F007BD84BEAFA83BAFC0618994592BA855CB96DAED145C241DEA5BD7976A8D7D0"
+  },
+  {
+    "ec_nid": 714,
+    "curve": "secp256k1",
+    "lang": "chinese_traditional",
+    "mnemonic": "add joke elite half stay sponsor purpose universe salad off vendor cradle must figure letter twelve creek uniform",
+    "enc_privkey": "CA02200003223B98F5A4EB8C44C8F3C8D39E3C309AFBA2732E7D77CD60C74BA6CB853CAB"
+  },
+  {
+    "ec_nid": 714,
+    "curve": "secp256k1",
+    "lang": "french",
+    "mnemonic": "artefact initial mass lumber cruel ketchup disagree soldier remain raise slim shield disorder main party play vehicle misery",
+    "enc_privkey": "CA0220003167D1226A1C041C64B09FC37AB57A74A3736E0AABA49EC258B30B1026485F0E"
+  },
+  {
+    "ec_nid": 714,
+    "curve": "secp256k1",
+    "lang": "italian",
+    "mnemonic": "account gym foil antenna trouble curtain treat fetch course more punch icon element control donkey risk push impact",
+    "enc_privkey": "CA02200050EF655CA3193F5D5F6346FE759A4D2A31D65E1CA3E4CD674687A1358076EBE2"
+  },
+  {
+    "ec_nid": 714,
+    "curve": "secp256k1",
+    "lang": "japanese",
+    "mnemonic": "atom shallow exercise believe farm eager target trial build bullet ten try fringe lawsuit illegal before virus convince",
+    "enc_privkey": "CA02200087F28268E9BFB2059F5ED335AF1D71ECA835AA90E1A312A6CB0639F166B0C341"
+  },
+  {
+    "ec_nid": 714,
+    "curve": "secp256k1",
+    "lang": "korean",
+    "mnemonic": "addict total junior mass run grass violin float buddy treat mesh enter horse summer clutch school kick bar",
+    "enc_privkey": "CA0220004BD8CC482A099CD6E1112F1711438DD327D5CD735BC87B8713249315370F7C02"
+  },
+  {
+    "ec_nid": 714,
+    "curve": "secp256k1",
+    "lang": "spanish",
+    "mnemonic": "acoustic limit symptom alpha love march impulse reason bubble dream reduce fatal vast accident alpha iron expose cloud",
+    "enc_privkey": "CA02200011A277A75BC4A3CC862E998E12E260BE375BB0A5F9340CB2202CD8CDF90E1DF3"
+  }
+]
