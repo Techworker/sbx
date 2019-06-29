@@ -23,9 +23,10 @@ class Keys {
    * Generates a new keypair from the given curve.
    *
    * @param {Curve} curve
+   * @param {Object} options
    * @returns {KeyPair}
    */
-  static generate(curve) {
+  static generate(curve, options = {}) {
     if (curve === undefined) {
       // eslint-disable-next-line no-param-reassign
       curve = Curve.getDefaultCurve();
@@ -38,9 +39,9 @@ class Keys {
       throw new Error('Unsupported curve: ' + curve.name);
     }
 
-    // TODO: entropy?
+    // Entropy can be passed with options.entropy and options.entropyEnc
     // eslint-disable-next-line new-cap
-    const kp = new elliptic(curve.name).genKeyPair();
+    const kp = new elliptic(curve.name).genKeyPair(options);
 
     return new KeyPair(
       new PrivateKey(

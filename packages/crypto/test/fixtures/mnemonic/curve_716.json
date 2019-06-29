@@ -1,0 +1,58 @@
+[
+  {
+    "ec_nid": 716,
+    "curve": "p521",
+    "lang": "english",
+    "mnemonic": "dignity mushroom green hedgehog immense become soccer convince biology list tide fork exclude heart click student patient script",
+    "enc_privkey": "CC024200014C42D26FEF7629E9C8E4D7E482EB95481C2F1E0FA66F8D19914C8C2109B532A7BDFA233C133ACBA157B38966FDFF5F786386004023180FF6BDCF2B65FA0F7F7C26"
+  },
+  {
+    "ec_nid": 716,
+    "curve": "p521",
+    "lang": "chinese_simplified",
+    "mnemonic": "cotton squeeze amateur edit leg quiz toss fee volcano stomach easy draft pepper undo baby steel prison music",
+    "enc_privkey": "CC0241006ACF15459FA106C44274802C8CA8523E4797F3B05850E03FF9865A96BE3B8AB8ACF2884420FD8CCFA05744E711A9EAB3FB14F433508A54ED8603E1EE9F368CA4FA"
+  },
+  {
+    "ec_nid": 716,
+    "curve": "p521",
+    "lang": "chinese_traditional",
+    "mnemonic": "crash tray youth cement soap cram tag name bean focus bless gaze holiday frequent piano endless learn service",
+    "enc_privkey": "CC02420001910CABF54EDD1115AD64488C854B6895B7EF7DA5D65EA14B9FEBD2DED4A8C9DDF9D87042E3D58258EF9D1A3F9ACAD0543420CCD83B98D6138CED41DDF1A916B2DE"
+  },
+  {
+    "ec_nid": 716,
+    "curve": "p521",
+    "lang": "french",
+    "mnemonic": "cruise sign interest cute unfold stamp index family idea electric zebra scissors call paddle injury common fiber maid",
+    "enc_privkey": "CC0241007EBBEE59E959A1DC138D8367565BA07F6AB4E42ABF18603797F0853E122592C7080CD2268502396325F355C5E4344CBC166E8A9821D8D9F3C8C06E62703BBFA433"
+  },
+  {
+    "ec_nid": 716,
+    "curve": "p521",
+    "lang": "italian",
+    "mnemonic": "defense duck pass kitchen goddess draw benefit blush cup script history fix advance dance school join until ethics",
+    "enc_privkey": "CC0241000C40AE177252287C46D47FDB1C82AD2A830C010CEA190D3292888EFFFDD0A95D802ED22DEA6425004C8806A1D53EA25DF0B1E67470039C1A27F84E731B0B32DE7B"
+  },
+  {
+    "ec_nid": 716,
+    "curve": "p521",
+    "lang": "japanese",
+    "mnemonic": "creek velvet world peanut glare stool advance outside wealth kiss material win dove title lazy agent equal reject",
+    "enc_privkey": "CC024100A87C60D5C03B66EF893DE5226F0482BC18B696193F91377A566C1760F7A17CD7D2E1BFB368D4E286D5110CF8CDE60C8EA1063645AEFB92D6839EADD8DC4190E54C"
+  },
+  {
+    "ec_nid": 716,
+    "curve": "p521",
+    "lang": "korean",
+    "mnemonic": "credit error index math carbon intact blossom lucky write spider destroy palace hour doctor subject author account clay",
+    "enc_privkey": "CC024200011D76B46D33E8DD6F114028F2C2E2B1B57C5770E2B11B7ACD8C82CFBEC598BCE84077920B7572104AB7D8B0D9A8BFADF9A086653BF1BA2B918A9476ECC3D203167C"
+  },
+  {
+    "ec_nid": 716,
+    "curve": "p521",
+    "lang": "spanish",
+    "mnemonic": "dinosaur evil tiger festival ensure earth they ghost suspect coil globe piece document sugar box miss tray resemble",
+    "enc_privkey": "CC024100A6EB164C46D5996E8E5216F8B595C89B8CBD506AAF0D06CAC97841F5943CD6CBA883464C36E30A031D425408387847B060D41D96D07BD3E8CC620326932BCC1AC6"
+  }
+]
