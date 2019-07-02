@@ -14,7 +14,7 @@ class PrivateKey extends Abstract {
    *
    * @param {Buffer|Uint8Array|BC|String} encryptedPrivateKey
    * @param {Buffer|Uint8Array|BC|String} password
-   * @returns {KeyPair}
+   * @returns {PrivateKey}
    */
   static decrypt(value, options = {password: ''}) {
 

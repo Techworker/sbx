@@ -1,3 +1,6 @@
+const CryptoEncryptionPascalPrivateKey = require('./src/Encryption/Pascal/PrivateKey');
+const CryptoKeys = require('./src/Keys');
+
 module.exports = {
   Encryption: {
     Abstract: require('./src/Encryption/Abstract'),
@@ -10,11 +13,23 @@ module.exports = {
       KDF: require('./src/Encryption/Pascal/KDF'),
       ECIES: require('./src/Encryption/Pascal/ECIES'),
       Password: require('./src/Encryption/Pascal/Password'),
-      PrivateKey: require('./src/Encryption/Pascal/PrivateKey')
+      PrivateKey: CryptoEncryptionPascalPrivateKey
     }
   },
-  Keys: require('./src/Keys'),
+  Keys: CryptoKeys,
   mipher: {
     AES_CBC_ZeroPadding: require('./src/mipher/AES_CBC_ZeroPadding')
+  },
+  /**
+   * Returns a keypair.
+   *
+   * @param encryptedPrivateKey
+   * @param password
+   * @return {KeyPair}
+   */
+  importEncryptedPrivateKey(encryptedPrivateKey, password) {
+    return CryptoKeys.fromPrivateKey(
+      CryptoEncryptionPascalPrivateKey.decrypt(encryptedPrivateKey, { password })
+    );
   }
 };
