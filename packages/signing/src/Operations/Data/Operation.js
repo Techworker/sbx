@@ -36,8 +36,17 @@ class Data extends Abstract {
    * @param {Number|AccountNumber} sender
    * @param {Number|AccountNumber} target
    */
-  constructor(signer, sender, target) {
+  constructor(signer, sender = null, target = null) {
     super();
+
+    if (sender === null) {
+      sender = signer;
+    }
+
+    if (target === null) {
+      target = sender;
+    }
+
     this[P_ACCOUNT_SIGNER] = new AccountNumber(signer);
     this[P_ACCOUNT_SENDER] = new AccountNumber(sender);
     this[P_ACCOUNT_TARGET] = new AccountNumber(target);
