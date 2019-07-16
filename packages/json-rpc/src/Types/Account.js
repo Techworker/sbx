@@ -29,6 +29,11 @@ const P_SELLER_ACCOUNT = Symbol('seller_account');
 const P_PRIVATE_SALE = Symbol('private_sale');
 const P_NEW_ENC_PUBKEY = Symbol('new_enc_pubkey');
 
+// v5
+const P_HASHED_SECRET = Symbol('hashed_secret');
+const P_AMOUNT_TO_SWAP = Symbol('amount_to_swap');
+const P_RECEIVER_SWAP_AMOUNT = Symbol('receiver_swap_amount');
+
 const codingProps = {
   account: P_ACCOUNT,
   publicKey: P_ENC_PUBKEY,
@@ -41,7 +46,12 @@ const codingProps = {
   price: P_PRICE,
   sellerAccount: P_SELLER_ACCOUNT,
   privateSale: P_PRIVATE_SALE,
-  newPublicKey: P_NEW_ENC_PUBKEY
+  newPublicKey: P_NEW_ENC_PUBKEY,
+
+  // v5
+  hashedSecret: P_HASHED_SECRET,
+  amountToSwap: P_AMOUNT_TO_SWAP,
+  receiverSwapAmount: P_RECEIVER_SWAP_AMOUNT
 };
 
 /**
@@ -64,6 +74,24 @@ class Account extends Abstract {
    */
   static get STATE_NORMAL() {
     return 'normal';
+  }
+
+  /**
+   * TODO
+   *
+   * @returns {string}
+   */
+  static get STATE_COIN_SWAP() {
+    return 'coin_swap';
+  }
+
+  /**
+   * TODO
+   *
+   * @returns {string}
+   */
+  static get STATE_ATOMIC_SWAP() {
+    return 'atomic_swap';
   }
 
   /**
@@ -106,6 +134,18 @@ class Account extends Abstract {
       if (data.new_enc_pubkey !== '000000000000' && data.new_enc_pubkey !== undefined) {
         account[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
       }
+    }
+
+    if (data.hashed_secret !== undefined) {
+      account[P_HASHED_SECRET] = BC.fromHex(data.hashed_secret);
+    }
+
+    if (data.amount_to_swap !== undefined) {
+      account[P_AMOUNT_TO_SWAP] = new Currency(data.amount_to_swap);
+    }
+
+    if (data.receiver_swap_amount !== undefined) {
+      account[P_RECEIVER_SWAP_AMOUNT] = new Currency(data.receiver_swap_amount);
     }
 
     return account;
