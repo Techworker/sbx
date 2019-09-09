@@ -30,6 +30,8 @@ const P_PRIVATE_SALE = Symbol('private_sale');
 const P_NEW_ENC_PUBKEY = Symbol('new_enc_pubkey');
 
 // v5
+const P_DATA = Symbol('data');
+const P_SEAL = Symbol('seal');
 const P_HASHED_SECRET = Symbol('hashed_secret');
 const P_AMOUNT_TO_SWAP = Symbol('amount_to_swap');
 const P_RECEIVER_SWAP_AMOUNT = Symbol('receiver_swap_amount');
@@ -77,11 +79,11 @@ class Account extends Abstract {
   }
 
   /**
-   * TODO
+   * Coin swap state
    *
    * @returns {string}
    */
-  static get STATE_COIN_SWAP() {
+  static get STATE_ATOMIC_COIN_SWAP() {
     return 'coin_swap';
   }
 
@@ -90,7 +92,7 @@ class Account extends Abstract {
    *
    * @returns {string}
    */
-  static get STATE_ATOMIC_SWAP() {
+  static get STATE_ATOMIC_ACCOUNT_SWAP() {
     return 'atomic_swap';
   }
 
@@ -104,11 +106,14 @@ class Account extends Abstract {
 
     account[P_ACCOUNT] = new AccountNumber(data.account);
     account[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
-    account[P_BALANCE] = new Currency(data.balance);
+    account[P_BALANCE] = new Currency(data.balance_s);
     account[P_N_OPERATION] = parseInt(data.n_operation, 10);
     account[P_UPDATED_B] = parseInt(data.updated_b, 10);
+    account[P_SEAL] = BC.fromHex(data.seal);
+    account[P_DATA] = BC.fromHex(data.data);
 
-    if (data.state !== Account.STATE_NORMAL && data.state !== Account.STATE_LISTED) {
+    if (data.state !== Account.STATE_NORMAL && data.state !== Account.STATE_LISTED &&
+        data.state !== Account.STATE_ATOMIC_ACCOUNT_SWAP && data.state !== Account.STATE_ATOMIC_COIN_SWAP) {
       throw new Error('Invalid account state.');
     }
 
@@ -136,16 +141,9 @@ class Account extends Abstract {
       }
     }
 
-    if (data.hashed_secret !== undefined) {
+    if (data.state === Account.STATE_ATOMIC_COIN_SWAP) {
       account[P_HASHED_SECRET] = BC.fromHex(data.hashed_secret);
-    }
-
-    if (data.amount_to_swap !== undefined) {
-      account[P_AMOUNT_TO_SWAP] = new Currency(data.amount_to_swap);
-    }
-
-    if (data.receiver_swap_amount !== undefined) {
-      account[P_RECEIVER_SWAP_AMOUNT] = new Currency(data.receiver_swap_amount);
+      account[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
     }
 
     return account;
