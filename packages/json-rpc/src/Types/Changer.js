@@ -24,6 +24,10 @@ const P_ACCOUNT_PRICE = Symbol('account_price');
 const P_LOCKED_UNTIL_BLOCK = Symbol('lockedUntilBlock');
 const P_FEE = Symbol('fee');
 
+// v5
+const P_CHANGES = Symbol('changes');
+const P_HASHED_SECRET = Symbol('hashed_secret');
+
 /**
  * Represents a Changer in an operation.
  */
@@ -38,9 +42,15 @@ class Changer extends Abstract {
     let changer = new Changer();
 
     changer[P_ACCOUNT] = new AccountNumber(data.account);
+    changer[P_CHANGES] = data.changes || null;
     changer[P_N_OPERATION] = null;
     if (data.n_operation !== undefined) {
       changer[P_N_OPERATION] = parseInt(data.n_operation, 10);
+    }
+
+    changer[P_HASHED_SECRET] = null;
+    if (data.hashed_secret !== undefined) {
+      changer[P_HASHED_SECRET] = BC.fromHex(data.hashed_secret);
     }
 
     changer[P_NEW_ENC_PUBKEY] = null;
@@ -160,6 +170,24 @@ class Changer extends Abstract {
    */
   get fee() {
     return this[P_FEE];
+  }
+
+  /**
+   * Gets the changes identifier.
+   *
+   * @return {String}
+   */
+  get changes() {
+    return this[P_CHANGES];
+  }
+
+  /**
+   * Gets the hashedSecret
+   *
+   * @return {BC}
+   */
+  get hashedSecret() {
+    return this[P_HASHED_SECRET];
   }
 }
 

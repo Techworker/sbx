@@ -106,6 +106,18 @@ describe('Core.Types.Operation.Changer', () => {
             expect(changer.lockedUntilBlock).to.be.equal(rawChanger.locked_until_block);
           }
 
+          if (rawChanger.changes === undefined) {
+            expect(changer.changes).to.be.equal(null);
+          } else {
+            expect(changer.changes).to.be.equal(rawChanger.changes);
+          }
+
+          if (rawChanger.hashed_secret === undefined) {
+            expect(changer.hashedSecret).to.be.equal(null);
+          } else {
+            expect(changer.hashedSecret.toHex()).to.be.equal(rawChanger.hashed_secret);
+          }
+
         });
       });
     });
