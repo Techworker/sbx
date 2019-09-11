@@ -2,9 +2,12 @@
   "account": 400000,
   "enc_pubkey": "CA0220006E1FF7379141074AE8201930556254EEBE5FDD4A7EE341DDEFDA53C8C35237852000311B06E4CD6B747D63390C6878E879B1F077FCF5E62F26E6525CBAF3589824A9",
   "balance": 0,
+  "balance_s": "0.0000",
   "n_operation": 2,
   "updated_b": 256890,
   "state": "normal",
   "name": "",
-  "type": 0
+  "type": 123,
+  "data": "",
+  "seal": "C1E9C515826487545CF33382F90A34F4F86BC2C1"
 }
