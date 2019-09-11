@@ -51,9 +51,11 @@ const codingProps = {
   newPublicKey: P_NEW_ENC_PUBKEY,
 
   // v5
+  data: P_DATA,
+  seal: P_SEAL,
   hashedSecret: P_HASHED_SECRET,
   amountToSwap: P_AMOUNT_TO_SWAP,
-  receiverSwapAmount: P_RECEIVER_SWAP_AMOUNT
+  receiverSwapAccount: P_RECEIVER_SWAP_AMOUNT
 };
 
 /**
@@ -133,7 +135,7 @@ class Account extends Abstract {
     account[P_NEW_ENC_PUBKEY] = null;
 
     if (account[P_STATE] === Account.STATE_LISTED) {
-      account[P_PRICE] = new Currency(data.price);
+      account[P_PRICE] = new Currency(data.price_s);
       account[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
       account[P_PRIVATE_SALE] = data.private_sale;
       if (data.new_enc_pubkey !== '000000000000' && data.new_enc_pubkey !== undefined) {
@@ -141,9 +143,15 @@ class Account extends Abstract {
       }
     }
 
-    if (data.state === Account.STATE_ATOMIC_COIN_SWAP) {
+    if (data.state === Account.STATE_ATOMIC_ACCOUNT_SWAP) {
       account[P_HASHED_SECRET] = BC.fromHex(data.hashed_secret);
       account[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
+    }
+
+    if (data.state === Account.STATE_ATOMIC_COIN_SWAP) {
+      account[P_HASHED_SECRET] = BC.fromHex(data.hashed_secret);
+      account[P_AMOUNT_TO_SWAP] = new Currency(data.amount_to_swap_s);
+      account[P_RECEIVER_SWAP_AMOUNT] = new AccountNumber(data.receiver_swap_account);
     }
 
     return account;
@@ -269,12 +277,75 @@ class Account extends Abstract {
   }
 
   /**
+   * Gets the hashed secret.
+   *
+   * @return {BC}
+   */
+  get hashedSecret() {
+    return this[P_HASHED_SECRET];
+  }
+
+  /**
+   * Gets the account data.
+   *
+   * @return {BC}
+   */
+  get data() {
+    return this[P_DATA];
+  }
+
+  /**
+   * Gets the account seal.
+   *
+   * @return {BC}
+   */
+  get seal() {
+    return this[P_SEAL];
+  }
+
+  /**
+   *Gets the amount to be swapped.
+   *
+   * @return {Currency}
+   */
+  get amountToSwap() {
+    return this[P_AMOUNT_TO_SWAP];
+  }
+
+  /**
+   * Gets the coin swap receiver account.
+   *
+   * @return {AccountNumber}
+   */
+  get receiverSwapAccount() {
+    return this[P_AMOUNT_TO_SWAP];
+  }
+
+  /**
    * Gets a value indicating whether the account is for sale.
    *
    * @returns {boolean}
    */
   isForSale() {
     return this[P_STATE] === Account.STATE_LISTED;
+  }
+
+  /**
+   * Gets a value indicating whether the account is in account swap state.
+   *
+   * @returns {boolean}
+   */
+  isAccountSwap() {
+    return this[P_STATE] === Account.STATE_ATOMIC_ACCOUNT_SWAP;
+  }
+
+  /**
+   * Gets a value indicating whether the account is in coin swap state.
+   *
+   * @returns {boolean}
+   */
+  isCoinSwap() {
+    return this[P_STATE] === Account.STATE_ATOMIC_COIN_SWAP;
   }
 
   /**
