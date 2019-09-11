@@ -45,8 +45,8 @@ class Block extends Abstract {
 
     block[P_BLOCK] = parseInt(data.block, 10);
     block[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
-    block[P_REWARD] = new Currency(data.reward);
-    block[P_FEE] = new Currency(data.fee);
+    block[P_REWARD] = new Currency(data.reward_s);
+    block[P_FEE] = new Currency(data.fee_s);
     block[P_VER] = parseInt(data.ver, 10);
     block[P_VER_A] = parseInt(data.ver_a, 10);
     block[P_TIMESTAMP] = parseInt(data.timestamp, 10);

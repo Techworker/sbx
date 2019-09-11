@@ -74,8 +74,8 @@ class Changer extends Abstract {
     }
 
     changer[P_ACCOUNT_PRICE] = null;
-    if (data.account_price !== undefined) {
-      changer[P_ACCOUNT_PRICE] = new Currency(data.account_price);
+    if (data.account_price_s !== undefined) {
+      changer[P_ACCOUNT_PRICE] = new Currency(data.account_price_s);
     }
 
     changer[P_LOCKED_UNTIL_BLOCK] = null;
@@ -84,8 +84,8 @@ class Changer extends Abstract {
     }
 
     changer[P_FEE] = new Currency(0);
-    if (data.fee !== undefined) {
-      changer[P_FEE] = new Currency(data.fee);
+    if (data.fee_s !== undefined) {
+      changer[P_FEE] = new Currency(data.fee_s);
     }
 
     return changer;

@@ -197,8 +197,8 @@ class Operation extends Abstract {
       operation[P_ACCOUNT] = new AccountNumber(data.account);
     }
     operation[P_OPTXT] = data.optxt;
-    operation[P_AMOUNT] = new Currency(data.amount);
-    operation[P_FEE] = new Currency(data.fee);
+    operation[P_AMOUNT] = new Currency(data.amount_s);
+    operation[P_FEE] = new Currency(data.fee_s);
     operation[P_BALANCE] = null;
     if (data.balance !== undefined) {
       operation[P_BALANCE] = new Currency(data.balance);
