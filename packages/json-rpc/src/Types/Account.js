@@ -41,7 +41,7 @@ const codingProps = {
   publicKey: P_ENC_PUBKEY,
   balance: P_BALANCE,
   nOperation: P_N_OPERATION,
-  updatedB: P_STATE,
+  updatedB: P_UPDATED_B,
   name: P_NAME,
   type: P_TYPE,
   lockedUntilBlock: P_LOCKED_UNTIL_BLOCK,
@@ -85,7 +85,7 @@ class Account extends Abstract {
    *
    * @returns {string}
    */
-  static get STATE_ATOMIC_COIN_SWAP() {
+  static get STATE_COIN_SWAP() {
     return 'coin_swap';
   }
 
@@ -94,8 +94,8 @@ class Account extends Abstract {
    *
    * @returns {string}
    */
-  static get STATE_ATOMIC_ACCOUNT_SWAP() {
-    return 'atomic_swap';
+  static get STATE_ACCOUNT_SWAP() {
+    return 'account_swap';
   }
 
   /**
@@ -111,11 +111,19 @@ class Account extends Abstract {
     account[P_BALANCE] = new Currency(data.balance_s);
     account[P_N_OPERATION] = parseInt(data.n_operation, 10);
     account[P_UPDATED_B] = parseInt(data.updated_b, 10);
-    account[P_SEAL] = BC.fromHex(data.seal);
-    account[P_DATA] = BC.fromHex(data.data);
+
+    account[P_SEAL] = null;
+    if (data.seal !== undefined) {
+      account[P_SEAL] = BC.fromHex(data.seal);
+    }
+
+    account[P_DATA] = null;
+    if (data.data !== undefined) {
+      account[P_DATA] = BC.fromHex(data.data);
+    }
 
     if (data.state !== Account.STATE_NORMAL && data.state !== Account.STATE_LISTED &&
-        data.state !== Account.STATE_ATOMIC_ACCOUNT_SWAP && data.state !== Account.STATE_ATOMIC_COIN_SWAP) {
+        data.state !== Account.STATE_ACCOUNT_SWAP && data.state !== Account.STATE_COIN_SWAP) {
       throw new Error('Invalid account state.');
     }
 
@@ -128,29 +136,38 @@ class Account extends Abstract {
       account[P_LOCKED_UNTIL_BLOCK] = parseInt(data.locked_until_block, 10);
     }
 
-    // when not listed
     account[P_PRICE] = null;
-    account[P_SELLER_ACCOUNT] = null;
-    account[P_PRIVATE_SALE] = null;
-    account[P_NEW_ENC_PUBKEY] = null;
-
-    if (account[P_STATE] === Account.STATE_LISTED) {
+    if (data.price_s !== undefined) {
       account[P_PRICE] = new Currency(data.price_s);
-      account[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
-      account[P_PRIVATE_SALE] = data.private_sale;
-      if (data.new_enc_pubkey !== '000000000000' && data.new_enc_pubkey !== undefined) {
-        account[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
-      }
     }
 
-    if (data.state === Account.STATE_ATOMIC_ACCOUNT_SWAP) {
-      account[P_HASHED_SECRET] = BC.fromHex(data.hashed_secret);
+    account[P_SELLER_ACCOUNT] = null;
+    if (data.seller_account !== undefined) {
+      account[P_SELLER_ACCOUNT] = new AccountNumber(data.seller_account);
+    }
+
+    account[P_PRIVATE_SALE] = null;
+    if (data.private_sale !== undefined) {
+      account[P_PRIVATE_SALE] = data.private_sale;
+    }
+
+    account[P_NEW_ENC_PUBKEY] = null;
+    if (data.new_enc_pubkey !== undefined && data.new_enc_pubkey !== '000000000000') {
       account[P_NEW_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.new_enc_pubkey));
     }
 
-    if (data.state === Account.STATE_ATOMIC_COIN_SWAP) {
+    account[P_HASHED_SECRET] = null;
+    if (data.hashed_secret !== undefined) {
       account[P_HASHED_SECRET] = BC.fromHex(data.hashed_secret);
+    }
+
+    account[P_AMOUNT_TO_SWAP] = null;
+    if (data.amount_to_swap_s !== undefined) {
       account[P_AMOUNT_TO_SWAP] = new Currency(data.amount_to_swap_s);
+    }
+
+    account[P_RECEIVER_SWAP_AMOUNT] = null;
+    if (data.receiver_swap_account !== undefined) {
       account[P_RECEIVER_SWAP_AMOUNT] = new AccountNumber(data.receiver_swap_account);
     }
 
@@ -318,7 +335,7 @@ class Account extends Abstract {
    * @return {AccountNumber}
    */
   get receiverSwapAccount() {
-    return this[P_AMOUNT_TO_SWAP];
+    return this[P_RECEIVER_SWAP_AMOUNT];
   }
 
   /**
@@ -336,7 +353,7 @@ class Account extends Abstract {
    * @returns {boolean}
    */
   isAccountSwap() {
-    return this[P_STATE] === Account.STATE_ATOMIC_ACCOUNT_SWAP;
+    return this[P_STATE] === Account.STATE_ACCOUNT_SWAP;
   }
 
   /**
@@ -345,7 +362,7 @@ class Account extends Abstract {
    * @returns {boolean}
    */
   isCoinSwap() {
-    return this[P_STATE] === Account.STATE_ATOMIC_COIN_SWAP;
+    return this[P_STATE] === Account.STATE_COIN_SWAP;
   }
 
   /**
