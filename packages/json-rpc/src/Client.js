@@ -675,6 +675,7 @@ class Client {
    * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} newPubkey
    * @param {AccountName|String|null} newName
    * @param {Number|null} newType
+   * @param {BC} newData
    *
    * @returns {OperationAction}
    */
@@ -683,14 +684,16 @@ class Client {
     accountTarget,
     newPubkey = null,
     newName = null,
-    newType = null
+    newType = null,
+    newData = null,
   }) {
     return new OperationAction('changeaccountinfo', {
       account_signer: new AccountNumber(accountSigner),
       account_target: new AccountNumber(accountTarget),
       new_pubkey: newPubkey,
       new_name: newName !== null ? new AccountName(newName) : newName,
-      new_type: newType !== null ? parseInt(newType, 10) : newType
+      new_type: newType !== null ? parseInt(newType, 10) : newType,
+      new_data: newData !== null ? BC.from(newData) : newData
     }, this[P_EXECUTOR], Operation, false);
   }
 
@@ -703,6 +706,7 @@ class Client {
    * @param {String|BC|PublicKey|WalletPublicKey|PrivateKey|KeyPair|null} newPubkey
    * @param {AccountName|String|null} newName
    * @param {Number|null} newType
+   * @param {BC|null} newType
    *
    * @returns {SignOperationAction}
    */
@@ -712,7 +716,8 @@ class Client {
     accountTarget,
     newPubkey = null,
     newName = null,
-    newType = null
+    newType = null,
+    newData = null,
   }) {
     return new SignOperationAction('signchangeaccountinfo', {
       signer_pubkey: signerPubkey,
@@ -720,7 +725,8 @@ class Client {
       account_target: new AccountNumber(accountTarget),
       new_pubkey: newPubkey,
       new_name: newName !== null ? new AccountName(newName) : newName,
-      new_type: newType !== null ? parseInt(newType, 10) : newType
+      new_type: newType !== null ? parseInt(newType, 10) : newType,
+      new_data: newData !== null ? BC.from(newData) : newData
     }, this[P_EXECUTOR], Object, false);
   }
 
