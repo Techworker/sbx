@@ -22,17 +22,6 @@ function signWithHash(keyPair, digest) {
   return Keys.sign(keyPair, hash);
 }
 
-/**
- * Signs the digest.
- *
- * @param {KeyPair} keyPair
- * @param {BC} digest
- * @return {{r: BC, s: BC}}
- */
-function signWithDigest(keyPair, digest) {
-  return Keys.sign(keyPair, digest);
-}
-
 class Signer {
   /**
    * Signs the given operation and returns a new rawoperations string.
@@ -45,16 +34,8 @@ class Signer {
   sign(keyPair, operation) {
     const DigestCoder = Operations.digestCoderFor(operation);
     const digest = new DigestCoder(operation.opType).encodeToBytes(operation);
-    let signResult;
 
-    if (operation.usesDigestToSign() === true) {
-      signResult = signWithDigest(keyPair, digest);
-    } else {
-      signResult = signWithHash(keyPair, digest);
-    }
-
-    // save results
-    return signResult;
+    return signWithHash(keyPair, digest);
   }
 
   /**

@@ -143,16 +143,6 @@ class Data extends Abstract {
   get amount() {
     return this[P_AMOUNT];
   }
-
-  /**
-   * Forces the signer to use the digest instead of the hash of the digest
-   * to sign the operation.
-   *
-   * @return {boolean}
-   */
-  usesDigestToSign() {
-    return true;
-  }
 }
 
 module.exports = Data;

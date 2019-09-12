@@ -127,10 +127,6 @@ class Abstract {
   get isSigned() {
     return this[P_S] !== null && this[P_R] !== null;
   }
-
-  usesDigestToSign() {
-    return false;
-  }
 }
 
 module.exports = Abstract;
