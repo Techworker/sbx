@@ -23,7 +23,7 @@ let fixture = {
 };
 
 describe('Operations.ChangeAccountInfo', () => {
-  it('can be decode a signed operation', () => {
+  it('can decode a signed operation', () => {
     let decoded = new RawCoder().decodeFromBytes(BC.fromHex(fixture.raw));
 
     expect(decoded.operations[0].operation.r.toHex()).to.be.equal(fixture.r);
@@ -36,6 +36,7 @@ describe('Operations.ChangeAccountInfo', () => {
     expect(decoded.operations[0].operation.changeType & 1).to.be.equal(1);
     expect(decoded.operations[0].operation.changeType & 2).to.be.equal(2);
     expect(decoded.operations[0].operation.changeType & 4).to.be.equal(4);
+    expect(decoded.operations[0].operation.changeType & 8).to.be.equal(8);
     expect(decoded.operations[0].operation.newName.toString()).to.be.equal(fixture.newName);
     expect(decoded.operations[0].operation.newType.toString()).to.be.equal(fixture.newType);
     expect(new PublicKeyCoder().encodeToBase58(decoded.operations[0].operation.newPublicKey)).to.be.equal(fixture.newPublicKey);

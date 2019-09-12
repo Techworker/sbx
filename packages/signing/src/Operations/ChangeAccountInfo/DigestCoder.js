@@ -62,6 +62,10 @@ class DigestCoder extends CompositeType {
         .description('The new type of the account.')
     );
     this.addSubType(
+      new Coding.Core.BytesWithLength('newData')
+        .description('The new data of the account.')
+    );
+    this.addSubType(
       new Coding.Pascal.OpType('optype', 1)
         .withFixedValue(8)
         .description('The change account info optype as 8 bit int8')
