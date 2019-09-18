@@ -7,11 +7,13 @@
 
 const Abstract = require('./../../Abstract');
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
+const GUID = require('@pascalcoin-sbx/common').Types.GUID;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 
 const P_ACCOUNT_SIGNER = Symbol('account_signer');
 const P_ACCOUNT_SENDER = Symbol('account_sender');
 const P_ACCOUNT_TARGET = Symbol('account_target');
+const P_GUID = Symbol('guid');
 const P_DATA_TYPE = Symbol('data_type');
 const P_DATA_SEQUENCE = Symbol('data_sequence');
 const P_AMOUNT = Symbol('amount');
@@ -53,6 +55,7 @@ class Data extends Abstract {
     this[P_DATA_TYPE] = 0;
     this[P_DATA_SEQUENCE] = 0;
     this[P_AMOUNT] = new Currency(0);
+    this[P_GUID] = GUID.generate();
   }
 
   /**
@@ -67,6 +70,17 @@ class Data extends Abstract {
     return this;
   }
 
+  /**
+   * Sets the guid.
+   *
+   * @param {GUID|String|BC} guid
+   * @return {Data}
+   */
+  withGUID(guid) {
+    this[P_GUID] = new GUID(guid);
+
+    return this;
+  }
   /**
    * Sets the data information.
    *

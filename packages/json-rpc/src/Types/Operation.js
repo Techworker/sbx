@@ -23,6 +23,7 @@ const P_BLOCK = Symbol('block');
 const P_TIME = Symbol('time');
 const P_OPBLOCK = Symbol('opblock');
 const P_PAYLOAD = Symbol('payload');
+const P_PAYLOAD_TYPE = Symbol('payload_type');
 const P_MATURATION = Symbol('maturation');
 const P_OPTYPE = Symbol('optype');
 const P_ACCOUNT = Symbol('account');
@@ -179,6 +180,12 @@ class Operation extends Abstract {
       operation[P_PAYLOAD] = BC.fromHex(data.payload);
     } else {
       operation[P_PAYLOAD] = BC.fromHex('');
+    }
+
+    if (data.payload_type !== undefined) {
+      operation[P_PAYLOAD_TYPE] = parseInt(data.payload_type, 10);
+    } else {
+      operation[P_PAYLOAD_TYPE] = 0;
     }
 
     operation[P_BLOCK] = parseInt(data.block, 10);
@@ -387,6 +394,15 @@ class Operation extends Abstract {
    */
   get payload() {
     return this[P_PAYLOAD];
+  }
+
+  /**
+   * Gets the payload type identifier.
+   *
+   * @returns {Number}
+   */
+  get payloadType() {
+    return this[P_PAYLOAD_TYPE];
   }
 
   /**

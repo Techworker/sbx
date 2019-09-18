@@ -14,6 +14,7 @@ let fixture = {
   accountToBuy: 1440500,
   price: 0.0001,
   fee: 0.0002,
+  payload_type: 0,
   payload: 'techworker',
   seller: 1440500,
   n_operation: 4004,
@@ -28,6 +29,7 @@ describe('Operations.BuyAccount', () => {
 
     expect(decoded.operations[0].operation.r.toHex()).to.be.equal(fixture.r);
     expect(decoded.operations[0].operation.s.toHex()).to.be.equal(fixture.s);
+    expect(decoded.operations[0].operation.payloadType).to.be.equal(fixture.payload_type);
     expect(decoded.operations[0].operation.sender.account).to.be.equal(fixture.buyerAccount);
     expect(decoded.operations[0].operation.target.account).to.be.equal(fixture.accountToBuy);
     expect(decoded.operations[0].operation.seller.account).to.be.equal(fixture.seller);

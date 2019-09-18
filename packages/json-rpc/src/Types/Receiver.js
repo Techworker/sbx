@@ -13,6 +13,7 @@ const BC = require('@pascalcoin-sbx/common').BC;
 const P_ACCOUNT = Symbol('account');
 const P_AMOUNT = Symbol('amount');
 const P_PAYLOAD = Symbol('payload');
+const P_PAYLOAD_TYPE = Symbol('payload_type');
 
 /**
  * Represents a receiver in an operation.
@@ -29,6 +30,7 @@ class Receiver extends Abstract {
     receiver[P_ACCOUNT] = new AccountNumber(data.account);
     receiver[P_AMOUNT] = new Currency(data.amount);
     receiver[P_PAYLOAD] = BC.fromHex(data.payload);
+    receiver[P_PAYLOAD_TYPE] = parseInt(data.payload_type, 10);
 
     return receiver;
   }
@@ -58,6 +60,15 @@ class Receiver extends Abstract {
    */
   get payload() {
     return this[P_PAYLOAD];
+  }
+
+  /**
+   * Gets the payload type identifier.
+   *
+   * @returns {Number}
+   */
+  get payloadType() {
+    return this[P_PAYLOAD_TYPE];
   }
 }
 

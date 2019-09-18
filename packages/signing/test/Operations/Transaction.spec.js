@@ -14,6 +14,7 @@ let fixture = {
   amount: 0.0015,
   fee: 0.0002,
   payload: 'techworker',
+  payload_type: 0,
   n_operation: 4003,
   r: '1201D10D537B0F6D7CB2032A768A851E0EF2426AA37756BCADB994AF189D124A',
   s: '9DACA47597ADFB3E529B82EB231396F464EE1C4E76DC6E85CD10CA3711C2D6C2',
@@ -32,6 +33,7 @@ describe('Operations.Transaction', () => {
     expect(decoded.operations[0].operation.fee.toStringOpt()).to.be.equal(fixture.fee.toString());
     expect(decoded.operations[0].operation.nOperation).to.be.equal(fixture.n_operation);
     expect(decoded.operations[0].operation.payload.toString()).to.be.equal(fixture.payload);
+    expect(decoded.operations[0].operation.payloadType).to.be.equal(fixture.payload_type);
   });
 
   it('can be decode signed operation and encode it again', () => {

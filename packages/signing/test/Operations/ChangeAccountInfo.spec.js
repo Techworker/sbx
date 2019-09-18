@@ -16,6 +16,7 @@ let fixture = {
   newType: '345',
   n_operation: 4003,
   fee: 0.0002,
+  payload_type: 0,
   payload: 'techworker',
   r: '28D54FB4B87C8DEA5884876FA6DDD30115B1EAECEA50869181CC05D788C74D6A',
   s: '61E719DCEE48E93B94BC0938D1CADDBCB7E59F259097C622C98E5D0C758BB5AC',
@@ -33,6 +34,7 @@ describe('Operations.ChangeAccountInfo', () => {
     expect(decoded.operations[0].operation.nOperation).to.be.equal(fixture.n_operation);
     expect(decoded.operations[0].operation.fee.toStringOpt()).to.be.equal(fixture.fee.toString());
     expect(decoded.operations[0].operation.payload.toString()).to.be.equal(fixture.payload);
+    expect(decoded.operations[0].operation.payloadType).to.be.equal(fixture.payload_type);
     expect(decoded.operations[0].operation.changeType & 1).to.be.equal(1);
     expect(decoded.operations[0].operation.changeType & 2).to.be.equal(2);
     expect(decoded.operations[0].operation.changeType & 4).to.be.equal(4);

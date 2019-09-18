@@ -31,6 +31,7 @@ describe('Operations.Delist', () => {
     expect(decoded.operations[0].operation.nOperation).to.be.equal(fixture.n_operation);
     expect(decoded.operations[0].operation.fee.toStringOpt()).to.be.equal(fixture.fee.toString());
     expect(decoded.operations[0].operation.payload.toString()).to.be.equal(fixture.payload);
+    expect(decoded.operations[0].operation.payloadType).to.be.equal(fixture.payload_type);
   });
 
   it('can decode signed operation and encode it again', () => {

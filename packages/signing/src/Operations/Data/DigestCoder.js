@@ -36,6 +36,10 @@ class DigestCoder extends CompositeType {
         .description('The next n_operation of the signer.')
     );
     this.addSubType(
+      new Coding.Pascal.GUID('guid')
+        .description('The guid of the operation.')
+    );
+    this.addSubType(
       new Coding.Core.Int16('dataType', true, Endian.LITTLE_ENDIAN)
         .description('The data type of the operation.')
     );
@@ -50,6 +54,10 @@ class DigestCoder extends CompositeType {
     this.addSubType(
       new Coding.Pascal.Currency('fee')
         .description('The fee associated with the operation')
+    );
+    this.addSubType(
+      new Coding.Core.Int8('payloadType', true)
+        .description('The type of the payload.')
     );
     this.addSubType(
       new Coding.Core.BytesWithLength('payload', 2, 'payload_length', 'The length of the payload')

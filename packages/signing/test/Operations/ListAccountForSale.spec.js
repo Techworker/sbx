@@ -37,6 +37,7 @@ describe('Operations.ListAccountForSale', () => {
     expect(decoded.operations[0].operation.fee.toStringOpt()).to.be.equal(fixture.fee.toString());
     expect(decoded.operations[0].operation.lockedUntilBlock).to.be.equal(fixture.lockedUntilBlock);
     expect(decoded.operations[0].operation.payload.toString()).to.be.equal(fixture.payload);
+    expect(decoded.operations[0].operation.payloadType).to.be.equal(fixture.payload_type);
     expect(new PublicKeyCoder().encodeToBase58(decoded.operations[0].operation.newPublicKey)).to.be.equal(fixture.newPublicKey);
   });
 

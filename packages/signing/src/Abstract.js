@@ -11,6 +11,7 @@ const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const PascalCoinInfo = require('@pascalcoin-sbx/common').PascalCoinInfo;
 
 const P_PAYLOAD = Symbol('payload');
+const P_PAYLOAD_TYPE = Symbol('payload_type');
 const P_S = Symbol('s');
 const P_R = Symbol('r');
 const P_FEE = Symbol('fee');
@@ -26,6 +27,7 @@ class Abstract {
    */
   constructor() {
     this[P_PAYLOAD] = BC.fromString('');
+    this[P_PAYLOAD_TYPE] = 0;
     this[P_S] = null;
     this[P_R] = null;
     this[P_FEE] = new Currency(0);
@@ -35,11 +37,13 @@ class Abstract {
    * Sets the payload of the transaction instance.
    *
    * @param {BC} payload
+   * @param {Number} payloadType
    *
    * @returns {Abstract}
    */
-  withPayload(payload) {
+  withPayload(payload, payloadType = 0) {
     this[P_PAYLOAD] = BC.from(payload);
+    this[P_PAYLOAD_TYPE] = payloadType;
     return this;
   }
 
@@ -81,6 +85,15 @@ class Abstract {
    */
   get payload() {
     return this[P_PAYLOAD];
+  }
+
+  /**
+   * Gets the payload type identifier.
+   *
+   * @returns {BC}
+   */
+  get payloadType() {
+    return this[P_PAYLOAD_TYPE];
   }
 
   /**

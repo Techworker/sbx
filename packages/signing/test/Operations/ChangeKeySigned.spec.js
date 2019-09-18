@@ -14,6 +14,7 @@ let fixture = {
   newPublicKey: '3Ghhbommc5imqoAUAzXoEJpYo1qLiyVZip3Pwsj7WUXq7aFXwC4tw1MFsRrhPnA51CMAoeoyGJcMGV1dSU9FAqXRsnV2LLT7tBKDeY',
   fee: 0.0002,
   payload: 'techworker',
+  payload_type: 0,
   n_operation: 4003,
   s: 'AEB41A5FB2D7A1B89C17897E87959AE63B9864236397FBDCFF118E964B1211C8',
   r: '5CAD340D46F1A926DCD3FA00962A0EFC856733E46285BF945B1F19A90DE2BEF8',
@@ -31,6 +32,7 @@ describe('Operations.ChangeKeySigned', () => {
     expect(decoded.operations[0].operation.nOperation).to.be.equal(fixture.n_operation);
     expect(decoded.operations[0].operation.fee.toStringOpt()).to.be.equal(fixture.fee.toString());
     expect(decoded.operations[0].operation.payload.toString()).to.be.equal(fixture.payload);
+    expect(decoded.operations[0].operation.payloadType).to.be.equal(fixture.payload_type);
     expect(new PublicKeyCoder().encodeToBase58(decoded.operations[0].operation.newPublicKey)).to.be.equal(fixture.newPublicKey);
   });
 

@@ -17,12 +17,13 @@ let fixture = {
       account: 1440500,
       amount: 0.0015,
       payload: 'test1',
+      payload_type: 0,
       n_operation: 4004
     }
   ],
   receivers: [
-    { account: 1440503, amount: 0.0007, payload: 'test2' },
-    { account: 1440493, amount: 0.0008, payload: 'test3' }
+    { account: 1440503, amount: 0.0007, payload: 'test2', payload_type: 0 },
+    { account: 1440493, amount: 0.0008, payload: 'test3', payload_type: 0 }
   ],
   changesinfo: [ { account: 1440503, new_name: 'test123', n_operation: 1005 } ],
   rSender: '4B1992E286FD3879DD174E6BA8FAC9AAE8B3073319B937B28658253A22C824D9',
@@ -41,10 +42,15 @@ describe('Operations.MultiOperation', () => {
     expect(decoded.operations[0].operation.senders[0].account.account).to.be.equal(fixture.senders[0].account);
     expect(decoded.operations[0].operation.senders[0].amount.toStringOpt()).to.be.equal(fixture.senders[0].amount.toString());
     expect(decoded.operations[0].operation.senders[0].payload.toString()).to.be.equal(fixture.senders[0].payload);
+    expect(decoded.operations[0].operation.senders[0].payloadType).to.be.equal(fixture.senders[0].payload_type);
     expect(decoded.operations[0].operation.senders[0].nOperation).to.be.equal(fixture.senders[0].n_operation);
 
     expect(decoded.operations[0].operation.receivers[1].account.account).to.be.equal(fixture.receivers[0].account);
     expect(decoded.operations[0].operation.receivers[1].amount.toStringOpt()).to.be.equal(fixture.receivers[0].amount.toString());
+    expect(decoded.operations[0].operation.receivers[1].payload.toString()).to.be.equal(fixture.receivers[0].payload);
+    expect(decoded.operations[0].operation.receivers[1].payloadType).to.be.equal(fixture.receivers[0].payload_type);
+    expect(decoded.operations[0].operation.receivers[0].payload.toString()).to.be.equal(fixture.receivers[1].payload);
+    expect(decoded.operations[0].operation.receivers[0].payloadType).to.be.equal(fixture.receivers[1].payload_type);
     expect(decoded.operations[0].operation.receivers[0].account.account).to.be.equal(fixture.receivers[1].account);
     expect(decoded.operations[0].operation.receivers[0].amount.toStringOpt()).to.be.equal(fixture.receivers[1].amount.toString());
 

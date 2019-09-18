@@ -45,6 +45,10 @@ class DigestCoder extends CompositeType {
         .description('The fee associated with the operation')
     );
     this.addSubType(
+      new Coding.Core.Int8('payloadType', true)
+        .description('The type of the payload.')
+    );
+    this.addSubType(
       new Coding.Core.StringWithoutLength('payload')
         .description('The payload of the operation.')
     );
