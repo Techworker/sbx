@@ -33,6 +33,7 @@ module.exports = {
     Currency: require('./Pascal/Currency'),
     NOperation: require('./Pascal/NOperation'),
     OpType: require('./Pascal/OpType'),
-    OperationHash: require('./Pascal/OperationHash')
+    OperationHash: require('./Pascal/OperationHash'),
+    GUID: require('./Pascal/GUID')
   }
 };

@@ -10,5 +10,6 @@ module.exports = {
   AccountNumber: require('./AccountNumber'),
   Currency: require('./Currency'),
   OperationHash: require('./OperationHash'),
+  GUID: require('./GUID'),
   Keys: require('./Keys')
 };
