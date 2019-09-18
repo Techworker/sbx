@@ -8,6 +8,9 @@
 const P_ID = Symbol('id');
 const P_FIXED_VALUE = Symbol('fixed_value');
 const P_HAS_FIXED_VALUE = Symbol('has_fixed_value');
+const P_DEFAULT_VALUE = Symbol('default_value');
+const P_DEFAULT_VALUE_CALLBACK = Symbol('default_value_callback');
+const P_HAS_DEFAULT_VALUE = Symbol('has_default_value');
 const P_DESCRIPTION = Symbol('description');
 const P_TARGET_FIELD_NAME = Symbol('target_field_name');
 const P_HAS_TARGET_FIELD_NAME = Symbol('has_target_field_name');
@@ -26,6 +29,7 @@ class AbstractType {
     this[P_ID] = id;
     this[P_HAS_FIXED_VALUE] = false;
     this[P_HAS_TARGET_FIELD_NAME] = false;
+    this[P_HAS_DEFAULT_VALUE] = false;
   }
 
   /**
@@ -74,6 +78,33 @@ class AbstractType {
   }
 
   /**
+   * Gets a value indicating whether there is a default value.
+   *
+   * @return {Boolean}
+   */
+  get hasDefaultValue() {
+    return this[P_HAS_DEFAULT_VALUE];
+  }
+
+  /**
+   * Gets the callable to evaluate the default value.
+   *
+   * @return {Function}
+   */
+  get defaultValueCallable() {
+    return this[P_DEFAULT_VALUE_CALLBACK];
+  }
+
+  /**
+   * Gets the default value.
+   *
+   * @return {*}
+   */
+  get defaultValue() {
+    return this[P_DEFAULT_VALUE];
+  }
+
+  /**
    * Gets the encoded size of the type.
    *
    * @return {Number}
@@ -113,6 +144,21 @@ class AbstractType {
   withFixedValue(value) {
     this[P_FIXED_VALUE] = value;
     this[P_HAS_FIXED_VALUE] = true;
+    return this;
+  }
+
+  /**
+   * Sets the default value that is evaluated with the callable.
+   *
+   * @param {*} defaultValue
+   * @param {Function} callable
+   * @return {AbstractType}
+   */
+  withDefaultValue(defaultValue, callable) {
+    this[P_DEFAULT_VALUE] = defaultValue;
+    this[P_DEFAULT_VALUE_CALLBACK] = callable;
+    this[P_HAS_DEFAULT_VALUE] = true;
+
     return this;
   }
 

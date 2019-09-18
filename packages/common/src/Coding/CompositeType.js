@@ -97,6 +97,11 @@ class CompositeType extends AbstractType {
     this.subTypes.forEach((subType, idx) => {
       let subTypeValue;
 
+      // decissive can return null for a subtype
+      if (subType === null) {
+        return;
+      }
+
       if (subType.hasFixedValue) {
         subTypeValue = subType.fixedValue;
       } else {
@@ -108,7 +113,14 @@ class CompositeType extends AbstractType {
 
       }
 
+      // substitute with default in case it should
+      if (subType.hasDefaultValue && (subType.defaultValueCallable)(subTypeValue) === true) {
+        subTypeValue = subType.defaultValue;
+      }
+
       // we will use the first available
+
+      // decissive can return null to skip a value
       bc = bc.append(subType.encodeToBytes(subTypeValue, objOrArray));
     });
 

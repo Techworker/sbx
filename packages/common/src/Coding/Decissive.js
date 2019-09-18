@@ -6,6 +6,7 @@
  */
 
 const CompositeType = require('./CompositeType');
+const BC = require('./../BC');
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 const P_SUBTYPE_RESOLVER = Symbol('subtype_resolver');
@@ -58,6 +59,11 @@ class Decissive extends CompositeType {
    */
   encodeToBytes(objOrArray, all) {
     let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
+
+    if (subType === null) {
+      return BC.empty();
+    }
+
     let bc = subType.encodeToBytes(objOrArray);
 
     this[P_SIZE_ENCODED] = bc.length;
