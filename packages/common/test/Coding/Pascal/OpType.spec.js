@@ -50,10 +50,10 @@ describe('Coding.Pascal.OpType', () => {
 
   it('will set a default id', () => {
     let coder = new OpTypeCoder(false, 4);
-    expect(coder.id).to.be.equal('optype_int_32');
+    expect(coder.id).to.be.equal('optype_int32');
     coder = new OpTypeCoder(false, 2);
-    expect(coder.id).to.be.equal('optype_int_16');
+    expect(coder.id).to.be.equal('optype_int16');
     coder = new OpTypeCoder(false, 1);
-    expect(coder.id).to.be.equal('optype_int_8');
+    expect(coder.id).to.be.equal('optype_int8');
   })
 });

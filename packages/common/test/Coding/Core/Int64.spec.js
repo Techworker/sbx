@@ -73,8 +73,4 @@ describe('Coding.Core.Int64', () => {
   it('will return a default encoded size', () => {
     expect(new Int64(false).encodedSize).to.be.equal(8);
   });
-  it('will not accept something that is not a number', () => {
-    expect(() => new Int64(false).encodeToBytes('AAA')).to.throw();
-    expect(() => new Int64(false).encodeToBytes(() => 'A')).to.throw();
-  });
 });
