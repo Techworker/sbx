@@ -15,4 +15,11 @@ describe('Coding.Pascal.AccountName', () => {
     expect(new AccountNameCoder('name', 1).decodeFromBytes(BC.from('0474657374')).toString()).to.be.equal('test');
     expect(new AccountNameCoder('name', 1).decodeFromBytes(BC.from('0474657374'))).to.be.instanceOf(AccountName);
   });
+  it('will assign a default id', () => {
+    expect(new AccountNameCoder().id).to.be.equal('account_name_16');
+    expect(new AccountNameCoder(false).id).to.be.equal('account_name_16');
+    expect(new AccountNameCoder(false, 1).id).to.be.equal('account_name_8');
+    expect(new AccountNameCoder(false, 2).id).to.be.equal('account_name_16');
+    expect(new AccountNameCoder(false, 4).id).to.be.equal('account_name_32');
+  });
 });

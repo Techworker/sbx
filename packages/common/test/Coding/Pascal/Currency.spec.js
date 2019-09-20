@@ -12,4 +12,7 @@ describe('Coding.Pascal.Currency', () => {
     expect(new CurrencyCoder('test').decodeFromBytes(BC.from('0F00000000000000')).toString()).to.be.equal('0.0015');
     expect(new CurrencyCoder('test').decodeFromBytes(BC.from('0474657374'))).to.be.instanceOf(Currency);
   });
+  it('will assign a default id', () => {
+    expect(new CurrencyCoder().id).to.be.equal('currency');
+  });
 });

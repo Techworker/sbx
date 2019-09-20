@@ -19,7 +19,7 @@ class AccountName extends StringWithLength {
    * @param {String} id
    */
   constructor(id = null, byteSize = 2) {
-    super(id || 'account_name', byteSize);
+    super(id || `account_name_${byteSize * 8}`, byteSize);
     this.description('An account name');
   }
 

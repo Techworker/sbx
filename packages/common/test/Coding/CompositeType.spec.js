@@ -83,4 +83,27 @@ describe('Coding.CompositeType', () => {
 
     expect(ct.decodeFromBytes(BC.fromHex('010200'))).to.be.eql({test_v1: 1, test_v2: 2});
   });
+
+  it('updates the encoded size', () => {
+    const ct = new CompositeType();
+    ct.addSubType(new Int8('test_v1', true));
+    ct.addSubType(new Int16('test_v2', true));
+    ct.encodeToBytes({test_v1: 1, test_v2:2});
+    expect(ct.encodedSize).to.be.equal(3);
+  });
+
+  it('will throw an error if a class cannot be decoded', () => {
+    class A extends CompositeType
+    {
+      constructor() {
+        super();
+      }
+      get canDecode() {
+        return false;
+      }
+    }
+
+    const coder = new A();
+    expect(() => coder.decodeFromBytes(BC.empty())).to.throw();
+  });
 });

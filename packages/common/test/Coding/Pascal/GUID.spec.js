@@ -15,4 +15,7 @@ describe('Coding.Pascal.GUID', () => {
   it('can decode a guid', () => {
     expect(new GUIDCoder('guid').decodeFromBytes(BC.from(SAMPLE_GUID_NO_HYPHEN)).toString()).to.be.equal(SAMPLE_GUID);
   });
+  it('will assign a default id', () => {
+    expect(new GUIDCoder().id).to.be.equal('guid');
+  });
 });

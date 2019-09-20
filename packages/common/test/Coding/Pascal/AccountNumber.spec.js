@@ -12,4 +12,8 @@ describe('Coding.Pascal.AccountNumber', () => {
     expect(new AccountNumberCoder('name').decodeFromBytes(BC.from('EAFA1500'))).to.be.instanceOf(AccountNumber);
     expect(new AccountNumberCoder('name').decodeFromBytes(BC.from('EAFA1500')).toString()).to.be.equal('1440490-43');
   });
+  it('will assign a default id', () => {
+    expect(new AccountNumberCoder().id).to.be.equal('account');
+  });
+
 });
