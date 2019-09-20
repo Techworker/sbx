@@ -8,7 +8,7 @@
 // const Payload = require('../Crypto/Payload');
 const BC = require('@pascalcoin-sbx/common').BC;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
-const PascalCoinInfo = require('@pascalcoin-sbx/common').PascalCoinInfo;
+const PascalInfo = require('@pascalcoin-sbx/common').PascalInfo;
 
 const P_PAYLOAD = Symbol('payload');
 const P_PAYLOAD_TYPE = Symbol('payload_type');
@@ -48,6 +48,18 @@ class Abstract {
   }
 
   /**
+   * Sets the payload of the transaction instance from a string.
+   *
+   * @param {String} payload
+   * @param {Number} payloadType
+   *
+   * @returns {Abstract}
+   */
+  withPayloadString(payload, payloadType = 0) {
+    return this.withPayload(BC.fromString(payload), payloadType);
+  }
+
+  /**
    * Sets the fee.
    *
    * @param {Currency} fee
@@ -64,7 +76,7 @@ class Abstract {
    * @returns {Abstract}
    */
   withMinFee(lastKnownBlock = null) {
-    this[P_FEE] = PascalCoinInfo.MIN_FEE(lastKnownBlock);
+    this[P_FEE] = PascalInfo.MIN_FEE(lastKnownBlock);
     return this;
   }
 

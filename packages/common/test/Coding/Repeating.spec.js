@@ -44,4 +44,18 @@ describe('Coding.Core.Repeating', () => {
     expect(new Repeating(false, null).id).to.be.equal('repeating');
   });
 
+  it('returns the repeating type for the elements', () => {
+    const repeatCoder = new Int8('test', true);
+    const coder = new Repeating('test', repeatCoder);
+    expect(coder.repeatingType).to.be.equal(repeatCoder);
+  });
+
+  it('returns the encoded size', () => {
+    const repeatCoder = new Int8('test', true);
+    const coder = new Repeating('test', repeatCoder);
+    coder.encodeToBytes([1,2,3]);
+
+    expect(coder.encodedSize).to.be.equal(3);
+  });
+
 });

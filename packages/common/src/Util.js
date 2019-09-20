@@ -14,9 +14,29 @@ class Util {
    * @param {String} string
    * @returns {string}
    */
-  /* istanbul ignore next */
+  /* istanbul ignore next: already tested in lib */
   static escapeRegex(string) {
     return ('' + string).replace(/([?!${}*:()|=^[\]\/\\.+])/g, '\\$1');
+  }
+
+  /**
+   * Gets a value indicating whether the given value is a string.
+   *
+   * @param {*} s
+   * @return {boolean}
+   */
+  static isString(s) {
+    return Object.prototype.toString.call(s) === '[object String]';
+  }
+
+  /**
+   * Gets a value indicating whether the given value is a Number.
+   *
+   * @param {*} n
+   * @return {boolean}
+   */
+  static isNumber(n) {
+    return Object.prototype.toString.call(n) === '[object Number]' && isNaN(n) === false;
   }
 }
 

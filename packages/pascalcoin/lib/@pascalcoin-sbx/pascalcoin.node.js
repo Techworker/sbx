@@ -10746,14 +10746,14 @@ ClientBrowser.prototype._parseResponse = function(err, responseText, callback) {
       var isError = function(res) { return !isUndefined(res.error); };
 
       return callback(null, response.filter(isError), response.filter(negate(isError)));
-    
+
     } else {
 
       // split regardless of validity
       return callback(null, response.error, response.result);
-    
+
     }
-  
+
   }
 
   callback(null, response);
@@ -17557,7 +17557,7 @@ function bytesToUuid(buf, offset) {
   var i = offset || 0;
   var bth = byteToHex;
   // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-  return ([bth[buf[i++]], bth[buf[i++]], 
+  return ([bth[buf[i++]], bth[buf[i++]],
 	bth[buf[i++]], bth[buf[i++]], '-',
 	bth[buf[i++]], bth[buf[i++]], '-',
 	bth[buf[i++]], bth[buf[i++]], '-',
@@ -25394,8 +25394,6 @@ class Client {
    *
    * @returns {SignOperationAction}
    */
-
-
   signBuyAccount({
     signerPubkey,
     buyerAccount,
@@ -25409,7 +25407,7 @@ class Client {
       account_to_purchase: new AccountNumber(accountToPurchase),
       price: new Currency(price),
       seller_account: new AccountNumber(sellerAccount)
-    }, this[P_EXECUTOR], Object, false);
+    }, this[P_EXECUTOR], SignedOp, false);
   }
   /**
    * Changes account infos

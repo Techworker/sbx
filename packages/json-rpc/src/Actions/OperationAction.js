@@ -6,7 +6,7 @@
  */
 
 const BaseAction = require('./BaseAction');
-const PascalCoinInfo = require('@pascalcoin-sbx/common').PascalCoinInfo;
+const PascalInfo = require('@pascalcoin-sbx/common').PascalInfo;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 
 /**
@@ -69,7 +69,7 @@ class OperationAction extends BaseAction {
    * @returns {OperationAction}
    */
   withMinFee(lastKnownBlock = null) {
-    this.params.fee = PascalCoinInfo.MIN_FEE(lastKnownBlock);
+    this.params.fee = PascalInfo.MIN_FEE(lastKnownBlock);
     return this;
   }
 

@@ -89,11 +89,16 @@ class BytesWithLength extends AbstractType {
    * @returns {BC}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
     value = BC.from(value);
     this[P_SIZE_ENCODED] = value.length + this[P_LENGTH_FIELD].encodedSize;
     let bc = this[P_LENGTH_FIELD].encodeToBytes(
       this[P_SIZE_ENCODED] - this[P_LENGTH_FIELD].encodedSize
     );
+
+    if (this[P_HAS_LEADING_ZB]) {
+      bc = bc.append(BC.from('00'));
+    }
 
     return bc.append(this[P_BYTES_FIELD].encodeToBytes(value));
   }

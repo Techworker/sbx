@@ -53,6 +53,7 @@ class BytesFixedLength extends AbstractType {
    * @returns {BC}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
     value = BC.from(value);
     return value.slice(0, this[P_SIZE]);
   }

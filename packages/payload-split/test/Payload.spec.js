@@ -2,7 +2,7 @@ const BC = require('@pascalcoin-sbx/common').BC;
 const PayloadSplit = require('@pascalcoin-sbx/payload-split');
 const AES = require('@pascalcoin-sbx/crypto').Encryption.Pascal.Password;
 const ECIES = require('@pascalcoin-sbx/crypto').Encryption.Pascal.ECIES;
-const PascalCoinInfo = require('@pascalcoin-sbx/common').PascalCoinInfo;
+const PascalInfo = require('@pascalcoin-sbx/common').PascalInfo;
 const PrivateKeyCoder = require('@pascalcoin-sbx/crypto').Encryption.Pascal.PrivateKey;
 const Keys = require('@pascalcoin-sbx/crypto').Keys;
 
@@ -39,7 +39,7 @@ describe('Payload', () => {
   it('can split a payload, encrypt it and decrypt it using AES', () => {
     let originalPayload = BC.from('test123'.repeat(100));
     let encrypted = PayloadSplit.splitAndEncrypt(originalPayload, AES, {password: 'test1234567890123'});
-    encrypted.forEach(e => expect(e.length).to.be.below(PascalCoinInfo.MAX_PAYLOAD_LENGTH + 1));
+    encrypted.forEach(e => expect(e.length).to.be.below(PascalInfo.MAX_PAYLOAD_LENGTH + 1));
     let decrypted = PayloadSplit.decryptAndConcat(encrypted, AES, {password: 'test1234567890123'});
     expect(originalPayload.toHex()).to.be.equal(decrypted.toHex());
   });
@@ -47,7 +47,7 @@ describe('Payload', () => {
   it('can encrypt a payload, split it and decrypt it using AES', () => {
     let originalPayload = BC.from('test123'.repeat(100));
     let encrypted = PayloadSplit.encryptAndSplit(originalPayload, AES, {password: 'test1234567890123'});
-    encrypted.forEach(e => expect(e.length).to.be.below(PascalCoinInfo.MAX_PAYLOAD_LENGTH + 1));
+    encrypted.forEach(e => expect(e.length).to.be.below(PascalInfo.MAX_PAYLOAD_LENGTH + 1));
     let decrypted = PayloadSplit.concatAndDecrypt(encrypted, AES, {password: 'test1234567890123'});
     expect(originalPayload.toHex()).to.be.equal(decrypted.toHex());
   });
@@ -55,7 +55,7 @@ describe('Payload', () => {
   it('can split a payload, encrypt it and decrypt it using ECIES(secp256)', () => {
     let originalPayload = BC.from('test123'.repeat(100));
     let encrypted = PayloadSplit.splitAndEncrypt(originalPayload, ECIES, {publicKey: keyPair256.publicKey});
-    encrypted.forEach(e => expect(e.length).to.be.below(PascalCoinInfo.MAX_PAYLOAD_LENGTH + 1));
+    encrypted.forEach(e => expect(e.length).to.be.below(PascalInfo.MAX_PAYLOAD_LENGTH + 1));
     let decrypted = PayloadSplit.decryptAndConcat(encrypted, ECIES, {keyPair: keyPair256});
     expect(originalPayload.toHex()).to.be.equal(decrypted.toHex());
   });
@@ -63,7 +63,7 @@ describe('Payload', () => {
   it('can encrypt a payload, split it and decrypt it using ECIES(secp256)', () => {
     let originalPayload = BC.from('test123'.repeat(100));
     let encrypted = PayloadSplit.encryptAndSplit(originalPayload, ECIES, {publicKey: keyPair256.publicKey});
-    encrypted.forEach(e => expect(e.length).to.be.below(PascalCoinInfo.MAX_PAYLOAD_LENGTH + 1));
+    encrypted.forEach(e => expect(e.length).to.be.below(PascalInfo.MAX_PAYLOAD_LENGTH + 1));
     let decrypted = PayloadSplit.concatAndDecrypt(encrypted, ECIES, {keyPair: keyPair256});
     expect(originalPayload.toHex()).to.be.equal(decrypted.toHex());
   });
@@ -71,7 +71,7 @@ describe('Payload', () => {
   it('can split a payload, encrypt it and decrypt it using ECIES(p384)', () => {
     let originalPayload = BC.from('test123'.repeat(100));
     let encrypted = PayloadSplit.splitAndEncrypt(originalPayload, ECIES, {publicKey: keyPair384.publicKey});
-    encrypted.forEach(e => expect(e.length).to.be.below(PascalCoinInfo.MAX_PAYLOAD_LENGTH + 1));
+    encrypted.forEach(e => expect(e.length).to.be.below(PascalInfo.MAX_PAYLOAD_LENGTH + 1));
     let decrypted = PayloadSplit.decryptAndConcat(encrypted, ECIES, {keyPair: keyPair384});
     expect(originalPayload.toHex()).to.be.equal(decrypted.toHex());
   });
@@ -79,7 +79,7 @@ describe('Payload', () => {
   it('can encrypt a payload, split it and decrypt it using ECIES(p384)', () => {
     let originalPayload = BC.from('test123'.repeat(100));
     let encrypted = PayloadSplit.encryptAndSplit(originalPayload, ECIES, {publicKey: keyPair384.publicKey});
-    encrypted.forEach(e => expect(e.length).to.be.below(PascalCoinInfo.MAX_PAYLOAD_LENGTH + 1));
+    encrypted.forEach(e => expect(e.length).to.be.below(PascalInfo.MAX_PAYLOAD_LENGTH + 1));
     let decrypted = PayloadSplit.concatAndDecrypt(encrypted, ECIES, {keyPair: keyPair384});
     expect(originalPayload.toHex()).to.be.equal(decrypted.toHex());
   });
@@ -87,7 +87,7 @@ describe('Payload', () => {
   it('can split a payload, encrypt it and decrypt it using ECIES(p521)', () => {
     let originalPayload = BC.from('test123'.repeat(100));
     let encrypted = PayloadSplit.splitAndEncrypt(originalPayload, ECIES, {publicKey: keyPair521.publicKey});
-    encrypted.forEach(e => expect(e.length).to.be.below(PascalCoinInfo.MAX_PAYLOAD_LENGTH + 1));
+    encrypted.forEach(e => expect(e.length).to.be.below(PascalInfo.MAX_PAYLOAD_LENGTH + 1));
     let decrypted = PayloadSplit.decryptAndConcat(encrypted, ECIES, {keyPair: keyPair521});
     expect(originalPayload.toHex()).to.be.equal(decrypted.toHex());
   });
@@ -95,7 +95,7 @@ describe('Payload', () => {
   it('can encrypt a payload, split it and decrypt it using ECIES(p521)', () => {
     let originalPayload = BC.from('test123'.repeat(100));
     let encrypted = PayloadSplit.encryptAndSplit(originalPayload, ECIES, {publicKey: keyPair521.publicKey});
-    encrypted.forEach(e => expect(e.length).to.be.below(PascalCoinInfo.MAX_PAYLOAD_LENGTH + 1));
+    encrypted.forEach(e => expect(e.length).to.be.below(PascalInfo.MAX_PAYLOAD_LENGTH + 1));
     let decrypted = PayloadSplit.concatAndDecrypt(encrypted, ECIES, {keyPair: keyPair521});
     expect(originalPayload.toHex()).to.be.equal(decrypted.toHex());
   });

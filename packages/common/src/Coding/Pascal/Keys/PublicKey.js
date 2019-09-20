@@ -7,7 +7,9 @@
 
 const Curve = require('./Curve');
 const BytesWithLength = require('../../Core/BytesWithLength');
+const BytesFixedLength = require('../../Core/BytesFixedLength');
 const BytesWithoutLength = require('../../Core/BytesWithoutLength');
+const Decissive = require('../../Decissive');
 const CompositeType = require('../../CompositeType');
 const BC = require('../../../BC');
 const Sha = require('../../../Sha');
@@ -31,11 +33,12 @@ class PublicKey extends CompositeType {
 
     // oh come on..
     if (omitXYLenghts) {
-      this.addSubType(
-        new BytesWithoutLength('x')
-          .description('The X value of the public key.')
-      );
-      this.addSubType(new BytesWithoutLength('y'));
+      this.addSubType(new Decissive('x', 'curve', (curve) => {
+        return new BytesFixedLength('x', curve.xylPublicKey('x'));
+      }));
+      this.addSubType(new Decissive('y', 'curve', (curve) => {
+        return new BytesFixedLength('y', curve.xylPublicKey('y'));
+      }));
     } else {
       this.addSubType(
         new BytesWithLength('x', 2, 'x_length', 'Length of X value')

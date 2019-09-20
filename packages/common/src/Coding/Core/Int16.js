@@ -7,6 +7,7 @@
 
 const AbstractInt = require('./AbstractInt');
 const BC = require('./../../BC');
+const Util = require('./../../Util');
 
 /**
  * Field type for a 16bit int value.
@@ -51,6 +52,11 @@ class Int16 extends AbstractInt {
    * @returns {BC}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
+    if (!Util.isNumber(value)) {
+      this.throwEncodeValueTypeError(value, 'Number');
+    }
+
     return BC.fromInt16(value, this.unsigned, this.endian);
   }
 }

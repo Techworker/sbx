@@ -66,6 +66,7 @@ class OperationHash extends CompositeType {
    * @return {BC}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
     return super.encodeToBytes(value);
   }
 }

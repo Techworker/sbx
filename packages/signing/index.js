@@ -11,6 +11,7 @@ module.exports = {
   },
   Operations,
 
+  // functions
   /**
    * Creates a new data operation.
    *
@@ -23,24 +24,87 @@ module.exports = {
     return new Operations.Data.Operation(signer, sender, target);
   },
 
+  /**
+   * Creates a new changeKey operation.
+   *
+   * @param {AccountNumber} signer
+   * @param {PublicKey} newPublicKey
+   * @return {ChangeKey}
+   */
   changeKey(signer, newPublicKey) {
     return new Operations.ChangeKey.Operation(signer, newPublicKey);
   },
+
+  /**
+   * Creates a new foreign signed key change operation.
+   *
+   * @param {Account} signer
+   * @param {Account} target
+   * @param {PublicKey} newPublicKey
+   * @return {ChangeKeySigned}
+   */
   changeKeySigned(signer, target, newPublicKey) {
     return new Operations.ChangeKeySigned.Operation(signer, target, newPublicKey);
   },
+
+  /**
+   * Creates a new operation to chenge the account info.
+   *
+   * @param {Account} signer
+   * @param {Account} target
+   * @return {ChangeAccountInfo}
+   */
   changeAccountInfo(signer, target) {
     return new Operations.ChangeAccountInfo.Operation(signer, target);
   },
-  transaction(sender, target, amount) {
+
+  /**
+   * Creates a basic send operation.
+   *
+   * @param {AccountNumber} sender
+   * @param {AccountNumber}target
+   * @param {Currency} amount
+   * @return {Transaction}
+   */
+  send(sender, target, amount) {
     return new Operations.Transaction.Operation(sender, target, amount);
   },
+
+  /**
+   * Creates a new operation to list an account for sale.
+   *
+   * @param {AccountNumber} signer
+   * @param {AccountNumber} target
+   * @param {Currency} price
+   * @param {AccountNumber} accountToPay
+   * @return {ListAccountForSale}
+   */
   list(signer, target, price, accountToPay) {
     return new Operations.ListAccountForSale.Operation(signer, target, price, accountToPay);
   },
+
+  /**
+   * Delists a listed account for sale.
+   *
+   * @param {AccountNumber} signer
+   * @param {AccountNumber} target
+   * @return {DeListAccountForSale}
+   */
   delist(signer, target) {
     return new Operations.DeListAccountForSale.Operation(signer, target);
   },
+
+  /**
+   * Buys an account that is for sale.
+   *
+   * @param {AccountNumber} sender
+   * @param {AccountNumber} target
+   * @param {Currency} amount
+   * @param {Currency} price
+   * @param {Currency} seller
+   * @param [PublicKey} newPublicKey
+   * @return {BuyAccount}
+   */
   buy(sender, target, amount, price, seller, newPublicKey) {
     return new Operations.BuyAccount.Operation(sender, target, amount, price, seller, newPublicKey);
   },

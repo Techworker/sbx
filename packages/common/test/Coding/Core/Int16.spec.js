@@ -53,4 +53,15 @@ describe('Coding.Core.Int16', () => {
     expect(new Int16('test', false, Endian.BIG_ENDIAN).decodeFromBytes(BC.from('8000'))).to.be.equal(-32768);
     expect(new Int16('test', false, Endian.BIG_ENDIAN).decodeFromBytes(BC.from('7FFF'))).to.be.equal(32767);
   });
+
+  it('will return a default id', () => {
+    expect(new Int16(false).id).to.be.equal('int16');
+  });
+  it('will return a default encoded size', () => {
+    expect(new Int16(false).encodedSize).to.be.equal(2);
+  });
+  it('will not accept something that is not a number', () => {
+    expect(() => new Int16(false).encodeToBytes('AAA')).to.throw();
+    expect(() => new Int16(false).encodeToBytes(() => 'A')).to.throw();
+  });
 });

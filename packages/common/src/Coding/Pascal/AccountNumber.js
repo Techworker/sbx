@@ -44,7 +44,8 @@ class AccountNumber extends Int32 {
    * @return {BC}
    */
   encodeToBytes(value) {
-    return super.encodeToBytes(value.account);
+    value = this.determineValue(value);
+    return super.encodeToBytes(new AccountNumberType(value).account);
   }
 }
 

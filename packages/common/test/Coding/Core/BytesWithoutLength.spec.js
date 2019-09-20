@@ -15,4 +15,11 @@ describe('Coding.Core.BytesWithoutLength', () => {
   it('sets a default field id', () => {
     expect(new BytesWithoutLength().id).to.be.equal('bytes_without_length');
   });
+
+  it('will return the encoded size as the given size', () => {
+    let enc = new BytesWithoutLength('test');
+    enc.encodeToBytes(BC.from('test'));
+    expect(enc.encodedSize).to.be.equal(4);
+  });
+
 });

@@ -71,6 +71,7 @@ class Repeating extends AbstractType {
    * @returns {BC}
    */
   encodeToBytes(arr) {
+    arr = this.determineValue(arr);
     let bc = BC.empty();
 
     arr.forEach((item, idx) => {
@@ -84,6 +85,11 @@ class Repeating extends AbstractType {
     return bc;
   }
 
+  /**
+   * Gets the coder used for each repeated value.
+   *
+   * @return {*}
+   */
   get repeatingType() {
     return this[P_TYPE];
   }

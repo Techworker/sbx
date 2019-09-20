@@ -43,7 +43,8 @@ class Curve extends Int16 {
    * @return {BC}
    */
   encodeToBytes(value) {
-    return super.encodeToBytes(value.id);
+    value = this.determineValue(value);
+    return super.encodeToBytes(new CurveType(value).id);
   }
 }
 

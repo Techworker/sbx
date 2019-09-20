@@ -43,7 +43,8 @@ class Currency extends Int64 {
    * @return {BC}
    */
   encodeToBytes(value) {
-    return super.encodeToBytes(value.bn);
+    value = this.determineValue(value);
+    return super.encodeToBytes(new CurrencyType(value).bn);
   }
 }
 

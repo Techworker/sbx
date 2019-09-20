@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-const PascalCoinInfo = require('../PascalCoinInfo');
+const PascalInfo = require('../PascalInfo');
 
 const P_ACCOUNT = Symbol('account');
 const P_CHECKSUM = Symbol('checksum');
@@ -54,7 +54,7 @@ class AccountNumber {
     }
 
     this[P_CREATED_IN_BLOCK] = Math.floor(this[P_ACCOUNT] / 5);
-    this[P_IS_FOUNDATION_REWARD] = PascalCoinInfo.isDeveloperReward(this[P_CREATED_IN_BLOCK]) &&
+    this[P_IS_FOUNDATION_REWARD] = PascalInfo.isDeveloperReward(this[P_CREATED_IN_BLOCK]) &&
         this[P_ACCOUNT] % 5 === 4;
   }
 

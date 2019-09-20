@@ -8,6 +8,7 @@
 const AbstractInt = require('./AbstractInt');
 const Endian = require('./../../Endian');
 const BC = require('./../../BC');
+const Util = require('./../../Util');
 
 /**
  * Fields type for an 8Bit int value.
@@ -51,6 +52,11 @@ class Int8 extends AbstractInt {
    * @returns {BC}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
+    if (!Util.isNumber(value)) {
+      this.throwEncodeValueTypeError(value, 'Number');
+    }
+
     return BC.fromInt8(value, this.unsigned);
   }
 }

@@ -16,4 +16,14 @@ describe('Coding.Core.StringWithoutLength', () => {
     expect(new StringWithoutLength().id).to.be.equal('string_without_length');
   });
 
+  it('sets the length', () => {
+    let c = new StringWithoutLength();
+    c.encodeToBytes('test');
+    expect(c.encodedSize).to.be.equal(4);
+  });
+
+  it('will not accept something that is not a string', () => {
+    expect(() => new StringWithoutLength(false).encodeToBytes(123)).to.throw();
+    expect(() => new StringWithoutLength(false).encodeToBytes(() => 'A')).to.throw();
+  });
 });

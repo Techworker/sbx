@@ -58,6 +58,7 @@ class Decissive extends CompositeType {
    * @returns {BC}
    */
   encodeToBytes(objOrArray, all) {
+    objOrArray = this.determineValue(objOrArray);
     let subType = this[P_SUBTYPE_RESOLVER](all[this[P_MARKER_FIELD]]);
 
     if (subType === null) {

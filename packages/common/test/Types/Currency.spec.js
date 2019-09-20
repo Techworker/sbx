@@ -1,4 +1,5 @@
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const BN = require('bn.js');
 
 const chai = require('chai');
 
@@ -134,5 +135,32 @@ describe('Core.Types.Currency', () => {
 
     expect(c1.molina).to.be.equal("60000");
     expect(c1.pascal).to.be.equal('6');
+  });
+
+  it('can be divided', () => {
+    let c1 = new Currency('0.2000').div(2).serialize();
+
+    expect(c1.molina).to.be.equal('1000');
+    expect(c1.pascal).to.be.equal('0.1');
+  });
+
+  it('will throw an error with an invalid number', () => {
+    expect(() => new Currency('-.')).to.throw();
+    expect(() => new Currency('1.1.1')).to.throw();
+  });
+
+  it('will throw an error with to long fractions', () => {
+    expect(() => new Currency('1.11111')).to.throw();
+  });
+
+  it('will set the whole to 0 if no whole is set', () => {
+    expect(new Currency('.1111').toMolina()).to.be.equal('1111');
+  });
+  it('can return the bn instance', () => {
+    expect(new Currency('.1111').bn).to.be.instanceOf(BN);
+  });
+  it('can format negative values', () => {
+    expect(new Currency('-.1111').toString()).to.be.equal('-0.1111');
+    expect(new Currency('-5').toString()).to.be.equal('-5.0000');
   });
 });

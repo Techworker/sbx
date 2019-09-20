@@ -37,4 +37,15 @@ describe('Coding.Core.Int8', () => {
     expect(new Int8('test', false).decodeFromBytes(BC.fromHex('80'))).to.be.equal(-128);
     expect(new Int8('test', false).decodeFromBytes(BC.fromHex('7F'))).to.be.equal(127);
   });
+
+  it('will return a default id', () => {
+    expect(new Int8(false).id).to.be.equal('int8');
+  });
+  it('will return a default encoded size', () => {
+    expect(new Int8(false).encodedSize).to.be.equal(1);
+  });
+  it('will not accept something that is not a number', () => {
+    expect(() => new Int8(false).encodeToBytes('AAA')).to.throw();
+    expect(() => new Int8(false).encodeToBytes(() => 'A')).to.throw();
+  });
 });

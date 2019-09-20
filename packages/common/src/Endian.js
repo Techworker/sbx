@@ -34,6 +34,7 @@ class Endian {
    *
    * @returns {string}
    */
+  /* istanbul ignore next: unable to test */
   static detect() {
     if (detected === null) {
       const b = new ArrayBuffer(4);
@@ -57,6 +58,7 @@ class Endian {
    *
    * @returns {boolean}
    */
+  /* istanbul ignore next: unable to test */
   static isLittleEndian() {
     return Endian.detect() === Endian.LITTLE_ENDIAN;
   }
@@ -66,6 +68,7 @@ class Endian {
    *
    * @returns {boolean}
    */
+  /* istanbul ignore next: unable to test */
   static isBigEndian() {
     return Endian.detect() === Endian.BIG_ENDIAN;
   }

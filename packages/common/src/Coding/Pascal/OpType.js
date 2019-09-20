@@ -67,6 +67,7 @@ class OpType extends AbstractType {
    * @return {*}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
     return this[P_INT_TYPE].encodeToBytes(value);
   }
 

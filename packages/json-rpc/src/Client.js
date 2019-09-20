@@ -11,8 +11,11 @@ const BaseAction = require('./Actions/BaseAction');
 const PagedAction = require('./Actions/PagedAction');
 const OperationAction = require('./Actions/OperationAction');
 const SignOperationAction = require('./Actions/SignOperationAction');
+
 const Account = require('./Types/Account');
 const Block = require('./Types/Block');
+const SignedOperation = require('./Types/SignedOperation');
+
 const SignedMessage = require('./Types/SignedMessage');
 const NodeStatus = require('./Types/NodeStatus');
 const Operation = require('./Types/Operation');
@@ -448,7 +451,7 @@ class Client {
       sender_pubkey: senderPubkey,
       target_pubkey: targetPubkey,
       amount: new Currency(amount)
-    }, this[P_EXECUTOR], Object, false);
+    }, this[P_EXECUTOR], SignedOperation, false);
   }
 
   /**
@@ -664,7 +667,7 @@ class Client {
       account_to_purchase: new AccountNumber(accountToPurchase),
       price: new Currency(price),
       seller_account: new AccountNumber(sellerAccount)
-    }, this[P_EXECUTOR], Object, false);
+    }, this[P_EXECUTOR], SignedOperation, false);
   }
 
   /**

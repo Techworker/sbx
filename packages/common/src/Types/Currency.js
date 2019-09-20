@@ -127,14 +127,6 @@ class Currency {
   }
 
   /**
-   * Gets a value indicating that the current value has more decimals than
-   * allowed.
-   */
-  isVague() {
-    return this.toStringOpt(5) !== this.toStringOpt(4);
-  }
-
-  /**
    * Gets an optimized pascal value with less zeros as possible.
    *
    * @returns {string}
@@ -168,8 +160,7 @@ class Currency {
   }
 
   /**
-   * Adds the given value to the current value and returns a **new**
-   * value.
+   * Multiplies the value.
    *
    * @param {Number|String|BigNumber|Currency} addValue
    * @returns {Currency}
@@ -177,6 +168,18 @@ class Currency {
   mul(val) {
     return Currency.fromMolina(
       this.value.mul(new BN(val))
+    );
+  }
+
+  /**
+   * Divides the value.
+   *
+   * @param {Number|String|BigNumber|Currency} val
+   * @returns {Currency}
+   */
+  div(val) {
+    return Currency.fromMolina(
+      this.value.div(new BN(val))
     );
   }
 

@@ -42,7 +42,8 @@ class AccountName extends StringWithLength {
    * @param {AccountNameType} value
    */
   encodeToBytes(value) {
-    return super.encodeToBytes(value.toString());
+    value = this.determineValue(value);
+    return super.encodeToBytes(new AccountNameType(value).toString());
   }
 }
 

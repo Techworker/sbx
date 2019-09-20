@@ -66,4 +66,15 @@ describe('Coding.Core.Int64', () => {
     expect(new Int64('test', false, Endian.BIG_ENDIAN).decodeFromBytes(BC.from('7FFFFFFFFFFFFFFF')).toString()).to.be.equal('9223372036854775807');
     expect(new Int64('test', false, Endian.BIG_ENDIAN).decodeFromBytes(BC.from('8000000000000000')).toString()).to.be.equal('-9223372036854775808');
   });
+
+  it('will return a default id', () => {
+    expect(new Int64(false).id).to.be.equal('int64');
+  });
+  it('will return a default encoded size', () => {
+    expect(new Int64(false).encodedSize).to.be.equal(8);
+  });
+  it('will not accept something that is not a number', () => {
+    expect(() => new Int64(false).encodeToBytes('AAA')).to.throw();
+    expect(() => new Int64(false).encodeToBytes(() => 'A')).to.throw();
+  });
 });

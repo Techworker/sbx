@@ -10,7 +10,7 @@ const Currency = require('./Types/Currency');
 /**
  * Gets information about forks and features.
  */
-class PascalCoinInfo {
+class PascalInfo {
 
   /**
    * Gets the min fee.
@@ -40,7 +40,7 @@ class PascalCoinInfo {
    * @constructor
    */
   static get INFLATION_REDUCTION() {
-    return PascalCoinInfo.PIP_0010;
+    return PascalInfo.PIP_0010;
   }
 
   /**
@@ -51,7 +51,7 @@ class PascalCoinInfo {
    * @returns {boolean}
    */
   static isInflationReduction(block) {
-    return block >= PascalCoinInfo.INFLATION_REDUCTION;
+    return block >= PascalInfo.INFLATION_REDUCTION;
   }
 
   /**
@@ -71,7 +71,7 @@ class PascalCoinInfo {
    * @constructor
    */
   static get RANDOM_HASH() {
-    return PascalCoinInfo.PIP_0009;
+    return PascalInfo.PIP_0009;
   }
 
   /**
@@ -81,7 +81,7 @@ class PascalCoinInfo {
    * @returns {boolean}
    */
   static isRandomHash(block) {
-    return block >= PascalCoinInfo.RANDOM_HASH;
+    return block >= PascalInfo.RANDOM_HASH;
   }
 
   /**
@@ -101,7 +101,7 @@ class PascalCoinInfo {
    * @constructor
    */
   static get DEVELOPER_REWARD() {
-    return PascalCoinInfo.PIP_0011;
+    return PascalInfo.PIP_0011;
   }
 
   /**
@@ -112,7 +112,7 @@ class PascalCoinInfo {
    * @returns {boolean}
    */
   static isDeveloperReward(block) {
-    return block >= PascalCoinInfo.DEVELOPER_REWARD;
+    return block >= PascalInfo.DEVELOPER_REWARD;
   }
 
   /**
@@ -126,4 +126,4 @@ class PascalCoinInfo {
   }
 }
 
-module.exports = PascalCoinInfo;
+module.exports = PascalInfo;

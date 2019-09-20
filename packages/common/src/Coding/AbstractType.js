@@ -201,6 +201,29 @@ class AbstractType {
   get canDecode() {
     return true;
   }
+
+  /**
+   * Determines the value to be encoded in case there are defaults.
+   *
+   * @param {*} value
+   * @return {*}
+   */
+  determineValue(value) {
+    if (this[P_HAS_DEFAULT_VALUE] === true && (this[P_DEFAULT_VALUE_CALLBACK])(value) === true) {
+      return this[P_DEFAULT_VALUE];
+    }
+
+    if (this[P_HAS_FIXED_VALUE] === true) {
+      return this[P_FIXED_VALUE];
+    }
+
+    return value;
+  }
+
+  throwEncodeValueTypeError(value, expectedType) {
+    throw new Error(`Invalid value for ${this.constructor.name}.encodeToBytes(), ` +
+      `expected ${expectedType} - id: ${this.id}, given value: ${value}`);
+  }
 }
 
 module.exports = AbstractType;

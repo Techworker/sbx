@@ -74,6 +74,7 @@ class Int64 extends AbstractInt {
    * @param {BN} value
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
     value = new BN(value);
     value = validate64Bit(this.unsigned, value);
     if (!this.unsigned) {

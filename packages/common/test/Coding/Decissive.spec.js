@@ -77,4 +77,8 @@ describe('Coding.Core.Decissive', () => {
   it('sets a default field id', () => {
     expect(new Decissive(false, null).id).to.be.equal('decissive');
   });
+
+  it('encodes empty bytes if there is no subtype returned', () => {
+    expect(new Decissive('id', 'test', () => null).encodeToBytes({}, {test: 'abc'}).toHex()).to.be.equal('');
+  });
 });

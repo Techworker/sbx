@@ -7,6 +7,7 @@
 
 const AbstractType = require('./../AbstractType');
 const BC = require('./../../BC');
+const Util = require('./../../Util');
 
 const P_SIZE_ENCODED = Symbol('size_encoded');
 
@@ -51,6 +52,11 @@ class StringWithoutLength extends AbstractType {
    * @returns {BC}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
+    if (!Util.isString(value)) {
+      this.throwEncodeValueTypeError(value, 'String');
+    }
+
     let encoded = BC.from(value, 'string');
 
     this[P_SIZE_ENCODED] = encoded.length;

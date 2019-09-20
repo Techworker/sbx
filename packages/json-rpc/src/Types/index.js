@@ -16,5 +16,6 @@ module.exports = {
   Changer: require('./Changer'),
   Receiver: require('./Receiver'),
   Sender: require('./Sender'),
+  SignedOperation: require('./SignedOperation'),
   WalletPublicKey: require('./WalletPublicKey')
 };

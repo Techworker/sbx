@@ -123,15 +123,6 @@ class BC {
   }
 
   /**
-     * Gets the binary presentation of the hexa string.
-     *
-     * @returns {string}
-     */
-  toBinary() {
-    return this[P_BUFFER].toString('binary');
-  }
-
-  /**
      * Gets the BC as a string.
      *
      * @returns {string}

@@ -52,6 +52,7 @@ class BytesWithoutLength extends AbstractType {
    * @returns {BC}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
     let encoded = BC.from(value);
 
     this[P_SIZE_ENCODED] = encoded.length;

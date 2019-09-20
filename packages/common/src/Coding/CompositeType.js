@@ -19,7 +19,7 @@ class CompositeType extends AbstractType {
   /**
    * Constructor
    */
-  constructor(id, flatten = false) {
+  constructor(id, flatten = false, canDecode = true) {
     super(id || 'composite_type');
     super.description('A type that itself is made up of multiple other types.');
     this[P_SUBTYPES] = [];
@@ -92,6 +92,8 @@ class CompositeType extends AbstractType {
    * @returns {BC}
    */
   encodeToBytes(objOrArray) {
+    objOrArray = this.determineValue(objOrArray);
+
     let bc = BC.empty();
 
     this.subTypes.forEach((subType, idx) => {
@@ -102,20 +104,11 @@ class CompositeType extends AbstractType {
         return;
       }
 
-      if (subType.hasFixedValue) {
-        subTypeValue = subType.fixedValue;
+      if (subType.constructor.name === 'Decissive' && subType.flatten) {
+        subTypeValue = objOrArray;
       } else {
-        if (subType.constructor.name === 'Decissive' && subType.flatten) {
-          subTypeValue = objOrArray;
-        } else {
-          subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] : objOrArray[subType.id];
-        }
-
-      }
-
-      // substitute with default in case it should
-      if (subType.hasDefaultValue && (subType.defaultValueCallable)(subTypeValue) === true) {
-        subTypeValue = subType.defaultValue;
+        subTypeValue = Array.isArray(objOrArray) ? objOrArray[idx] :
+          (objOrArray[subType.hasTargetFieldName ? subType.targetFieldName : subType.id]);
       }
 
       // we will use the first available

@@ -67,4 +67,33 @@ describe('Core.Types.Keys.PublicKey', () => {
       });
     });
   });
+
+  it('can return the lengths of x and y', () => {
+    curves.forEach((c) => {
+      const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
+
+      keys.forEach((keyInfo) => {
+        let key = new PublicKeyCoder().decodeFromBytes(BC.fromHex(keyInfo.enc_pubkey));
+
+        expect(key.xl).to.be.equal(keyInfo.x.length / 2);
+        expect(key.yl).to.be.equal(keyInfo.y.length / 2);
+      });
+    });
+  });
+
+  it('erturns the correct ecdh version', () => {
+    curves.forEach((c) => {
+      const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/public-keys/curve_' + c + '.json')));
+
+      keys.forEach((keyInfo) => {
+        let key = new PublicKeyCoder().decodeFromBytes(BC.fromHex(keyInfo.enc_pubkey));
+
+        if (key.curve.id === Curve.CI_P521) {
+          expect(key.ecdh.toHex()).to.be.equal('0400' + keyInfo.x + '00' + keyInfo.y);
+        } else {
+          expect(key.ecdh.toHex()).to.be.equal('04' + keyInfo.x + keyInfo.y);
+        }
+      });
+    });
+  });
 });

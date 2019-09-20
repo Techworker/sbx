@@ -67,4 +67,23 @@ describe('Coding.Pascal.Keys.PublicKey', () => {
       });
     });
   });
+
+  it('can en-/decode a pascalcoin pubkey without lengths', () => {
+    curves.forEach((c) => {
+      const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../../fixtures/public-keys/curve_' + c + '.json')));
+
+      const prefixes = {
+        714: 'CA02',
+        715: 'CB02',
+        716: 'CC02',
+        729: 'D902'
+      };
+
+      keys.forEach((keyInfo) => {
+        let key = new PublicKeyCoder('test', true).decodeFromBytes(BC.fromHex(prefixes[c] + keyInfo.x + keyInfo.y));
+        expect(new PublicKeyCoder('test', true).encodeToBytes(key).toHex()).to.be.equal(prefixes[c] + keyInfo.x + keyInfo.y);
+      });
+    });
+  });
+
 });

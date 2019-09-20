@@ -36,4 +36,15 @@ describe('Core.Types.Keys.PrivateKey', () => {
       });
     });
   });
+  it('returns thr curve', () => {
+    curves.forEach((c) => {
+      const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '/../../fixtures/private-keys/curve_' + c + '.json')));
+
+      keys.forEach((keyInfo) => {
+        let pk = new PrivateKeyCoder().decodeFromBytes(BC.fromHex(keyInfo.enc_privkey));
+
+        expect(pk.curve.id).to.be.equal(c);
+      });
+    });
+  });
 });

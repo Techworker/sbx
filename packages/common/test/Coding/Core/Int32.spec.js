@@ -56,4 +56,16 @@ describe('Coding.Core.Int32', () => {
     expect(new Int32('test', false, Endian.BIG_ENDIAN).decodeFromBytes(BC.from('80000000'))).to.be.equal(-2147483648);
     expect(new Int32('test', false, Endian.BIG_ENDIAN).decodeFromBytes(BC.from('7FFFFFFF'))).to.be.equal(2147483647);
   });
+
+
+  it('will return a default id', () => {
+    expect(new Int32(false).id).to.be.equal('int32');
+  });
+  it('will return a default encoded size', () => {
+    expect(new Int32(false).encodedSize).to.be.equal(4);
+  });
+  it('will not accept something that is not a number', () => {
+    expect(() => new Int32(false).encodeToBytes('AAA')).to.throw();
+    expect(() => new Int32(false).encodeToBytes(() => 'A')).to.throw();
+  });
 });

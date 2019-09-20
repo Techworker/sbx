@@ -1,6 +1,6 @@
 const BC = require('@pascalcoin-sbx/common').BC;
 const Curve = require('@pascalcoin-sbx/common').Types.Keys.Curve;
-const PascalCoinInfo = require('@pascalcoin-sbx/common').PascalCoinInfo;
+const PascalInfo = require('@pascalcoin-sbx/common').PascalInfo;
 
 const AES = require('@pascalcoin-sbx/crypto').Encryption.Pascal.Password;
 const ECIES = require('@pascalcoin-sbx/crypto').Encryption.Pascal.ECIES;
@@ -23,7 +23,7 @@ let pascalEncTypes = [{
         return 175;
     }
 
-    return PascalCoinInfo.MAX_PAYLOAD_LENGTH;
+    return PascalInfo.MAX_PAYLOAD_LENGTH;
   }
 }
 ];
@@ -82,7 +82,7 @@ class Payload {
    */
   static encryptAndSplit(payload, EncryptionType, encryptionOptions = {}) {
     payload = BC.from(payload);
-    return EncryptionType.encrypt(payload, encryptionOptions).split(PascalCoinInfo.MAX_PAYLOAD_LENGTH);
+    return EncryptionType.encrypt(payload, encryptionOptions).split(PascalInfo.MAX_PAYLOAD_LENGTH);
   }
 
   /**

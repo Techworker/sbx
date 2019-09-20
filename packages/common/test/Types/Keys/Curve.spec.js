@@ -7,6 +7,13 @@ chai.expect();
 const expect = chai.expect;
 
 describe('Core.Types.Keys.Curve', () => {
+  it('can be created from a curve', () => {
+    let c = new Curve(714);
+    let cc = new Curve(c);
+
+    expect(c.id).to.be.equal(cc.id);
+    expect(c.name).to.be.equal(cc.name);
+  });
   it('can be created from a number', () => {
     let c = new Curve(714); // secp256k1
 
@@ -69,5 +76,48 @@ describe('Core.Types.Keys.Curve', () => {
     expect(Curve.CN_P384).to.be.equal('p384');
     expect(Curve.CN_SECT283K1).to.be.equal('sect283k1');
     expect(Curve.CN_P521).to.be.equal('p521');
+  });
+
+  it('gets the lengths for keys', () => {
+    const TEST_PUBKEYS = {
+      714: {x: 32, y: 32},
+      715: {x: 48, y: 48},
+      716: {x: 66, y: 66},
+      729: {x: 36, y: 36},
+      0: {x: 0, y: 0}
+    };
+
+    let c = new Curve(Curve.CI_SECP256K1);
+
+    expect(c.xylPublicKey('x')).to.be.equal(TEST_PUBKEYS[c.id].x);
+    expect(c.xylPublicKey('x')).to.be.equal(TEST_PUBKEYS[c.id].y);
+    c = new Curve(Curve.CI_SECT283K1);
+    expect(c.xylPublicKey('x')).to.be.equal(TEST_PUBKEYS[c.id].x);
+    expect(c.xylPublicKey('x')).to.be.equal(TEST_PUBKEYS[c.id].y);
+    c = new Curve(Curve.CI_P384);
+    expect(c.xylPublicKey('x')).to.be.equal(TEST_PUBKEYS[c.id].x);
+    expect(c.xylPublicKey('x')).to.be.equal(TEST_PUBKEYS[c.id].y);
+    c = new Curve(Curve.CI_P521);
+    expect(c.xylPublicKey('x')).to.be.equal(TEST_PUBKEYS[c.id].x);
+    expect(c.xylPublicKey('x')).to.be.equal(TEST_PUBKEYS[c.id].y);
+  });
+
+  it('gets the lengths for private keys', () => {
+    const L_PRIVKEYS = {
+      714: 32,
+      715: 48,
+      716: 66,
+      729: 36
+    };
+
+    let c = new Curve(Curve.CI_SECP256K1);
+
+    expect(c.lPrivateKey()).to.be.equal(L_PRIVKEYS[c.id]);
+    c = new Curve(Curve.CI_SECT283K1);
+    expect(c.lPrivateKey()).to.be.equal(L_PRIVKEYS[c.id]);
+    c = new Curve(Curve.CI_P384);
+    expect(c.lPrivateKey()).to.be.equal(L_PRIVKEYS[c.id]);
+    c = new Curve(Curve.CI_P521);
+    expect(c.lPrivateKey()).to.be.equal(L_PRIVKEYS[c.id]);
   });
 });

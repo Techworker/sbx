@@ -42,7 +42,8 @@ class GUID extends BytesFixedLength {
    * @param {GUIDType} value
    */
   encodeToBytes(value) {
-    return super.encodeToBytes(value.toBC());
+    value = this.determineValue(value);
+    return super.encodeToBytes(new GUIDType(value).toBC());
   }
 }
 

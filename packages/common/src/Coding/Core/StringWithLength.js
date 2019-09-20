@@ -26,7 +26,7 @@ class StringWithLength extends AbstractType {
 
   constructor(id, byteSize = 1, lengthId = 'length', lengthDesc = null,
     endian = Endian.LITTLE_ENDIAN, hasLeadingZeroByte = false) {
-    super(id || `bytes_size${byteSize * 8}`);
+    super(id || `string_size${byteSize * 8}`);
     this.description('String with size prepended');
     this[P_STRING_FIELD] = new StringWithoutLength('value');
     this[P_HAS_LEADING_ZB] = hasLeadingZeroByte;
@@ -83,14 +83,20 @@ class StringWithLength extends AbstractType {
    * @returns {BC}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
     this[P_SIZE_ENCODED] = value.length;
     let bc = this[P_LENGTH_FIELD].encodeToBytes(this[P_SIZE_ENCODED]);
 
+    this[P_SIZE_ENCODED] += this.lengthField.encodedSize;
     if (this[P_HAS_LEADING_ZB]) {
       bc = bc.append('00');
     }
 
     return bc.append(this[P_STRING_FIELD].encodeToBytes(value));
+  }
+
+  get lengthField() {
+    return this[P_LENGTH_FIELD];
   }
 }
 

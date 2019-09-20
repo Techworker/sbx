@@ -1,5 +1,6 @@
 const chai = require('chai');
 const BC = require('@pascalcoin-sbx/common').BC;
+const Endian = require('@pascalcoin-sbx/common').Endian;
 
 chai.expect();
 const expect = chai.expect;
@@ -122,6 +123,10 @@ describe('Core.BC', () => {
     expect(h.equals(h3)).to.be.equal(false);
   });
 
+  it('will fallback to string in case hex parsing failed', () => {
+    expect(BC.from('test').toString()).to.be.equal('test');
+  });
+
   it('can be initialized via from', () => {
     // hex string
     expect(BC.from('ABAB').toHex()).to.be.equal('ABAB');
@@ -150,5 +155,72 @@ describe('Core.BC', () => {
     expect(splitted[3].toString()).to.be.equal('GH');
     expect(splitted[4].toString()).to.be.equal('IJ');
     expect(splitted[5].toString()).to.be.equal('K');
+  });
+
+  it('can create an empty instance', () => {
+    expect(BC.empty().toHex()).to.be.equal('');
+  });
+
+  it('can read an int8 from', () => {
+    const v = BC.fromHex('0C9B');
+    expect(v.readInt8(0, true)).to.be.equal(12);
+    expect(v.readInt8(1, true)).to.be.equal(155);
+
+    const vu = BC.fromHex('14EC');
+    expect(vu.readInt8(0, false)).to.be.equal(20);
+    expect(vu.readInt8(1, false)).to.be.equal(-20);
+  });
+
+  it('can read an int16 from', () => {
+    const v = BC.fromHex('14009B00');
+    expect(v.readInt16(0, true, Endian.LITTLE_ENDIAN)).to.be.equal(20);
+    expect(v.readInt16(2, true, Endian.LITTLE_ENDIAN)).to.be.equal(155);
+
+    const v2 = BC.fromHex('0014009B');
+    expect(v2.readInt16(0, true, Endian.BIG_ENDIAN)).to.be.equal(20);
+    expect(v2.readInt16(2, true, Endian.BIG_ENDIAN)).to.be.equal(155);
+
+    const v3 = BC.fromHex('1400ECFF');
+    expect(v3.readInt16(0, false, Endian.LITTLE_ENDIAN)).to.be.equal(20);
+    expect(v3.readInt16(2, false, Endian.LITTLE_ENDIAN)).to.be.equal(-20);
+
+    const v4 = BC.fromHex('0014FFEC');
+    expect(v4.readInt16(0, false, Endian.BIG_ENDIAN)).to.be.equal(20);
+    expect(v4.readInt16(2, false, Endian.BIG_ENDIAN)).to.be.equal(-20);
+  });
+
+  it('can read an int32 from', () => {
+    const v = BC.fromHex('140000009B000000');
+    expect(v.readInt32(0, true, Endian.LITTLE_ENDIAN)).to.be.equal(20);
+    expect(v.readInt32(4, true, Endian.LITTLE_ENDIAN)).to.be.equal(155);
+
+    const v2 = BC.fromHex('000000140000009B');
+    expect(v2.readInt32(0, true, Endian.BIG_ENDIAN)).to.be.equal(20);
+    expect(v2.readInt32(4, true, Endian.BIG_ENDIAN)).to.be.equal(155);
+
+    const v3 = BC.fromHex('14000000ECFFFFFF');
+    expect(v3.readInt32(0, false, Endian.LITTLE_ENDIAN)).to.be.equal(20);
+    expect(v3.readInt32(4, false, Endian.LITTLE_ENDIAN)).to.be.equal(-20);
+
+    const v4 = BC.fromHex('00000014FFFFFFEC');
+    expect(v4.readInt32(0, false, Endian.BIG_ENDIAN)).to.be.equal(20);
+    expect(v4.readInt32(4, false, Endian.BIG_ENDIAN)).to.be.equal(-20);
+  });
+
+  it('can write an int8', () => {
+    expect(BC.fromInt8(12, true).toHex()).to.be.equal('0C');
+    expect(BC.fromInt8(-20, false).toHex()).to.be.equal('EC');
+  });
+  it('can write an int16', () => {
+    expect(BC.fromInt16(20, true, Endian.LITTLE_ENDIAN).toHex()).to.be.equal('1400');
+    expect(BC.fromInt16(155, true, Endian.BIG_ENDIAN).toHex()).to.be.equal('009B');
+    expect(BC.fromInt16(-20, false, Endian.LITTLE_ENDIAN).toHex()).to.be.equal('ECFF');
+    expect(BC.fromInt16(-20, false, Endian.BIG_ENDIAN).toHex()).to.be.equal('FFEC');
+  });
+  it('can write an int32', () => {
+    expect(BC.fromInt32(20, true, Endian.LITTLE_ENDIAN).toHex()).to.be.equal('14000000');
+    expect(BC.fromInt32(155, true, Endian.BIG_ENDIAN).toHex()).to.be.equal('0000009B');
+    expect(BC.fromInt32(-20, false, Endian.LITTLE_ENDIAN).toHex()).to.be.equal('ECFFFFFF');
+    expect(BC.fromInt32(-20, false, Endian.BIG_ENDIAN).toHex()).to.be.equal('FFFFFFEC');
   });
 });

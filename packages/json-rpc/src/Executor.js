@@ -65,12 +65,7 @@ function transformRpcParams(params) {
         !(params[field] instanceof Currency)
     ) {
       newParams[field] = new Currency(item);
-      if (newParams[field].isVague()) {
-        throw new Error('Currency value has more that 4 decimals, you need ' +
-            'to round the value by yourself. We will not round automagically.');
-      } else {
-        newParams[field] = newParams[field].toStringOpt();
-      }
+      newParams[field] = newParams[field].toStringOpt();
     } else if (typeof item === 'boolean') {
       newParams[field] = item;
     } else if (field === 'senders') {
@@ -132,10 +127,6 @@ function transformRpcParams(params) {
     } else if (item instanceof Block) {
       newParams[field] = item.block;
     } else if (item instanceof Currency) {
-      if (item.isVague()) {
-        throw new Error('Currency value has more that 4 decimals, you need ' +
-            'to round the value by yourself. We will not round automagically.');
-      }
       newParams[field] = item.toStringOpt();
     } else if (typeof item === 'number') {
       newParams[field] = item;

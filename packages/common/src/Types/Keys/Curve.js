@@ -31,8 +31,8 @@ const L_PRIVKEYS = {
   729: 36
 };
 
-const ID = Symbol('id');
-const NAME = Symbol('name');
+const P_ID = Symbol('id');
+const P_NAME = Symbol('name');
 
 /**
  * Simple elliptic curve representation of keys in pascalcoin.
@@ -130,15 +130,18 @@ class Curve {
         throw new Error(`Unknown curve: ${curve}`);
       }
 
-      this[ID] = curve;
-      this[NAME] = CURVES[curve];
+      this[P_ID] = curve;
+      this[P_NAME] = CURVES[curve];
+    } else if (curve instanceof Curve) {
+      this[P_ID] = curve.id;
+      this[P_NAME] = curve.name;
     } else {
       if (Object.values(CURVES).indexOf(curve.toString()) === -1) {
         throw new Error(`Unknown curve: ${curve}`);
       }
 
-      this[NAME] = curve.toString();
-      this[ID] = parseInt(Object.keys(CURVES)[Object.values(CURVES).indexOf(this[NAME])], 10);
+      this[P_NAME] = curve.toString();
+      this[P_ID] = parseInt(Object.keys(CURVES)[Object.values(CURVES).indexOf(this[P_NAME])], 10);
     }
   }
 
@@ -148,7 +151,7 @@ class Curve {
      * @returns {Number}
      */
   get id() {
-    return this[ID];
+    return this[P_ID];
   }
 
   /**
@@ -157,7 +160,7 @@ class Curve {
      * @returns {String}
      */
   get name() {
-    return this[NAME];
+    return this[P_NAME];
   }
 
   /**

@@ -66,4 +66,71 @@ describe('Core.Types.GUID', () => {
     const g1 = GUID.generate();
     expect(g1.toString()).to.be.equal(g1.toString());
   });
+
+  it('can will throw an error if some parts are not in the current length', () => {
+    expect(() => {
+      new GUID(`0-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`00-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`000000000-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`0000000000-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-0-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-00-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-00000-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-000000-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-0-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-00-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-00000-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-000000-${SAMPLE_GUID_P4}-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-0-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-00-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-00000-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-000000-${SAMPLE_GUID_P5}`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-0`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-00`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-0000000000000`);
+    }).to.throw();
+    expect(() => {
+      new GUID(`${SAMPLE_GUID_P1}-${SAMPLE_GUID_P2}-${SAMPLE_GUID_P3}-${SAMPLE_GUID_P4}-00000000000000`);
+    }).to.throw();
+  });
+
+  it('can combine everything to a BC instance', () => {
+    expect(new GUID(SAMPLE_GUID).toBC().toHex()).to.be.equal(SAMPLE_GUID_NO_HYPHEN);
+  });
 });

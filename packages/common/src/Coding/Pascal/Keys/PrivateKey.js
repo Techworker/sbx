@@ -51,6 +51,7 @@ class PrivateKey extends CompositeType {
    * @returns {PrivateKeyType}
    */
   encodeToBytes(value) {
+    value = this.determineValue(value);
     return super.encodeToBytes(value);
   }
 }

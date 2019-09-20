@@ -28,11 +28,31 @@ class GUID {
       if (guid.indexOf('-') > -1) {
         let splitted = guid.split('-');
 
-        this[P_PART_1] = BC.fromHex(splitted[0]);
-        this[P_PART_2] = BC.fromHex(splitted[1]);
-        this[P_PART_3] = BC.fromHex(splitted[2]);
-        this[P_PART_4] = BC.fromHex(splitted[3]);
-        this[P_PART_5] = BC.fromHex(splitted[4]);
+        try {
+          this[P_PART_1] = BC.fromHex(splitted[0]);
+        } catch (e) {
+          throw new Error(`Invalid GUID (part1): ${splitted[0]} -- ${e.message}`);
+        }
+        try {
+          this[P_PART_2] = BC.fromHex(splitted[1]);
+        } catch (e) {
+          throw new Error(`Invalid GUID (part2): ${splitted[1]} -- ${e.message}`);
+        }
+        try {
+          this[P_PART_3] = BC.fromHex(splitted[2]);
+        } catch (e) {
+          throw new Error(`Invalid GUID (part1): ${splitted[2]} -- ${e.message}`);
+        }
+        try {
+          this[P_PART_4] = BC.fromHex(splitted[3]);
+        } catch (e) {
+          throw new Error(`Invalid GUID (part1): ${splitted[3]} -- ${e.message}`);
+        }
+        try {
+          this[P_PART_5] = BC.fromHex(splitted[4]);
+        } catch (e) {
+          throw new Error(`Invalid GUID (part1): ${splitted[4]} -- ${e.message}`);
+        }
       } else {
         this[P_PART_1] = BC.fromHex(guid.substring(0, 8));
         this[P_PART_2] = BC.fromHex(guid.substring(8, 12));
