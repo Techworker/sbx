@@ -18,4 +18,3 @@ matrix:
 
 script:
   - cd $PACKAGE_LOCATION
-  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && codecov
