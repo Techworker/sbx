@@ -21,7 +21,7 @@
     "dev": "webpack --progress --colors --watch --env dev",
     "test": "mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\"",
     "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\"",
-    "report-coverage": "nyc --reporter=lcov mocha && codecov"
+    "report-coverage": "nyc --reporter=lcov mocha --recursive && codecov"
   },
   "dependencies": {
     "bn.js": "^4.11.8",
