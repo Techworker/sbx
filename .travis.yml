@@ -18,3 +18,4 @@ matrix:
 
 script:
   - cd $PACKAGE_LOCATION
+  - yarn run report-coverage
