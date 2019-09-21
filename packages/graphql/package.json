@@ -18,7 +18,8 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --env dev && webpack --env build && npm run test",
-    "dev": "webpack --progress --colors --watch --env dev"
+    "dev": "webpack --progress --colors --watch --env dev",
+    "report-coverage": "nyc --reporter=lcov mocha --recursive && codecov"
   },
   "dependencies": {
     "@pascalcoin-sbx/json-rpc": "^0.0.18",

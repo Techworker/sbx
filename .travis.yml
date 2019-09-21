@@ -12,10 +12,26 @@ install:
 
 matrix:
   include:
-    - name: Common Pipeline
-      env: PACKAGE_LOCATION=packages/common PACKAGE_NAME=pascalcoin-sbx-common
-    - name: Crypto Pipeline
-      env: PACKAGE_LOCATION=packages/crypto PACKAGE_NAME=pascalcoin-sbx-crypto
+    - name: Common
+      env: PACKAGE_LOCATION=packages/common PACKAGE_NAME=sbx-common
+    - name: Crypto
+      env: PACKAGE_LOCATION=packages/crypto PACKAGE_NAME=sbx-crypto
+    - name: Data-Spec
+      env: PACKAGE_LOCATION=packages/data-spec PACKAGE_NAME=sbx-data-spec
+    - name: EPasa
+      env: PACKAGE_LOCATION=packages/epasa PACKAGE_NAME=sbx-epasa
+    - name: Graphql
+      env: PACKAGE_LOCATION=packages/graphql PACKAGE_NAME=sbx-graphql
+    - name: JSONRPC
+      env: PACKAGE_LOCATION=packages/json-rpc PACKAGE_NAME=sbx-json-rpc
+    - name: Payload-Split
+      env: PACKAGE_LOCATION=packages/payload-split PACKAGE_NAME=sbx-payload-split
+    - name: seal
+      env: PACKAGE_LOCATION=packages/seal PACKAGE_NAME=sbx-seal
+    - name: signing
+      env: PACKAGE_LOCATION=packages/signing PACKAGE_NAME=sbx-signing
+    - name: WalletKeys
+      env: PACKAGE_LOCATION=packages/walletkeys.dat PACKAGE_NAME=sbx-walletkeys
 
 script:
   - cd $PACKAGE_LOCATION
