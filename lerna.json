@@ -5,5 +5,11 @@
   ],
   "version": "independent",
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "command": {
+    "publish": {
+      "allowBranch": "master",
+      "message": "sbx(release): publish %s"
+    }
+  }
 }
