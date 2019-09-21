@@ -7,6 +7,7 @@ cache: yarn
 install:
   - yarn global add lerna
   - yarn global add codecov
+  - yarn global add nyc
   - lerna bootstrap
 
 matrix:
