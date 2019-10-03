@@ -38,8 +38,8 @@ module.exports = {
   /**
    * Creates a new foreign signed key change operation.
    *
-   * @param {Account} signer
-   * @param {Account} target
+   * @param {AccountNumber} signer
+   * @param {AccountNumber} target
    * @param {PublicKey} newPublicKey
    * @return {ChangeKeySigned}
    */
@@ -77,10 +77,10 @@ module.exports = {
    * @param {AccountNumber} target
    * @param {Currency} price
    * @param {AccountNumber} accountToPay
-   * @return {ListAccountForSale}
+   * @return {ListAccount}
    */
   list(signer, target, price, accountToPay) {
-    return new Operations.ListAccountForSale.Operation(signer, target, price, accountToPay);
+    return new Operations.ListAccount.Operation(signer, target, price, accountToPay);
   },
 
   /**

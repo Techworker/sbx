@@ -37,7 +37,7 @@ class DigestCoder extends CompositeType {
         .description('The fee paid for the operation.')
     );
     this.addSubType(
-      new Coding.Pascal.Payload('payload', false)
+      new Coding.Pascal.Payload('payload', true)
     );
     this.addSubType(
       new Coding.Pascal.Keys.PublicKey('v2_public_key')
@@ -61,7 +61,7 @@ class DigestCoder extends CompositeType {
         .description('The new type of the account.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('newData')
+      new Coding.Core.BytesWithLength('newData', 2)
         .description('The new data of the account.')
     );
     this.addSubType(

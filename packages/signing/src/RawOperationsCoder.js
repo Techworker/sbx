@@ -8,8 +8,8 @@ const Coding = require('@pascalcoin-sbx/common').Coding;
 const Endian = require('@pascalcoin-sbx/common').Endian;
 const TransactionRawCoder = require('./Operations/Transaction/RawCoder');
 const DataRawCoder = require('./Operations/Data/RawCoder');
-const ListRawCoder = require('./Operations/ListAccountForSale/RawCoder');
-const DeListRawCoder = require('./Operations/DeListAccountForSale/RawCoder');
+const ListRawCoder = require('./Operations/ListAccount/RawCoder');
+const DeListRawCoder = require('./Operations/DeListAccount/RawCoder');
 const BuyRawCoder = require('./Operations/BuyAccount/RawCoder');
 const ChangeKeyRawCoder = require('./Operations/ChangeKey/RawCoder');
 const ChangeKeySignedRawCoder = require('./Operations/ChangeKeySigned/RawCoder');
@@ -57,7 +57,7 @@ class RawOperationsCoder extends CompositeType {
         default:
           throw new Error('Unable to map marker to a coder.');
       }
-    }).description('Possible subtypes: Transaction op (raw), ChangeKey op (raw), ListAccountForSale ' +
+    }).description('Possible subtypes: Transaction op (raw), ChangeKey op (raw), ListAccount ' +
       'op (raw), DeList op (raw), BuyAccount op (raw), ChangeKeySigned op (raw), ChangeAccountInfo op ' +
       '(raw), MultiOperation op (raw), Data op (raw)'));
     this.addSubType(new Coding.Repeating('operations', operationType, -1, 'count'));

@@ -4,6 +4,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+const BC = require('@pascalcoin-sbx/common').BC;
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const Endian = require('@pascalcoin-sbx/common').Endian;
@@ -59,6 +60,14 @@ class DigestCoder extends CompositeType {
     this.addSubType(
       new Coding.Core.Int32('lockedUntilBlock', true, Endian.LITTLE_ENDIAN)
         .description('The block number until the account is locked.')
+    );
+    this.addSubType(
+      new Coding.Core.Int16('state', true, Endian.LITTLE_ENDIAN)
+        .description('The account state (as_ForSale).')
+    );
+    this.addSubType(
+      new Coding.Core.BytesWithLength('hashLock', 2)
+        .description('The hash lock which is empty when listing for sale.')
     );
     this.addSubType(
       new Coding.Pascal.OpType('optype', 1)

@@ -25,7 +25,7 @@ class Payload extends CompositeType {
   constructor(id = null, withLength = false) {
     super(id || 'payload');
     this.addSubType(
-      new Int8('payloadType', true).description('The type of the payload.')
+      new Int8('type', true).description('The type of the payload.')
     );
 
     if (withLength) {

@@ -536,9 +536,11 @@ class Client {
     accountSigner,
     accountTarget,
     sellerAccount,
-    lockedUntilBlock,
+    lockedUntilBlock = 0,
     price,
-    newPubkey = null
+    type,
+    newPubkey = null,
+    hashLock = null
   }) {
     return new OperationAction('listaccountforsale', {
       account_signer: new AccountNumber(accountSigner),
@@ -546,7 +548,9 @@ class Client {
       seller_account: new AccountNumber(sellerAccount),
       locked_until_block: lockedUntilBlock !== null ? parseInt(lockedUntilBlock, 10) : lockedUntilBlock,
       price: new Currency(price),
-      new_pubkey: newPubkey
+      type,
+      new_pubkey: newPubkey,
+      enc_hash_lock: hashLock !== null ? hashLock : BC.fromHex('00'.repeat(32))
     }, this[P_EXECUTOR], Operation, false);
   }
 
@@ -568,9 +572,11 @@ class Client {
     accountSigner,
     accountTarget,
     sellerAccount,
-    lockedUntilBlock,
+    lockedUntilBlock = 0,
     price,
-    newPubkey = null
+    type,
+    newPubkey = null,
+    hashLock = null
   }) {
     return new SignOperationAction('signlistaccountforsale', {
       signer_pubkey: signerPubkey,
@@ -579,7 +585,9 @@ class Client {
       seller_account: new AccountNumber(sellerAccount),
       locked_until_block: lockedUntilBlock !== null ? parseInt(lockedUntilBlock, 10) : lockedUntilBlock,
       price: new Currency(price),
-      new_pubkey: newPubkey
+      type,
+      new_pubkey: newPubkey,
+      enc_hash_lock: hashLock
     }, this[P_EXECUTOR], Object, false);
   }
 

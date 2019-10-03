@@ -2,10 +2,12 @@ const RPCClient = require('@pascalcoin-sbx/json-rpc').Client;
 const AccountsRepository = require('./Repository/Accounts');
 const BlocksRepository = require('./Repository/Blocks');
 const OperationsRepository = require('./Repository/Operations');
+const WalletRepository = require('./Repository/Wallet');
 
 const P_ACCOUNTS_REPOSITORY = Symbol('accountsRepository');
 const P_BLOCKS_REPOSITORY = Symbol('blocksRepository');
 const P_OPERATIONS_REPOSITORY = Symbol('operationsRepository');
+const P_WALLET_REPOSITORY = Symbol('walletRepository');
 const P_RPC = Symbol('rpc');
 
 /**
@@ -20,14 +22,20 @@ class Indyo {
    * @param {AccountsRepository|null} accountsRepository
    * @param {BlocksRepository|null} blocksRepository
    * @param {OperationsRepository|null} operationsRepository
+   * @param walletRepository
    * @return {Indyo}
    */
-  static factoryDetailed(rpc, accountsRepository = null, blocksRepository = null, operationsRepository = null) {
+  static factoryDetailed(rpc,
+    accountsRepository = null,
+    blocksRepository = null,
+    operationsRepository = null,
+    walletRepository = null) {
     const instance = new Indyo(rpc);
 
     instance[P_ACCOUNTS_REPOSITORY] = accountsRepository;
     instance[P_BLOCKS_REPOSITORY] = blocksRepository;
     instance[P_OPERATIONS_REPOSITORY] = operationsRepository;
+    instance[P_WALLET_REPOSITORY] = walletRepository;
 
     return instance;
   }
@@ -53,6 +61,7 @@ class Indyo {
     this[P_ACCOUNTS_REPOSITORY] = null;
     this[P_BLOCKS_REPOSITORY] = null;
     this[P_OPERATIONS_REPOSITORY] = null;
+    this[P_WALLET_REPOSITORY] = null;
   }
 
   /**
@@ -104,6 +113,19 @@ class Indyo {
   }
 
   /**
+   * Gets the operations repository.
+   *
+   * @return {OperationsRepository}
+   */
+  get Wallet() {
+    if (this[P_WALLET_REPOSITORY] === null) {
+      this[P_WALLET_REPOSITORY] = new WalletRepository(this);
+    }
+
+    return this[P_WALLET_REPOSITORY];
+  }
+
+  /**
    * Executes an rpc action and transforms the result.
    *
    * @param {BaseAction} action
@@ -118,6 +140,12 @@ class Indyo {
     }
 
     [result, transform] = await action.execute();
+    if (Array.isArray(result)) {
+      return transform(result).map(o => {
+        return o.withIndyo(this);
+      });
+    }
+
     return transform(result).withIndyo(this);
   }
 

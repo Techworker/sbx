@@ -5,6 +5,7 @@
  * file that was distributed with this source code.
  */
 
+const BC = require('@pascalcoin-sbx/common').BC;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const Coding = require('@pascalcoin-sbx/common').Coding;
 const Endian = require('@pascalcoin-sbx/common').Endian;
@@ -62,13 +63,11 @@ class RawCoder extends CompositeType {
     );
     this.addSubType(
       new Coding.Core.Int16('state', true, Endian.LITTLE_ENDIAN)
-        .description('The account state (as_ForSale).')
-        .withFixedValue(1000)
+        .description('The account state.')
     );
     this.addSubType(
-      new Coding.Core.StringWithLength('hashLock')
+      new Coding.Core.BytesWithLength('hashLock', 2)
         .description('The hash lock which is empty when listing for sale.')
-        .withFixedValue('')
     );
     this.addSubType(
       new Coding.Pascal.Currency('fee')

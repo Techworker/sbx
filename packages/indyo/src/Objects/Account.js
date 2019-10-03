@@ -81,6 +81,85 @@ class Account extends CommonAccount {
   async accountsWithSamePublicKey() {
     return this[P_IND].Accounts.findByPublicKey(this.publicKey);
   }
+
+  /**
+   * Returns a refreshed account instance.
+   *
+   * @return {Promise<void|Account>}
+   */
+  async refresh() {
+    return this[P_IND].Accounts.findByAccountNumber(this.accountNumber);
+  }
+
+  /**
+   *
+   * @param {KeyPair} keyPair
+   * @param {AccountNumber} receiverAccountNumber
+   * @param {Currency} amount
+   * @param {Payload} payload
+   * @return {Promise<Operation>}
+   */
+  async sendTo(keyPair, receiverAccountNumber, amount, payload) {
+    return this[P_IND].Wallet.sendTo(
+      keyPair, this.accountNumber, receiverAccountNumber, amount, payload
+    );
+  }
+
+  /**
+   * Changes the key of the current account.
+   *
+   * @param {KeyPair} keyPair
+   * @param {PublicKey} newPublicKey
+   * @param {Payload} payload
+   * @return {Promise<Operation>}
+   */
+  async changeKey(keyPair, newPublicKey, payload) {
+    return this[P_IND].Wallet.changeKey(
+      keyPair, this.accountNumber, this.accountNumber, newPublicKey, payload
+    );
+  }
+
+  /**
+   *
+   * @param keyPair
+   * @param payload
+   * @param changes
+   * @return {Promise<*|void|Account>}
+   */
+  async changeInfo(keyPair, payload, changes = {
+    data: undefined,
+    name: undefined,
+    type: undefined,
+    publicKey: undefined
+  }) {
+    return this[P_IND].Wallet.changeInfo(
+      keyPair, this.accountNumber, this.accountNumber, payload, changes
+    );
+  }
+
+  async listForPublicSale(keyPair, price, sellerAccountNumber, payload) {
+    return this[P_IND].Wallet.listForPublicSale(
+      keyPair, this.accountNumber, this.accountNumber, price, sellerAccountNumber, payload
+    );
+  }
+
+  async listForPrivateSale(keyPair, price, sellerAccountNumber, payload, newPublicKey, lockedUntilBlock = 0) {
+    return this[P_IND].Wallet.listForPrivateSale(
+      keyPair, this.accountNumber, this.accountNumber, price, sellerAccountNumber, payload, newPublicKey, lockedUntilBlock
+    );
+  }
+
+  async swap(keyPair, hashLock, lockedUntilBlock, newPublicKey, payload) {
+    return this[P_IND].Wallet.swapAccount(
+      keyPair, this.accountNumber, this.accountNumber, hashLock, lockedUntilBlock, newPublicKey, payload
+    );
+  }
+
+  async delist(keyPair, payload) {
+    return this[P_IND].Wallet.delist(
+      keyPair, this.accountNumber, this.accountNumber, payload
+    );
+  }
 }
 
 module.exports = Account;

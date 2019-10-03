@@ -32,6 +32,11 @@ class Abstract {
     this[P_FEE] = new Currency(0);
   }
 
+  resetSign() {
+    this[P_S] = null;
+    this[P_R] = null;
+  }
+
   /**
    * Sets the payload of the transaction instance.
    *

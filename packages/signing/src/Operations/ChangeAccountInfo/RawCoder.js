@@ -61,7 +61,7 @@ class RawCoder extends CompositeType {
         .description('The new type of the account.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithLength('newData')
+      new Coding.Core.BytesWithLength('newData', 2)
         .description('The new data of the account.')
     );
     this.addSubType(

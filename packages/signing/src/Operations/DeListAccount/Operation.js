@@ -20,7 +20,7 @@ const P_LOCKED_UNTIL_BLOCK = Symbol('locked_until_block');
 /**
  * Representation of a signable Delist operation.
  */
-class DeListAccountForSale extends Abstract {
+class DeListAccount extends Abstract {
   /**
    * Gets the optype.
    *
@@ -102,4 +102,4 @@ class DeListAccountForSale extends Abstract {
   }
 }
 
-module.exports = DeListAccountForSale;
+module.exports = DeListAccount;

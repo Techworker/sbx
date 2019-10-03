@@ -31,15 +31,15 @@ let Items = {
     RawCoder: require('./Transaction/RawCoder'),
     DigestCoder: require('./Transaction/DigestCoder')
   },
-  ListAccountForSale: {
-    Operation: require('./ListAccountForSale/Operation'),
-    RawCoder: require('./ListAccountForSale/RawCoder'),
-    DigestCoder: require('./ListAccountForSale/DigestCoder')
+  ListAccount: {
+    Operation: require('./ListAccount/Operation'),
+    RawCoder: require('./ListAccount/RawCoder'),
+    DigestCoder: require('./ListAccount/DigestCoder')
   },
-  DeListAccountForSale: {
-    Operation: require('./DeListAccountForSale/Operation'),
-    RawCoder: require('./DeListAccountForSale/RawCoder'),
-    DigestCoder: require('./DeListAccountForSale/DigestCoder')
+  DeListAccount: {
+    Operation: require('./DeListAccount/Operation'),
+    RawCoder: require('./DeListAccount/RawCoder'),
+    DigestCoder: require('./DeListAccount/DigestCoder')
   },
   BuyAccount: {
     Operation: require('./BuyAccount/Operation'),

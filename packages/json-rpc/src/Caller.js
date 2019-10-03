@@ -32,7 +32,9 @@ class Caller {
       };
 
       return fetch(host, options)
-        .then(res => res.text())
+        .then(res => {
+          return res.text();
+        })
         .then((text) => {
           callback(null, text);
         })
