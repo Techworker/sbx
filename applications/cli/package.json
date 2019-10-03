@@ -1,0 +1,26 @@
+{
+  "name": "@pascalcoin-sbx/application-cli",
+  "version": "0.0.18",
+  "description": ".",
+  "main": "index.js",
+  "keywords": [
+    "PascalCoin",
+    "BlockChain",
+    "Cryptography"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {
+    "@pascalcoin-sbx/common": "^0.0.18-alpha.0",
+    "@pascalcoin-sbx/crypto": "^0.0.18-alpha.0",
+    "@pascalcoin-sbx/json-rpc": "^0.0.18",
+    "dotenv": "^8.1.0",
+    "enquirer": "^2.3.2",
+    "table": "^5.4.6"
+  },
+  "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad"
+}

@@ -65,6 +65,11 @@ class PagedAction extends BaseAction {
         report(all.length);
       }
     }, restEach, restSeconds, restCallback);
+
+    if (transformCallback === null) {
+      transformCallback = () => [];
+    }
+
     return [all, transformCallback];
   }
 

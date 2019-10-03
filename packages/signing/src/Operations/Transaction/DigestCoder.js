@@ -40,8 +40,7 @@ class DigestCoder extends CompositeType {
         .description('The fee included in the operation.')
     );
     this.addSubType(
-      new Coding.Core.BytesWithoutLength('payload')
-        .description('The payload of the operation.')
+      new Coding.Pascal.Payload('payload', false)
     );
     this.addSubType(
       new Coding.Pascal.Keys.Curve('v2_pubkey_curve')

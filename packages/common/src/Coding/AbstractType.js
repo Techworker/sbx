@@ -14,6 +14,7 @@ const P_HAS_DEFAULT_VALUE = Symbol('has_default_value');
 const P_DESCRIPTION = Symbol('description');
 const P_TARGET_FIELD_NAME = Symbol('target_field_name');
 const P_HAS_TARGET_FIELD_NAME = Symbol('has_target_field_name');
+const P_VALUE_DETERMINED = Symbol('value_determined');
 
 /**
  * Abstract field type to encode and decode values. Abstracts encodeToBytes and decodeFromBytes as
@@ -30,6 +31,7 @@ class AbstractType {
     this[P_HAS_FIXED_VALUE] = false;
     this[P_HAS_TARGET_FIELD_NAME] = false;
     this[P_HAS_DEFAULT_VALUE] = false;
+    this[P_VALUE_DETERMINED] = false;
   }
 
   /**
@@ -209,6 +211,11 @@ class AbstractType {
    * @return {*}
    */
   determineValue(value) {
+    if (this[P_VALUE_DETERMINED] === true) {
+      return value;
+    }
+
+    this[P_VALUE_DETERMINED] = true;
     if (this[P_HAS_DEFAULT_VALUE] === true && (this[P_DEFAULT_VALUE_CALLBACK])(value) === true) {
       return this[P_DEFAULT_VALUE];
     }

@@ -20,8 +20,6 @@ matrix:
       env: PACKAGE_LOCATION=packages/data-spec PACKAGE_NAME=sbx-data-spec
     - name: EPasa
       env: PACKAGE_LOCATION=packages/epasa PACKAGE_NAME=sbx-epasa
-    - name: Graphql
-      env: PACKAGE_LOCATION=packages/graphql PACKAGE_NAME=sbx-graphql
     - name: JSONRPC
       env: PACKAGE_LOCATION=packages/json-rpc PACKAGE_NAME=sbx-json-rpc
     - name: Payload-Split

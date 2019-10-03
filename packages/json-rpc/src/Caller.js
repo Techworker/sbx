@@ -51,7 +51,7 @@ class Caller {
      */
   call(method, params) {
     return new Promise((resolve, reject) => {
-      this[P_CLIENT].request(method, params, (err, error, result) => {
+      this[P_CLIENT].request(method, params, ((err, error, result) => {
         if (err !== null || error !== undefined || result === undefined) {
           if (err !== null && err.constructor.name === 'FetchError') {
             return reject(new ConnectionError(err));
@@ -65,7 +65,7 @@ class Caller {
           return resolve(result);
         }
         return resolve(result);
-      });
+      }).bind({method, params}));
     });
   }
 }

@@ -11,5 +11,6 @@ module.exports = {
   Currency: require('./Currency'),
   OperationHash: require('./OperationHash'),
   GUID: require('./GUID'),
-  Keys: require('./Keys')
+  Keys: require('./Keys'),
+  Payload: require('./Payload')
 };

@@ -17,9 +17,9 @@ const Currency = require('@pascalcoin-sbx/common').Types.Currency;
 const BC = require('@pascalcoin-sbx/common').BC;
 const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 
-const Block = require('./Types/Block');
-const WalletPublicKey = require('./Types/WalletPublicKey');
-const Account = require('./Types/Account');
+const Block = require('@pascalcoin-sbx/common').Objects.Block;
+const WalletPublicKey = require('@pascalcoin-sbx/common').Objects.WalletPublicKey;
+const Account = require('@pascalcoin-sbx/common').Objects.Account;
 
 const publicKeyCoder = new PublicKeyCoder();
 const opHashCoder = new OperationHashCoder();
@@ -119,13 +119,13 @@ function transformRpcParams(params) {
     } else if (item instanceof OperationHash) {
       newParams[field] = opHashCoder.encodeToBytes(item).toHex();
     } else if (item instanceof Account) {
-      newParams[field] = item.account.account; // NICE!!!!! :-D
+      newParams[field] = item.accountNumber.account;
     } else if (item instanceof AccountNumber) {
       newParams[field] = item.account;
     } else if (item instanceof AccountName) {
       newParams[field] = item.toString();
     } else if (item instanceof Block) {
-      newParams[field] = item.block;
+      newParams[field] = item.blockNumber;
     } else if (item instanceof Currency) {
       newParams[field] = item.toStringOpt();
     } else if (typeof item === 'number') {
@@ -149,8 +149,8 @@ function transformRpcResult(value, DestinationType) {
     case 'BC':
       return BC.from(value);
     default:
-      if (DestinationType.createFromRPC !== undefined) {
-        return DestinationType.createFromRPC(value);
+      if (DestinationType.createFromObject !== undefined) {
+        return DestinationType.createFromObject(value);
       }
 
       return new DestinationType(value);

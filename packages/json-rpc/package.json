@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@pascalcoin-sbx/common": "^0.0.18-alpha.0",
+    "@pascalcoin-sbx/json-rpc": "^0.0.18",
     "jayson": "^2.1.0",
     "node-fetch": "^2.3.0"
   },

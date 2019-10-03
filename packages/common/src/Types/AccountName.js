@@ -16,6 +16,8 @@ const REGEX_TO_ESCAPE = `(${CHARS_TO_ESCAPE.map(c => Util.escapeRegex(c)).join('
 const ALLOWED_ALL = '0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+{}[]_:"|<>,.?/~'.split('');
 const ALLOWED_START = ALLOWED_ALL.slice(10);
 
+const MAX_LENGTH = 64;
+
 /**
  * AccountName encoding for account names.
  */
@@ -45,6 +47,10 @@ class AccountName {
 
     if (value.length < 3) {
       throw new Error('Invalid account name, must be at least 3 characters long.');
+    }
+
+    if (value.length > 64) {
+      throw new Error('Invalid account name, can only be 64 characters max.');
     }
 
     for (let pos = 0; pos < value.length; pos++) {

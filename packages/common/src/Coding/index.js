@@ -34,6 +34,7 @@ module.exports = {
     NOperation: require('./Pascal/NOperation'),
     OpType: require('./Pascal/OpType'),
     OperationHash: require('./Pascal/OperationHash'),
-    GUID: require('./Pascal/GUID')
+    GUID: require('./Pascal/GUID'),
+    Payload: require('./Pascal/Payload')
   }
 };

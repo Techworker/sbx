@@ -1,0 +1,30 @@
+{
+  "name": "@pascalcoin-sbx/indyp",
+  "version": "0.0.18",
+  "description": "Core basics for the PascalCoin BlockChain project.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "PascalCoin",
+    "BlockChain",
+    "Cryptography"
+  ],
+  "author": "Benjamin Ansbach <benjaminansbach@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --env dev && webpack --env build && npm run test",
+    "dev": "webpack --progress --colors --watch --env dev",
+    "test": "mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\"",
+    "test:cover": "cross-env NODE_ENV=test nyc --reporter=html mocha --recursive --require @babel/register --require @babel/polyfill --colors \"./test/**/*.spec.js\"",
+    "report-coverage": "nyc --reporter=lcov mocha --recursive && codecov"
+  },
+  "dependencies": {
+    "@pascalcoin-sbx/common": "^0.0.18-alpha.0"
+  },
+  "gitHead": "82a09da9e023d482b3d8f5f1938a3cc11a35b1ad"
+}

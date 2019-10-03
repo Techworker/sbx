@@ -31,12 +31,7 @@ class RawCoder extends CompositeType {
         .description('The next n_operation of the account.')
     );
     this.addSubType(
-      new Coding.Core.Int8('payloadType', true)
-        .description('The type of the payload.')
-    );
-    this.addSubType(
-      new Coding.Core.BytesWithLength('payload', 2, 'payload_length', 'The length of the payload')
-        .description('The payload of the operation.')
+      new Coding.Pascal.Payload('payload', true)
     );
   }
 

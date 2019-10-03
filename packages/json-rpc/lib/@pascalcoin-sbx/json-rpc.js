@@ -15377,8 +15377,8 @@ function transformRpcResult(value, DestinationType) {
       return BC.from(value);
 
     default:
-      if (DestinationType.createFromRPC !== undefined) {
-        return DestinationType.createFromRPC(value);
+      if (DestinationType.createFromObject !== undefined) {
+        return DestinationType.createFromObject(value);
       }
 
       return new DestinationType(value);
@@ -15581,7 +15581,7 @@ class Account extends Abstract {
    */
 
 
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let account = new Account(data);
     account[P_ACCOUNT] = new AccountNumber(data.account);
     account[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
@@ -15840,7 +15840,7 @@ class Block extends Abstract {
    *
    * @param {Object} data
    */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let block = new Block(data);
     block[P_BLOCK] = parseInt(data.block, 10);
     block[P_ENC_PUBKEY] = pkCoder.decodeFromBytes(BC.fromHex(data.enc_pubkey));
@@ -16088,7 +16088,7 @@ class Changer extends Abstract {
    *
    * @param {Object} data
    */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let changer = new Changer();
     changer[P_ACCOUNT] = new AccountNumber(data.account);
     changer[P_N_OPERATION] = null;
@@ -16274,7 +16274,7 @@ class Connection extends Abstract {
    *
    * @param {Object} data
    */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let connection = new Connection(data);
     connection[P_RECV] = parseInt(data.recv, 10);
     connection[P_TIMEDIFF] = parseInt(data.timediff, 10);
@@ -16422,7 +16422,7 @@ class NetProtocol extends Abstract {
      *
      * @param {Object} data
      */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let netProtocol = new NetProtocol(data);
     netProtocol[P_VER] = parseInt(data.ver, 10);
     netProtocol[P_VER_A] = parseInt(data.ver_a, 10);
@@ -16490,7 +16490,7 @@ class NetStats extends Abstract {
      *
      * @param {Object} data
      */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let netStats = new NetStats(data);
     netStats[P_BRECEIVED] = parseInt(data.breceived, 10);
     netStats[P_SERVERS_T] = parseInt(data.servers_t, 10);
@@ -16630,7 +16630,7 @@ class NodeServer extends Abstract {
      *
      * @param {Object} data
      */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let nodeServer = new NodeServer(data);
     nodeServer[P_PORT] = parseInt(data.port, 10);
     nodeServer[P_LASTCON] = parseInt(data.lastcon, 10);
@@ -16725,7 +16725,7 @@ const P_POW = Symbol('pow');
 const P_OPENSSL = Symbol('openssl');
 
 class NodeStatus extends Abstract {
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let nodeStatus = new NodeStatus(data);
     nodeStatus[P_READY] = !!data.ready;
     nodeStatus[P_READY_S] = data.ready_s;
@@ -16738,9 +16738,9 @@ class NodeStatus extends Abstract {
     nodeStatus[P_SBH] = BC.fromHex(data.sbh);
     nodeStatus[P_POW] = BC.fromHex(data.pow);
     nodeStatus[P_OPENSSL] = BC.fromHex(data.openssl);
-    nodeStatus[P_NETPROTOCOL] = NetProtocol.createFromRPC(data.netprotocol);
-    nodeStatus[P_NETSTATS] = NetStats.createFromRPC(data.netstats);
-    nodeStatus[P_NODESERVERS] = data.nodeservers.map(ns => NodeServer.createFromRPC(ns));
+    nodeStatus[P_NETPROTOCOL] = NetProtocol.createFromObject(data.netprotocol);
+    nodeStatus[P_NETSTATS] = NetStats.createFromObject(data.netstats);
+    nodeStatus[P_NODESERVERS] = data.nodeservers.map(ns => NodeServer.createFromObject(ns));
     return nodeStatus;
   }
   /**
@@ -17090,7 +17090,7 @@ class Operation extends Abstract {
    */
 
 
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let operation = new Operation(data);
     operation[P_VALID] = true;
 
@@ -17164,9 +17164,9 @@ class Operation extends Abstract {
     operation[P_RECEIVERS] = [];
     operation[P_CHANGERS] = []; // loop given data and initialize objects
 
-    data.senders.forEach(s => operation[P_SENDERS].push(Sender.createFromRPC(s)));
-    data.receivers.forEach(r => operation[P_RECEIVERS].push(Receiver.createFromRPC(r)));
-    data.changers.forEach(c => operation[P_CHANGERS].push(Changer.createFromRPC(c)));
+    data.senders.forEach(s => operation[P_SENDERS].push(Sender.createFromObject(s)));
+    data.receivers.forEach(r => operation[P_RECEIVERS].push(Receiver.createFromObject(r)));
+    data.changers.forEach(c => operation[P_CHANGERS].push(Changer.createFromObject(c)));
     return operation;
   }
   /**
@@ -17542,7 +17542,7 @@ class Receiver extends Abstract {
    *
    * @param {Object} data
    */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let receiver = new Receiver(data);
     receiver[P_ACCOUNT] = new AccountNumber(data.account);
     receiver[P_AMOUNT] = new Currency(data.amount);
@@ -17622,7 +17622,7 @@ class Sender extends Abstract {
    *
    * @param {Object} data
    */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let sender = new Sender(data);
     sender[P_N_OPERATION] = parseInt(data.n_operation, 10);
     sender[P_ACCOUNT] = new AccountNumber(data.account);
@@ -17710,7 +17710,7 @@ class SignedMessage extends Abstract {
      *
      * @param {Object} data
      */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let signedMessage = new SignedMessage(data);
     signedMessage[P_DIGEST] = BC.fromHex(data.digest);
 
@@ -17799,7 +17799,7 @@ class WalletPublicKey extends Abstract {
      *
      * @param {Object} data
      */
-  static createFromRPC(data) {
+  static createFromObject(data) {
     let walletPublicKey = new WalletPublicKey(data);
     walletPublicKey[P_NAME] = data.name;
     walletPublicKey[P_ENC_PUBKEY] = new PublicKeyCoder().decodeFromBytes(BC.fromHex(data.publicKey));

@@ -329,7 +329,7 @@ class BC {
     return new BC(buf);
   }
 
-  /**
+  /*
    * Small helper to split a byte collection.
    *
    * @param {Number} size

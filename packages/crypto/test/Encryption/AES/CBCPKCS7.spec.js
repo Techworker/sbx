@@ -22,6 +22,7 @@ describe('Crypto.Encryption.AES.CBC-PKCS7', () => {
 
       // TODO: why slicing?
       expect(output.toHex()).to.be.equal(enc.slice(0, 16).toHex());
+      expect(CBCPKCS7.decrypt(enc, {key, iv}).toHex()).to.be.equal(v.input.toUpperCase());
     });
   });
 

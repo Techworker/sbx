@@ -27,7 +27,7 @@ describe('Crypto.Keys', () => {
     this.timeout(0);
     CURVE_INSTANCES.forEach((curve) => {
       if (curve.supported) {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 10; i++) {
           let kp = Keys.generate(curve.name);
 
           expect(kp).to.be.instanceof(KeyPair);
@@ -135,5 +135,12 @@ describe('Crypto.Keys', () => {
         }
       });
     });
+  });
+
+  it('will generate a keypair with the default curve if no curve is given', () => {
+    expect(Keys.generate().curve.id).to.be.equal(Curve.getDefaultCurve().id);
+  });
+  it('will throw an exception of the curve is not supported', () => {
+    expect(() => Keys.generate(Curve.CI_SECT283K1)).to.throw();
   });
 });

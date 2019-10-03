@@ -11,6 +11,7 @@ const P_EXECUTOR = Symbol('executor');
 const P_DESTINATION_TYPE = Symbol('destination_type');
 const P_RETURNS_ARRAY = Symbol('returns_array');
 const P_REQUEST_ID = Symbol('request_id');
+const P_CUSTOM_TRANSFORM = Symbol('customTransform');
 
 /**
  * A basic action that holds the rpc method and its parameters.
@@ -40,6 +41,10 @@ class BaseAction {
    */
   get destinationType() {
     return this[P_DESTINATION_TYPE];
+  }
+
+  get customTransform() {
+    return this[P_CUSTOM_TRANSFORM];
   }
 
   /**
@@ -81,21 +86,13 @@ class BaseAction {
     return this[P_METHOD];
   }
 
-  get destinationType() {
-    return this[P_DESTINATION_TYPE];
-  }
-
-  get returnsArray() {
-    return this[P_RETURNS_ARRAY];
-  }
-
   /**
      * Executes the current action and returns the raw result.
      *
      * @returns {Promise}
      */
   async execute() {
-    return this[P_EXECUTOR].execute(this);
+    return this[P_EXECUTOR].execute(this, this[P_CUSTOM_TRANSFORM]);
   }
 
   /**
@@ -118,6 +115,16 @@ class BaseAction {
 
   withRequestId(requestId) {
     this[P_REQUEST_ID] = requestId;
+    return this;
+  }
+
+  withDestinationType(type) {
+    this[P_DESTINATION_TYPE] = type;
+    return this;
+  }
+
+  withCustomTransform(transform) {
+    this[P_CUSTOM_TRANSFORM] = transform;
     return this;
   }
 }

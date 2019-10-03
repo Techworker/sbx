@@ -68,6 +68,8 @@ class Keys {
 
     const kp = elliptic(privateKey.curve.name).keyFromPrivate(privateKey.key.buffer);
 
+    // TODO: unable to test, cannot remember when this happened.
+    /* istanbul ignore next: unable to test */
     if (!privateKey.key.equals(new BC(kp.getPrivate().toArray()))) {
       throw new Error('Something went wrong, the imported private key does not equal the elliptic one');
     }
@@ -96,6 +98,8 @@ class Keys {
     });
 
     // Verify signature
+    // TODO: yet not sure how to test
+    /* istanbul ignore next: unable to test */
     if (ecPair.verify(digest.buffer, signature.toDER()) === false) {
       throw Error('Unable to verify the sign result.');
     }

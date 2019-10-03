@@ -12,18 +12,21 @@ const PagedAction = require('./Actions/PagedAction');
 const OperationAction = require('./Actions/OperationAction');
 const SignOperationAction = require('./Actions/SignOperationAction');
 
-const Account = require('./Types/Account');
-const Block = require('./Types/Block');
-const SignedOperation = require('./Types/SignedOperation');
+const Account = require('@pascalcoin-sbx/common').Objects.Account;
+const Block = require('@pascalcoin-sbx/common').Objects.Block;
+const SignedOperation = require('@pascalcoin-sbx/common').Objects.SignedOperation;
 
-const SignedMessage = require('./Types/SignedMessage');
-const NodeStatus = require('./Types/NodeStatus');
-const Operation = require('./Types/Operation');
-const Sender = require('./Types/Sender');
-const Receiver = require('./Types/Receiver');
-const Changer = require('./Types/Changer');
-const Connection = require('./Types/Connection');
-const WalletPublicKey = require('./Types/WalletPublicKey');
+const AccountNameSearchType = require('./Types/AccountNameSearchType');
+const AccountStatusSearchType = require('./Types/AccountStatusSearchType');
+
+const SignedMessage = require('@pascalcoin-sbx/common').Objects.SignedMessage;
+const NodeStatus = require('@pascalcoin-sbx/common').Objects.NodeStatus;
+const Operation = require('@pascalcoin-sbx/common').Objects.Operation;
+const Sender = require('@pascalcoin-sbx/common').Objects.Sender;
+const Receiver = require('@pascalcoin-sbx/common').Objects.Receiver;
+const Changer = require('@pascalcoin-sbx/common').Objects.Changer;
+const Connection = require('@pascalcoin-sbx/common').Objects.Connection;
+const WalletPublicKey = require('@pascalcoin-sbx/common').Objects.WalletPublicKey;
 const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
 const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
@@ -106,21 +109,21 @@ class Client {
    */
   findAccounts({
     name = null,
+    namesearchtype = null,
     type = null,
-    onlyAccountsForSale = null,
-    exact = null,
     minBalance = null,
     maxBalance = null,
-    pubkey = null
+    pubkey = null,
+    statustype = null
   }) {
     return new PagedAction('findaccounts', {
       name: name !== null ? new AccountName(name) : name,
+      namesearchtype,
       type: type !== null ? parseInt(type, 10) : type,
-      only_accounts_for_sale: onlyAccountsForSale,
-      exact,
       min_balance: minBalance !== null ? new Currency(minBalance) : minBalance,
       max_balance: maxBalance !== null ? new Currency(maxBalance) : maxBalance,
-      pubkey
+      pubkey,
+      statustype
     }, this[P_EXECUTOR], Account, true);
   }
 

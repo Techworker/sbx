@@ -39,6 +39,10 @@ describe('Core.Types.AccountName', () => {
     expect(() => new AccountName('te')).to.throw();
   });
 
+  it('will throw an error if the name is larger than 64 characters', () => {
+    expect(() => new AccountName('t'.repeat(65))).to.throw();
+  });
+
   it('will throw an error if a wrong char is used beyond 3 chars', () => {
     expect(() => new AccountName('techä')).to.throw();
   });

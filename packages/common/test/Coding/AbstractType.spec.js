@@ -1,4 +1,3 @@
-const CB = require('@pascalcoin-sbx/common').BC;
 const AbstractType = require('@pascalcoin-sbx/common').Coding.AbstractType;
 const CompositeType = require('@pascalcoin-sbx/common').Coding.CompositeType;
 const StringWOL = require('@pascalcoin-sbx/common').Coding.Core.StringWithoutLength;
@@ -21,8 +20,6 @@ describe('Coding.AbstractType', () => {
 
     // take given value
     expect(at.encodeToBytes('abc').toString()).to.be.equal('abc');
-    expect(at.determineValue('')).to.be.equal('test123');
-    expect(at.determineValue('abc')).to.be.equal('abc');
   });
 
   it('can contain fixed values', () => {

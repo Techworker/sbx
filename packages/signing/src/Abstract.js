@@ -8,10 +8,10 @@
 // const Payload = require('../Crypto/Payload');
 const BC = require('@pascalcoin-sbx/common').BC;
 const Currency = require('@pascalcoin-sbx/common').Types.Currency;
+const Payload = require('@pascalcoin-sbx/common').Types.Payload;
 const PascalInfo = require('@pascalcoin-sbx/common').PascalInfo;
 
 const P_PAYLOAD = Symbol('payload');
-const P_PAYLOAD_TYPE = Symbol('payload_type');
 const P_S = Symbol('s');
 const P_R = Symbol('r');
 const P_FEE = Symbol('fee');
@@ -26,8 +26,7 @@ class Abstract {
    * Constructor.
    */
   constructor() {
-    this[P_PAYLOAD] = BC.fromString('');
-    this[P_PAYLOAD_TYPE] = 0;
+    this[P_PAYLOAD] = new Payload(BC.fromString(''));
     this[P_S] = null;
     this[P_R] = null;
     this[P_FEE] = new Currency(0);
@@ -36,27 +35,13 @@ class Abstract {
   /**
    * Sets the payload of the transaction instance.
    *
-   * @param {BC} payload
-   * @param {Number} payloadType
+   * @param {Payload} payload
    *
    * @returns {Abstract}
    */
-  withPayload(payload, payloadType = 0) {
-    this[P_PAYLOAD] = BC.from(payload);
-    this[P_PAYLOAD_TYPE] = payloadType;
+  withPayload(payload) {
+    this[P_PAYLOAD] = payload;
     return this;
-  }
-
-  /**
-   * Sets the payload of the transaction instance from a string.
-   *
-   * @param {String} payload
-   * @param {Number} payloadType
-   *
-   * @returns {Abstract}
-   */
-  withPayloadString(payload, payloadType = 0) {
-    return this.withPayload(BC.fromString(payload), payloadType);
   }
 
   /**
@@ -93,19 +78,10 @@ class Abstract {
   /**
    * Gets the prepared payload.
    *
-   * @returns {BC}
+   * @returns {Payload}
    */
   get payload() {
     return this[P_PAYLOAD];
-  }
-
-  /**
-   * Gets the payload type identifier.
-   *
-   * @returns {BC}
-   */
-  get payloadType() {
-    return this[P_PAYLOAD_TYPE];
   }
 
   /**

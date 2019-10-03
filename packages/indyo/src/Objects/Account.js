@@ -1,0 +1,86 @@
+const CommonAccount = require('@pascalcoin-sbx/common').Objects.Account;
+const Operation = require('./Operation');
+
+const P_IND = Symbol('indyo');
+const P_RPC = Symbol('rpc');
+
+/**
+ * Extended account object with various methods to resolve additional data from the chain.
+ */
+class Account extends CommonAccount {
+
+  /**
+   * Sets the indyo instance.
+   *
+   * @param {Indyo} indyo
+   * @return {Account}
+   */
+  withIndyo(indyo) {
+    this[P_IND] = indyo;
+    this[P_RPC] = indyo.rpc;
+    return this;
+  }
+
+  /**
+   * Gets the operations of an account. If the amount and offset params are omitted,
+   * all operations will be returned.
+   *
+   * @param {Number} offset
+   * @param {Number} amount
+   * @return {Promise}
+   */
+  async operations(amount = null, offset = null) {
+    const action = this[P_RPC].getAccountOperations({
+      account: this.accountNumber
+    });
+
+    return await this[P_IND].execute(action, Operation, amount, offset);
+  }
+
+  /**
+   * Gets the block the account was last updated in.
+   *
+   * @return {Promise<void|Block>}
+   */
+  async updatedInBlock() {
+    return this[P_IND].Blocks.findByBlockNumber(this.updatedInBlockNumber);
+  }
+
+  /**
+   * Gets the block until the account is locked.
+   *
+   * @return {Promise<void|Block>}
+   */
+  async lockedUntilBlock() {
+    return this[P_IND].Blocks.findByBlockNumber(this.lockedUntilBlockNumber);
+  }
+
+  /**
+   * Gets the seller account in case the account is for sale.
+   *
+   * @return {Promise<void|Account>}
+   */
+  async sellerAccount() {
+    return this[P_IND].Accounts.findByAccountNumber(this.sellerAccountNumber);
+  }
+
+  /**
+   * Gets the receiver swap account instance in case this account is in account swap state.
+   *
+   * @return {Promise<void|Account>}
+   */
+  async receiverSwapAccount() {
+    return this[P_IND].Accounts.findByAccountNumber(this.receiverSwapAccountNumber);
+  }
+
+  /**
+   * Gets a list of all accounts with the same public key as the current account.
+   *
+   * @return {Promise<[]>}
+   */
+  async accountsWithSamePublicKey() {
+    return this[P_IND].Accounts.findByPublicKey(this.publicKey);
+  }
+}
+
+module.exports = Account;

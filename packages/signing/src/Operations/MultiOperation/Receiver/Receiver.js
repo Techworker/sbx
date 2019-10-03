@@ -32,11 +32,11 @@ class Receiver {
   /**
    * Sets the payload of the receiver.
    *
-   * @param {BC|String} payload
+   * @param {Payload} payload
    * @return {Receiver}
    */
   withPayload(payload) {
-    this[P_PAYLOAD] = BC.from(payload);
+    this[P_PAYLOAD] = payload;
     return this;
   }
 
@@ -61,7 +61,7 @@ class Receiver {
   /**
    * Gets the payload of the receiver.
    *
-   * @return {BC}
+   * @return {Payload}
    */
   get payload() {
     return this[P_PAYLOAD];

@@ -7,8 +7,8 @@ const BC = require('@pascalcoin-sbx/common').BC;
 const OperationHash = require('@pascalcoin-sbx/common').Types.OperationHash;
 const OperationHashCoder = require('@pascalcoin-sbx/common').Coding.Pascal.OperationHash;
 const AccountNumber = require('@pascalcoin-sbx/common').Types.AccountNumber;
-const Account = require('@pascalcoin-sbx/json-rpc').Types.Account;
-const Block = require('@pascalcoin-sbx/json-rpc').Types.Block;
+const Account = require('@pascalcoin-sbx/common').Objects.Account;
+const Block = require('@pascalcoin-sbx/common').Objects.Block;
 const PublicKey = require('@pascalcoin-sbx/common').Types.Keys.PublicKey;
 const PublicKeyCoder = require('@pascalcoin-sbx/common').Coding.Pascal.Keys.PublicKey;
 const PrivateKey = require('@pascalcoin-sbx/common').Types.Keys.PrivateKey;
@@ -170,10 +170,11 @@ describe('RPC.Executor', () => {
 
   it('will extract the account number from an account', (done) => {
     const params = {
-      field: Account.createFromRPC({
+      field: Account.createFromObject({
         account: 100,
         enc_pubkey: new PublicKeyCoder().encodeToBytes(PublicKey.empty()),
         balance: 1,
+        balance_s: '1',
         n_operation: 1,
         updated_b: 1,
         state: 'normal',
@@ -211,7 +212,7 @@ describe('RPC.Executor', () => {
     const blocks = JSON.parse(fs.readFileSync(path.join(__dirname, '/fixtures/blocks.json')));
 
     const params = {
-      field: Block.createFromRPC(blocks[0])
+      field: Block.createFromObject(blocks[0])
     };
 
     const c = getCallerInstance();
