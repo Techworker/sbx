@@ -57,7 +57,7 @@ class Wallet {
    * @param {Currency} amount
    * @param {Payload} payload
    */
-  async sendTo(senderKeyPair, senderAccountNumber, targetAccountNumber, amount, payload) {
+  async send(senderKeyPair, senderAccountNumber, targetAccountNumber, amount, payload) {
 
     // determine the sender account
     let senderAccount = await this[P_IND].Accounts.findByAccountNumber(senderAccountNumber);
@@ -81,12 +81,9 @@ class Wallet {
    * @param {Payload} payload
    * @param {Object} changes
    */
-  async changeInfo(signerKeyPair, signerAccountNumber, targetAccountNumber, payload, changes = {
-    data: undefined,
-    name: undefined,
-    type: undefined,
-    publicKey: undefined
-  }) {
+  async changeInfo(signerKeyPair, signerAccountNumber, targetAccountNumber, payload,
+    changes = { data: undefined, name: undefined, type: undefined, publicKey: undefined}
+  ) {
 
     // determine the sender account
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
@@ -126,7 +123,8 @@ class Wallet {
    * @param {Payload} payload
    * @return {Promise<void>}
    */
-  async listForPublicSale(signerKeyPair, signerAccountNumber, targetAccountNumber, price, sellerAccountNumber, payload) {
+  async listForPublicSale(signerKeyPair, signerAccountNumber, targetAccountNumber,
+    price, sellerAccountNumber, payload) {
 
     // determine the sender account
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
@@ -155,7 +153,9 @@ class Wallet {
    * @param {Number|0} lockedUntilBlock
    * @return {Promise<void>}
    */
-  async listForPrivateSale(signerKeyPair, signerAccountNumber, targetAccountNumber, price, sellerAccountNumber, payload, newPublicKey, lockedUntilBlock = 0) {
+  async listForPrivateSale(signerKeyPair, signerAccountNumber, targetAccountNumber,
+    price, sellerAccountNumber, payload, newPublicKey,
+    lockedUntilBlock = 0) {
 
     // determine the sender account
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
@@ -178,15 +178,12 @@ class Wallet {
    * @param {KeyPair} signerKeyPair
    * @param {AccountNumber} signerAccountNumber
    * @param {AccountNumber} targetAccountNumber
-   * @param {BC} hashLock
-   * @param {Number|0} lockedUntilBlock
    * @return {Promise<void>}
    */
   async delist(signerKeyPair, signerAccountNumber, targetAccountNumber, payload) {
 
     // determine the sender account
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
-    let targetAccount = await this[P_IND].Accounts.findByAccountNumber(targetAccountNumber);
 
     // create new local op
     const deListLocalOp = new Signing.Operations.DeListAccount.Operation(
@@ -220,6 +217,32 @@ class Wallet {
     );
 
     listForAccountSwapLocalOp.asAccountSwap(hashLock, lockedUntilBlock, newPublicKey);
+    listForAccountSwapLocalOp.withPayload(payload);
+    listForAccountSwapLocalOp.withNOperation(signerAccount.nOperation + 1);
+    return await this[M_SIGN_AND_EXECUTE](signerKeyPair, listForAccountSwapLocalOp);
+  }
+
+  /**
+   * Lists an account for public sale.
+   *
+   * @param {KeyPair} signerKeyPair
+   * @param {AccountNumber} signerAccountNumber
+   * @param {AccountNumber} targetAccountNumber
+   * @param {BC} hashLock
+   * @param {Number|0} lockedUntilBlock
+   * @return {Promise<void>}
+   */
+  async swapCoin(signerKeyPair, signerAccountNumber, targetAccountNumber, hashLock, payload) {
+
+    // determine the sender account
+    let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
+
+    // create new local op
+    const listForAccountSwapLocalOp = new Signing.Operations.ListAccount.Operation(
+      signerAccountNumber, targetAccountNumber, 0, 0
+    );
+
+    listForAccountSwapLocalOp.asCoinSwap(hashLock);
     listForAccountSwapLocalOp.withPayload(payload);
     listForAccountSwapLocalOp.withNOperation(signerAccount.nOperation + 1);
     return await this[M_SIGN_AND_EXECUTE](signerKeyPair, listForAccountSwapLocalOp);

@@ -45,6 +45,10 @@ class Abstract {
    * @returns {Abstract}
    */
   withPayload(payload) {
+    if (!(payload instanceof Payload)) {
+      payload = new Payload(payload);
+    }
+
     this[P_PAYLOAD] = payload;
     return this;
   }

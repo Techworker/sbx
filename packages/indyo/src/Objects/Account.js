@@ -1,3 +1,4 @@
+const BC = require('@pascalcoin-sbx/common').BC;
 const CommonAccount = require('@pascalcoin-sbx/common').Objects.Account;
 const Operation = require('./Operation');
 
@@ -99,8 +100,8 @@ class Account extends CommonAccount {
    * @param {Payload} payload
    * @return {Promise<Operation>}
    */
-  async sendTo(keyPair, receiverAccountNumber, amount, payload) {
-    return this[P_IND].Wallet.sendTo(
+  async send(keyPair, receiverAccountNumber, amount, payload) {
+    return this[P_IND].Wallet.send(
       keyPair, this.accountNumber, receiverAccountNumber, amount, payload
     );
   }
@@ -120,10 +121,11 @@ class Account extends CommonAccount {
   }
 
   /**
+   * Changes the info of an account.
    *
-   * @param keyPair
-   * @param payload
-   * @param changes
+   * @param {KeyPair} keyPair
+   * @param {Payload} payload
+   * @param {Object} changes
    * @return {Promise<*|void|Account>}
    */
   async changeInfo(keyPair, payload, changes = {
@@ -137,24 +139,68 @@ class Account extends CommonAccount {
     );
   }
 
+  /**
+   * Lists the account for public sale.
+   *
+   * @param {KeyPair} keyPair
+   * @param {Currency} price
+   * @param {AccountNumber} sellerAccountNumber
+   * @param {Payload} payload
+   * @return {Promise<*|void>}
+   */
   async listForPublicSale(keyPair, price, sellerAccountNumber, payload) {
     return this[P_IND].Wallet.listForPublicSale(
       keyPair, this.accountNumber, this.accountNumber, price, sellerAccountNumber, payload
     );
   }
 
+  /**
+   * Lists the account for private sale.
+   *
+   * @param {KeyPair} keyPair
+   * @param {Currency} price
+   * @param {AccountNumber} sellerAccountNumber
+   * @param {Payload} payload
+   * @param {PublicKey} newPublicKey
+   * @param {Number} lockedUntilBlock
+   * @return {Promise<Operation>}
+   */
   async listForPrivateSale(keyPair, price, sellerAccountNumber, payload, newPublicKey, lockedUntilBlock = 0) {
     return this[P_IND].Wallet.listForPrivateSale(
       keyPair, this.accountNumber, this.accountNumber, price, sellerAccountNumber, payload, newPublicKey, lockedUntilBlock
     );
   }
 
+  /**
+   * Initializes an account swap.
+   *
+   * @param {KeyPair} keyPair
+   * @param {BC} hashLock
+   * @param {Number} lockedUntilBlock
+   * @param {PublicKey} newPublicKey
+   * @param {Payload} payload
+   * @return {Promise<Operation>}
+   */
   async swap(keyPair, hashLock, lockedUntilBlock, newPublicKey, payload) {
     return this[P_IND].Wallet.swapAccount(
       keyPair, this.accountNumber, this.accountNumber, hashLock, lockedUntilBlock, newPublicKey, payload
     );
   }
 
+  async swapCoin(keyPair, hashLock, payload) {
+    hashLock = BC.from(hashLock);
+    return this[P_IND].Wallet.swapCoin(
+      keyPair, this.accountNumber, this.accountNumber, hashLock, payload
+    );
+  }
+
+  /**
+   * Delists the current account.
+   *
+   * @param {KeyPair} keyPair
+   * @param {Payload} payload
+   * @return {Promise<Operation>}
+   */
   async delist(keyPair, payload) {
     return this[P_IND].Wallet.delist(
       keyPair, this.accountNumber, this.accountNumber, payload

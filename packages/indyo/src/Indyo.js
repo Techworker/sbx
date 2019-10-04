@@ -2,12 +2,16 @@ const RPCClient = require('@pascalcoin-sbx/json-rpc').Client;
 const AccountsRepository = require('./Repository/Accounts');
 const BlocksRepository = require('./Repository/Blocks');
 const OperationsRepository = require('./Repository/Operations');
-const WalletRepository = require('./Repository/Wallet');
+const Wallet = require('./Repository/Wallet');
+const Keys = require('./Repository/Keys');
+const Payload = require('./Repository/Payload');
 
 const P_ACCOUNTS_REPOSITORY = Symbol('accountsRepository');
 const P_BLOCKS_REPOSITORY = Symbol('blocksRepository');
 const P_OPERATIONS_REPOSITORY = Symbol('operationsRepository');
-const P_WALLET_REPOSITORY = Symbol('walletRepository');
+const P_WALLET = Symbol('wallet');
+const P_KEYS = Symbol('keys');
+const P_PAYLOAD = Symbol('payload');
 const P_RPC = Symbol('rpc');
 
 /**
@@ -22,20 +26,26 @@ class Indyo {
    * @param {AccountsRepository|null} accountsRepository
    * @param {BlocksRepository|null} blocksRepository
    * @param {OperationsRepository|null} operationsRepository
-   * @param walletRepository
+   * @param {Wallet} wallet
+   * @param {Keys} keys
+   * @param {Payload} payload
    * @return {Indyo}
    */
   static factoryDetailed(rpc,
     accountsRepository = null,
     blocksRepository = null,
     operationsRepository = null,
-    walletRepository = null) {
+    wallet = null,
+    keys = null,
+    payload = null) {
     const instance = new Indyo(rpc);
 
     instance[P_ACCOUNTS_REPOSITORY] = accountsRepository;
     instance[P_BLOCKS_REPOSITORY] = blocksRepository;
     instance[P_OPERATIONS_REPOSITORY] = operationsRepository;
-    instance[P_WALLET_REPOSITORY] = walletRepository;
+    instance[P_WALLET] = wallet;
+    instance[P_KEYS] = keys;
+    instance[P_PAYLOAD] = payload;
 
     return instance;
   }
@@ -61,7 +71,9 @@ class Indyo {
     this[P_ACCOUNTS_REPOSITORY] = null;
     this[P_BLOCKS_REPOSITORY] = null;
     this[P_OPERATIONS_REPOSITORY] = null;
-    this[P_WALLET_REPOSITORY] = null;
+    this[P_WALLET] = null;
+    this[P_KEYS] = null;
+    this[P_PAYLOAD] = null;
   }
 
   /**
@@ -118,11 +130,27 @@ class Indyo {
    * @return {OperationsRepository}
    */
   get Wallet() {
-    if (this[P_WALLET_REPOSITORY] === null) {
-      this[P_WALLET_REPOSITORY] = new WalletRepository(this);
+    if (this[P_WALLET] === null) {
+      this[P_WALLET] = new Wallet(this);
     }
 
-    return this[P_WALLET_REPOSITORY];
+    return this[P_WALLET];
+  }
+
+  get Keys() {
+    if (this[P_KEYS] === null) {
+      this[P_KEYS] = new Keys(this);
+    }
+
+    return this[P_KEYS];
+  }
+
+  get Payload() {
+    if (this[P_PAYLOAD] === null) {
+      this[P_PAYLOAD] = new Payload(this);
+    }
+
+    return this[P_PAYLOAD];
   }
 
   /**
