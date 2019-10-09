@@ -2,6 +2,7 @@ const chai = require('chai');
 const EPasaParser = require('@pascalcoin-sbx/epasa').Parser;
 const EPasa = require('@pascalcoin-sbx/epasa').EPasa;
 const BC = require('@pascalcoin-sbx/common').BC;
+const Payload = require('@pascalcoin-sbx/common').Types.Payload;
 
 chai.expect();
 const expect = chai.expect;
@@ -46,8 +47,8 @@ describe('Layer2.EPasa.Parser', () => {
   it('detects too long public ascii payloads', () => {
     let ep = new EPasa();
 
-    ep.encryption = EPasa.ENC_PUBLIC;
-    ep.format = EPasa.FORMAT_ASCII;
+    ep.encryption = Payload.ENC_PUBLIC;
+    ep.format = Payload.FORMAT_ASCII;
 
     // invalid payload
     expect(() => (ep.payload = BC.fromString('A'.repeat(256)))).to.throw();
@@ -58,8 +59,8 @@ describe('Layer2.EPasa.Parser', () => {
   it('detects too long public hex payloads', () => {
     let ep = new EPasa();
 
-    ep.encryption = EPasa.ENC_PUBLIC;
-    ep.format = EPasa.FORMAT_HEX;
+    ep.encryption = Payload.ENC_PUBLIC;
+    ep.format = Payload.FORMAT_HEX;
 
     // invalid payload
     expect(() => (ep.payload = BC.fromHex('F'.repeat(512)))).to.throw();
@@ -70,8 +71,8 @@ describe('Layer2.EPasa.Parser', () => {
   it('detects too long public base8 payloads', () => {
     let ep = new EPasa();
 
-    ep.encryption = EPasa.ENC_PUBLIC;
-    ep.format = EPasa.FORMAT_BASE58;
+    ep.encryption = Payload.ENC_PUBLIC;
+    ep.format = Payload.FORMAT_BASE58;
 
     // invalid payload
     expect(() => (ep.payload = BC.fromString('B'.repeat(349)))).to.throw();
@@ -83,8 +84,8 @@ describe('Layer2.EPasa.Parser', () => {
     let ep = new EPasa();
 
     ep.password = 'A';
-    ep.encryption = EPasa.ENC_PASSWORD;
-    ep.format = EPasa.FORMAT_ASCII;
+    ep.encryption = Payload.ENC_PASSWORD;
+    ep.format = Payload.FORMAT_ASCII;
 
     // invalid payload
     expect(() => (ep.payload = BC.fromString('A'.repeat(224)))).to.throw();
@@ -97,8 +98,8 @@ describe('Layer2.EPasa.Parser', () => {
 
     ep.password = 'A';
 
-    ep.encryption = EPasa.ENC_PASSWORD;
-    ep.format = EPasa.FORMAT_HEX;
+    ep.encryption = Payload.ENC_PASSWORD;
+    ep.format = Payload.FORMAT_HEX;
 
     // invalid payload
     expect(() => (ep.payload = BC.fromHex('F'.repeat(448)))).to.throw();
@@ -110,8 +111,8 @@ describe('Layer2.EPasa.Parser', () => {
     let ep = new EPasa();
 
     ep.password = 'A';
-    ep.encryption = EPasa.ENC_PASSWORD;
-    ep.format = EPasa.FORMAT_BASE58;
+    ep.encryption = Payload.ENC_PASSWORD;
+    ep.format = Payload.FORMAT_BASE58;
 
     // invalid payload
     expect(() => (ep.payload = BC.fromString('B'.repeat(305)))).to.throw();
@@ -123,8 +124,8 @@ describe('Layer2.EPasa.Parser', () => {
     it(`detects too long ECIES ${WHO} ascii payloads`, () => {
       let ep = new EPasa();
 
-      ep.encryption = EPasa[`ENC_${WHO}`];
-      ep.format = EPasa.FORMAT_ASCII;
+      ep.encryption = Payload[`ENC_${WHO}`];
+      ep.format = Payload.FORMAT_ASCII;
 
       // invalid payload
       expect(() => (ep.payload = BC.fromString('A'.repeat(145)))).to.throw();
@@ -135,8 +136,8 @@ describe('Layer2.EPasa.Parser', () => {
     it(`detects too long ECIES ${WHO} hex payloads`, () => {
       let ep = new EPasa();
 
-      ep.encryption = EPasa[`ENC_${WHO}`];
-      ep.format = EPasa.FORMAT_HEX;
+      ep.encryption = Payload[`ENC_${WHO}`];
+      ep.format = Payload.FORMAT_HEX;
 
       // invalid payload
       expect(() => (ep.payload = BC.fromHex('F'.repeat(290)))).to.throw();
@@ -147,8 +148,8 @@ describe('Layer2.EPasa.Parser', () => {
     it(`detects too long ECIES ${WHO} base58 payloads`, () => {
       let ep = new EPasa();
 
-      ep.encryption = EPasa[`ENC_${WHO}`];
-      ep.format = EPasa.FORMAT_BASE58;
+      ep.encryption = Payload[`ENC_${WHO}`];
+      ep.format = Payload.FORMAT_BASE58;
 
       // invalid payload
       expect(() => (ep.payload = BC.value.fromString('B'.repeat(197)))).to.throw();

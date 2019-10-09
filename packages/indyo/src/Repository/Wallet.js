@@ -1,11 +1,12 @@
-const Account = require('./../Objects/Account');
 const Operation = require('./../Objects/Operation');
 const Signing = require('@pascalcoin-sbx/signing');
+const SignableOperations = Signing.Operations;
 
 const P_IND = Symbol('indyo');
 const P_RPC = Symbol('rpc');
 
 const M_SIGN_AND_EXECUTE = Symbol('signAndExecute');
+const M_SIGN_AND_GET_RAW = Symbol('signAndGetRaw');
 
 class Wallet {
   /**
@@ -36,9 +37,13 @@ class Wallet {
     let changeKeyOp;
 
     if (signerAccountNumber === targetAccountNumber) {
-      changeKeyOp = Signing.changeKey(targetAccountNumber, newPublicKey);
+      changeKeyOp = new SignableOperations.ChangeKey.Operation(
+        targetAccountNumber, newPublicKey
+      );
     } else {
-      changeKeyOp = Signing.changeKeySigned(signerAccountNumber, targetAccountNumber, newPublicKey);
+      changeKeyOp = new SignableOperations.ChangeKeySigned.Operation(
+        signerAccountNumber, targetAccountNumber, newPublicKey
+      );
     }
 
     changeKeyOp.withPayload(payload);
@@ -63,7 +68,7 @@ class Wallet {
     let senderAccount = await this[P_IND].Accounts.findByAccountNumber(senderAccountNumber);
 
     // create new local op
-    const sendLocalOp = new Signing.Operations.Transaction.Operation(senderAccountNumber, targetAccountNumber, amount);
+    const sendLocalOp = new SignableOperations.Transaction.Operation(senderAccountNumber, targetAccountNumber, amount);
 
     sendLocalOp.withPayload(payload);
     sendLocalOp.withNOperation(senderAccount.nOperation + 1);
@@ -89,7 +94,7 @@ class Wallet {
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
 
     // create new local op
-    const changeInfoLocalOp = new Signing.Operations.ChangeAccountInfo.Operation(
+    const changeInfoLocalOp = new SignableOperations.ChangeAccountInfo.Operation(
       signerAccountNumber, targetAccountNumber
     );
 
@@ -130,7 +135,7 @@ class Wallet {
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
 
     // create new local op
-    const listForSaleLocalOp = new Signing.Operations.ListAccountForSale.Operation(
+    const listForSaleLocalOp = new SignableOperations.ListAccountForSale.Operation(
       signerAccountNumber, targetAccountNumber, price, sellerAccountNumber
     );
 
@@ -161,7 +166,7 @@ class Wallet {
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
 
     // create new local op
-    const listForSaleLocalOp = new Signing.Operations.ListAccount.Operation(
+    const listForSaleLocalOp = new SignableOperations.ListAccount.Operation(
       signerAccountNumber, targetAccountNumber, price, sellerAccountNumber
     );
 
@@ -178,6 +183,7 @@ class Wallet {
    * @param {KeyPair} signerKeyPair
    * @param {AccountNumber} signerAccountNumber
    * @param {AccountNumber} targetAccountNumber
+   * @param {Payload} payload
    * @return {Promise<void>}
    */
   async delist(signerKeyPair, signerAccountNumber, targetAccountNumber, payload) {
@@ -186,7 +192,7 @@ class Wallet {
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
 
     // create new local op
-    const deListLocalOp = new Signing.Operations.DeListAccount.Operation(
+    const deListLocalOp = new SignableOperations.DeListAccount.Operation(
       signerAccountNumber, targetAccountNumber
     );
 
@@ -206,13 +212,14 @@ class Wallet {
    * @param {Number|0} lockedUntilBlock
    * @return {Promise<void>}
    */
-  async swapAccount(signerKeyPair, signerAccountNumber, targetAccountNumber, hashLock, lockedUntilBlock, newPublicKey, payload) {
+  async swapAccount(signerKeyPair, signerAccountNumber, targetAccountNumber, hashLock,
+    lockedUntilBlock, newPublicKey, payload) {
 
     // determine the sender account
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
 
     // create new local op
-    const listForAccountSwapLocalOp = new Signing.Operations.ListAccount.Operation(
+    const listForAccountSwapLocalOp = new SignableOperations.ListAccount.Operation(
       signerAccountNumber, targetAccountNumber, 0, 0
     );
 
@@ -238,7 +245,7 @@ class Wallet {
     let signerAccount = await this[P_IND].Accounts.findByAccountNumber(signerAccountNumber);
 
     // create new local op
-    const listForAccountSwapLocalOp = new Signing.Operations.ListAccount.Operation(
+    const listForAccountSwapLocalOp = new SignableOperations.ListAccount.Operation(
       signerAccountNumber, targetAccountNumber, 0, 0
     );
 
@@ -257,7 +264,7 @@ class Wallet {
    */
   async [M_SIGN_AND_EXECUTE](keyPair, op) {
     // sign operation using the key
-    let raw = Signing.signAndGetRaw(keyPair, op);
+    let raw = this[M_SIGN_AND_GET_RAW](keyPair, op);
 
     // try to execute the operation
     let resultingOperations = await this[P_IND].executeAndTransform(
@@ -268,7 +275,7 @@ class Wallet {
     if (!resultingOperations[0].isValid) {
       op.resetSign();
       op.withMinFee();
-      raw = Signing.signAndGetRaw(keyPair, op);
+      raw = this[M_SIGN_AND_GET_RAW](keyPair, op);
 
       return this[P_IND].executeAndTransform(
         this[P_RPC].executeOperations({rawoperations: raw}), Operation
@@ -280,6 +287,23 @@ class Wallet {
     }
 
     return resultingOperations;
+  }
+
+  /**
+   * Signs the given operation with the given operation and returns the rawops.
+   *
+   * @param {KeyPair} keyPair
+   * @param {Abstract} operation
+   * @return {BC}
+   */
+  [M_SIGN_AND_GET_RAW](keyPair, operation) {
+    // collect offline signed operation (one could sign multiple at once)
+    const operations = new Signing.RawOperations();
+
+    operations.addOperation(keyPair, operation);
+
+    // send locally signed operation(s) to node
+    return new Signing.RawOperationsCoder().encodeToBytes(operations);
   }
 }
 

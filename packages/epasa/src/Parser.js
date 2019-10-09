@@ -8,6 +8,7 @@
 const EPasa = require('./EPasa');
 const Ascii = require('./Types/Ascii');
 const BC = require('@pascalcoin-sbx/common').BC;
+const Payload = require('@pascalcoin-sbx/common').Types.Payload;
 const AccountName = require('@pascalcoin-sbx/common').Types.AccountName;
 
 /**
@@ -100,13 +101,13 @@ class Parser {
                 ['[', '(', '{', '<'].indexOf(curr.char) > -1
       ) {
         if (curr.char === '[') {
-          state.encryption = EPasa.ENC_PUBLIC;
+          state.encryption = Payload.ENC_PUBLIC;
         } else if (curr.char === '(') {
-          state.encryption = EPasa.ENC_RECEIVER;
+          state.encryption = Payload.ENC_RECEIVER;
         } else if (curr.char === '<') {
-          state.encryption = EPasa.ENC_SENDER;
+          state.encryption = Payload.ENC_SENDER;
         } else if (curr.char === '{') {
-          state.encryption = EPasa.ENC_PASSWORD;
+          state.encryption = Payload.ENC_PASSWORD;
         }
 
         state.encOpen = curr.char;
@@ -118,7 +119,7 @@ class Parser {
       // password identifier but only if its a password encryption, otherwise it identifies the
       // checksum
       if (curr.escaped === false && (state.inPayload || state.inAccount) && curr.char === ':') {
-        if (state.encryption === EPasa.ENC_PASSWORD) {
+        if (state.encryption === Payload.ENC_PASSWORD) {
           state.inPassword = true;
         } else {
           state.inPassword = false;
@@ -133,16 +134,16 @@ class Parser {
 
       // determine the format, a " identifies ascii, 0x hex, otherwise its probably base58
       if (curr.escaped === false && curr.char === '"' && state.inPayload && state.format === null) {
-        state.format = EPasa.FORMAT_ASCII;
+        state.format = Payload.FORMAT_ASCII;
         state.asciiOpen = true;
         continue;
       } else if (curr.escaped === false && curr.char === '0' && curr.next === 'x' &&
                 state.inPayload && state.format === null) {
-        state.format = EPasa.FORMAT_HEX;
+        state.format = Payload.FORMAT_HEX;
       } else if (curr.escaped === false && state.inPayload && state.format === null) {
-        state.format = EPasa.FORMAT_BASE58;
+        state.format = Payload.FORMAT_BASE58;
       } else if (curr.escaped === false && curr.char === '"' && state.inPayload &&
-                state.format === EPasa.FORMAT_ASCII) {
+                state.format === Payload.FORMAT_ASCII) {
         state.asciiClosed = true;
         continue;
       }
@@ -212,7 +213,7 @@ class Parser {
       throw new Error('Invalid EPasa - missing or too long checksum');
     }
 
-    if (state.format === EPasa.FORMAT_HEX && state.payload.substr(2).length > 0 &&
+    if (state.format === Payload.FORMAT_HEX && state.payload.substr(2).length > 0 &&
             /^[0-9a-f]+$/.test(state.payload.substr(2)) === false) {
       throw new Error('Invalid EPasa - only lowercase hex allowed.');
     }
@@ -236,19 +237,19 @@ class Parser {
       }
     }
 
-    if (state.encryption === EPasa.ENC_PASSWORD) {
+    if (state.encryption === Payload.ENC_PASSWORD) {
       epasa.password = state.password;
     }
 
     if (state.payload === '') {
-      epasa.format = EPasa.NON_DETERMISTIC;
+      epasa.format = Payload.NON_DETERMISTIC;
     } else {
       epasa.format = state.format;
     }
 
     epasa.encryption = state.encryption;
 
-    if (state.format === EPasa.FORMAT_HEX) {
+    if (state.format === Payload.FORMAT_HEX) {
       epasa.payload = BC.fromHex(state.payload.substr(2));
     } else if (state.format !== null) {
       epasa.payload = BC.fromString(state.payload);

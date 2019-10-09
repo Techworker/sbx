@@ -430,6 +430,28 @@ class Client {
     }, this[P_EXECUTOR], Operation, false);
   }
 
+
+  /**
+   * Executes a transaction operation
+   *
+   * @param {AccountNumber|Number|String} sender
+   * @param {AccountNumber|Number|String} target
+   * @param {Currency} amount
+   *
+   * @returns {OperationAction}
+   */
+  sendData({
+           sender,
+           target,
+           amount
+         }) {
+    return new OperationAction('sendto', {
+      sender: new AccountNumber(sender),
+      target: new AccountNumber(target),
+      amount: new Currency(amount)
+    }, this[P_EXECUTOR], Operation, false);
+  }
+
   /**
    * Executes a transaction operation
    *

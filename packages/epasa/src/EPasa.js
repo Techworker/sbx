@@ -13,6 +13,7 @@ const MurmurHash3 = require('murmur-hash').v3;
 const Ascii = require('./Types/Ascii');
 const Base58 = require('./Types/Base58');
 const BC = require('@pascalcoin-sbx/common').BC;
+const Payload = require('@pascalcoin-sbx/common').Types.Payload;
 
 const P_ACCOUNT_NUMBER = Symbol('account_number');
 const P_ACCOUNT_NAME = Symbol('account_name');
@@ -29,7 +30,7 @@ class EPasa {
    * Constructor.
    */
   constructor() {
-    this[P_PAYLOAD_TYPE] = EPasa.NON_DETERMISTIC;
+    this[P_PAYLOAD_TYPE] = Payload.NON_DETERMISTIC;
   }
 
   /**
@@ -84,7 +85,7 @@ class EPasa {
    * @returns {boolean}
    */
   isFormatBase58() {
-    return ((this[P_PAYLOAD_TYPE] & EPasa.FORMAT_BASE58) === EPasa.FORMAT_BASE58);
+    return ((this[P_PAYLOAD_TYPE] & Payload.FORMAT_BASE58) === Payload.FORMAT_BASE58);
   }
 
   /**
@@ -93,7 +94,7 @@ class EPasa {
    * @returns {boolean}
    */
   isFormatAscii() {
-    return ((this[P_PAYLOAD_TYPE] & EPasa.FORMAT_ASCII) === EPasa.FORMAT_ASCII);
+    return ((this[P_PAYLOAD_TYPE] & Payload.FORMAT_ASCII) === Payload.FORMAT_ASCII);
   }
 
   /**
@@ -102,7 +103,7 @@ class EPasa {
    * @returns {boolean}
    */
   isFormatHex() {
-    return ((this[P_PAYLOAD_TYPE] & EPasa.FORMAT_HEX) === EPasa.FORMAT_HEX);
+    return ((this[P_PAYLOAD_TYPE] & Payload.FORMAT_HEX) === Payload.FORMAT_HEX);
   }
 
   /**
@@ -111,7 +112,7 @@ class EPasa {
    * @returns {boolean}
    */
   isEncryptionReceiver() {
-    return ((this[P_PAYLOAD_TYPE] & EPasa.ENC_RECEIVER) === EPasa.ENC_RECEIVER);
+    return ((this[P_PAYLOAD_TYPE] & Payload.ENC_RECEIVER) === Payload.ENC_RECEIVER);
   }
 
   /**
@@ -120,7 +121,7 @@ class EPasa {
    * @returns {boolean}
    */
   isEncryptionSender() {
-    return ((this[P_PAYLOAD_TYPE] & EPasa.ENC_SENDER) === EPasa.ENC_SENDER);
+    return ((this[P_PAYLOAD_TYPE] & Payload.ENC_SENDER) === Payload.ENC_SENDER);
   }
 
   /**
@@ -129,7 +130,7 @@ class EPasa {
    * @returns {boolean}
    */
   isEncryptionPassword() {
-    return ((this[P_PAYLOAD_TYPE] & EPasa.ENC_PASSWORD) === EPasa.ENC_PASSWORD);
+    return ((this[P_PAYLOAD_TYPE] & Payload.ENC_PASSWORD) === Payload.ENC_PASSWORD);
   }
 
   /**
@@ -138,7 +139,7 @@ class EPasa {
    * @returns {boolean}
    */
   isEncryptionPublic() {
-    return ((this[P_PAYLOAD_TYPE] & EPasa.ENC_PUBLIC) === EPasa.ENC_PUBLIC);
+    return ((this[P_PAYLOAD_TYPE] & Payload.ENC_PUBLIC) === Payload.ENC_PUBLIC);
   }
 
   /**
@@ -188,7 +189,7 @@ class EPasa {
     }
 
     this[P_ACCOUNT_NAME] = new AccountName(accountName);
-    this[P_PAYLOAD_TYPE] |= EPasa.ADDRESSED_BY_NAME;
+    this[P_PAYLOAD_TYPE] |= Payload.ADDRESSED_BY_NAME;
   }
 
   /**
@@ -199,7 +200,7 @@ class EPasa {
   set payload(payload) {
 
     if (!this.hasFormat()) {
-      this.format = EPasa.NON_DETERMISTIC;
+      this.format = Payload.NON_DETERMISTIC;
     }
 
     if ((!this.hasFormat() || !this.hasEncryption()) && payload.toString() !== '') {
@@ -245,10 +246,10 @@ class EPasa {
       maxIdent = 'AES';
     }
 
-    if (payloadCompare.length > EPasa[`MAX_${maxIdent}_${typeIdent}`]) {
+    if (payloadCompare.length > Payload[`MAX_${maxIdent}_${typeIdent}`]) {
       throw new Error(
         `Invalid payload length ${payloadCompare.length} for ${maxIdent}_${typeIdent}. 
-        Max is ${EPasa[`MAX_${maxIdent}_${typeIdent}`]}`
+        Max is ${Payload[`MAX_${maxIdent}_${typeIdent}`]}`
       );
     }
 
@@ -270,7 +271,7 @@ class EPasa {
    * @param {Number} encryption
    */
   set encryption(encryption) {
-    if (encryption === EPasa.ENC_PASSWORD && this[P_PASSWORD] === undefined) {
+    if (encryption === Payload.ENC_PASSWORD && this[P_PASSWORD] === undefined) {
       throw new Error('Set password before setting the password encryption flag.');
     }
 
@@ -301,7 +302,7 @@ class EPasa {
     };
 
     // determine and validate account info
-    if ((this[P_PAYLOAD_TYPE] & EPasa.ADDRESSED_BY_NAME) === EPasa.ADDRESSED_BY_NAME) {
+    if ((this[P_PAYLOAD_TYPE] & Payload.ADDRESSED_BY_NAME) === Payload.ADDRESSED_BY_NAME) {
       data.account = this[P_ACCOUNT_NAME].toStringEscaped();
     } else {
       data.account = this[P_ACCOUNT_NUMBER].toString();
@@ -309,11 +310,11 @@ class EPasa {
 
     // if there is a payload, we need to format it
     if (this[P_PAYLOAD] !== undefined) {
-      if ((this[P_PAYLOAD_TYPE] & EPasa.FORMAT_HEX) === EPasa.FORMAT_HEX) {
+      if ((this[P_PAYLOAD_TYPE] & Payload.FORMAT_HEX) === Payload.FORMAT_HEX) {
         data.payload = `0x${this[P_PAYLOAD].toHex().toLowerCase()}`;
-      } else if ((this[P_PAYLOAD_TYPE] & EPasa.FORMAT_BASE58) === EPasa.FORMAT_BASE58) {
+      } else if ((this[P_PAYLOAD_TYPE] & Payload.FORMAT_BASE58) === Payload.FORMAT_BASE58) {
         data.payload = new Base58(this[P_PAYLOAD].toString()).toString();
-      } else if ((this[P_PAYLOAD_TYPE] & EPasa.FORMAT_ASCII) === EPasa.FORMAT_ASCII) {
+      } else if ((this[P_PAYLOAD_TYPE] & Payload.FORMAT_ASCII) === Payload.FORMAT_ASCII) {
         let asciiPayload = new Ascii(this[P_PAYLOAD].toString()).toStringEscaped();
 
         if (asciiPayload.length > 0) {
@@ -322,16 +323,16 @@ class EPasa {
       }
 
       // now we need to determine the wanted encryption of the payload.
-      if ((this[P_PAYLOAD_TYPE] & EPasa.ENC_PUBLIC) === EPasa.ENC_PUBLIC) {
+      if ((this[P_PAYLOAD_TYPE] & Payload.ENC_PUBLIC) === Payload.ENC_PUBLIC) {
         data.enc_marker_start = '[';
         data.enc_marker_end = ']';
-      } else if ((this[P_PAYLOAD_TYPE] & EPasa.ENC_RECEIVER) === EPasa.ENC_RECEIVER) {
+      } else if ((this[P_PAYLOAD_TYPE] & Payload.ENC_RECEIVER) === Payload.ENC_RECEIVER) {
         data.enc_marker_start = '(';
         data.enc_marker_end = ')';
-      } else if ((this[P_PAYLOAD_TYPE] & EPasa.ENC_SENDER) === EPasa.ENC_SENDER) {
+      } else if ((this[P_PAYLOAD_TYPE] & Payload.ENC_SENDER) === Payload.ENC_SENDER) {
         data.enc_marker_start = '<';
         data.enc_marker_end = '>';
-      } else if ((this[P_PAYLOAD_TYPE] & EPasa.ENC_PASSWORD) === EPasa.ENC_PASSWORD) {
+      } else if ((this[P_PAYLOAD_TYPE] & Payload.ENC_PASSWORD) === Payload.ENC_PASSWORD) {
         data.enc_marker_start = '{';
         data.enc_marker_end = '}';
         // append password
